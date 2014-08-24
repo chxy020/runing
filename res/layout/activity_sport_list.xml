@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/recording_list_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/recording_list_title"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="运动记录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+             />
+
+        <TextView
+            android:id="@+id/recording_list_back"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+    <RelativeLayout 
+        android:layout_below="@id/recording_list_top_bar"
+          android:id="@+id/recording_list_pho"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recording_List_main_height"
+        android:background="@color/gray_light"
+        >
+            
+    </RelativeLayout>
+    
+   <ListView
+        android:layout_below="@id/recording_list_pho"
+          android:id="@+id/recording_list_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        >
+    </ListView>
+        <View
+            android:layout_below="@id/recording_list_data"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#000000" >
+        </View>
+</RelativeLayout>

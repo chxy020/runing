@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/login_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/login_title"
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="手机号登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+             />
+
+        <TextView
+            android:id="@+id/login_goback"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/login_edit"
+        android:layout_below="@id/login_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/reg_margin_top"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#000000" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+             <ImageView
+                android:layout_width="@dimen/edit_img_size"
+                android:layout_height="@dimen/edit_img_size"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/edit_img_margin"
+                android:background="@drawable/edit" />
+
+
+            <EditText
+                android:id="@+id/login_phoneNum"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:background="@null"
+                android:hint="手机号，11位数字" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#000000" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+             <ImageView
+                android:layout_width="@dimen/edit_img_size"
+                android:layout_height="@dimen/edit_img_size"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/edit_img_margin"
+                android:background="@drawable/edit" />
+
+
+            <EditText
+                android:id="@+id/login_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:background="@null"
+                android:hint="输入密码，6-16位字母或数字"
+                android:password="true" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#000000" >
+        </View>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_edit"
+        android:layout_marginTop="@dimen/login_margin_edit"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/login_go"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:background="@color/blue_dark"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/to_reset"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:gravity="center"
+            android:text="忘记密码？点这里 找回密码"
+            android:textColor="@color/text" />
+    </LinearLayout>
+
+</RelativeLayout>

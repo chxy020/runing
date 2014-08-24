@@ -1,0 +1,77 @@
+package net.yaopao.assist;
+
+import java.util.Date;
+
+/**
+ * @author dell 供全局使用的一些变量
+ */
+public class Variables {
+
+	public static String pid;
+	
+	public static String ua;
+
+	public static int islogin;// 0-未登录，1-登录成功，2-正在登录
+
+	public static int uid = 0;
+	
+	public static int utype = 0;// 1-会员，0-未注册
+
+	public static int network = 0;// 0-网络不可用，1-网络可用
+	
+	public static int gpsStatus = 0;// 0-gps不可用，1-gps可用，2-未开启
+
+//	public static long lon = 0;// 当前经度
+	
+//	public static long lat = 0;// 当前纬度
+
+	public static int sportStatus = 1; //0-运动状态，1-暂停状态,2-未运动
+	
+	public static int switchTime = 0; //0-开，1-关
+	public static int switchVoice = 0; //0-开，1-关
+	
+	
+	
+	public static String tarinfo;// 运动目标详情
+	public static String remarks;// 个人备注
+	public static String runtra;// 一条轨迹轨迹--点的集合格式：rentra=
+							// [{slon:"1100",slat:"1110"},{slon:"2100",slat:"2110"}]
+	// 一个点的 属性
+	public static int addtime; // 毫秒数
+	public static int slon; // 经度 WGS84坐标系，保留6位小数，乘以1000000取整
+	public static int slat;// 纬度 WGS84坐标系，保留6位小数，乘以1000000取整
+	public static int speed;// 米/秒
+	public static int orient;// 方向 正北为0度，顺时针方向增加值359度
+	public static int height; //gps高度，米，保留1位小数，乘以10取整
+	public static int state; // 运动中：0，暂停中：1
+
+	public static int runtar;// 自由：0，距离：1，时间：2
+	public static double runtarDis;//  目标距离,公里
+	public static long runtarTime;// 目标时间，秒
+	
+	public static int runty;// 步行：1，跑步：2，自行车骑行：3
+	public static int mind; // 心情
+	public static int runway;// 跑道
+	public static int aheart;// 平均心率
+	public static int mheart;// 最高心率
+	public static int weather;// 天气代码
+	public static int temp;// 温度
+	public static int utime;// 所用时间 秒数
+	public static int heat;// 热量 卡路里
+	public static int imageCount;
+	public static int stamp;
+
+	public static String distance;// 距离
+	public static String pspeed="00'00\"";// 配速
+	public static double hspeed;// 时速
+	
+	public static double stateIndex;// 
+	
+	
+	//获取rid
+	public static String getRid(){
+		return uid+new Date().getTime()+"";
+	}
+	
+
+}

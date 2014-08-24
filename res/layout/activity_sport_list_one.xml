@@ -1,0 +1,229 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/recording_one_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/recording_one_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="周三的自行车骑行"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/recording_one_back"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/recording_one_share"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/one_map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/recording_save_pho_height"
+        android:layout_below="@id/recording_one_top_bar" >
+
+        <com.amap.api.maps2d.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/one_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/runtype_run" />
+
+        <TextView
+            android:layout_width="@dimen/recording_List_main_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="15.21 km"
+            android:textSize="@dimen/font_size3"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="@dimen/recording_List_main_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="2014年7月21日 周三 15:34"
+            android:textSize="7dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/one_middle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:layout_below="@id/one_map_layout" >
+
+        <LinearLayout
+            android:layout_width="@dimen/main_middle_width2"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="1:21:14"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_dark"
+                android:gravity="center"
+                android:text="时间"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="@dimen/main_middle_width1"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="6&apos; 42&apos;&apos; /km"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="平均配速"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="@dimen/main_middle_width2"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="15.49 km/h"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="平均时速"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/one_param"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@+id/one_middle" >
+
+        <ImageView
+            android:id="@+id/one_mind"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/mood1_h" />
+
+        <ImageView
+            android:id="@+id/one_way"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_toRightOf="@id/one_mind"
+            android:background="@drawable/way1" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/one_param"
+        android:background="@color/black" >
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/one_desc_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/one_param" >
+
+        <ImageView
+            android:id="@+id/one_desc_icon"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/edit" />
+
+        <EditText
+            android:id="@+id/one_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/one_desc_icon"
+            android:background="@null"
+            android:hint="说说这次运动感觉怎么样？" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/one_desc_layout"
+        android:background="@color/black" >
+    </View>
+
+</RelativeLayout>

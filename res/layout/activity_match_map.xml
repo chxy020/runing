@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar" >
+<com.amap.api.maps2d.MapView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/match_map"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    
+    />
+
+   <RelativeLayout
+        android:id="@+id/match_map_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         >
+
+        <ImageView
+            android:id="@+id/match_map_head"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/avatar_default" />
+
+        <TextView
+            android:id="@+id/match_map_username"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/small_height"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_toRightOf="@id/match_map_head"
+            android:gravity="center"
+            android:text="关羽"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/match_map_team"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/match_map_username"
+            android:layout_toRightOf="@id/match_map_head"
+            android:gravity="center"
+            android:text="所属跑队名称"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size7" />
+
+        <ImageView
+            android:id="@+id/match_map_gps_status"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin1"
+            android:background="@drawable/gps_3_b" />
+
+        <TextView
+            android:id="@+id/match_map_gps"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_marginLeft="@dimen/margin1"
+            android:layout_toLeftOf="@id/match_map_gps_status"
+            android:text="GPS"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size2"
+            android:textStyle="bold" />
+    </RelativeLayout>
+ <RelativeLayout
+        android:id="@+id/match_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/match_bottom_height"
+        android:layout_alignParentBottom="true"
+         >
+
+        <ImageView
+            android:id="@+id/match_map_loc"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/margin2"
+            android:background="@drawable/button_position" />
+
+        <ImageView
+            android:id="@+id/match_baton "
+            android:layout_width="@dimen/main_start_hight"
+            android:layout_height="@dimen/main_start_hight"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin2"
+            android:background="@drawable/match_baton" />
+
+        <ImageView
+            android:id="@+id/match_map_back"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin2"
+            android:background="@drawable/button_back" />
+    </RelativeLayout>
+   
+
+</RelativeLayout>

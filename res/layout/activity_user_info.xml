@@ -1,0 +1,284 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/userinfo_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/userinfo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="要跑"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/userinfo_save"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userinfo_title_bar"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="昵称" />
+
+            <EditText
+                android:id="@+id/userinfo_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_hight" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="@dimen/medium_hight"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="头  像" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right" >
+
+                <ImageView
+                    android:id="@+id/userinfo_head"
+                    android:layout_width="@dimen/head_hight1"
+                    android:layout_height="@dimen/head_hight1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/avatar_default" />
+
+                <ImageView
+                    android:id="@+id/head_arrow"
+                    android:layout_width="@dimen/common_height"
+                    android:layout_height="@dimen/common_height"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/forword" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:id="@+id/userinfo_gender_female"
+                android:layout_width="@dimen/width_half"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="男性" />
+
+            <TextView
+                android:id="@+id/userinfo_gender_male"
+                android:layout_width="@dimen/width_half"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="女性" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="真实姓名" />
+
+            <EditText
+                android:id="@+id/userinfo_realname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@null"
+                android:gravity="center_vertical|right" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="手机号码" />
+
+            <TextView
+                android:id="@+id/userinfo_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@null"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="生日" />
+
+            <TextView
+                android:id="@+id/userinfo_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@null"
+                android:gravity="center_vertical|right" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="身高" />
+
+            <TextView
+                android:id="@+id/userinfo_height"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@null"
+                android:gravity="center_vertical|right" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="体重" />
+
+            <TextView
+                android:id="@+id/userinfo_weight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@null"
+                android:gravity="center_vertical|right" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height" >
+
+            <TextView
+                android:layout_width="@dimen/medium_hight"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center_vertical"
+                android:text="一句话简介" />
+
+            <EditText
+                android:id="@+id/userinfo_sign"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@null"
+                android:gravity="center_vertical|right" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/black" >
+        </View>
+    </LinearLayout>
+
+</RelativeLayout>
