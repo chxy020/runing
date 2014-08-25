@@ -6,6 +6,7 @@
 .classpath
 .svn
 bin/*
+gen/*
 routefirst.txt
 load.lua
 images/download/*
@@ -15,4 +16,6 @@ images/download/*
 *.html~
 *.htm
 *.*~
+#####
+
 
