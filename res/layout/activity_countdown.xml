@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+     <RelativeLayout
+        android:id="@+id/sport_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+         >
+			<TextView 
+			    android:id="@+id/sport_time"
+			    android:layout_width="match_parent"
+			    android:layout_height="@dimen/sport_time_middle_height"
+			    android:text="10"
+			    android:textColor="@color/black"
+			    android:textSize="@dimen/font_size5"
+			    android:gravity="center"
+			    />	
+			    <TextView 
+    	    android:id="@+id/sport_time_text"
+    	    android:layout_below="@id/sport_time"
+			    android:layout_width="match_parent"
+			    android:layout_height="@dimen/common_height"
+			    android:text="轻触立即开始"
+			    android:textColor="@color/black"
+			    android:textSize="@dimen/font_size3"
+			    android:gravity="center"
+			    />	
+    </RelativeLayout>
+    
+    	
+
+</RelativeLayout>

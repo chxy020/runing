@@ -1,0 +1,61 @@
+<resources>
+
+    <!-- hdpi -->
+    <dimen name="small_height">25dp</dimen>
+    <dimen name="common_height">45dp</dimen>
+    <dimen name="medium_hight">120dp</dimen>
+    <dimen name="head_hight1">90dp</dimen>
+    <dimen name="width_half">180dp</dimen>
+    <dimen name="margin1">10dp</dimen>
+    <dimen name="margin2">20dp</dimen>
+    <dimen name="margin3">45dp</dimen>
+    <dimen name="margin4">100dp</dimen>
+    <dimen name="margin5">5dp</dimen>
+    <dimen name="margin6">8dp</dimen>
+    <dimen name="margin7">20dp</dimen>
+    <dimen name="margin8">45dp</dimen>
+     <dimen name="margin9">5dp</dimen>
+     <dimen name="margin10">60dp</dimen>
+     
+    <dimen name="font_size1">9dp</dimen>
+    <dimen name="font_size2">18dp</dimen>
+    <dimen name="font_size3">20dp</dimen>
+    <dimen name="font_size4">30dp</dimen>
+    <dimen name="font_size5">40dp</dimen>
+    <dimen name="font_size6">50dp</dimen>
+    <dimen name="font_size7">15dp</dimen>
+    <dimen name="userInfo_headArrow_marginTop">38dp</dimen>
+    <dimen name="userInfo_head_marginTop">15dp</dimen>
+    <dimen name="main_userinfo_hight">90dp</dimen>
+    <dimen name="main_head_size">70dp</dimen>
+    <dimen name="main_middle_width1">130dp</dimen>
+    <dimen name="main_middle_width2">114dp</dimen>
+    <dimen name="main_middle_height">23dp</dimen>
+    <dimen name="main_state_desc_hight">20dp</dimen>
+    <dimen name="main_totalm_hight">100dp</dimen>
+    <dimen name="main_fun_total_height">197dp</dimen>
+    <dimen name="main_fun_hight">65dp</dimen>
+    <dimen name="main_fun_width">200dp</dimen>
+    <dimen name="main_total_milage_hight">112dp</dimen>
+    <dimen name="main_start_hight">120dp</dimen>
+    <dimen name="reg_code_width">120dp</dimen>
+    <dimen name="reg_margin_edit">40dp</dimen>
+    <dimen name="reg_margin_top">60dp</dimen>
+    <dimen name="edit_img_size">20dp</dimen>
+    <dimen name="edit_img_margin">10dp</dimen>
+    <dimen name="login_margin_edit">40dp</dimen>
+    <dimen name="sport_set_height">70dp</dimen>
+    <dimen name="sport_set_icon_size">50dp</dimen>
+    <dimen name="sport_set_traget_width">135dp</dimen>
+    <dimen name="sport_set_select_width">110dp</dimen>
+    <dimen name="sport_set_middle_height">110dp</dimen>
+    <dimen name="sport_time_middle_height">120dp</dimen>
+    <dimen name="recording_mileage_height">95dp</dimen>
+    <dimen name="recording_save_pho_height">200dp</dimen>
+    <dimen name="recording_List_main_height">135dp</dimen>
+    <dimen name="match_countdown_layout_height">135dp</dimen>
+    <dimen name="match_countdown_num_width">90dp</dimen>
+    <dimen name="match_bottom_height">180dp</dimen>
+    <dimen name="match_tnum_width">15dp</dimen>
+ <dimen name="match_tnum_l_width">45dp</dimen>
+</resources>

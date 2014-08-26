@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/match_score_list_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/match_score_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="跑队"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/match_score_list_back"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/match_score_list_pho"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/recording_List_main_height"
+        android:layout_below="@id/match_score_list_top_bar"
+        android:background="@color/gray_light" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/match_score_list_middle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:layout_below="@id/match_score_list_pho" >
+
+        <TextView
+            android:id="@+id/match_score_list_middle_team"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:gravity="center"
+            android:text="队员"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/match_score_list_middle_mileage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/match_score_list_middle_team"
+            android:background="@color/gray_dark"
+            android:gravity="center"
+            android:text="里程"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/match_score_list_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/match_score_list_middle" >
+
+        <ListView
+            android:id="@+id/match_score_team_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <ListView
+            android:id="@+id/match_score_mileage_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+        </ListView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/match_score_list_data"
+        android:background="#000000" >
+    </View>
+
+</RelativeLayout>

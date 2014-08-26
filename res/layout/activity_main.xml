@@ -1,0 +1,297 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/main_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="要跑"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/main_setting"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/main_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_userinfo_hight"
+        android:layout_below="@id/main_title_bar"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/main_head"
+            android:layout_width="@dimen/main_head_size"
+            android:layout_height="@dimen/main_head_size"
+            android:layout_marginLeft="@dimen/margin2"
+            android:layout_marginRight="@dimen/margin2"
+            android:layout_marginTop="@dimen/margin2"
+            android:background="@drawable/avatar_default" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin2"
+            android:layout_marginRight="@dimen/margin2"
+            android:layout_marginTop="@dimen/margin2"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/main_state"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:gravity="center_vertical"
+                android:text="未登录"
+                android:textSize="@dimen/font_size4" />
+
+            <TextView
+                android:id="@+id/main_state_desc"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_state_desc_hight"
+                android:text="轻触以登录要跑"
+                android:textSize="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/main_total_milage_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_total_milage_hight"
+        android:layout_below="@id/main_user_info" >
+
+        <TextView
+            android:layout_margin="@dimen/margin1"
+            android:id="@+id/main_total_milage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="1024.08km"
+            android:textSize="50dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/main_detail_data"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:layout_below="@id/main_total_milage_layout" >
+
+        <LinearLayout
+            android:layout_width="@dimen/main_middle_width2"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="100"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size3"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_dark"
+                android:gravity="center"
+                android:text="运动次数"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="@dimen/main_middle_width1"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="7 &apos; 09 &apos;&apos;/km"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size3"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="平均配速"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="@dimen/main_middle_width2"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="1000"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size3"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="积分"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/main_fun"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_fun_total_height"
+        android:layout_below="@id/main_detail_data" >
+
+        <LinearLayout
+            android:layout_width="@dimen/main_fun_width"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/main_fun_recording"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_fun_hight" >
+
+                <ImageView
+                    android:layout_width="@dimen/common_height"
+                    android:layout_height="@dimen/common_height"
+                    android:layout_margin="@dimen/margin1"
+                    android:background="@drawable/record" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="运动记录"
+                    android:textSize="@dimen/font_size3" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/black" >
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_fun_hight" >
+
+                <ImageView
+                    android:layout_width="@dimen/common_height"
+                    android:layout_height="@dimen/common_height"
+                    android:layout_margin="@dimen/margin1"
+                    android:background="@drawable/message" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="系统消息"
+                    android:textSize="@dimen/font_size3" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/black" >
+            </View>
+
+            <LinearLayout
+                android:id="@+id/main_fun_macth"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_fun_hight" >
+
+                <ImageView
+                    android:layout_width="@dimen/common_height"
+                    android:layout_height="@dimen/common_height"
+                    android:layout_margin="@dimen/margin1"
+                    android:background="@drawable/match_24" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="24小时接力赛"
+                    android:textSize="@dimen/font_size3" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/main_start"
+                android:layout_width="@dimen/main_start_hight"
+                android:layout_height="@dimen/main_start_hight"
+                android:layout_marginLeft="@dimen/margin2"
+                android:layout_marginTop="@dimen/margin2"
+                android:background="@drawable/button_start" />
+
+            <TextView
+                
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="开始运动"
+                android:textSize="@dimen/font_size3" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_below="@id/main_fun"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/black" >
+    </View>
+
+</RelativeLayout>

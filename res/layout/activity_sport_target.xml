@@ -1,0 +1,170 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/target_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/target_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="运动目标"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/target_goback"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/target_type_free"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/target_top_bar" >
+
+        <ImageView
+            android:id="@+id/target_type_free_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/target_free" />
+
+        <TextView
+            android:id="@+id/target_free"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/type_step_select_icon"
+            android:layout_toRightOf="@id/target_type_free_icon"
+            android:gravity="center_vertical"
+            android:text="自由"
+            android:textSize="@dimen/font_size3" />
+
+        <ImageView
+            android:id="@+id/target_free_select_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/check" 
+             />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/under_target_type_free"
+        android:layout_below="@id/target_type_free"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#000000" >
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/target_type_distance"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/target_type_free" >
+
+        <ImageView
+            android:id="@+id/target_distance_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/target_dis" />
+
+        <TextView
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/target_distance_icon"
+            android:gravity="center_vertical"
+            android:text="距离"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/target_distance_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/target_distance_select_icon"
+            android:gravity="center_vertical|right"
+            android:text="0.0 千米"
+            android:textColor="@color/gray_light"
+            android:textSize="@dimen/font_size3" />
+
+        <ImageView
+            android:id="@+id/target_distance_select_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/under_target_type_distance"
+        android:layout_below="@id/target_type_distance"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#000000" >
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/target_type_time"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/target_type_distance" >
+
+        <ImageView
+            android:id="@+id/target_time_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/target_time" />
+
+        <TextView
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/target_time_icon"
+            android:gravity="center_vertical"
+            android:text="计时"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/target_time_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="5 分钟"
+            android:textColor="@color/gray_light"
+            android:textSize="@dimen/font_size3"
+            android:layout_toLeftOf="@+id/target_time_select_icon" />
+
+        <ImageView
+            android:id="@+id/target_time_select_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+             />
+    </RelativeLayout>
+
+    <View
+         android:id="@+id/under_target_type_time"
+        android:layout_below="@id/target_type_time"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#000000" >
+    </View>
+
+</RelativeLayout>

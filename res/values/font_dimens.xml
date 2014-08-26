@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="small2_small_font_size">6dp</dimen>
+    <dimen name="small1_small_font_size">8dp</dimen>
+	<dimen name="small_small_font_size">10dp</dimen>
+	<dimen name="small_font_size">12dp</dimen>
+	<dimen name="medium_font_size">15dp</dimen>
+	<dimen name="medium2_font_size">18dp</dimen>
+	<dimen name="large_font_size">20dp</dimen>
+	<dimen name="extra_large_font_size">25dp</dimen>
+
+	<dimen name="transform_title_font_size">25dp</dimen>
+	<dimen name="transform_city_font_size">25dp</dimen>
+	<dimen name="me_big_badge_font_size">36dp</dimen>
+	
+</resources>

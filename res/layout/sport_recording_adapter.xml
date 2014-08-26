@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/sport_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/type_top_bar" >
+
+        <ImageView
+            android:id="@+id/list_sport_type"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1" />
+
+        <TextView
+            android:id="@+id/list_sport_date"
+            android:layout_width="@dimen/recording_List_main_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_toRightOf="@id/list_sport_type"
+            android:gravity="center_vertical"
+            android:text="7月21日 周三 15:34"
+            android:textSize="@dimen/font_size1"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/list_sport_distance"
+            android:layout_width="@dimen/recording_List_main_height"
+            android:layout_height="match_parent"
+            android:layout_below="@id/list_sport_date"
+            android:layout_toRightOf="@id/list_sport_type"
+            android:gravity="center_vertical"
+            android:text="15.21 km"
+            android:textSize="@dimen/font_size2"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/list_sport_mind"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_toRightOf="@id/list_sport_distance" />
+
+        <ImageView
+            android:id="@+id/list_sport_way"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_marginLeft="@dimen/margin1"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_toRightOf="@id/list_sport_mind" />
+
+        <ImageView
+            android:id="@+id/list_sport_pho"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_marginLeft="@dimen/margin1"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_toRightOf="@id/list_sport_way"
+            android:background="@drawable/button_photo" />
+
+        <TextView
+            android:id="@+id/list_sport_speed"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="match_parent"
+            android:layout_below="@id/list_sport_mind"
+            android:layout_toRightOf="@id/list_sport_distance"
+            android:gravity="center_vertical"
+            android:text="7&apos;12&apos;&apos;/公里"
+            android:textSize="@dimen/font_size1"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sport_index"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

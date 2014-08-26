@@ -1,0 +1,209 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/sport_set_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/sport_set_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="开始运动"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/sport_set_goback"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/sport_set_target"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/sport_set_top_bar" >
+
+        <ImageView
+            android:id="@+id/sport_set_target_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@color/gray_light" />
+
+        <TextView
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="运动目标"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/sport_set_target_select"
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="自由"
+            android:textColor="@color/gray_light"
+            android:textSize="@dimen/font_size3" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/sport_set_target"
+        android:background="#000000" >
+    </View>
+
+    <LinearLayout
+        android:id="@+id/sport_set_type"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/sport_set_target" >
+
+        <ImageView
+            android:id="@+id/sport_set_type_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@color/gray_light" />
+
+        <TextView
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="运动类型"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/sport_set_type_select"
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:textColor="@color/gray_light"
+            android:textSize="@dimen/font_size3" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/sport_set_type"
+        android:background="#000000" >
+    </View>
+
+    <View
+        android:id="@+id/sport_set_middle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_middle_height"
+        android:layout_below="@id/sport_set_type" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/sport_set_middle"
+        android:background="#000000" >
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/sport_set_time"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/sport_set_middle" >
+
+        <ImageView
+            android:id="@+id/sport_set_time_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/countdown" />
+
+        <TextView
+            android:id="@+id/sport_set_time_text"
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/sport_set_time_icon"
+            android:gravity="center_vertical"
+            android:text="倒计时"
+            android:textSize="@dimen/font_size3" />
+
+        <net.yaopao.widget.SlipButton
+            android:id="@+id/sport_set_time_switch"
+                android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin1" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/sport_set_time"
+        android:background="#000000" >
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/sport_set_voice"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@+id/sport_set_time" >
+
+        <ImageView
+            android:id="@+id/sport_set_voice_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/voice" />
+
+        <TextView
+            android:layout_toRightOf="@id/sport_set_voice_icon"
+            android:layout_width="@dimen/sport_set_traget_width"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="语音引导"
+            android:textSize="@dimen/font_size3" />
+
+        <net.yaopao.widget.SlipButton
+            android:id="@+id/sport_set_voice_switch"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin1"
+            
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/sport_set_voice"
+        android:background="#000000" >
+    </View>
+
+    <TextView
+        android:id="@+id/sport_set_start"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/blue_dark"
+        android:gravity="center"
+        android:text="开始"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size2" />
+
+</RelativeLayout>

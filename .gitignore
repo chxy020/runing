@@ -1,0 +1,18 @@
+
+# Create project #
+###################
+.project
+.settings
+.classpath
+.svn
+bin/*
+routefirst.txt
+load.lua
+images/download/*
+# Temp file #
+###################
+*.js~
+*.html~
+*.htm
+*.*~
+

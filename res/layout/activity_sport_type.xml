@@ -1,0 +1,146 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/type_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="运动类型"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/type_goback"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/type_walk"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/type_top_bar" >
+
+        <ImageView
+            android:id="@+id/type_step_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/runtype_walk" />
+
+        <TextView
+            android:id="@+id/type_step_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/type_step_select_icon"
+            android:layout_toRightOf="@id/type_step_icon"
+            android:gravity="center_vertical"
+            android:text="步行"
+            android:textSize="@dimen/font_size3" />
+
+        <ImageView
+            android:id="@+id/type_step_select_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/check"/>
+    </RelativeLayout>
+     <View
+        android:layout_below="@id/type_walk"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#000000" >
+    </View>
+    <RelativeLayout
+        android:id="@+id/type_run"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/type_walk" >
+
+        <ImageView
+            android:id="@+id/type_step_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/runtype_run" />
+
+        <TextView
+            android:id="@+id/type_run_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/type_run_select_icon"
+            android:layout_toRightOf="@id/type_step_icon"
+            android:gravity="center_vertical"
+            android:text="跑步"
+            android:textSize="@dimen/font_size3" />
+
+        <ImageView
+            android:id="@+id/type_run_select_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+      <View
+        android:layout_below="@id/type_run"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#000000" >
+    </View>
+    <RelativeLayout
+        android:id="@+id/type_ride"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/type_run" >
+
+        <ImageView
+            android:id="@+id/type_step_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/runtype_ride" />
+
+        <TextView
+            android:id="@+id/type_bike_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/type_bike_select_icon"
+            android:layout_toRightOf="@id/type_step_icon"
+            android:gravity="center_vertical"
+            android:text="自行车骑行"
+            android:textSize="@dimen/font_size3" />
+
+        <ImageView
+            android:id="@+id/type_bike_select_icon"
+            android:layout_width="@dimen/sport_set_icon_size"
+            android:layout_height="@dimen/sport_set_icon_size"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+     <View
+        android:layout_below="@id/type_ride"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#000000" >
+    </View>
+
+</RelativeLayout>

@@ -1,0 +1,218 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar" >
+
+    <RelativeLayout
+        android:id="@+id/sport_time"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/sport_set_height"
+        android:background="@color/black" >
+
+        <TextView
+            android:id="@+id/sport_gps"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin1"
+            android:text="GPS"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/sport_gps_status"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/sport_gps"
+            android:background="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/sport_recoding_mileage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recording_mileage_height"
+            android:layout_marginTop="@dimen/margin4"
+            android:gravity="center_horizontal|bottom"
+            android:text="0.0"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size6"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sport_recoding_mileage_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/sport_recoding_mileage"
+            android:gravity="center"
+            android:text="距离（公里）"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+
+        <View
+            android:id="@+id/line_under_recoding_mileage"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/sport_recoding_mileage_text"
+            android:background="@color/white" >
+        </View>
+
+        <TextView
+            android:id="@+id/sport_recoding_time"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/line_under_recoding_mileage"
+            android:gravity="center"
+            android:text="00:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/sport_recoding_time_text"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/sport_recoding_time"
+            android:gravity="center"
+            android:text="时间"
+            android:textColor="@color/white" />
+
+        <View
+            android:id="@+id/line_vertical"
+            android:layout_width="1px"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_below="@id/line_under_recoding_mileage"
+            android:layout_toRightOf="@id/sport_recoding_time"
+            android:background="@color/white" >
+        </View>
+
+        <TextView
+            android:id="@+id/sport_recoding_speed"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/line_under_recoding_mileage"
+            android:layout_toRightOf="@id/line_vertical"
+            android:gravity="center"
+            android:text="0 &apos; 00 &apos;&apos;"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/sport_recoding_speed_text"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/sport_recoding_time"
+            android:layout_toRightOf="@id/line_vertical"
+            android:gravity="center"
+            android:text="平均配速"
+            android:textColor="@color/white" />
+
+        <View
+            android:id="@+id/line_under_recoding_speed_text"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/sport_recoding_speed_text"
+            android:background="@color/white" >
+        </View>
+
+        <ProgressBar
+            android:id="@+id/recoding_process"
+            style="@style/ProgressBar_sport"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@id/sport_recoding_speed_text"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="50"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/recoding_process_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/recoding_process"
+            android:gravity="center"
+            android:text="目标"
+            android:textColor="@color/white" />
+
+        <View
+            android:id="@+id/line_under_recoding_process_text"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/recoding_process_text"
+            android:layout_marginTop="5dp"
+            android:background="@color/white" >
+        </View>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/sport_map"
+        android:layout_width="@dimen/sport_set_height"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_above="@+id/slider_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin2"
+        android:background="@drawable/button_map" />
+
+    <net.yaopao.widget.SliderRelativeLayout
+        android:id="@+id/slider_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="@color/gray_light" >
+
+        <TextView
+            android:id="@+id/slider_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="滑动解锁"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" >
+        </TextView>
+
+        <!-- slider img -->
+
+        <TextView
+            android:id="@+id/slider_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dip"
+            android:background="@drawable/ic_launcher"
+            android:gravity="center" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/slider_done"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="完成"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+            android:visibility="gone" 
+            android:background="@color/red"/>
+
+        <TextView
+            android:layout_toRightOf="@id/slider_done"
+            android:id="@+id/slider_resume"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="恢复"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+            android:visibility="gone" 
+            android:background="@color/blue_dark"/>
+    </net.yaopao.widget.SliderRelativeLayout>
+
+</RelativeLayout>

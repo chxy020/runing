@@ -1,0 +1,200 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/recording_one_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:background="@color/red" >
+
+        <TextView
+            android:id="@+id/recording_one_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="周三的自行车骑行"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
+
+        <TextView
+            android:id="@+id/recording_one_back"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/recording_one_share"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/one_map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recording_one_top_bar" 
+             android:layout_above="@+id/one_bottom"
+             android:layout_marginBottom="@dimen/common_height"
+        >
+<ImageView
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/runtype_run" 
+            android:layout_alignParentBottom="true"
+            />
+
+        <TextView
+            android:layout_width="@dimen/recording_List_main_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="2014年7月21日 周三 15:34"
+            android:textSize="7dp"
+            android:textStyle="bold" />
+
+        <com.amap.api.maps2d.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/one_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
+
+        </com.amap.api.maps2d.MapView>
+
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/one_middle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="@dimen/recording_mileage_height"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+            	  android:text="15.21 km"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_dark"
+                android:gravity="center"
+                android:text="距离"
+                android:textColor="@color/white" />
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+        <LinearLayout
+            android:layout_width="@dimen/recording_mileage_height"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="1:21:14"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray_dark"
+                android:gravity="center"
+                android:text="时间"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="@dimen/recording_mileage_height"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="6&apos; 42&apos;&apos; /km"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="平均配速"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="@dimen/recording_mileage_height"
+            android:layout_height="match_parent"
+            android:background="@color/gray_dark"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:gravity="center"
+                android:text="15.49 km/h"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="平均时速"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

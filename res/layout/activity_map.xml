@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar" >
+<com.amap.api.maps2d.MapView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:layout_marginBottom="@dimen/sport_set_height"
+    
+    />
+
+
+<net.yaopao.widget.SliderRelativeLayout android:id="@+id/slider_layout"
+	    android:layout_width="fill_parent"
+		android:layout_height="@dimen/sport_set_height" 
+		android:layout_gravity="center"
+		android:background="@color/gray_light"
+		android:layout_alignParentBottom="true"
+		>
+        <TextView  
+            android:id="@+id/slider_text"
+            android:layout_width="wrap_content"
+		    android:layout_height="@dimen/sport_set_height" 
+		    android:text=""
+		    android:textColor="@color/white"
+		    android:textSize="@dimen/font_size2"
+		    android:gravity="center"
+		    android:layout_centerInParent="true"
+		    >
+		</TextView>
+
+        <!-- slider img -->
+        <TextView  android:id="@+id/slider_icon"
+            android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:layout_marginRight="5dip"
+		    android:gravity="center"
+		    android:background="@drawable/ic_launcher"
+		    android:layout_centerVertical="true"
+		    >
+		</TextView>
+
+ <TextView
+            android:id="@+id/slider_done"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="完成"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+            android:visibility="gone" 
+            android:background="@color/red"/>
+
+        <TextView
+            android:layout_toRightOf="@id/slider_done"
+            android:id="@+id/slider_resume"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="恢复"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2"
+            android:visibility="gone" 
+            android:background="@color/blue_dark"/>
+	</net.yaopao.widget.SliderRelativeLayout>
+
+</RelativeLayout>
