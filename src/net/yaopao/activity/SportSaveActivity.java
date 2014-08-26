@@ -1,13 +1,11 @@
 package net.yaopao.activity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.Variables;
-
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,14 +29,13 @@ import android.widget.TextView;
 public class SportSaveActivity extends Activity implements OnTouchListener {
 	public TextView deleV;
 	public TextView saveV;
-//	public RelativeLayout phoLaoutV;
-	
+
 	public ImageView mind1V;
 	public ImageView mind2V;
 	public ImageView mind3V;
 	public ImageView mind4V;
 	public ImageView mind5V;
-	
+
 	public ImageView way1V;
 	public ImageView way2V;
 	public ImageView way3V;
@@ -47,23 +44,21 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	public ImageView phoV;
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
-    /*拍照的照片存储位置*/  
-  private String sportPho ;
-
+	private String sportPho;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_save);
-		
 		initLayout();
 	}
 
 	private void initLayout() {
-		Variables.mind=1;
-		Variables.runway=1;
-		sportPho = Constants.sportPho+new Date().getTime()+getPhotoFileName();
+		Variables.mind = 1;
+		Variables.runway = 1;
+		sportPho = Constants.sportPho + new Date().getTime()
+				+ getPhotoFileName();
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
 		mind1V = (ImageView) this.findViewById(R.id.recording_save_mind1);
@@ -71,7 +66,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		mind3V = (ImageView) this.findViewById(R.id.recording_save_mind3);
 		mind4V = (ImageView) this.findViewById(R.id.recording_save_mind4);
 		mind5V = (ImageView) this.findViewById(R.id.recording_save_mind5);
-		
+
 		way1V = (ImageView) this.findViewById(R.id.recording_save_way1);
 		way2V = (ImageView) this.findViewById(R.id.recording_save_way2);
 		way3V = (ImageView) this.findViewById(R.id.recording_save_way3);
@@ -79,11 +74,13 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		way5V = (ImageView) this.findViewById(R.id.recording_save_way5);
 		phoV = (ImageView) this.findViewById(R.id.recording_save_pho);
 		phoButton = (ImageView) this.findViewById(R.id.recording_save_pho_icon);
-//		phoLaoutV = (RelativeLayout) this.findViewById(R.id.recording_save_pho_layout);
-		
+		// phoLaoutV = (RelativeLayout)
+		// this.findViewById(R.id.recording_save_pho_layout);
+
 		deleV.setOnTouchListener(this);
 		saveV.setOnTouchListener(this);
 		way1V.setOnTouchListener(this);
+		mind1V.setOnTouchListener(this);
 		mind2V.setOnTouchListener(this);
 		mind3V.setOnTouchListener(this);
 		mind4V.setOnTouchListener(this);
@@ -95,8 +92,9 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		way5V.setOnTouchListener(this);
 		phoV.setOnTouchListener(this);
 		phoButton.setOnTouchListener(this);
-		
+
 	}
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -108,10 +106,12 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSaveActivity.this, MainActivity.class);
+				myIntent = new Intent(SportSaveActivity.this,
+						MainActivity.class);
 				startActivity(myIntent);
 				SportSaveActivity.this.finish();
-//				这里要做的是将所有与运动有关的参数还原成默认值
+				// 这里要做的是将所有与运动有关的参数还原成默认值
+				
 				break;
 			}
 			break;
@@ -124,7 +124,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				break;
 			}
 			break;
-			
+
 		case R.id.recording_save_pho:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
@@ -139,9 +139,17 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSaveActivity.this, SportListActivity.class);
+				// 这里要做的是将所有与运动有关的参数还原成默认值
+				SportRecordActivity.points.clear();
+				SportRecordActivity.pointsIndex.clear();
+				Variables.utime=0;
+				Variables.pspeed=0;
+				Variables.distance=0;
+				myIntent = new Intent(SportSaveActivity.this,
+						SportListActivity.class);
 				startActivity(myIntent);
 				SportSaveActivity.this.finish();
 				break;
@@ -157,7 +165,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind=1;
+				Variables.mind = 1;
 				break;
 			}
 			break;
@@ -171,7 +179,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind=2;
+				Variables.mind = 2;
 				break;
 			}
 			break;
@@ -185,7 +193,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind=3;
+				Variables.mind = 3;
 				break;
 			}
 			break;
@@ -199,7 +207,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind=4;
+				Variables.mind = 4;
 				break;
 			}
 			break;
@@ -213,7 +221,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind=5;
+				Variables.mind = 5;
 				break;
 			}
 			break;
@@ -227,7 +235,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway=1;
+				Variables.runway = 1;
 				break;
 			}
 			break;
@@ -241,7 +249,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway=2;
+				Variables.runway = 2;
 				break;
 			}
 			break;
@@ -255,7 +263,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway=3;
+				Variables.runway = 3;
 				break;
 			}
 			break;
@@ -269,7 +277,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway=4;
+				Variables.runway = 4;
 				break;
 			}
 			break;
@@ -283,16 +291,18 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway=5;
+				Variables.runway = 5;
 				break;
 			}
 			break;
 		}
 		return true;
 	}
+
 	private void goGetPhotoFromCamera() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(new File(sportPho)));
+		intent.putExtra(MediaStore.EXTRA_OUTPUT,
+				Uri.fromFile(new File(sportPho)));
 		startActivityForResult(intent, Constants.RET_CAMERA);
 	}
 
@@ -307,9 +317,9 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	private void doneGetPhotoFromCamera(Intent data) {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
-			
+
 			mPhotoBmp = extras.getParcelable("data");
-			Log.v("wydb", "mPhotoBmp2=="+mPhotoBmp);
+			Log.v("wydb", "mPhotoBmp2==" + mPhotoBmp);
 			if (mPhotoBmp == null) {
 				return;
 			}
@@ -335,7 +345,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		opts.inPreferredConfig = Bitmap.Config.RGB_565;
 
 		mPhotoBmp = BitmapFactory.decodeFile(imagePath, opts);
-		Log.v("wydb", "mPhotoBmp1=="+mPhotoBmp);
+		Log.v("wydb", "mPhotoBmp1==" + mPhotoBmp);
 		if (mPhotoBmp == null) {
 			return;
 		}
@@ -379,14 +389,14 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case Constants.RET_CAMERA:
-			Log.v("wydb", "4=="+resultCode);
+			Log.v("wydb", "4==" + resultCode);
 			if (resultCode == Activity.RESULT_OK) {
 				File picture = new File(sportPho);
-				//startPhotoZoom(Uri.fromFile(picture));
+				// startPhotoZoom(Uri.fromFile(picture));
 			}
 			break;
 		case Constants.RET_GALLERY:
-			Log.v("wydb", "2=="+resultCode);
+			Log.v("wydb", "2==" + resultCode);
 			if (resultCode == Activity.RESULT_OK) {
 				if (data != null) {
 					Log.v("wydb", "3==");
@@ -421,12 +431,13 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 						}
 					}
 				}).show();
- 
+
 	}
-	private String getPhotoFileName() {  
-        Date date = new Date(System.currentTimeMillis());  
-        SimpleDateFormat dateFormat = new SimpleDateFormat(  
-                "'IMG'_yyyy-MM-dd HH:mm:ss");  
-        return dateFormat.format(date) + ".jpg";  
-    }  
+
+	private String getPhotoFileName() {
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+				"'IMG'_yyyy-MM-dd HH:mm:ss");
+		return dateFormat.format(date) + ".jpg";
+	}
 }

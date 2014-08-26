@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
 import net.yaopao.widget.SliderRelativeLayout;
@@ -31,20 +32,21 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static SimpleDateFormat formatterM;
 	public static SimpleDateFormat formatterS;
 	public static TextView timeV;
-	public double distance = 0;
+	public static TextView sliderIconV;
+	public static TextView sliderTextV;
+	public static TextView doneV;
+	public static TextView resumeV;
+	
+	private ImageView mapV;
+	private SliderRelativeLayout slider;
+	private static TextView distanceV;
+	private static TextView speedV;
+	
+	private DecimalFormat df;
+//	private double distance = 0;
+	//测试代码
 	// public static double lon = 116.402894;
 	// public double lat = 39.923433;
-	public String speed = "00'00\"";
-	TextView distanceV;
-	TextView speedV;
-	static TextView doneV;
-	static TextView resumeV;
-	ImageView mapV;
-	static TextView sliderIconV;
-	static TextView sliderTextV;
-	DecimalFormat df;
-	SliderRelativeLayout slider;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -82,20 +84,19 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		// switchV.setOnTouchListener(this);
 
 		points = new ArrayList<GpsPoint>();
-//
-//		 points.add(new GpsPoint(116.403694,39.906744));
-//		 points.add(new GpsPoint(116.413755,39.91516));
-//		 points.add(new GpsPoint(116.413755,39.91616));
-//		 points.add(new GpsPoint(116.413755,39.91716));
-//		 points.add(new GpsPoint(116.413755,39.91816));
-//		 points.add(new GpsPoint(116.413755,39.91916));
+		//
+		// points.add(new GpsPoint(116.403694,39.906744));
+		// points.add(new GpsPoint(116.413755,39.91516));
+		// points.add(new GpsPoint(116.413755,39.91616));
+		// points.add(new GpsPoint(116.413755,39.91716));
+		// points.add(new GpsPoint(116.413755,39.91816));
+		// points.add(new GpsPoint(116.413755,39.91916));
 
-		formatterM = new SimpleDateFormat("mm");// 
-		formatterS = new SimpleDateFormat("ss");// 
+		formatterM = new SimpleDateFormat("mm");//
+		formatterS = new SimpleDateFormat("ss");//
 		df = new java.text.DecimalFormat("#.##");
 		slider.setMainHandler(slipHandler);
 		pointsIndex = new ArrayList<Integer>();
-//		Log.v("wygps", "pointsIndex=" + pointsIndex);
 		pointsIndex.add(0);
 		startTimer();
 		startRecordGps();
@@ -106,11 +107,11 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		stopTimer();
-		Log.v("wydb", "points="+SportRecordActivity.points);
-		//points.clear();
-		//pointsIndex.clear();
-//		Log.v("wygps", "des pointsIndex=" + pointsIndex);
-		Variables.utime= 0;
+		Log.v("wydb", "points=" + SportRecordActivity.points);
+		// points.clear();
+		// pointsIndex.clear();
+		// Log.v("wygps", "des pointsIndex=" + pointsIndex);
+		
 	}
 
 	@Override
@@ -158,11 +159,20 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-					//	 DialogTool.doneSport(SportRecordActivity.this);
-				Intent intent = new Intent(SportRecordActivity.this,
-						SportSaveActivity.class);
-				SportRecordActivity.this.startActivity(intent);
-				SportRecordActivity.this.finish();
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						if (msg.what == 0) {
+							Intent intent = new Intent(SportRecordActivity.this,
+									SportSaveActivity.class);
+							stopRecordGps();
+							SportRecordActivity.this.startActivity(intent);
+							SportRecordActivity.this.finish();
+						}
+						super.handleMessage(msg);
+					}
+				};
+				DialogTool.doneSport(SportRecordActivity.this, handler);
+				
 				break;
 			}
 			break;
@@ -193,12 +203,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					resumeV.setVisibility(View.VISIBLE);
 					sliderIconV.setVisibility(View.GONE);
 					sliderTextV.setVisibility(View.GONE);
-				} 
+				}
 			}
 		};
 	};
 
-	public GpsPoint getOnePoint() {
+	public static GpsPoint getOnePoint() {
 		GpsPoint point = null;
 		// Log.v("wy", "YaoPao01App.loc: " + YaoPao01App.loc);
 		if (YaoPao01App.loc != null) {
@@ -215,13 +225,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	}
 
-	public boolean pushOnePoint() {
+	public static boolean pushOnePoint() {
 
 		double meter = 0;
 		GpsPoint last = null;
-		GpsPoint point = null;
-		if (getOnePoint() != null) {
-			point = getOnePoint();
+		GpsPoint point = getOnePoint();
+		if (point != null) {
 			if (points.size() == 0) {
 				points.add(point);
 				last = point;
@@ -236,12 +245,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					last = points.get(points.size() - 1);
 					if (last.status == 0) {
 						meter = getDistanceFrom2ponit(last, point);
-						distance += meter;
-						speed = formatterM.format(1000 * 1000 * distance
-								/ Variables.utime)
-								+ "'"
-								+ formatterS.format(1000 * 1000 * distance
-										/ Variables.utime) + "\"";
+						Variables.distance += meter;
 						points.add(point);
 						return true;
 					} else {
@@ -258,8 +262,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		return false;
 	}
 
-	final Handler handler = new Handler();
-	Runnable runnable = new Runnable() {
+	final static Handler handler = new Handler();
+	static Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
 			// 测试代码
@@ -271,11 +275,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			// }
 
 			if (pushOnePoint()) {
-				Variables.distance =df.format(distance / 1000);
-				Variables.pspeed =speed;
-				distanceV.setText(Variables.distance);
-				speedV.setText(Variables.pspeed);
-				
+				//distanceV.setText(Variables.distance);
+				//speedV.setText(Variables.pspeed);
+				updateUI();
 			}
 			handler.postDelayed(this, 3000);
 		}
@@ -299,9 +301,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		Variables.sportStatus = 0;
 		if (points.size() > 0) {
 			pointsIndex.add(points.size() - 1);
-//			Log.v("wygps", "start pointsIndex=" + pointsIndex);
+			// Log.v("wygps", "start pointsIndex=" + pointsIndex);
 		}
-			
+
 	}
 
 	public static void stopTimer() {
@@ -313,18 +315,68 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	}
 
-	public void startRecordGps() {
+	public static void startRecordGps() {
 		handler.postDelayed(runnable, 1000);
 	}
 
 	//
-	public void stopRecordGps() {
+	public static void stopRecordGps() {
 		handler.removeCallbacks(runnable);
 	}
 
-	private double getDistanceFrom2ponit(GpsPoint before, GpsPoint now) {
+	private static double getDistanceFrom2ponit(GpsPoint before, GpsPoint now) {
 		return AMapUtils.calculateLineDistance(new LatLng(now.lat, now.lon),
 				new LatLng(before.lat, before.lon));
+
+	}
+	
+	private static void updateUI() {
+		
+		int d1 = (int) Variables.distance / 10000;
+		int d2 = (int) (Variables.distance % 10000) / 1000;
+		int d3 = (int) (Variables.distance % 1000) / 100;
+		int d4 = (int) (Variables.distance % 100) / 10;
+		
+		int[] time = YaoPao01App.cal(Variables.utime);
+		int t1 = time[0] / 10;
+		int t2 = time[0] % 10;
+		int t3 = time[1] / 10;
+		int t4 = time[1] % 10;
+		int t5 = time[2] / 10;
+		int t6 = time[2] % 10;
+
+		int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) * Variables.utime));
+		Variables.pspeed =(int) ((1000 / Variables.distance) * Variables.utime);
+		int s1 = speed[1] / 10;
+		int s2 = speed[1] % 10;
+		int s3 = speed[2] / 10;
+		int s4 = speed[2] % 10;
+		distanceV.setText(d1+""+d2+"."+d3+""+d4);
+		speedV.setText( s1+""+s2+"'"+s3+""+s4+"\"");
+		Log.v("wy", "Variables.utime="+Variables.utime);
+		Log.v("wy", "distance1="+Variables.distance);
+		Log.v("wy", "distance2="+d1+""+d2+"."+d3+""+d4);
+		Log.v("wy", "speed1="+(1000 / Variables.distance) * Variables.utime);
+		Log.v("wy", "Variables.pspeed="+Variables.pspeed);
+		Log.v("wy", "speed3="+s1+""+s2+"'"+s3+""+s4+"\"");
+		
+		
+//		update(d1, d1V);
+//		update(d2, d2V);
+//		update(d3, d3V);
+//		update(d4, d4V);
+//
+//		update(t1, t1V);
+//		update(t2, t2V);
+//		update(t3, t3V);
+//		update(t4, t4V);
+//		update(t5, t5V);
+//		update(t6, t6V);
+//
+//		update(s1, s1V);
+//		update(s2, s2V);
+//		update(s3, s3V);
+//		update(s4, s4V);
 
 	}
 }

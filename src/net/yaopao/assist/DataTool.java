@@ -4,23 +4,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.BitSet;
 
 import net.yaopao.activity.YaoPao01App;
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class DataTool {
-	// �û���Ϣ
+	// 用户信息
 	public static JSONObject getUserInfo() {
 		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
 				.getString("userInfo", null));
@@ -36,7 +33,7 @@ public class DataTool {
 
 	}
 
-	// ͷ��
+	// 头像
 	public static String getHeadUrl() {
 		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
 				.getString("head", null));
@@ -47,7 +44,7 @@ public class DataTool {
 		Log.v("wy", "save head="+mPhotoBmp.getByteCount());
 		FileOutputStream  m_fileOutPutStream = null;
 		try {
-		    m_fileOutPutStream = new FileOutputStream(Constants.imagePath);//д����ļ�·��
+		    m_fileOutPutStream = new FileOutputStream(Constants.imagePath);//写入的文件路径
 		} catch (FileNotFoundException e) {
 		e.printStackTrace();
 		}
@@ -89,7 +86,7 @@ public class DataTool {
 
 	}
 
-	// �绰����
+	// 电话号码
 	public static String getPhone() {
 		return YaoPao01App.sharedPreferences.getString("phone", "");
 	}

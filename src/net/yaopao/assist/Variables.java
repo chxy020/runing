@@ -61,8 +61,8 @@ public class Variables {
 	public static int imageCount;
 	public static int stamp;
 
-	public static String distance;// 距离
-	public static String pspeed="00'00\"";// 配速
+	public static double distance;// 距离 m
+	public static int pspeed;// 配速 s
 	public static double hspeed;// 时速
 	
 	public static double stateIndex;// 

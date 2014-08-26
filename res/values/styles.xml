@@ -31,7 +31,10 @@
         <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
         <item name="android:progressDrawable">@drawable/progressbar</item>
     </style>
-	
+	<style name="mydialog" parent="@android:style/Theme.Dialog">
+	    <item name="android:windowBackground">@drawable/alert_background</item>
+	    <item name="android:windowNoTitle">true</item>
+	</style>
 	
 	
 </resources>

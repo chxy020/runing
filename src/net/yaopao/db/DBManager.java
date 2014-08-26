@@ -7,6 +7,7 @@ import java.util.List;
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
+import net.yaopao.bean.DataBean;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -34,18 +35,12 @@ public class DBManager {
 	 */
 	public void saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
-//		JSONObject json = (JSONObject) JSON.toJSON(SportRecordActivity.points);
 		
 		String oneSport = JSON.toJSONString(SportRecordActivity.points,true);
 		String statusIndex = JSON.toJSONString(SportRecordActivity.pointsIndex,true);
 		Log.v("wydb", "statusIndex="+statusIndex);
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
-//		db.execSQL("INSERT INTO " + DatabaseHelper.SPORTDATA_TABLE+ " (aheart,distance,rid,heat,hspeed,image_count,"
-//				+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather)"
-//				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", new Object[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 });
-		
-		
 		try {
 				db.execSQL("INSERT INTO " + DatabaseHelper.SPORTDATA_TABLE+ " (aheart,distance,rid,heat,hspeed,image_count,"
 						+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,addtime)"
@@ -53,6 +48,10 @@ public class DBManager {
 						,Variables.heat,Variables.hspeed,Variables.imageCount,Variables.mheart,Variables.mind,Variables.pspeed,Variables.remarks
 						,Variables.runtar,Variables.runty,oneSport,Variables.runway
 						,Variables.stamp,statusIndex,Variables.temp,Variables.utime,Variables.weather,new Date().getTime()});
+				
+				Log.v("wy", "s Variables.distance ="+Variables.distance);
+				Log.v("wy", "s Variables.pspeed ="+Variables.pspeed);
+				Log.v("wy", "s Variables.utime ="+Variables.utime);
 				
 				// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
 				// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
@@ -119,12 +118,47 @@ public class DBManager {
 			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
-			sport.setPspeed(c.getDouble(c.getColumnIndex("pspeed")));
+			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
 			sports.add(sport);
 		}
 		c.close();
 		return sports;
 	}
+	/**
+	 * 查询总记录条数
+	 * @return
+	 */
+	public DataBean  queryCount() {
+//		Log.d("wydb", "DBManager --> queryCount ");
+//		String sql = "SELECT COOUNT(*) FROM "+DatabaseHelper.SPORTDATA_TABLE;
+//		Cursor c = db.rawQuery(sql, null);
+//		int count = c.getCount();
+//		c.close();
+		
+		
+		DataBean data =  new DataBean();
+		Cursor c = queryTheCursor();
+		int count = c.getCount();
+		double totalDistance =0;
+		int speed=0;//平均配速 单位秒
+		long  totalTime=0;//秒
+		while (c.moveToNext()) {
+			totalDistance +=c.getDouble(c.getColumnIndex("distance"));
+			totalTime+=c.getLong(c.getColumnIndex("utime"));
+		}
+		c.close();
+		speed =(int)((1000 / totalDistance) * totalTime);
+		data.setCount(count);
+		data.setDistance(totalDistance);
+		data.setPspeed(speed);
+		data.setTotalTime(totalTime);
+		return data;
+	}
+	/**
+	 * 查询一条记录
+	 * @param id
+	 * @return
+	 */
 	public SportBean queryForOne(int id) {
 		Log.d("wydb", "DBManager --> query");
 		ArrayList<SportBean> sports = new ArrayList<SportBean>();
@@ -140,7 +174,7 @@ public class DBManager {
 			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
-			sport.setPspeed(c.getDouble(c.getColumnIndex("pspeed")));
+			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
 			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
 			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
 			sports.add(sport);

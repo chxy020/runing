@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/alert_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:background="@color/gray_light"
+        android:gravity="center"
+        android:text="你已经完成这次的运动了吗？" />
+
+    <View
+        android:id="@+id/under_title"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/alert_title"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/alert_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/under_title"
+        android:background="@color/gray_light"
+        android:gravity="center"
+        android:text="是的，完成了"
+        android:textColor="@color/blue_dark"
+        android:textSize="@dimen/font_size3" />
+
+    <View
+        android:id="@+id/under_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/alert_confirm"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/alert_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_below="@id/under_confirm"
+        android:background="@color/gray_light"
+        android:gravity="center"
+        android:text="不，还没完成"
+        android:textColor="@color/blue_dark"
+        android:textSize="@dimen/font_size3" />
+
+</RelativeLayout>

@@ -6,7 +6,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import net.yaopao.assist.GpsPoint;
+import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
+import net.yaopao.match.track.TrackData;
 
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
@@ -44,15 +46,17 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 	private ImageView s2V;
 	private ImageView s3V;
 	private ImageView s4V;
-	Timer timer = new Timer();
+	private Timer timer = new Timer();
+
+	private TrackData trackData;
+	private LonLatEncryption lonLatEncryption;
 	public static List<GpsPoint> points;
 	public double distance = 0;
-	public String speed = "";
 	public static int totalTime = 0;
 
-	public static double lon = 116.403694;
-	public static double lat = 39.906744;
-
+	// 测试数据
+	// public static double lon = 116.403694;
+	// public static double lat = 39.906744;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -64,7 +68,7 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
 		batonV.setOnTouchListener(this);
-		
+
 		d1V = (ImageView) findViewById(R.id.match_recoding_dis1);
 		d2V = (ImageView) findViewById(R.id.match_recoding_dis2);
 		d3V = (ImageView) findViewById(R.id.match_recoding_dis3);
@@ -81,9 +85,12 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 		s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
 		s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
 		s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
-		
+
 		points = new ArrayList<GpsPoint>();
 		timer.schedule(task, 0, 1000);
+		lonLatEncryption = new LonLatEncryption();
+		trackData = new TrackData();
+		trackData.read("TrackData.properties");
 	}
 
 	TimerTask task = new TimerTask() {
@@ -107,7 +114,7 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 	};
 
 	private void updateUI() {
-		int[] time = cal(totalTime);
+		int[] time = YaoPao01App.cal(totalTime);
 		int d1 = (int) distance / 10000;
 		int d2 = (int) (distance % 10000) / 1000;
 		int d3 = (int) (distance % 1000) / 100;
@@ -120,7 +127,7 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 		int t5 = time[2] / 10;
 		int t6 = time[2] % 10;
 
-		int[] speed = cal((int) ((1000 / distance) * totalTime));
+		int[] speed = YaoPao01App.cal((int) ((1000 / distance) * totalTime));
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
@@ -143,56 +150,9 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 		update(s3, s3V);
 		update(s4, s4V);
 
-		// Log.v("wyrun", "dis = "+distance);
-		// Log.v("wyrun", "d1 = "+d1);
-		// Log.v("wyrun", "d2 = "+d2);
-		// Log.v("wyrun", "d3 = "+d3);
-		// Log.v("wyrun", "d4 = "+d4);
-		Log.v("wyrun", "dis = " + distance);
-		Log.v("wyrun", "time = " + totalTime);
-		YaoPao01App.lts.writeFileToSD("time = " + totalTime, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("time1 = " + t1, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("time2 = " + t2, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("time3 = " + t3, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("time4 = " + t4, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("time5 = " + t5, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("time6 = " + t6, "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("====================================",
-				"uploadLocation");
-		// Log.v("wyrun", "s0 = "+s0);
-		//
-		// Log.v("wyrun", "s1 = "+s1);
-		// Log.v("wyrun", "s2 = "+s2);
-		// Log.v("wyrun", "s3 = "+s3);
-		// Log.v("wyrun", "s4 = "+s4);
 	}
 
-	public int[] cal(int second) {
-		int h = 0;
-		int m = 0;
-		int s = 0;
-		int temp = second % 3600;
-		if (second > 3600) {
-			h = second / 3600;
-			if (temp != 0) {
-				if (temp > 60) {
-					m = temp / 60;
-					if (temp % 60 != 0) {
-						s = temp % 60;
-					}
-				} else {
-					s = temp;
-				}
-			}
-		} else {
-			m = second / 60;
-			if (second % 60 != 0) {
-				s = second % 60;
-			}
-		}
 
-		return new int[] { h, m, s };
-	}
 
 	@Override
 	protected void onDestroy() {
@@ -228,7 +188,7 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 						MatchScoreListActivity.class);
 				startActivity(intent);
 				// MatchRunActivity.this.finish();
-				
+
 				break;
 			}
 			break;
@@ -241,7 +201,7 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 						MatchRelayActivity.class);
 				startActivity(intent);
 				// MatchRunActivity.this.finish();
-				
+
 				break;
 			}
 			break;
@@ -285,12 +245,17 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 
 		if (getOnePoint() != null) {
 			point = getOnePoint();
+			boolean isInTrack = trackData.isInTheTracks(
+					lonLatEncryption.encrypt(point).lon,
+					lonLatEncryption.encrypt(point).lat);
+			// Log.v("wytrack",
+			// "isInTrack ="+isInTrack+" claimedLength="+trackData.claimedLength+" name"+trackData.name+" pgTracks"+trackData.pgTracks);
 			if (points.size() == 0) {
 				points.add(point);
 				last = point;
 				return false;
 			}
-			
+
 			meter = getDistanceFrom2ponit(points.get(points.size() - 1), point);
 			if (meter == 0) {
 				return false;

@@ -30,7 +30,7 @@ public class SportBean {
 	private int heat;// 热量 卡路里
 
 	private double distance;// 距离
-	private double pspeed;// 配速
+	private int pspeed;// 配速
 	private double hspeed;// 时速
 	
 	public int getId() {
@@ -217,11 +217,11 @@ public class SportBean {
 		this.distance = distance;
 	}
 
-	public double getPspeed() {
+	public int getPspeed() {
 		return pspeed;
 	}
 
-	public void setPspeed(double pspeed) {
+	public void setPspeed(int pspeed) {
 		this.pspeed = pspeed;
 	}
 

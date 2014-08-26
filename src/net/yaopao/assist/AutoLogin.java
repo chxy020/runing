@@ -14,7 +14,6 @@ public class AutoLogin extends AsyncTask<String, Void, Boolean> {
 	String loginJson;
 	@Override
 	protected void onPreExecute() {
-		// ����ִ�еľ��������
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class AutoLogin extends AsyncTask<String, Void, Boolean> {
 				break;
 			}
 		}else {
-			Toast.makeText(YaoPao01App.getAppContext(), "�����쳣�����Ժ�����", Toast.LENGTH_LONG).show();
+			Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
 		}
 	}
 }

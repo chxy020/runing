@@ -20,7 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 	// 数据表名，一个数据库中可以有多个表（虽然本例中只建立了一个表）
 	public static final String SPORTDATA_TABLE = "SportDataTable";
 	public static final String SPORTPARAM_TABLE = "SportParamTable";
-//	public static final String USERINFO_TABLE = "UserInfoTable";
+
+	// public static final String USERINFO_TABLE = "UserInfoTable";
 
 	// 构造函数，调用父类SQLiteOpenHelper的构造函数
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
@@ -58,12 +59,12 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		Log.d("wydb", "DatabaseHelper onCreate");
 
 		// 构建创建表的SQL语句（可以从SQLite Expert工具的DDL粘贴过来加进StringBuffer中）
-		
 
 		// 执行创建表的SQL语句
 		db.execSQL(getSportDataTableSql());
 		db.execSQL(getSportParamTableSql());
-		db.execSQL("CREATE UNIQUE INDEX uid_index ON "+SPORTPARAM_TABLE+" (uid);");
+		db.execSQL("CREATE UNIQUE INDEX uid_index ON " + SPORTPARAM_TABLE
+				+ " (uid);");
 
 		// 即便程序修改重新运行，只要数据库已经创建过，就不会再进入这个onCreate方法
 
@@ -94,38 +95,39 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		Log.d("wydb", "DatabaseHelper onOpen");
 	}
 
-	public String getSportDataTableSql(){
+	public String getSportDataTableSql() {
 		StringBuffer sBuffer = new StringBuffer();
 		sBuffer.append("CREATE TABLE [" + SPORTDATA_TABLE + "] (");
-		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+		sBuffer.append("  [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
 		sBuffer.append("  [aheart] INTEGER,  ");
 		sBuffer.append("  [distance] FLOAT,  ");
 		sBuffer.append("  [heat] INTEGER,  ");
 		sBuffer.append("  [hspeed] FLOAT,  ");
 		sBuffer.append("  [image_count] INTEGER,  ");
 		sBuffer.append("  [mheart] INTEGER,  ");
-		sBuffer.append(" [mind] INTEGER,  ");
-		sBuffer.append("[pspeed] FLOAT,  ");
+		sBuffer.append("  [mind] INTEGER,  ");
+		sBuffer.append("  [pspeed] INTEGER,  ");
 		sBuffer.append("  [remarks] TEXT,  ");
 		sBuffer.append("  [rid] TEXT,  ");
 		sBuffer.append("  [runtar] INTEGER,  ");
-		sBuffer.append(" [runty] INTEGER,  ");
-		sBuffer.append(" [runtra] TEXT,  ");
-		sBuffer.append(" [runway] INTEGER,  ");
-		sBuffer.append("[stamp] INTEGER,  ");
-		sBuffer.append(" [status_index] TEXT,  ");
+		sBuffer.append("  [runty] INTEGER,  ");
+		sBuffer.append("  [runtra] TEXT,  ");
+		sBuffer.append("  [runway] INTEGER,  ");
+		sBuffer.append("  [stamp] INTEGER,  ");
+		sBuffer.append("  [status_index] TEXT,  ");
 		sBuffer.append("  [temp] INTEGER,  ");
 		sBuffer.append("  [utime] INTEGER,  ");
-		sBuffer.append(" [weather] INTEGER, ");
-		sBuffer.append(" [addtime] INTEGER); ");
+		sBuffer.append("  [weather] INTEGER, ");
+		sBuffer.append("  [addtime] INTEGER); ");
 		return sBuffer.toString();
 	}
-	public String getSportParamTableSql(){
+
+	public String getSportParamTableSql() {
 		StringBuffer sBuffer = new StringBuffer();
 		sBuffer.append("CREATE TABLE [" + SPORTPARAM_TABLE + "] (");
 		sBuffer.append("  [uid] INTEGER NOT NULL,  ");
 		sBuffer.append("  [countDown] INTEGER,  ");
-		sBuffer.append("  [vioce] INTEGER,  ");//0 开，1开
+		sBuffer.append("  [vioce] INTEGER,  ");// 0 开，1开
 		sBuffer.append("  [typeIndex] INTEGER,  ");
 		sBuffer.append("  [targetIndex] INTEGER); ");
 		Log.v("wydb", sBuffer.toString());

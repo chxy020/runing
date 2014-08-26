@@ -9,11 +9,13 @@ import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.widget.SliderRelativeLayout;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -37,7 +39,7 @@ import com.amap.api.maps2d.model.PolylineOptions;
 /**
  */
 public class MapActivity extends Activity implements LocationSource,
-		AMapLocationListener,OnTouchListener {
+		AMapLocationListener, OnTouchListener {
 	private MapView mapView;
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
@@ -50,7 +52,6 @@ public class MapActivity extends Activity implements LocationSource,
 	static TextView sliderIconV;
 	static TextView sliderTextV;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,17 +61,17 @@ public class MapActivity extends Activity implements LocationSource,
 		lonLatEncryption = new LonLatEncryption();
 		slider = (SliderRelativeLayout) findViewById(R.id.slider_layout);
 		sliderTextV = (TextView) findViewById(R.id.slider_text);
-		
+
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		sliderIconV = (TextView) findViewById(R.id.slider_icon);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
-//		if (Variables.sportStatus == 0) {
-//			sliderTextV.setText("滑动暂停");
-//		} else {
-//			sliderTextV.setText("滑动恢复");
-//		}
+		// if (Variables.sportStatus == 0) {
+		// sliderTextV.setText("滑动暂停");
+		// } else {
+		// sliderTextV.setText("滑动恢复");
+		// }
 		slider.setMainHandler(slipHandler);
 		init();
 		startTimer();
@@ -100,34 +101,33 @@ public class MapActivity extends Activity implements LocationSource,
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		MyLocationStyle myLocationStyle = new MyLocationStyle();
 		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-				.fromResource(R.drawable.location_marker));// ����С�����ͼ��
-		myLocationStyle.strokeColor(Color.BLACK);// ����Բ�εı߿���ɫ
-		myLocationStyle.radiusFillColor(Color.argb(100, 0, 0, 180));// ����Բ�ε������ɫ
-		// myLocationStyle.anchor(int,int)//����С�����ê��
-		myLocationStyle.strokeWidth(1.0f);// ����Բ�εı߿��ϸ
+				.fromResource(R.drawable.location_marker));// 设置小蓝点的图标
 		aMap.setMyLocationStyle(myLocationStyle);
-		aMap.setLocationSource(this);// ���ö�λ����
-		aMap.getUiSettings().setMyLocationButtonEnabled(true);// ����Ĭ�϶�λ��ť�Ƿ���ʾ
-		aMap.setMyLocationEnabled(true);// ����Ϊtrue��ʾ��ʾ��λ�㲢�ɴ�����λ��false��ʾ���ض�λ�㲢���ɴ�����λ��Ĭ����false
+		aMap.setLocationSource(this);// 设置定位监听
+//		aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
+		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		// aMap.setMyLocationType()
 		int pointCount = SportRecordActivity.points.size();
-		if (pointCount==0) {
+		if (pointCount == 0) {
 			return;
-		}else if (pointCount<2) {
-			lastDrawPoint = SportRecordActivity.points.get(SportRecordActivity.points.size() - 1);
+		} else if (pointCount < 2) {
+			lastDrawPoint = SportRecordActivity.points
+					.get(SportRecordActivity.points.size() - 1);
 			return;
 		}
-		
+
 		List<Integer> indexList = new ArrayList<Integer>();
-//		Log.v("wygps", "map pointsIndex="+SportRecordActivity.pointsIndex);
+		// Log.v("wygps", "map pointsIndex="+SportRecordActivity.pointsIndex);
 		indexList.addAll(SportRecordActivity.pointsIndex);
-//		Log.v("wygps", "indexList.size="+indexList.size());
-		if (indexList.size()==0) {	
-			aMap.addPolyline((new PolylineOptions()).addAll(initPoints(SportRecordActivity.points))	.color(Color.RED));
-			lastDrawPoint = SportRecordActivity.points.get(SportRecordActivity.points.size() - 1);
+		// Log.v("wygps", "indexList.size="+indexList.size());
+		if (indexList.size() == 0) {
+			aMap.addPolyline((new PolylineOptions()).addAll(
+					initPoints(SportRecordActivity.points)).color(Color.RED));
+			lastDrawPoint = SportRecordActivity.points
+					.get(SportRecordActivity.points.size() - 1);
 			return;
 		}
-//		Log.v("wygps", "indexList.size="+indexList);
+		// Log.v("wygps", "indexList.size="+indexList);
 		indexList.add(pointCount - 1);
 		int linesCount = indexList.size();
 		int j = 0;
@@ -147,8 +147,8 @@ public class MapActivity extends Activity implements LocationSource,
 						lonLatEncryption.encrypt(gpsPoint).lon));
 			}
 
-			GpsPoint gpsPointEnd = SportRecordActivity.points
-					.get(oneLinePoints.size() - 1);
+			GpsPoint gpsPointEnd = SportRecordActivity.points.get(oneLinePoints
+					.size() - 1);
 			if (gpsPointEnd.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
 						.color(Color.RED));
@@ -157,24 +157,28 @@ public class MapActivity extends Activity implements LocationSource,
 						.color(Color.BLACK).setDottedLine(true));
 			}
 		}
-		lastDrawPoint = SportRecordActivity.points.get(SportRecordActivity.points.size() - 1);
-		
+		lastDrawPoint = SportRecordActivity.points
+				.get(SportRecordActivity.points.size() - 1);
+
 	}
 
 	private void drawNewLine() {
-		
-		if (SportRecordActivity.points.size()<2) {
+
+		if (SportRecordActivity.points.size() < 2) {
 			return;
 		}
-		
+
 		GpsPoint newPoint = SportRecordActivity.points
 				.get(SportRecordActivity.points.size() - 1);
+		Log.v("wy", "SportRecordActivity.points=" + SportRecordActivity.points);
 		if (newPoint.lon != lastDrawPoint.lon
-				|| newPoint.lat != lastDrawPoint.lat) {// 5�����λ�����ƶ�
+				|| newPoint.lat != lastDrawPoint.lat) {// 5秒后点的位置有移动
 			int count = 2;
 			List<LatLng> newLine = new ArrayList<LatLng>();
-			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,lonLatEncryption.encrypt(newPoint).lon));
-			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,lonLatEncryption.encrypt(lastDrawPoint).lon));
+			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,
+					lonLatEncryption.encrypt(newPoint).lon));
+			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,
+					lonLatEncryption.encrypt(lastDrawPoint).lon));
 			if (lastDrawPoint.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
 						Color.RED));
@@ -189,18 +193,15 @@ public class MapActivity extends Activity implements LocationSource,
 	Handler slipHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
-					SportRecordActivity.stopTimer();
-					doneV.setVisibility(View.VISIBLE);
-					resumeV.setVisibility(View.VISIBLE);
-					sliderIconV.setVisibility(View.GONE);
-					sliderTextV.setVisibility(View.GONE);
+				SportRecordActivity.stopTimer();
+				doneV.setVisibility(View.VISIBLE);
+				resumeV.setVisibility(View.VISIBLE);
+				sliderIconV.setVisibility(View.GONE);
+				sliderTextV.setVisibility(View.GONE);
 			}
 		};
 	};
 
-	/**
-	 * ����������д
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -219,9 +220,6 @@ public class MapActivity extends Activity implements LocationSource,
 		}
 	}
 
-	/**
-	 * ����������д
-	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -230,18 +228,12 @@ public class MapActivity extends Activity implements LocationSource,
 		deactivate();
 	}
 
-	/**
-	 * ����������д
-	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		mapView.onSaveInstanceState(outState);
 	}
 
-	/**
-	 * ����������д
-	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -306,12 +298,12 @@ public class MapActivity extends Activity implements LocationSource,
 	@Override
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
-			mListener.onLocationChanged(aLocation);// ��ʾϵͳС����
+			mListener.onLocationChanged(aLocation);
 		}
 	}
 
-	 Handler timer = new Handler();
-	 Runnable drawTask = new Runnable() {
+	Handler timer = new Handler();
+	Runnable drawTask = new Runnable() {
 		@Override
 		public void run() {
 			drawNewLine();
@@ -319,11 +311,12 @@ public class MapActivity extends Activity implements LocationSource,
 		}
 
 	};
-	public  void startTimer() {
+
+	public void startTimer() {
 		timer.postDelayed(drawTask, 3000);
 	}
 
-	public  void stopTimer() {
+	public void stopTimer() {
 		timer.removeCallbacks(drawTask);
 	}
 
@@ -336,8 +329,20 @@ public class MapActivity extends Activity implements LocationSource,
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-						 DialogTool.doneSport(MapActivity.this);
-				
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						if (msg.what == 0) {
+							Intent intent = new Intent(MapActivity.this,
+									SportSaveActivity.class);
+							SportRecordActivity.stopRecordGps();
+							MapActivity.this.startActivity(intent);
+							MapActivity.this.finish();
+						}
+						super.handleMessage(msg);
+					}
+				};
+				DialogTool.doneSport(MapActivity.this, handler);
+
 				break;
 			}
 			break;
