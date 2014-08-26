@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-   
+    <color name="red_bg">#FF0000</color>
     <color name="blue_dark">#FF666698</color>
     <color name="gray_light">#FFA5A5A5</color>
     <color name="gray_dark">#FF595959</color>
@@ -11,6 +11,11 @@
      <color name="text">#FFAACFEA</color>
     
     
-
-
+	<!-- 按钮点击效果 -->
+	<color name="btn_bg">#FF0000</color>
+	<color name="btn_bg_curr">#0B4988</color>
+	
+	<!-- 设置栏目点击效果 -->
+	<color name="setting_item_bg">#e5e5e5</color>
+	<color name="setting_item_bg_curr">#CCCCCC</color>
 </resources>

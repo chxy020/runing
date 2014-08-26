@@ -32,7 +32,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	LinearLayout stateL;
 	LinearLayout recording ;
 	LinearLayout matchL;
-
+	/** 设置*/
+	private TextView mMainSetting = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -50,6 +52,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL.setOnTouchListener(this);
 		start.setOnTouchListener(this);
 		recording.setOnTouchListener(this);
+		
+		//初始化页面 chenxy add
+		initView();
+		//end
 	}
 
 	@Override
@@ -170,5 +176,42 @@ public class MainActivity extends Activity implements OnTouchListener {
 		  return false;
 	}
 
-
+/*************************chenxy add ******************/
+	
+	/**
+	 * 页面初始化
+	 * @author cxy
+	 * @date 2014-8-25
+	 */
+	private void initView(){
+		//获取设置
+		mMainSetting = (TextView)findViewById(R.id.main_setting);
+		//注册事件
+		this.setListener();
+	}
+	
+	/**
+	 * 注册事件
+	 * @author cxy
+	 * @date 2014-8-25
+	 */
+	private void setListener() {
+		//注册设置事件
+		mMainSetting.setOnClickListener(mOnClickListener);
+	}
+	
+	/**
+	 * 单击事件
+	 */
+	private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+				case R.id.main_setting:
+					Intent settingIntent = new Intent(MainActivity.this,MainSettingActivity.class);
+					startActivity(settingIntent);
+				break;
+			}
+		}
+	};
 }

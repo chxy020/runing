@@ -94,7 +94,16 @@
             <intent-filter>  
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
             </intent-filter>  
-        </receiver>  
+        </receiver>
+        <activity
+            android:name="net.yaopao.activity.MainSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="net.yaopao.activity.ClauseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="net.yaopao.activity.AboutActivity"
+            android:screenOrientation="portrait" />
     </application>
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
