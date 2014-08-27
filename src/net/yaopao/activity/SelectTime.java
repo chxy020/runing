@@ -1,5 +1,6 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
 import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
@@ -35,7 +36,7 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 	public SelectTime(Activity context, final Handler handler) {
 		super(context);
 		mContext = context;
-		this.time = SportTargetActivity.time;
+		this.time = Variables.runtarTime+"";
 		Log.v("wydb", "time1 ="+time);
 		timeTextV = (TextView) mContext.findViewById(R.id.target_time_select);
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -102,7 +103,6 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		String curT = view.getCurrentItem()+5+"";
 		view.setCurrentItem(view.getCurrentItem(), true);
 		time = curT;
-		Log.v("wydb", "time4 ="+SportTargetActivity.time);
 		timeTextV.setText(curT + " 分钟");
 	}
 

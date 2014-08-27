@@ -303,8 +303,6 @@
             android:layout_marginLeft="@dimen/margin5"
             android:layout_marginRight="@dimen/margin5"
             android:layout_marginTop="@dimen/margin6"
-            android:max="100"
-            android:progress="50"
             android:visibility="visible" />
 
         <TextView

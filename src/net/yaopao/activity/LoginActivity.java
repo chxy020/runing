@@ -1,5 +1,12 @@
 package net.yaopao.activity;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,15 +14,13 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,18 +30,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 public class LoginActivity extends Activity implements OnTouchListener {
-	public TextView to_reset;
-	public TextView login;
-	public TextView goBack;
+	private TextView to_reset;
+	private TextView login;
+	private TextView goBack;
 	
-	public EditText phoneNumV;
-	public EditText pwdV;
+	private EditText phoneNumV;
+	private EditText pwdV;
 
-	public String phoneNumStr;
-	public String pwdStr;
-	public String loginJson;
-
+	private String phoneNumStr;
+	private String pwdStr;
+	private String loginJson;
+	private Bitmap bitmap;  
+	private String headUrl; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -178,6 +187,9 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					Variables.islogin=1;
 					Variables.uid=rt.getJSONObject("userinfo").getInteger("uid");
 					Variables.utype=rt.getJSONObject("userinfo").getInteger("utype");
+					//下载头像
+					headUrl=Constants.endpoints+rt.getJSONObject("userinfo").getString("imgpath");
+					 new Thread(connectNet).start();
 					DataTool.setUserInfo(loginJson);
 					Toast.makeText(LoginActivity.this, "登录成功",
 							Toast.LENGTH_LONG).show();
@@ -202,5 +214,54 @@ public class LoginActivity extends Activity implements OnTouchListener {
 			}
 		}
 	}
-
+	/* 
+     * 连接网络 
+     * 由于在4.0中不允许在主线程中访问网络，所以需要在子线程中访问 
+     */  
+    private Runnable connectNet = new Runnable(){  
+        @Override  
+        public void run() {  
+            try {  
+                bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));  
+                saveFile();
+            } catch (Exception e) {  
+                Toast.makeText(YaoPao01App.getAppContext(),"无法链接网络！", Toast.LENGTH_SHORT).show();  
+                e.printStackTrace();  
+            }  
+  
+        }  
+  
+    };  
+    /**   
+     * Get image from newwork   
+     * @param path The path of image   
+     * @return InputStream 
+     * @throws Exception   
+     */  
+    public InputStream getImageStream(String path) throws Exception{     
+        URL url = new URL(path);     
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();     
+        conn.setConnectTimeout(5 * 1000);     
+        conn.setRequestMethod("GET");  
+        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){     
+            return conn.getInputStream();        
+        }     
+        return null;   
+    }  
+    /** 
+     * 保存文件 
+     * @param bm 
+     * @param fileName 
+     * @throws IOException 
+     */  
+    public void saveFile() throws IOException {  
+        File dirFile = new File(Constants.imagePath);  
+        if(!dirFile.exists()){  
+            dirFile.mkdirs();  
+        }  
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dirFile));  
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);  
+        bos.flush();  
+        bos.close();  
+    }  
 }

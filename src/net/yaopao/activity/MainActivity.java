@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	LinearLayout stateL;
 	LinearLayout recording ;
 	LinearLayout matchL;
-
+	Bitmap head ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				}
 				desc.setText(userInfo.getString("signature"));
 
-				Bitmap head = DataTool.getHead();
+				 head = DataTool.getHead();
 				if (head != null) {
 					headv.setImageBitmap(head);
 				}
@@ -88,6 +88,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onDestroy() {
+		if (head!=null) {
+			head.recycle();
+			head=null;
+		}
 		super.onDestroy();
 	}
 

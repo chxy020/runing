@@ -24,7 +24,7 @@ public class Variables {
 //	public static long lon = 0;// 当前经度
 	
 //	public static long lat = 0;// 当前纬度
-
+	public static String headUrl="";//线上服务地址   
 	public static int sportStatus = 1; //0-运动状态，1-暂停状态,2-未运动
 	
 	public static int switchTime = 0; //0-开，1-关
@@ -47,7 +47,7 @@ public class Variables {
 
 	public static int runtar;// 自由：0，距离：1，时间：2
 	public static double runtarDis;//  目标距离,公里
-	public static long runtarTime;// 目标时间，秒
+	public static long runtarTime=5;// 目标时间，秒
 	
 	public static int runty;// 步行：1，跑步：2，自行车骑行：3
 	public static int mind; // 心情

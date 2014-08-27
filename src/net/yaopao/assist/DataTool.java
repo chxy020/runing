@@ -22,10 +22,14 @@ public class DataTool {
 		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
 				.getString("userInfo", null));
 		JSONObject userInfo = rt.getJSONObject("userinfo");
+		if (userInfo==null) {
+			return rt;
+		}
 		return userInfo;
 	}
 
 	public static void setUserInfo(String data) {
+		Log.v("wyuser", "要存储的="+data);
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
 		editor.putString("userInfo", data);
 		editor.putInt("uid", Variables.uid);

@@ -28,8 +28,8 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 	ImageView distanceImgV;
 	ImageView timeImgV;
 
-	public static String distance;
-	public static String time;
+//	public static String distance;
+//	public static String time;
 //	int selected = 1;// 1-自由，2-距离，3-计时
 
 	public SelectDistance distanceWindow;
@@ -98,7 +98,8 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 				timeImgV.setBackgroundResource(0);
 					final Handler handler = new Handler() {
 						public void handleMessage(Message msg) {
-							distance = msg.getData().getString("distance");
+//							distance = msg.getData().getString("distance");
+							Variables.runtarDis = Double.parseDouble(msg.getData().getString("distance"));
 							super.handleMessage(msg);
 						}
 					};
@@ -124,7 +125,7 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 					timeImgV.setBackgroundResource(R.drawable.check);
 					final Handler handler = new Handler() {
 						public void handleMessage(Message msg) {
-							time = msg.getData().getString("time");
+							Variables.runtarTime = Long.parseLong(msg.getData().getString("time")) ;
 							super.handleMessage(msg);
 						}
 					};
@@ -142,13 +143,13 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onResume() {
-		if (distance!=null) {
-			distanceTxtV.setText(distance+"km");
-		}
+//		if (distance!=null) {
+			distanceTxtV.setText(Variables.runtarDis+" 千米");
+//		}
 //		Log.v("wydb", "time2 ="+time);
-		if (time!=null) {
-			timeTxtV.setText(time+" 分钟");
-		}
+//		if (time!=null) {
+			timeTxtV.setText(Variables.runtarTime+" 分钟");
+//		}
 		
 		switch (Variables.runtar) {
 		case 0:
