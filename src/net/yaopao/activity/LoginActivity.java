@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
@@ -37,15 +38,17 @@ public class LoginActivity extends Activity implements OnTouchListener {
 	private TextView to_reset;
 	private TextView login;
 	private TextView goBack;
-	
+
 	private EditText phoneNumV;
 	private EditText pwdV;
 
 	private String phoneNumStr;
 	private String pwdStr;
 	private String loginJson;
-	private Bitmap bitmap;  
-	private String headUrl; 
+	private Bitmap bitmap;
+	private String headUrl;
+	private LoadingDialog dialog;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -61,12 +64,14 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		to_reset.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.login_phoneNum);
 		pwdV = (EditText) this.findViewById(R.id.login_pwd);
-		
+		dialog = new LoadingDialog(this);
+//		dialog.setCanceledOnTouchOutside(false);
 		goBack.setOnTouchListener(this);
 		to_reset.setOnTouchListener(this);
 		login.setOnTouchListener(this);
-		
+
 	}
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -100,6 +105,8 @@ public class LoginActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				if (verifyParam()) {
+					dialog.show();
+					Log.v("wyuser", "login0");
 					new loginAsyncTask().execute("");
 				}
 				break;
@@ -117,7 +124,8 @@ public class LoginActivity extends Activity implements OnTouchListener {
 			return false;
 		}
 		return true;
-}
+	}
+
 	public boolean verifyPhone() {
 		phoneNumStr = phoneNumV.getText().toString().trim();
 		Log.v("wy", "phone=" + phoneNumStr);
@@ -156,22 +164,28 @@ public class LoginActivity extends Activity implements OnTouchListener {
 			return false;
 		}
 	}
+
 	private class loginAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 		@Override
 		protected void onPreExecute() {
-			// 最先执行的就是这个。
+			
 		}
 
 		@Override
 		protected Boolean doInBackground(String... params) {
+			dialog.dismiss();
+			Log.v("wyuser", "login1");
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
-			loginJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.login, "phone=" + phoneNumStr + "&passwd="+ pwdStr);
-			Log.v("wydb", "loginJson"+loginJson);
-			if (loginJson!=null&&!"".equals(loginJson)) {
+			loginJson = NetworkHandler.httpPost(Constants.endpoints
+					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
+					+ pwdStr);
+			Log.v("wyuser", "login2");
+			Log.v("wyuser", "loginJson" + loginJson);
+			if (loginJson != null && !"".equals(loginJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -179,17 +193,20 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				
+
 				JSONObject rt = JSON.parseObject(loginJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				switch (rtCode) {
 				case 0:
-					Variables.islogin=1;
-					Variables.uid=rt.getJSONObject("userinfo").getInteger("uid");
-					Variables.utype=rt.getJSONObject("userinfo").getInteger("utype");
-					//下载头像
-					headUrl=Constants.endpoints+rt.getJSONObject("userinfo").getString("imgpath");
-					 new Thread(connectNet).start();
+					Variables.islogin = 1;
+					Variables.uid = rt.getJSONObject("userinfo").getInteger(
+							"uid");
+					Variables.utype = rt.getJSONObject("userinfo").getInteger(
+							"utype");
+					// 下载头像
+					headUrl = Constants.endpoints
+							+ rt.getJSONObject("userinfo").getString("imgpath");
+					new Thread(connectNet).start();
 					DataTool.setUserInfo(loginJson);
 					Toast.makeText(LoginActivity.this, "登录成功",
 							Toast.LENGTH_LONG).show();
@@ -208,60 +225,68 @@ public class LoginActivity extends Activity implements OnTouchListener {
 							Toast.LENGTH_LONG).show();
 					break;
 				}
-					
-			}else {
-				Toast.makeText(LoginActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+
+			} else {
+				Toast.makeText(LoginActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
-	/* 
-     * 连接网络 
-     * 由于在4.0中不允许在主线程中访问网络，所以需要在子线程中访问 
-     */  
-    private Runnable connectNet = new Runnable(){  
-        @Override  
-        public void run() {  
-            try {  
-                bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));  
-                saveFile();
-            } catch (Exception e) {  
-                Toast.makeText(YaoPao01App.getAppContext(),"无法链接网络！", Toast.LENGTH_SHORT).show();  
-                e.printStackTrace();  
-            }  
-  
-        }  
-  
-    };  
-    /**   
-     * Get image from newwork   
-     * @param path The path of image   
-     * @return InputStream 
-     * @throws Exception   
-     */  
-    public InputStream getImageStream(String path) throws Exception{     
-        URL url = new URL(path);     
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();     
-        conn.setConnectTimeout(5 * 1000);     
-        conn.setRequestMethod("GET");  
-        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){     
-            return conn.getInputStream();        
-        }     
-        return null;   
-    }  
-    /** 
-     * 保存文件 
-     * @param bm 
-     * @param fileName 
-     * @throws IOException 
-     */  
-    public void saveFile() throws IOException {  
-        File dirFile = new File(Constants.imagePath);  
-        if(!dirFile.exists()){  
-            dirFile.mkdirs();  
-        }  
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dirFile));  
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);  
-        bos.flush();  
-        bos.close();  
-    }  
+
+	/*
+	 * 连接网络 由于在4.0中不允许在主线程中访问网络，所以需要在子线程中访问
+	 */
+	private Runnable connectNet = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));
+				saveFile();
+			} catch (Exception e) {
+				Toast.makeText(YaoPao01App.getAppContext(), "无法链接网络！",
+						Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+
+		}
+
+	};
+
+	/**
+	 * Get image from newwork
+	 * 
+	 * @param path
+	 *            The path of image
+	 * @return InputStream
+	 * @throws Exception
+	 */
+	public InputStream getImageStream(String path) throws Exception {
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5 * 1000);
+		conn.setRequestMethod("GET");
+		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			return conn.getInputStream();
+		}
+		return null;
+	}
+
+	/**
+	 * 保存文件
+	 * 
+	 * @param bm
+	 * @param fileName
+	 * @throws IOException
+	 */
+	public void saveFile() throws IOException {
+		File dirFile = new File(Constants.imagePath);
+		if (!dirFile.exists()) {
+			dirFile.mkdirs();
+		}
+		BufferedOutputStream bos = new BufferedOutputStream(
+				new FileOutputStream(dirFile));
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+		bos.flush();
+		bos.close();
+	}
 }

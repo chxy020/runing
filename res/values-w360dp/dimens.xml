@@ -24,6 +24,8 @@
     <dimen name="font_size5">40dp</dimen>
     <dimen name="font_size6">50dp</dimen>
     <dimen name="font_size7">15dp</dimen>
+    
+    <dimen name="countdown_tnum_width">80dp</dimen>
     <dimen name="userInfo_headArrow_marginTop">38dp</dimen>
     <dimen name="userInfo_head_marginTop">15dp</dimen>
     <dimen name="main_userinfo_hight">90dp</dimen>
