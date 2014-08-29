@@ -60,7 +60,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		d4v = (ImageView) this.findViewById(R.id.main_milage_num1);
 		d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
 		d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
-
+		d1v.setVisibility(View.GONE);
+		d2v.setVisibility(View.GONE);
+		d3v.setVisibility(View.GONE);
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnTouchListener(this);
 		matchL.setOnTouchListener(this);
@@ -112,6 +114,15 @@ public class MainActivity extends Activity implements OnTouchListener {
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+		if (d1>0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
+		if (d2>0) {
+			d2v.setVisibility(View.VISIBLE);
+		}
+		if (d3>0) {
+			d3v.setVisibility(View.VISIBLE);
+		}
 		update(d1, d1v);
 		update(d2, d2v);
 		update(d3, d3v);

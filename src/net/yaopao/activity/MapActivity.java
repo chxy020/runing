@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -51,6 +52,8 @@ public class MapActivity extends Activity implements LocationSource,
 	static TextView resumeV;
 	static TextView sliderIconV;
 	static TextView sliderTextV;
+	private ImageView backV;
+	private ImageView locV;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +68,12 @@ public class MapActivity extends Activity implements LocationSource,
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		sliderIconV = (TextView) findViewById(R.id.slider_icon);
+		backV = (ImageView) findViewById(R.id.map_back);
+		locV = (ImageView) findViewById(R.id.map_loc);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
+		backV.setOnTouchListener(this);
+		locV.setOnTouchListener(this);
 		// if (Variables.sportStatus == 0) {
 		// sliderTextV.setText("滑动暂停");
 		// } else {
@@ -97,15 +104,16 @@ public class MapActivity extends Activity implements LocationSource,
 		}
 
 		aMap.getUiSettings().setZoomControlsEnabled(false);
-
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-		MyLocationStyle myLocationStyle = new MyLocationStyle();
-		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-				.fromResource(R.drawable.location_marker));// 设置小蓝点的图标
-		aMap.setMyLocationStyle(myLocationStyle);
 		aMap.setLocationSource(this);// 设置定位监听
-//		aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+
+//		MyLocationStyle myLocationStyle = new MyLocationStyle();
+//		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+//				.fromResource(R.drawable.location_marker));// 设置小蓝点的图标
+//		aMap.setMyLocationStyle(myLocationStyle);
+		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+
 		// aMap.setMyLocationType()
 		int pointCount = SportRecordActivity.points.size();
 		if (pointCount == 0) {
@@ -117,9 +125,7 @@ public class MapActivity extends Activity implements LocationSource,
 		}
 
 		List<Integer> indexList = new ArrayList<Integer>();
-		// Log.v("wygps", "map pointsIndex="+SportRecordActivity.pointsIndex);
 		indexList.addAll(SportRecordActivity.pointsIndex);
-		// Log.v("wygps", "indexList.size="+indexList.size());
 		if (indexList.size() == 0) {
 			aMap.addPolyline((new PolylineOptions()).addAll(
 					initPoints(SportRecordActivity.points)).color(Color.RED));
@@ -127,7 +133,6 @@ public class MapActivity extends Activity implements LocationSource,
 					.get(SportRecordActivity.points.size() - 1);
 			return;
 		}
-		// Log.v("wygps", "indexList.size="+indexList);
 		indexList.add(pointCount - 1);
 		int linesCount = indexList.size();
 		int j = 0;
@@ -324,6 +329,30 @@ public class MapActivity extends Activity implements LocationSource,
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
+		case R.id.map_loc:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				Location myloc = aMap.getMyLocation();
+				if (myloc!=null) {
+					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myloc.getLatitude(), myloc.getLongitude()), 16));
+				}
+			
+
+				break;
+			}
+			break;
+		case R.id.map_back:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				MapActivity.this.finish();
+				
+				break;
+			}
+			break;
 		case R.id.slider_done:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:

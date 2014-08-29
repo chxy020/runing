@@ -127,7 +127,7 @@ public class SliderRelativeLayout extends RelativeLayout {
 		int x = (int) event.getX() ;	
 		Log.e(TAG, "handleActionUpEvent : x -->" + x + "   getRight() " + getRight() );
 		//������45dip���ڴ�����ɹ���
-		boolean isSucess= Math.abs(x - getRight()) <= 45 ;
+		boolean isSucess= Math.abs(x - getRight()) <= 200 ;
 		
 		if(isSucess){
 		   resetViewState();	

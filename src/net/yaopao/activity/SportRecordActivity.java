@@ -309,6 +309,14 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			Variables.utime += 1;
 //			timeV.setText(formatterM.format(Variables.utime * 1000) + "'"
 //					+ formatterS.format(Variables.utime * 1000) + "\"");
+			int[] time = YaoPao01App.cal(Variables.utime);
+			int t1 = time[0] / 10;
+			int t2 = time[0] % 10;
+			int t3 = time[1] / 10;
+			int t4 = time[1] % 10;
+			int t5 = time[2] / 10;
+			int t6 = time[2] % 10;
+			timeV.setText(t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
 			timer.postDelayed(this, 1000);
 		}
 
@@ -355,14 +363,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		int d3 = (int) (Variables.distance % 1000) / 100;
 		int d4 = (int) (Variables.distance % 100) / 10;
 		
-		int[] time = YaoPao01App.cal(Variables.utime);
-		int t1 = time[0] / 10;
-		int t2 = time[0] % 10;
-		int t3 = time[1] / 10;
-		int t4 = time[1] % 10;
-		int t5 = time[2] / 10;
-		int t6 = time[2] % 10;
-		timeV.setText(t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
+		
 		int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) * Variables.utime));
 		Variables.pspeed =(int) ((1000 / Variables.distance) * Variables.utime);
 		int s1 = speed[1] / 10;
