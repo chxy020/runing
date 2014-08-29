@@ -48,7 +48,7 @@ public class DataTool {
 		Log.v("wy", "save head="+mPhotoBmp.getByteCount());
 		FileOutputStream  m_fileOutPutStream = null;
 		try {
-		    m_fileOutPutStream = new FileOutputStream(Constants.imagePath);//写入的文件路径
+		    m_fileOutPutStream = new FileOutputStream(Constants.avatarPath+Constants.avatarName);//写入的文件路径
 		} catch (FileNotFoundException e) {
 		e.printStackTrace();
 		}
@@ -67,7 +67,7 @@ public class DataTool {
 		Bitmap bitmap=null;
 		FileInputStream fis = null;
 		try {
-			fis = new FileInputStream(Constants.imagePath);
+			fis = new FileInputStream(Constants.avatarPath+Constants.avatarName);
 			bitmap  = BitmapFactory.decodeStream(fis);
 			fis.close();
 		} catch (FileNotFoundException e) {

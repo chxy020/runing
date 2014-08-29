@@ -56,7 +56,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
-		distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
+//		distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
 		timeV = (TextView) findViewById(R.id.sport_recoding_time);
 		speedV = (TextView) findViewById(R.id.sport_recoding_speed);
 		doneV = (TextView) findViewById(R.id.slider_done);
@@ -77,7 +77,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			sliderIconV.setVisibility(View.GONE);
 			sliderTextV.setVisibility(View.GONE);
 		}
-		distanceV.setOnTouchListener(this);
+//		distanceV.setOnTouchListener(this);
 		timeV.setOnTouchListener(this);
 		speedV.setOnTouchListener(this);
 		mapV.setOnTouchListener(this);

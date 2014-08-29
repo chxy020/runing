@@ -448,7 +448,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
     	case Constants.RET_CAMERA:
 			if (resultCode == Activity.RESULT_OK) 
 			{
-				File picture = new File(Constants.imagePath);
+				File picture = new File(Constants.avatarPath+Constants.avatarName);
 				startPhotoZoom(Uri.fromFile(picture));
 			}
 			break ;
@@ -474,7 +474,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	
 	private void goGetPhotoFromCamera () {
 		Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE) ;
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constants.imagePath)));
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constants.avatarPath+Constants.avatarName)));
 		startActivityForResult (intent, Constants.RET_CAMERA) ;
 	}
 	
@@ -496,7 +496,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			mPhotoBmp = bmp;
 			FileOutputStream output = null;
 			try {
-				output = new FileOutputStream (new File(Constants.imagePath));
+				output = new FileOutputStream (new File(Constants.avatarPath+Constants.avatarName));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

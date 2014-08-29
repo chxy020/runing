@@ -70,7 +70,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 							"phone", ""));
 				}
 				desc.setText(userInfo.getString("signature"));
-
 				 head = DataTool.getHead();
 				if (head != null) {
 					headv.setImageBitmap(head);

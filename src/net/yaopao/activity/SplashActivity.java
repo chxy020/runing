@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Window;
@@ -88,10 +89,10 @@ public class SplashActivity extends Activity {
         public void run() {  
             try {  
                 bitmap = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));  
-                saveFile();
+                saveFile(bitmap);
+                
             } catch (Exception e) {  
-                Toast.makeText(YaoPao01App.getAppContext(),"无法链接网络！", Toast.LENGTH_SHORT).show();  
-                e.printStackTrace();  
+            	Log.v("wyuser", e.toString());
             }  
   
         }  
@@ -119,13 +120,13 @@ public class SplashActivity extends Activity {
      * @param fileName 
      * @throws IOException 
      */  
-    public  void saveFile() throws IOException {  
-        File dirFile = new File(Constants.imagePath);  
+    public  void saveFile(Bitmap bm) throws IOException {  
+        File dirFile = new File(Constants.avatarPath);  
         if(!dirFile.exists()){  
-            dirFile.mkdirs();  
+            dirFile.mkdir();  
         }  
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dirFile));  
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);  
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Constants.avatarPath+Constants.avatarName)));  
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);  
         bos.flush();  
         bos.close();  
     }  
@@ -141,6 +142,27 @@ public class SplashActivity extends Activity {
     		Log.v("wyuser", "自动登录中");
     		loginJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.autoLogin, "uid=" + YaoPao01App.sharedPreferences.getInt("uid", 0));
     		if (loginJson!=null&&!"".equals(loginJson)) {
+    			JSONObject rt = JSON.parseObject(loginJson);
+    			int rtCode = rt.getJSONObject("state").getInteger("code");
+    			switch (rtCode) {
+    			case 0:
+    				Variables.islogin=1;
+    				Variables.uid=rt.getJSONObject("userinfo").getInteger("uid");
+    				Variables.utype=rt.getJSONObject("userinfo").getInteger("utype");
+    				//下载头像
+    				Variables.headUrl=Constants.endpoints+rt.getJSONObject("userinfo").getString("imgpath");
+    				if (Variables.headUrl!=null&&!"".equals(Variables.headUrl)) {
+//    					Looper.prepare();
+    					messageHandler.obtainMessage(0).sendToTarget();  
+//    					Looper.loop();
+    				}
+    				DataTool.setUserInfo(loginJson);
+    				Log.v("wyuser","loginJson = "+ loginJson);
+    				break;
+    			default:
+    				break;
+    			}
+    			
     			return true;
     		}else {
     			return false;

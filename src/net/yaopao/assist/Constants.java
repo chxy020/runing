@@ -16,8 +16,8 @@ public class Constants {
 	public static final int RET_GALLERY = 102 ; 
 	public static final int RET_CROP = 103;
 	public static final String IMAGE_UNSPECIFIED = "image/*";
-//	public static final String imagePath = Environment.getExternalStorageDirectory().toString() + "/temp.jpg";//拍照图片存放路径
-	public static final String imagePath = Environment.getExternalStorageDirectory().toString() + "/YaoPao/head.jpg"; 
+	public static final String avatarPath = Environment.getExternalStorageDirectory().toString() + "/YaoPao/"; 
+	public static final String avatarName = "avatar.jpg"; 
 	public static final String sportPho = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/"; 
 	
 	public static final String endpoints="http://182.92.97.144:8080/chSports";//线上服务地址   
