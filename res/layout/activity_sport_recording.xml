@@ -58,7 +58,7 @@
 
                 <ImageView
                     android:id="@+id/match_recoding_dis_d"
-                    android:layout_width="@dimen/match_tnum_l_width"
+                    android:layout_width="@dimen/match_dot_width"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/w_dot" />
@@ -68,7 +68,7 @@
                     android:layout_width="@dimen/match_tnum_l_width"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@id/match_recoding_dis_d"
-                    android:background="@drawable/w_3" />
+                    android:background="@drawable/w_0" />
 
                 <ImageView
                     android:id="@+id/match_recoding_dis4"

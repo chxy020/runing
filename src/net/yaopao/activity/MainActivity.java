@@ -3,6 +3,7 @@ package net.yaopao.activity;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
+import net.yaopao.bean.DataBean;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,15 +25,24 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 
 public class MainActivity extends Activity implements OnTouchListener {
-	TextView state;
-	TextView desc;
+	private TextView state;
+	private TextView desc;
+
+	private ImageView start;
+	private ImageView headv;
+	private LinearLayout stateL;
+	private LinearLayout recording;
+	private LinearLayout matchL;
+	private ImageView d1v;
+	private ImageView d2v;
+	private ImageView d3v;
+	private ImageView d4v;
+	private ImageView d5v;
+	private ImageView d6v;
 	
-	ImageView start;
-	ImageView headv;
-	LinearLayout stateL;
-	LinearLayout recording ;
-	LinearLayout matchL;
-	Bitmap head ;
+	private Bitmap head;
+	private double distance;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -44,8 +54,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
-		
-		recording =(LinearLayout) this.findViewById(R.id.main_fun_recording);
+		d1v = (ImageView) this.findViewById(R.id.main_milage_num4);
+		d2v = (ImageView) this.findViewById(R.id.main_milage_num3);
+		d3v = (ImageView) this.findViewById(R.id.main_milage_num2);
+		d4v = (ImageView) this.findViewById(R.id.main_milage_num1);
+		d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
+		d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
+
+		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnTouchListener(this);
 		matchL.setOnTouchListener(this);
 		start.setOnTouchListener(this);
@@ -70,7 +86,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 							"phone", ""));
 				}
 				desc.setText(userInfo.getString("signature"));
-				 head = DataTool.getHead();
+				head = DataTool.getHead();
 				if (head != null) {
 					headv.setImageBitmap(head);
 				}
@@ -83,13 +99,73 @@ public class MainActivity extends Activity implements OnTouchListener {
 		} else {
 			state.setText("未登录");
 		}
+		initMileage();
+
+	}
+
+	private void initMileage() {
+		DataBean data = YaoPao01App.db.queryData();
+		 distance = data.getDistance();
+		int d1 = (int) distance / 1000000;
+		int d2 = (int) (distance % 1000000) / 100000;
+		int d3 = (int) (distance % 100000)/10000;
+		int d4 = (int) (distance % 10000) / 1000;
+		int d5 = (int) (distance % 1000) / 100;
+		int d6 = (int) (distance % 100) / 10;
+		update(d1, d1v);
+		update(d2, d2v);
+		update(d3, d3v);
+		update(d4, d4v);
+		update(d5, d5v);
+		update(d6, d6v);
+	}
+
+	protected void update(int i, ImageView view) {
+		if (i>9) {
+			i=i%10;
+		}
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.r_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.r_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.r_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.r_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.r_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.r_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.r_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.r_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.r_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.r_9);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (head!=null) {
+		if (head != null) {
 			head.recycle();
-			head=null;
+			head = null;
 		}
 		super.onDestroy();
 	}
@@ -121,7 +197,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				if(YaoPao01App.isGpsAvailable()){
+				if (YaoPao01App.isGpsAvailable()) {
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
@@ -145,14 +221,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				if(YaoPao01App.isGpsAvailable()){
+				if (YaoPao01App.isGpsAvailable()) {
 					Intent mainIntent = new Intent(MainActivity.this,
 							MatchCountdownActivity.class);
 					MainActivity.this.startActivity(mainIntent);
 				}
-//				Intent mainIntent = new Intent(MainActivity.this,
-//						MatchWatchActivity.class);
-//				MainActivity.this.startActivity(mainIntent);
+				// Intent mainIntent = new Intent(MainActivity.this,
+				// MatchWatchActivity.class);
+				// MainActivity.this.startActivity(mainIntent);
 				break;
 			}
 			break;
@@ -165,13 +241,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		
-		 if (keyCode == KeyEvent.KEYCODE_BACK )  
-	        {  
-			 DialogTool.quit(MainActivity.this);
-	        }
-		  return false;
-	}
 
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			DialogTool.quit(MainActivity.this);
+		}
+		return false;
+	}
 
 }

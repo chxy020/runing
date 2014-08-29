@@ -125,10 +125,10 @@ public class DBManager {
 		return sports;
 	}
 	/**
-	 * 查询总记录条数
+	 * 查询总体记录数据
 	 * @return
 	 */
-	public DataBean  queryCount() {
+	public DataBean  queryData() {
 //		Log.d("wydb", "DBManager --> queryCount ");
 //		String sql = "SELECT COOUNT(*) FROM "+DatabaseHelper.SPORTDATA_TABLE;
 //		Cursor c = db.rawQuery(sql, null);

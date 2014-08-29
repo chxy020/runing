@@ -35,7 +35,7 @@ public final class R {
         public static final int countdown_tnum_width=0x7f070013;
         public static final int edit_img_margin=0x7f070021;
         public static final int edit_img_size=0x7f070020;
-        public static final int extra_large_font_size=0x7f070046;
+        public static final int extra_large_font_size=0x7f070047;
         /**  hdpi 
          */
         public static final int font_size1=0x7f070002;
@@ -46,7 +46,7 @@ public final class R {
         public static final int font_size6=0x7f070007;
         public static final int font_size7=0x7f070008;
         public static final int head_hight1=0x7f07001a;
-        public static final int large_font_size=0x7f070045;
+        public static final int large_font_size=0x7f070046;
         public static final int login_margin_edit=0x7f07001e;
         public static final int main_fun_hight=0x7f070026;
         public static final int main_fun_total_height=0x7f070025;
@@ -55,8 +55,8 @@ public final class R {
         public static final int main_middle_height=0x7f07002a;
         public static final int main_middle_width1=0x7f07002b;
         public static final int main_middle_width2=0x7f07002c;
-        public static final int main_num_height=0x7f07003a;
-        public static final int main_num_width=0x7f07003b;
+        public static final int main_num_height=0x7f07003b;
+        public static final int main_num_width=0x7f07003c;
         public static final int main_start_hight=0x7f070028;
         public static final int main_state_desc_hight=0x7f070023;
         public static final int main_total_milage_hight=0x7f070029;
@@ -75,11 +75,12 @@ public final class R {
         public static final int match_bottom_height=0x7f070037;
         public static final int match_countdown_layout_height=0x7f070035;
         public static final int match_countdown_num_width=0x7f070036;
+        public static final int match_dot_width=0x7f07003a;
         public static final int match_tnum_l_width=0x7f070039;
         public static final int match_tnum_width=0x7f070038;
-        public static final int me_big_badge_font_size=0x7f070049;
-        public static final int medium2_font_size=0x7f070044;
-        public static final int medium_font_size=0x7f070043;
+        public static final int me_big_badge_font_size=0x7f07004a;
+        public static final int medium2_font_size=0x7f070045;
+        public static final int medium_font_size=0x7f070044;
         public static final int medium_hight=0x7f070016;
         public static final int recording_List_main_height=0x7f070034;
         public static final int recording_mileage_height=0x7f070032;
@@ -87,23 +88,23 @@ public final class R {
         public static final int reg_code_width=0x7f07001f;
         public static final int reg_margin_edit=0x7f07001d;
         public static final int reg_margin_top=0x7f07001c;
-        public static final int relay_heigt1=0x7f07003c;
-        public static final int relay_heigt2=0x7f07003d;
-        public static final int small1_small_font_size=0x7f070040;
-        public static final int small2_small_font_size=0x7f07003f;
-        public static final int small_font_size=0x7f070042;
+        public static final int relay_heigt1=0x7f07003d;
+        public static final int relay_heigt2=0x7f07003e;
+        public static final int small1_small_font_size=0x7f070041;
+        public static final int small2_small_font_size=0x7f070040;
+        public static final int small_font_size=0x7f070043;
         /**  hdpi 
          */
         public static final int small_height=0x7f070014;
-        public static final int small_small_font_size=0x7f070041;
+        public static final int small_small_font_size=0x7f070042;
         public static final int sport_set_height=0x7f07002d;
         public static final int sport_set_icon_size=0x7f07002e;
         public static final int sport_set_middle_height=0x7f070030;
-        public static final int sport_set_select_width=0x7f07003e;
+        public static final int sport_set_select_width=0x7f07003f;
         public static final int sport_set_traget_width=0x7f07002f;
         public static final int sport_time_middle_height=0x7f070031;
-        public static final int transform_city_font_size=0x7f070048;
-        public static final int transform_title_font_size=0x7f070047;
+        public static final int transform_city_font_size=0x7f070049;
+        public static final int transform_title_font_size=0x7f070048;
         public static final int userInfo_headArrow_marginTop=0x7f070017;
         public static final int userInfo_head_marginTop=0x7f070018;
         public static final int width_half=0x7f07001b;
