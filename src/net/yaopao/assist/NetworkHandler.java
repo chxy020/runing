@@ -44,7 +44,7 @@ public class NetworkHandler extends Activity{
 	 * @throws Exception
 	 */
 	public static String endpoints="http://182.92.97.144:8080/chSports/";
-	private static final int REQUEST_TIMEOUT = 60*1000;//设置请求超时10秒钟  
+	private static final int REQUEST_TIMEOUT = 60*1000;//设置请求超时一分钟  
 	private static final int SO_TIMEOUT = 10*1000;  //设置等待数据超时时间10秒钟  
 	
 	public static HttpClient getHttpClient(){  
@@ -58,11 +58,8 @@ public class NetworkHandler extends Activity{
 		if (Variables.network==0) {
 			return null;
 		}
-		Log.v("wy", 3+"");
 		String rtStr="";
 		HttpPost httpRequest = new HttpPost(url);
-		Log.v("wy", "url:"+url);
-		Log.v("wy", "param:"+param);
 		try {
 			httpRequest.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			httpRequest.setEntity(new StringEntity(param, "utf-8"));

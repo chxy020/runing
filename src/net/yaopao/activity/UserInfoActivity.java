@@ -2,6 +2,8 @@ package net.yaopao.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import net.yaopao.activity.R;
 import net.yaopao.assist.Constants;
@@ -137,6 +139,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				phoneV.setText(user.getString("phone"));
 				birthdayV.setText(user.getString("birthday"));
 				if ("M".equals(user.getString("gender"))) {
+					gender="M";
 					femaleV.setBackgroundColor(this.getResources().getColor(
 							R.color.white));
 					maleV.setBackgroundColor(this.getResources().getColor(
@@ -146,6 +149,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 					maleV.setTextColor(this.getResources().getColor(
 							R.color.white));
 				}else {
+					gender="F";
 					femaleV.setBackgroundColor(this.getResources().getColor(
 							R.color.blue_dark));
 					maleV.setBackgroundColor(this.getResources().getColor(
@@ -332,15 +336,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				case 0:
 					Toast.makeText(UserInfoActivity.this, "修改成功",
 							Toast.LENGTH_LONG).show();
+					Log.v("wyuser", "保存修改返回的 ="+saveJson);
+					Log.v("wyuser", "存之前 ="+DataTool.getUserInfo());
 					DataTool.setUserInfo(saveJson);
-					Intent myIntent = new Intent();
-					myIntent = new Intent(UserInfoActivity.this,
-							MainActivity.class);
-					startActivity(myIntent);
+					Log.v("wyuser", "存之后 ="+DataTool.getUserInfo());
 					UserInfoActivity.this.finish();
 					break;
 				default:
-					Toast.makeText(UserInfoActivity.this, "登录失败，请稍后重试",
+					Toast.makeText(UserInfoActivity.this, "保存失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 					break;
 				}
@@ -399,90 +402,29 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		}
 	}
 
-	private void goGetPhotoFromCamera() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(new File(Constants.imagePath)));
-		startActivityForResult(intent, Constants.RET_CAMERA);
+    private void showSetPhotoDialog()
+	{
+		final String[] item_type = new String[] {	
+			"相机", "相册", "取消"};
+		
+		new AlertDialog.Builder(this).
+			setTitle ("选取来自").
+//			setIcon (R.drawable.icon). 
+			setItems (item_type,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							goGetPhotoFromCamera () ;
+							break ;
+						case 1:
+							goGetPhotoFromGallery () ;
+							break ;
+						}
+					}
+			}).show();
 	}
-
-	private void goGetPhotoFromGallery() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-		intent.setType("image/*");
-		startActivityForResult(Intent.createChooser(intent, "选择图片"),
-				Constants.RET_GALLERY);
-	}
-
-	private void doneGetPhotoFromCamera(Intent data) {
-		Bundle extras = data.getExtras();
-		if (extras != null) {
-			mPhotoBmp = extras.getParcelable("data");
-			if (mPhotoBmp == null) {
-				return;
-			}
-			ByteArrayOutputStream output = new ByteArrayOutputStream();// 初始化一个流对象
-			mPhotoBmp.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩
-																	// 到
-			// output对象里
-			imageByte = output.toByteArray();
-			if (Variables.network==1) {
-				pd = ProgressDialog
-						.show(UserInfoActivity.this, "更新头像", "加载中，请稍后……");
-				new upImgAsyncTask().execute("");
-			}else {
-				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
-			}
-			
-
-		}
-	}
-
-	private void doneGetPhotoFromGallery(Intent data) {
-		if (data == null) {
-			return;
-		}
-		Uri originalUri = data.getData();
-		String imagePath = getAbsoluteImagePath(originalUri);
-
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inPurgeable = true;
-		opts.inInputShareable = true;
-		opts.inDither = false;
-		opts.inJustDecodeBounds = false;
-		opts.outWidth = 160;
-		opts.outHeight = 160;
-		opts.inPreferredConfig = Bitmap.Config.RGB_565;
-
-		mPhotoBmp = BitmapFactory.decodeFile(imagePath, opts);
-		if (mPhotoBmp == null) {
-			return;
-		}
-
-		ByteArrayOutputStream output = new ByteArrayOutputStream();// 初始化一个流对象
-		mPhotoBmp.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩
-																// 到
-		// output对象里
-		imageByte = output.toByteArray();
-		Log.v("wy", "上传图片1");
-		pd = ProgressDialog.show(UserInfoActivity.this, "更新头像", "加载中，请稍后……");
-		new upImgAsyncTask().execute("");
-	}
-
-	private String getAbsoluteImagePath(Uri uri) {
-		// can post image
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = managedQuery(uri, proj, // Which columns to return
-				null, // WHERE clause; which rows to return (all rows)
-				null, // WHERE clause selection arguments (none)
-				null); // Order-by clause (ascending by name)
-
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-		cursor.moveToFirst();
-
-		return cursor.getString(column_index);
-	}
-
-	public void startPhotoZoom(Uri uri) {
+    public void startPhotoZoom(Uri uri) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, Constants.IMAGE_UNSPECIFIED);
 		intent.putExtra("crop", "true");
@@ -490,66 +432,79 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 640);
-		intent.putExtra("outputY", 640);
+		intent.putExtra("outputX", 150);
+		intent.putExtra("outputY", 150);
 		intent.putExtra("return-data", true);
 		intent.putExtra("outputFormat", "JPEG");
-		intent.putExtra("noFaceDetection", true);
-		// intent.putExtra("output", Uri.parse(imagePath1));
+        intent.putExtra("noFaceDetection", true);
+		//intent.putExtra("output", Uri.parse(imagePath1));
 		startActivityForResult(intent, Constants.RET_CROP);
 	}
-
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case Constants.RET_CAMERA:
-			if (resultCode == Activity.RESULT_OK) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+    {
+    	switch (requestCode)
+    	{
+    	case Constants.RET_CAMERA:
+			if (resultCode == Activity.RESULT_OK) 
+			{
 				File picture = new File(Constants.imagePath);
 				startPhotoZoom(Uri.fromFile(picture));
 			}
-			break;
+			break ;
 		case Constants.RET_GALLERY:
-			if (resultCode == Activity.RESULT_OK) {
+			if (resultCode == Activity.RESULT_OK) 
+			{
 				if (data != null) {
-					Log.v("zc", "data");
+					Log.v("zc","data");
 				}
 				startPhotoZoom(data.getData());
 			}
-			break;
+			break ;
 		case Constants.RET_CROP:
-			if (resultCode == Activity.RESULT_OK) {
-				doneGetPhotoFromCamera(data);
+			if (resultCode == Activity.RESULT_OK) 
+			{
+				doneGetPhotoFromCamera (data) ;
 			}
-			break;
+			break ;
+    	}
+    	
+    	super.onActivityResult (requestCode, resultCode, data) ;
+    }
+	
+	private void goGetPhotoFromCamera () {
+		Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE) ;
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constants.imagePath)));
+		startActivityForResult (intent, Constants.RET_CAMERA) ;
+	}
+	
+	private void goGetPhotoFromGallery () {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT); 
+        intent.setType("image/*"); 
+        startActivityForResult ( Intent.createChooser(intent, 
+        		"选择图片"), Constants.RET_GALLERY ) ;
+	}
+
+	private void doneGetPhotoFromCamera (Intent data) {
+		Bundle extras = data.getExtras();
+		if (extras != null) {
+			Bitmap bmp = extras.getParcelable("data");
+			if (bmp == null)
+			{
+				return ;
+			}
+			mPhotoBmp = bmp;
+			FileOutputStream output = null;
+			try {
+				output = new FileOutputStream (new File(Constants.imagePath));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//初始化一个流对象
+	        bmp.compress(CompressFormat.JPEG, 100, output);//把bitmap100%高质量压缩 到 output对象里
+			headv.setImageBitmap(bmp) ;
 		}
-
-		super.onActivityResult(requestCode, resultCode, data);
 	}
-
-	private void showSetPhotoDialog() {
-		final String[] item_type = new String[] { "相机", "相册", "取消" };
-
-		new AlertDialog.Builder(this).setTitle("选取来自")
-				.setIcon(R.drawable.ic_launcher)
-				.setItems(item_type, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							goGetPhotoFromCamera();
-							break;
-						case 1:
-							goGetPhotoFromGallery();
-							break;
-						}
-					}
-				}).show();
- 
-	}
-	 //为弹出窗口实现监听类  
-    private OnClickListener  itemsOnClick = new OnClickListener(){  
-  
-        public void onClick(View v) {  
-            dateWindow.dismiss();  
-            }                   
-    }; 
+	
+    
 }

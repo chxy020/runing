@@ -22,6 +22,7 @@ public class Constants {
 	
 	public static final String endpoints="http://182.92.97.144:8080/chSports";//线上服务地址   
 	
+	
 	public static final String reg="/login/useregister.htm";//注册   
 //	public static final String reg="/testlogin/testuseregister.htm";//注册   
 	

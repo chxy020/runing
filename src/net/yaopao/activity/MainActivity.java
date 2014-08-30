@@ -32,8 +32,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 	LinearLayout stateL;
 	LinearLayout recording ;
 	LinearLayout matchL;
+	Bitmap head ;
 	/** 设置*/
 	private TextView mMainSetting = null;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +54,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL.setOnTouchListener(this);
 		start.setOnTouchListener(this);
 		recording.setOnTouchListener(this);
-		
-		//初始化页面 chenxy add
-		initView();
-		//end
 	}
 
 	@Override
@@ -77,7 +75,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				}
 				desc.setText(userInfo.getString("signature"));
 
-				Bitmap head = DataTool.getHead();
+				 head = DataTool.getHead();
 				if (head != null) {
 					headv.setImageBitmap(head);
 				}
@@ -94,6 +92,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onDestroy() {
+		if (head!=null) {
+			head.recycle();
+			head=null;
+		}
 		super.onDestroy();
 	}
 

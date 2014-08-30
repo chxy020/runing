@@ -52,7 +52,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:gravity="center" />
+                android:gravity="center|right" 
+                android:layout_marginRight="@dimen/margin8"
+                />
         </LinearLayout>
 
         <View
@@ -139,7 +141,7 @@
                 android:id="@+id/userinfo_realname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin8"
                 android:background="@null"
                 android:gravity="center_vertical|right" />
         </LinearLayout>
@@ -165,9 +167,10 @@
                 android:id="@+id/userinfo_phone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin8"
                 android:background="@null"
-                android:gravity="center_vertical" />
+                 android:gravity="center_vertical|right"
+                 />
         </LinearLayout>
 
         <View
@@ -191,7 +194,7 @@
                 android:id="@+id/userinfo_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin8"
                 android:background="@null"
                 android:gravity="center_vertical|right" />
         </LinearLayout>
@@ -217,7 +220,7 @@
                 android:id="@+id/userinfo_height"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin8"
                 android:background="@null"
                 android:gravity="center_vertical|right" />
         </LinearLayout>
@@ -243,7 +246,7 @@
                 android:id="@+id/userinfo_weight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin8"
                 android:background="@null"
                 android:gravity="center_vertical|right" />
         </LinearLayout>
@@ -269,7 +272,7 @@
                 android:id="@+id/userinfo_sign"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin8"
                 android:background="@null"
                 android:gravity="center_vertical|right" />
         </LinearLayout>

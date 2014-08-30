@@ -9,7 +9,6 @@
     <dimen name="font_size5">40dp</dimen>
     <dimen name="font_size6">60dp</dimen>
     <dimen name="font_size7">15dp</dimen>
-    
     <dimen name="margin1">10dp</dimen>
     <dimen name="margin2">20dp</dimen>
     <dimen name="margin3">40dp</dimen>
@@ -20,7 +19,7 @@
     <dimen name="margin8">35dp</dimen>
     <dimen name="margin9">5dp</dimen>
     <dimen name="margin10">60dp</dimen>
-
+    <dimen name="countdown_tnum_width">60dp</dimen>
     <dimen name="small_height">20dp</dimen>
     <dimen name="common_height">40dp</dimen>
     <dimen name="medium_hight">100dp</dimen>
@@ -54,16 +53,12 @@
     <dimen name="recording_mileage_height">80dp</dimen>
     <dimen name="recording_save_pho_height">180dp</dimen>
     <dimen name="recording_List_main_height">120dp</dimen>
-    
     <dimen name="match_countdown_layout_height">120dp</dimen>
     <dimen name="match_countdown_num_width">80dp</dimen>
-     <dimen name="match_bottom_height">160dp</dimen>
-     <dimen name="match_tnum_width">15dp</dimen>
-     <dimen name="match_tnum_l_width">40dp</dimen>
-
-     <dimen name="relay_heigt1">280dp</dimen>
-     <dimen name="relay_heigt2">260dp</dimen>
-     
-     
+    <dimen name="match_bottom_height">160dp</dimen>
+    <dimen name="match_tnum_width">15dp</dimen>
+    <dimen name="match_tnum_l_width">40dp</dimen>
+    <dimen name="relay_heigt1">280dp</dimen>
+    <dimen name="relay_heigt2">260dp</dimen>
 
 </resources>

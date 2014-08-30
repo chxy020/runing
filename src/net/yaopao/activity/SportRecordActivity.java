@@ -21,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.amap.api.maps2d.AMapUtils;
@@ -43,6 +44,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private static TextView speedV;
 	
 	private DecimalFormat df;
+	private ProgressBar progressHorizontal ;
 //	private double distance = 0;
 	//测试代码
 	// public static double lon = 116.402894;
@@ -100,7 +102,15 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		pointsIndex.add(0);
 		startTimer();
 		startRecordGps();
-
+		 progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
+		if (Variables.runtar==1) {
+			progressHorizontal.setMax((int)Variables.runtarDis*10);
+		}else if(Variables.runtar==2) {
+			progressHorizontal.setMax((int)Variables.runtarTime);
+		}else {
+			progressHorizontal.setMax(100);
+		}
+		
 	}
 
 	@Override

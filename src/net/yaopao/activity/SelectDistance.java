@@ -1,5 +1,6 @@
 package net.yaopao.activity;
-    import net.yaopao.widget.NumericWheelAdapter;
+    import net.yaopao.assist.Variables;
+import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
 import android.app.Activity;
@@ -33,7 +34,7 @@ import android.widget.ViewFlipper;
         public SelectDistance(Activity context,final Handler handler) {  
             super(context);  
             mContext = context;  
-            this.distance =SportTargetActivity.distance;  
+            this.distance =Variables.runtarDis+"";  
         	distanceV = (TextView) mContext.findViewById(R.id.target_distance_select);
             LayoutInflater inflater = LayoutInflater.from(context);  
             mMenuView = inflater.inflate(R.layout.pop_distance, null,true);
@@ -113,7 +114,7 @@ import android.widget.ViewFlipper;
             curDistance += view2.getCurrentItem()+"";
             view2.setCurrentItem(view2.getCurrentItem(), true);  
             distance =curDistance; 
-            distanceV.setText(distance+"km");
+            distanceV.setText(distance+" 千米");
         }  
       
         /** 
