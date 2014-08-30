@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.yaopao.activity.SportRecordActivity;
+import net.yaopao.activity.YaoPao01App;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
@@ -109,6 +110,7 @@ public class DBManager {
 		ArrayList<SportBean> sports = new ArrayList<SportBean>();
 		Cursor c = queryTheCursor();
 		while (c.moveToNext()) {
+		
 			SportBean sport = new SportBean();
 			sport.setId(c.getInt(c.getColumnIndex("id")));
 			sport.setRid(c.getString(c.getColumnIndex("rid")));
@@ -120,6 +122,7 @@ public class DBManager {
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
 			sports.add(sport);
+			YaoPao01App.lts.writeFileToSD("db list : id=" + c.getColumnIndex("id")+" ", "uploadLocation");
 		}
 		c.close();
 		return sports;
@@ -163,6 +166,7 @@ public class DBManager {
 		Log.d("wydb", "DBManager --> query");
 		ArrayList<SportBean> sports = new ArrayList<SportBean>();
 		Cursor c = db.rawQuery("SELECT * FROM "+DatabaseHelper.SPORTDATA_TABLE+" WHERE id ="+id, null);
+		YaoPao01App.lts.writeFileToSD("db : " + c, "uploadLocation");
 		SportBean sport = new SportBean();
 		while (c.moveToNext()) {
 			
@@ -190,7 +194,7 @@ public class DBManager {
 	 */
 	public Cursor queryTheCursor() {
 		Log.d("wydb", "DBManager --> queryTheCursor");
-		Cursor c = db.rawQuery("SELECT * FROM "	+ DatabaseHelper.SPORTDATA_TABLE, null);
+		Cursor c = db.rawQuery("SELECT * FROM "	+ DatabaseHelper.SPORTDATA_TABLE +" ORDER BY id DESC", null);
 		return c;
 	}
 
