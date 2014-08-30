@@ -58,10 +58,12 @@
     <dimen name="match_bottom_height">180dp</dimen>
     <dimen name="match_tnum_width">15dp</dimen>
     <dimen name="match_tnum_l_width">45dp</dimen>
-    <dimen name="match_dot_width">30dp</dimen>
-    <dimen name="main_num_height">60dp</dimen>
-    <dimen name="main_num_width">30dp</dimen>
+    <dimen name="match_dot_width">23dp</dimen>
+ 
+       <dimen name="main_num_height">72dp</dimen>
+    <dimen name="main_num_width">45dp</dimen>
     <dimen name="relay_heigt1">280dp</dimen>
     <dimen name="relay_heigt2">260dp</dimen>
+     <dimen name="sport_num_width">75dp</dimen>
 
 </resources>

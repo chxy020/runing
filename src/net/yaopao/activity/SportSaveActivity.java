@@ -111,7 +111,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				startActivity(myIntent);
 				SportSaveActivity.this.finish();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
-				
+
 				break;
 			}
 			break;
@@ -139,15 +139,15 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				
+
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				SportRecordActivity.points.clear();
 				SportRecordActivity.pointsIndex.clear();
-				Variables.utime=0;
-				Variables.pspeed=0;
-				Variables.distance=0;
+				Variables.utime = 0;
+				Variables.pspeed = 0;
+				Variables.distance = 0;
 				myIntent = new Intent(SportSaveActivity.this,
 						SportListActivity.class);
 				startActivity(myIntent);

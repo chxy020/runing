@@ -26,8 +26,6 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 	ImageView runImgV;
 	ImageView rideImgV;
 
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -35,14 +33,11 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 		setContentView(R.layout.activity_sport_type);
 		backV = (TextView) this.findViewById(R.id.type_goback);
 		walkV = (RelativeLayout) this.findViewById(R.id.type_walk);
-		runV = (RelativeLayout) this
-				.findViewById(R.id.type_run);
+		runV = (RelativeLayout) this.findViewById(R.id.type_run);
 		rideV = (RelativeLayout) this.findViewById(R.id.type_ride);
 
-
 		walkImgV = (ImageView) this.findViewById(R.id.type_step_select_icon);
-		runImgV = (ImageView) this
-				.findViewById(R.id.type_run_select_icon);
+		runImgV = (ImageView) this.findViewById(R.id.type_run_select_icon);
 		rideImgV = (ImageView) this.findViewById(R.id.type_bike_select_icon);
 
 		backV.setOnTouchListener(this);
@@ -70,7 +65,7 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runty=1;
+				Variables.runty = 1;
 				walkImgV.setBackgroundResource(R.drawable.check);
 				runImgV.setBackgroundResource(0);
 				rideImgV.setBackgroundResource(0);
@@ -82,7 +77,7 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runty=2;
+				Variables.runty = 2;
 				walkImgV.setBackgroundResource(0);
 				runImgV.setBackgroundResource(R.drawable.check);
 				rideImgV.setBackgroundResource(0);
@@ -94,7 +89,7 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runty=3;
+				Variables.runty = 3;
 				walkImgV.setBackgroundResource(0);
 				runImgV.setBackgroundResource(0);
 				rideImgV.setBackgroundResource(R.drawable.check);
@@ -108,7 +103,7 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onResume() {
-		
+
 		switch (Variables.runty) {
 		case 1:
 			walkImgV.setBackgroundResource(R.drawable.check);
@@ -129,11 +124,9 @@ public class SportTypeActivity extends Activity implements OnTouchListener {
 		default:
 			break;
 		}
-		
-		
+
 		super.onResume();
 	}
-
 
 	@Override
 	protected void onDestroy() {

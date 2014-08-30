@@ -191,9 +191,10 @@ public class TrackData {
 		Properties props = new Properties();
 		InputStream in;
 		try {
-//			in = new BufferedInputStream(new FileInputStream(fileName));
-			in = YaoPao01App.getAppContext().getResources().getAssets().open(fileName);
-			
+			// in = new BufferedInputStream(new FileInputStream(fileName));
+			in = YaoPao01App.getAppContext().getResources().getAssets()
+					.open(fileName);
+
 			props.load(in);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

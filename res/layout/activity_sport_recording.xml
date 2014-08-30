@@ -16,7 +16,7 @@
             android:layout_height="@dimen/small_height"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin1"
-            android:background="@drawable/gps_4_w" />
+            android:background="@drawable/gps_1_w" />
 
         <TextView
             android:id="@+id/sport_gps"
@@ -35,54 +35,50 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/sport_map" >
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/sport_dis"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/sport_time_middle_height" 
-                android:layout_above="@+id/sport_recoding_mileage_text"
-                >
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/main_num_height"
+                android:layout_above="@+id/sport_recoding_mileage_text" 
+                android:layout_centerInParent="true">
 
                 <ImageView
                     android:id="@+id/match_recoding_dis1"
-                    android:layout_width="@dimen/match_tnum_l_width"
+                    android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/match_recoding_dis2"
-                    android:background="@drawable/w_0" />
+                    android:background="@drawable/w_0" 
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/match_recoding_dis2"
-                    android:layout_width="@dimen/match_tnum_l_width"
+                    android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/match_recoding_dis_d"
                     android:background="@drawable/w_0" />
 
                 <ImageView
                     android:id="@+id/match_recoding_dis_d"
                     android:layout_width="@dimen/match_dot_width"
                     android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
                     android:background="@drawable/w_dot" />
 
                 <ImageView
                     android:id="@+id/match_recoding_dis3"
-                    android:layout_width="@dimen/match_tnum_l_width"
+                    android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/match_recoding_dis_d"
                     android:background="@drawable/w_0" />
 
                 <ImageView
                     android:id="@+id/match_recoding_dis4"
-                    android:layout_width="@dimen/match_tnum_l_width"
+                    android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/match_recoding_dis3"
                     android:background="@drawable/w_0" />
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/sport_recoding_mileage_text"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height"
-				android:layout_above="@id/line_under_recoding_mileage"
+                android:layout_above="@id/line_under_recoding_mileage"
                 android:gravity="center"
                 android:text="距离（公里）"
                 android:textColor="@color/white"
@@ -92,7 +88,7 @@
                 android:id="@+id/line_under_recoding_mileage"
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
-               android:layout_above="@+id/sport_recoding_time"
+                android:layout_above="@+id/sport_recoding_time"
                 android:background="@color/white" >
             </View>
 
@@ -100,7 +96,7 @@
                 android:id="@+id/sport_recoding_time"
                 android:layout_width="@dimen/width_half"
                 android:layout_height="@dimen/common_height"
-               android:layout_above="@+id/sport_recoding_time_text"
+                android:layout_above="@+id/sport_recoding_time_text"
                 android:gravity="center"
                 android:text="00:00:00"
                 android:textColor="@color/white"
@@ -119,7 +115,7 @@
                 android:id="@+id/line_vertical"
                 android:layout_width="1px"
                 android:layout_height="@dimen/sport_set_height"
-               android:layout_above="@+id/line_under_recoding_speed_text"
+                android:layout_above="@+id/line_under_recoding_speed_text"
                 android:layout_toRightOf="@id/sport_recoding_time"
                 android:background="@color/white" >
             </View>
@@ -139,7 +135,7 @@
                 android:id="@+id/sport_recoding_speed_text"
                 android:layout_width="@dimen/width_half"
                 android:layout_height="@dimen/small_height"
-                android:layout_above="@+id/line_under_recoding_speed_text" 
+                android:layout_above="@+id/line_under_recoding_speed_text"
                 android:layout_toRightOf="@id/line_vertical"
                 android:gravity="center"
                 android:text="平均配速"
@@ -149,7 +145,7 @@
                 android:id="@+id/line_under_recoding_speed_text"
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
-android:layout_above="@+id/recoding_process"                
+                android:layout_above="@+id/recoding_process"
                 android:background="@color/white" >
             </View>
 
@@ -178,13 +174,12 @@ android:layout_above="@+id/recoding_process"
                 android:id="@+id/recoding_process_text"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/small_height"
+                android:layout_above="@id/line_under_recoding_process_text"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_above="@id/line_under_recoding_process_text"
                 android:gravity="center"
                 android:text="目标"
                 android:textColor="@color/white" />
-
         </RelativeLayout>
 
         <ImageView
@@ -223,8 +218,7 @@ android:layout_above="@+id/recoding_process"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dip"
-                android:background="@drawable/ic_slider"
-                >
+                android:background="@drawable/ic_slider" >
             </ImageView>
 
             <TextView

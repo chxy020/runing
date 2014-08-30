@@ -32,7 +32,7 @@ public class SportBean {
 	private double distance;// 距离
 	private int pspeed;// 配速
 	private double hspeed;// 时速
-	
+
 	public int getId() {
 		return id;
 	}
@@ -232,7 +232,7 @@ public class SportBean {
 	public void setHspeed(double hspeed) {
 		this.hspeed = hspeed;
 	}
-	
+
 	public String getStatusIndex() {
 		return statusIndex;
 	}
@@ -243,7 +243,8 @@ public class SportBean {
 
 	@Override
 	public String toString() {
-		return "rid= " +rid+" distance="+distance+" runtra="+runtra+" statusIndex="+statusIndex;
+		return "rid= " + rid + " distance=" + distance + " runtra=" + runtra
+				+ " statusIndex=" + statusIndex;
 	}
 
 }

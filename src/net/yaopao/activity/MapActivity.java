@@ -54,7 +54,7 @@ public class MapActivity extends Activity implements LocationSource,
 	static TextView sliderTextV;
 	private ImageView backV;
 	private ImageView locV;
-	private int isFollow=0;
+	private int isFollow = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +94,12 @@ public class MapActivity extends Activity implements LocationSource,
 			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 				@Override
 				public void onCameraChangeFinish(CameraPosition cameraPosition) {
-					
+
 				}
 
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
-					isFollow=0;
+					isFollow = 0;
 				}
 			});
 		}
@@ -298,9 +298,9 @@ public class MapActivity extends Activity implements LocationSource,
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
 			mListener.onLocationChanged(aLocation);
-			if (isFollow==1) {
-				aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-						new LatLng(aLocation.getLatitude(), aLocation	.getLongitude()), 16));
+			if (isFollow == 1) {
+				aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+						aLocation.getLatitude(), aLocation.getLongitude()), 16));
 			}
 		}
 	}
@@ -334,8 +334,8 @@ public class MapActivity extends Activity implements LocationSource,
 			case MotionEvent.ACTION_UP:
 				Location myloc = aMap.getMyLocation();
 				if (myloc != null) {
-//					aMap.setMyLocationType(AMap)
-					isFollow=1;
+					// aMap.setMyLocationType(AMap)
+					isFollow = 1;
 					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
 							new LatLng(myloc.getLatitude(), myloc
 									.getLongitude()), 16));
@@ -393,10 +393,11 @@ public class MapActivity extends Activity implements LocationSource,
 		}
 		return true;
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
+			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}

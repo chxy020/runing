@@ -60,17 +60,17 @@ public class YaoPao01App extends Application {
 			@Override
 			public void onLocationChanged(Location location) {
 				if (location != null) {
-//					lts.writeFileToSD(
-//							"Location changed : Lat: " + location.getLatitude()
-//									+ " Lng: " + location.getLongitude(),
-//							"uploadLocation");
-					if (location.getAccuracy() > 200){
+					// lts.writeFileToSD(
+					// "Location changed : Lat: " + location.getLatitude()
+					// + " Lng: " + location.getLongitude(),
+					// "uploadLocation");
+					if (location.getAccuracy() > 200) {
 						if (SportRecordActivity.gpsV != null) {
 							SportRecordActivity.gpsV
 									.setBackgroundResource(R.drawable.gps_1_w);
 						}
-						rank = 1;}
-					else if (location.getAccuracy() > 50) {
+						rank = 1;
+					} else if (location.getAccuracy() > 50) {
 						if (SportRecordActivity.gpsV != null) {
 							SportRecordActivity.gpsV
 									.setBackgroundResource(R.drawable.gps_2_w);
@@ -100,7 +100,7 @@ public class YaoPao01App extends Application {
 					} else {
 						Variables.gpsStatus = 0;
 					}
-//					lts.writeFileToSD("rank: " + rank, "uploadLocation");
+					// lts.writeFileToSD("rank: " + rank, "uploadLocation");
 
 				} else {
 					Variables.gpsStatus = 0;

@@ -57,11 +57,11 @@
     <dimen name="match_countdown_num_width">80dp</dimen>
     <dimen name="match_bottom_height">160dp</dimen>
     <dimen name="match_tnum_width">15dp</dimen>
-    <dimen name="match_tnum_l_width">40dp</dimen>
-    <dimen name="match_dot_width">30dp</dimen>
-    <dimen name="main_num_height">60dp</dimen>
-    <dimen name="main_num_width">30dp</dimen>
-    
+    <dimen name="match_tnum_l_width">62dp</dimen>
+    <dimen name="match_dot_width">20dp</dimen>
+    <dimen name="main_num_height">64dp</dimen>
+    <dimen name="main_num_width">40dp</dimen>
+    <dimen name="sport_num_width">62dp</dimen>
     <dimen name="relay_heigt1">280dp</dimen>
     <dimen name="relay_heigt2">260dp</dimen>
 

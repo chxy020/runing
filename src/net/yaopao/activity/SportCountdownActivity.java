@@ -32,14 +32,17 @@ public class SportCountdownActivity extends Activity implements OnTouchListener 
 		time = (RelativeLayout) findViewById(R.id.sport_time_layout);
 		time1 = (ImageView) findViewById(R.id.sport_time1);
 		time2 = (ImageView) findViewById(R.id.sport_time2);
+		time1.setVisibility(View.VISIBLE);
 		time.setOnTouchListener(this);
 		timer.schedule(task, 0, 1000);
 	}
-@Override
-protected void onDestroy() {
-	timer.cancel();
-	super.onDestroy();
-}
+
+	@Override
+	protected void onDestroy() {
+		timer.cancel();
+		super.onDestroy();
+	}
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -60,6 +63,7 @@ protected void onDestroy() {
 		}
 		return true;
 	}
+
 	TimerTask task = new TimerTask() {
 		@Override
 		public void run() {
@@ -68,11 +72,12 @@ protected void onDestroy() {
 				@Override
 				public void run() {
 					if (countTime == 10) {
-						update(0, time1);
-						update(1, time2);
-					} else {
-						update(countTime, time1);
+						update(1, time1);
 						update(0, time2);
+					} else {
+						time1.setVisibility(View.GONE);
+						update(countTime, time2);
+
 					}
 
 					countTime--;
@@ -128,10 +133,10 @@ protected void onDestroy() {
 			break;
 		}
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}

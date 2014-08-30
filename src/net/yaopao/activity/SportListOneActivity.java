@@ -33,7 +33,8 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.amap.api.maps2d.model.PolylineOptions;
 
-public class SportListOneActivity extends Activity implements OnTouchListener, LocationSource,AMapLocationListener {
+public class SportListOneActivity extends Activity implements OnTouchListener,
+		LocationSource, AMapLocationListener {
 	private TextView backV;
 	private MapView mapView;
 	private AMap aMap;
@@ -42,6 +43,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	public GpsPoint lastDrawPoint;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -53,14 +55,15 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 	}
 
 	private void initLayout() {
-		
+
 		backV = (TextView) findViewById(R.id.recording_one_back);
-		backV .setOnTouchListener(this);
+		backV.setOnTouchListener(this);
 		lonLatEncryption = new LonLatEncryption();
 		Intent intent = getIntent();
-		 int id=Integer.parseInt(intent.getStringExtra("id"));
+		int id = Integer.parseInt(intent.getStringExtra("id"));
 		oneSport = YaoPao01App.db.queryForOne(id);
-		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),GpsPoint.class);
+		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
+				GpsPoint.class);
 		int pointCount = pointsArray.size();
 		JSONArray indexArray = JSONArray.parseArray(oneSport.getStatusIndex());
 		if (aMap == null) {
@@ -68,7 +71,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 				@Override
 				public void onCameraChangeFinish(CameraPosition cameraPosition) {
-					
+
 				}
 
 				@Override
@@ -77,30 +80,31 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 				}
 			});
 		}
-	
+
 		aMap.getUiSettings().setZoomControlsEnabled(false);
-		if (pointCount!=0) {
+		if (pointCount != 0) {
 			GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
-			
-			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(start.lat, start.lon), 16));
-		}else{
+
+			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+					start.lat, start.lon), 16));
+		} else {
 			aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		}
-		
+
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-		
-		
-		if (pointCount==0) {
+
+		if (pointCount == 0) {
 			return;
-		}else if (pointCount<2) {
+		} else if (pointCount < 2) {
 			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
 			return;
 		}
-		
-		if (indexArray.size()==0) {	
-			aMap.addPolyline((new PolylineOptions()).addAll(initPoints(pointsArray)).color(Color.RED));
+
+		if (indexArray.size() == 0) {
+			aMap.addPolyline((new PolylineOptions()).addAll(
+					initPoints(pointsArray)).color(Color.RED));
 			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
 			return;
 		}
@@ -123,8 +127,8 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 						lonLatEncryption.encrypt(gpsPoint).lon));
 			}
 
-			GpsPoint gpsPointEnd = (GpsPoint) pointsArray
-					.get(oneLinePoints.size() - 1);
+			GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
+					.size() - 1);
 			if (gpsPointEnd.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
 						.color(Color.RED));
@@ -134,10 +138,9 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 			}
 		}
 		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-		
+
 	}
-	
-	
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -148,7 +151,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 		}
 		return true;
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -244,6 +247,5 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 			mListener.onLocationChanged(aLocation);// ��ʾϵͳС����
 		}
 	}
-
 
 }

@@ -65,7 +65,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		phoneNumV = (EditText) this.findViewById(R.id.login_phoneNum);
 		pwdV = (EditText) this.findViewById(R.id.login_pwd);
 		dialog = new LoadingDialog(this);
-//		dialog.setCanceledOnTouchOutside(false);
+		// dialog.setCanceledOnTouchOutside(false);
 		goBack.setOnTouchListener(this);
 		to_reset.setOnTouchListener(this);
 		login.setOnTouchListener(this);
@@ -169,7 +169,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 
 		@Override
 		protected void onPreExecute() {
-			
+
 		}
 
 		@Override
@@ -210,10 +210,10 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					DataTool.setUserInfo(loginJson);
 					Toast.makeText(LoginActivity.this, "登录成功",
 							Toast.LENGTH_LONG).show();
-//					Intent myIntent = new Intent();
-//					myIntent = new Intent(LoginActivity.this,
-//							MainActivity.class);
-//					startActivity(myIntent);
+					// Intent myIntent = new Intent();
+					// myIntent = new Intent(LoginActivity.this,
+					// MainActivity.class);
+					// startActivity(myIntent);
 					LoginActivity.this.finish();
 					break;
 				case -8:
@@ -284,7 +284,8 @@ public class LoginActivity extends Activity implements OnTouchListener {
 			dirFile.mkdirs();
 		}
 		BufferedOutputStream bos = new BufferedOutputStream(
-				new FileOutputStream(new File(Constants.avatarPath+Constants.avatarName)));
+				new FileOutputStream(new File(Constants.avatarPath
+						+ Constants.avatarName)));
 		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 		bos.flush();
 		bos.close();

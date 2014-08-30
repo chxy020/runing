@@ -72,39 +72,39 @@
 <RelativeLayout
         android:id="@+id/match_time"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_hight"
+        android:layout_height="@dimen/main_num_height"
         android:layout_above="@+id/match_recoding_mileage_text">
     <ImageView
             android:id="@+id/match_recoding_dis1"
             android:layout_toLeftOf="@+id/match_recoding_dis2"
-            android:layout_width="@dimen/match_tnum_l_width"
+            android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
     <ImageView
             android:id="@+id/match_recoding_dis2"
             android:layout_toLeftOf="@+id/match_recoding_dis_d"
-            android:layout_width="@dimen/match_tnum_l_width"
+            android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
             android:id="@+id/match_recoding_dis_d"
-            android:layout_width="@dimen/match_tnum_l_width"
+            android:layout_width="@dimen/match_dot_width"
             android:layout_centerHorizontal="true"
             android:layout_height="match_parent"
               android:background="@drawable/w_dot"
              />
         <ImageView
             android:id="@+id/match_recoding_dis3"
-            android:layout_width="@dimen/match_tnum_l_width"
+            android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/match_recoding_dis_d"
               android:background="@drawable/w_0"
              />
         <ImageView
             android:id="@+id/match_recoding_dis4"
-            android:layout_width="@dimen/match_tnum_l_width"
+            android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/match_recoding_dis3"
               android:background="@drawable/w_0"

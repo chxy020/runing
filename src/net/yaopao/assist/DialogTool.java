@@ -38,13 +38,16 @@ public class DialogTool {
 				}).show();
 
 	}
-	public static void doneSport(Context context,final Handler handker) {
+
+	public static void doneSport(Context context, final Handler handker) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		final View dialogView = inflater.inflate(R.layout.alert_dialog, null);
-		final TextView confirm = (TextView) dialogView.findViewById(R.id.alert_confirm);
-		final TextView cancel = (TextView) dialogView.findViewById(R.id.alert_cancle);
-		
-		final Dialog dialog = new Dialog(context,R.style.mydialog);
+		final TextView confirm = (TextView) dialogView
+				.findViewById(R.id.alert_confirm);
+		final TextView cancel = (TextView) dialogView
+				.findViewById(R.id.alert_cancle);
+
+		final Dialog dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
@@ -60,7 +63,7 @@ public class DialogTool {
 					confirm.setBackgroundResource(R.color.gray_light);
 					dialog.dismiss();
 					handker.obtainMessage(0).sendToTarget();
-					
+
 					break;
 				default:
 					break;
@@ -86,6 +89,6 @@ public class DialogTool {
 				}
 				return true;
 			}
-		});		
+		});
 	}
 }

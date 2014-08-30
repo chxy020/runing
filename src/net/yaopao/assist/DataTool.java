@@ -22,14 +22,14 @@ public class DataTool {
 		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
 				.getString("userInfo", null));
 		JSONObject userInfo = rt.getJSONObject("userinfo");
-		if (userInfo==null) {
+		if (userInfo == null) {
 			return rt;
 		}
 		return userInfo;
 	}
 
 	public static void setUserInfo(String data) {
-		Log.v("wyuser", "要存储的="+data);
+		Log.v("wyuser", "要存储的=" + data);
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
 		editor.putString("userInfo", data);
 		editor.putInt("uid", Variables.uid);
@@ -43,32 +43,36 @@ public class DataTool {
 				.getString("head", null));
 		return Constants.endpoints + rt.getString("path120");
 	}
+
 	@SuppressLint("NewApi")
-	public static boolean saveHead(Bitmap mPhotoBmp){
-		Log.v("wy", "save head="+mPhotoBmp.getByteCount());
-		FileOutputStream  m_fileOutPutStream = null;
+	public static boolean saveHead(Bitmap mPhotoBmp) {
+		Log.v("wy", "save head=" + mPhotoBmp.getByteCount());
+		FileOutputStream m_fileOutPutStream = null;
 		try {
-		    m_fileOutPutStream = new FileOutputStream(Constants.avatarPath+Constants.avatarName);//写入的文件路径
+			m_fileOutPutStream = new FileOutputStream(Constants.avatarPath
+					+ Constants.avatarName);// 写入的文件路径
 		} catch (FileNotFoundException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		}
 		mPhotoBmp.compress(CompressFormat.PNG, 100, m_fileOutPutStream);
 		try {
-		m_fileOutPutStream.flush();
-		m_fileOutPutStream.close();
+			m_fileOutPutStream.flush();
+			m_fileOutPutStream.close();
 		} catch (IOException e) {
-		e.printStackTrace();
-		return false;
+			e.printStackTrace();
+			return false;
 		}
 		Log.v("wy", "save head=true");
 		return true;
 	}
-	public static Bitmap getHead(){
-		Bitmap bitmap=null;
+
+	public static Bitmap getHead() {
+		Bitmap bitmap = null;
 		FileInputStream fis = null;
 		try {
-			fis = new FileInputStream(Constants.avatarPath+Constants.avatarName);
-			bitmap  = BitmapFactory.decodeStream(fis);
+			fis = new FileInputStream(Constants.avatarPath
+					+ Constants.avatarName);
+			bitmap = BitmapFactory.decodeStream(fis);
 			fis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

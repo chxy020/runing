@@ -36,8 +36,8 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 	public SelectTime(Activity context, final Handler handler) {
 		super(context);
 		mContext = context;
-		this.time = Variables.runtarTime+"";
-		Log.v("wydb", "time1 ="+time);
+		this.time = Variables.runtarTime + "";
+		Log.v("wydb", "time1 =" + time);
 		timeTextV = (TextView) mContext.findViewById(R.id.target_time_select);
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mMenuView = inflater.inflate(R.layout.pop_time, null, true);
@@ -68,13 +68,13 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 			}
 		};
 		if (time != null) {
-			String []times = time.split(" ");
+			String[] times = time.split(" ");
 			curTime = Integer.parseInt(times[0]);
 		}
 		timeAdapter = new TimeNumericAdapter(context, 5, 180, curTime);
 
 		timeV.setViewAdapter(timeAdapter);
-		timeV.setCurrentItem(curTime-5);
+		timeV.setCurrentItem(curTime - 5);
 		timeV.addChangingListener(listener);
 		updateDistance(timeV);
 
@@ -98,9 +98,10 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 	}
 
 	private void updateDistance(WheelView view) {
-		TimeNumericAdapter timeAd = new TimeNumericAdapter(mContext, 5, 180,curTime);
+		TimeNumericAdapter timeAd = new TimeNumericAdapter(mContext, 5, 180,
+				curTime);
 		view.setViewAdapter(timeAd);
-		String curT = view.getCurrentItem()+5+"";
+		String curT = view.getCurrentItem() + 5 + "";
 		view.setCurrentItem(view.getCurrentItem(), true);
 		time = curT;
 		timeTextV.setText(curT + " 分钟");

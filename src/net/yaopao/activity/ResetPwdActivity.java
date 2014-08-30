@@ -28,7 +28,7 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 	public TextView goBack;
 	public TextView getCodeV;
 	public EditText codeV;
-	
+
 	public EditText phoneNumV;
 	public EditText pwdV;
 
@@ -37,7 +37,6 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 	public String resetJson;
 	public String codeStr;
 	public String verifyCodeJson;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +53,13 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 		pwdV = (EditText) this.findViewById(R.id.reset_pwd);
 		getCodeV = (TextView) this.findViewById(R.id.reset_get_code);
 		codeV = (EditText) this.findViewById(R.id.reset_veri_code);
-		
+
 		goBack.setOnTouchListener(this);
 		reset.setOnTouchListener(this);
 		getCodeV.setOnTouchListener(this);
-		
+
 	}
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -117,6 +117,7 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}
+
 	public boolean verifyPhone() {
 		phoneNumStr = phoneNumV.getText().toString().trim();
 		Log.v("wy", "phone=" + phoneNumStr);
@@ -187,15 +188,17 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 			phoneNumStr = phoneNumV.getText().toString().trim();
 			codeStr = codeV.getText().toString().trim();
 			try {
-				resetJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.modifyPwd, "phone=" + phoneNumStr + "&passwd="+ pwdStr+"&vcode="+codeStr);
+				resetJson = NetworkHandler.httpPost(Constants.endpoints
+						+ Constants.modifyPwd, "phone=" + phoneNumStr
+						+ "&passwd=" + pwdStr + "&vcode=" + codeStr);
 			} catch (Exception e) {
-				Toast.makeText(ResetPwdActivity.this, "网络错误",
-						Toast.LENGTH_LONG).show();				
+				Toast.makeText(ResetPwdActivity.this, "网络错误", Toast.LENGTH_LONG)
+						.show();
 				e.printStackTrace();
 			}
-			if (resetJson!=null&&!"".equals(resetJson)) {
+			if (resetJson != null && !"".equals(resetJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -208,7 +211,7 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				switch (rtCode) {
 				case 0:
-					Variables.islogin=1;
+					Variables.islogin = 1;
 					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
 							Toast.LENGTH_LONG).show();
 					Intent myIntent = new Intent();
@@ -220,18 +223,19 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 				case -2:
 					Toast.makeText(ResetPwdActivity.this, "验证码错误",
 							Toast.LENGTH_LONG).show();
-				break;
+					break;
 				default:
 					Toast.makeText(ResetPwdActivity.this, "重置密码失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 					break;
 				}
-			}else {
-				Toast.makeText(ResetPwdActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(ResetPwdActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
-	
+
 	private class verifyCodAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 		@Override
@@ -246,13 +250,13 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 				verifyCodeJson = NetworkHandler.httpPost(Constants.endpoints
 						+ Constants.forgetPwdCode, "phone=" + phoneNumStr);
 			} catch (Exception e) {
-				Toast.makeText(ResetPwdActivity.this, "网络错误",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(ResetPwdActivity.this, "网络错误", Toast.LENGTH_LONG)
+						.show();
 				e.printStackTrace();
 			}
-			if (verifyCodeJson!=null&&!"".equals(verifyCodeJson)) {
+			if (verifyCodeJson != null && !"".equals(verifyCodeJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -270,8 +274,9 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 					Toast.makeText(ResetPwdActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}
-			}else {
-				Toast.makeText(ResetPwdActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(ResetPwdActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}

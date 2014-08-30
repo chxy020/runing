@@ -43,6 +43,7 @@ public class MatchMapActivity extends Activity implements LocationSource,
 
 	private LonLatEncryption lonLatEncryption;
 	public GpsPoint lastDrawPoint;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,35 +63,38 @@ public class MatchMapActivity extends Activity implements LocationSource,
 			aMap = mapView.getMap();
 			setUpMap();
 		}
-		
+
 		backV = (ImageView) findViewById(R.id.match_map_back);
 		backV.setOnTouchListener(this);
 		drawLine();
 	}
 
 	private void drawLine() {
-		if (MatchRunActivity.points.size()<1) {
+		if (MatchRunActivity.points.size() < 1) {
 			return;
 		}
 		List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-		for (int i=0;i<MatchRunActivity.points.size();i++) {
+		for (int i = 0; i < MatchRunActivity.points.size(); i++) {
 			GpsPoint gpsPoint = MatchRunActivity.points.get(i);
-			oneLinePoints.add(new LatLng(lonLatEncryption.encrypt(gpsPoint).lat,
-					lonLatEncryption.encrypt(gpsPoint).lon));
+			oneLinePoints.add(new LatLng(
+					lonLatEncryption.encrypt(gpsPoint).lat, lonLatEncryption
+							.encrypt(gpsPoint).lon));
 		}
 		lastDrawPoint = MatchRunActivity.points.get(oneLinePoints.size() - 1);
-		aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-				.color(Color.RED));
+		aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints).color(
+				Color.RED));
 	}
-	public  void startTimer() {
+
+	public void startTimer() {
 		timer.postDelayed(drawTask, 3000);
 	}
 
-	public  void stopTimer() {
+	public void stopTimer() {
 		timer.removeCallbacks(drawTask);
 	}
-	 Handler timer = new Handler();
-	 Runnable drawTask = new Runnable() {
+
+	Handler timer = new Handler();
+	Runnable drawTask = new Runnable() {
 		@Override
 		public void run() {
 			drawNewLine();
@@ -98,25 +102,29 @@ public class MatchMapActivity extends Activity implements LocationSource,
 		}
 
 	};
+
 	private void drawNewLine() {
-		
-		if (MatchRunActivity.points.size()<2) {
+
+		if (MatchRunActivity.points.size() < 2) {
 			return;
 		}
-		
-		GpsPoint newPoint = MatchRunActivity.points
-				.get(MatchRunActivity.points.size() - 1);
+
+		GpsPoint newPoint = MatchRunActivity.points.get(MatchRunActivity.points
+				.size() - 1);
 		if (newPoint.lon != lastDrawPoint.lon
 				|| newPoint.lat != lastDrawPoint.lat) {
 			List<LatLng> newLine = new ArrayList<LatLng>();
-			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,lonLatEncryption.encrypt(newPoint).lon));
-			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,lonLatEncryption.encrypt(lastDrawPoint).lon));
-				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
-						Color.RED));
-				aMap.invalidate();
+			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,
+					lonLatEncryption.encrypt(newPoint).lon));
+			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,
+					lonLatEncryption.encrypt(lastDrawPoint).lon));
+			aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
+					Color.RED));
+			aMap.invalidate();
 			lastDrawPoint = newPoint;
 		}
-	}	
+	}
+
 	/**
 	 * 设置一些amap的属性
 	 */
@@ -192,7 +200,7 @@ public class MatchMapActivity extends Activity implements LocationSource,
 	@Override
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
-			 mListener.onLocationChanged(aLocation);// 显示系统小蓝点
+			mListener.onLocationChanged(aLocation);// 显示系统小蓝点
 		}
 	}
 
@@ -247,10 +255,11 @@ public class MatchMapActivity extends Activity implements LocationSource,
 		}
 		return true;
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
+			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}

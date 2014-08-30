@@ -77,7 +77,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_info);
-		
+
 		save = (TextView) this.findViewById(R.id.userinfo_save);
 		femaleV = (TextView) this.findViewById(R.id.userinfo_gender_female);
 		maleV = (TextView) this.findViewById(R.id.userinfo_gender_male);
@@ -113,6 +113,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			}
 		});
 	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -121,7 +122,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	}
 
 	private void initLayout() {
-	
+
 		if (Variables.islogin == 1) {
 			JSONObject user = DataTool.getUserInfo();
 			if (user != null) {
@@ -139,7 +140,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				phoneV.setText(user.getString("phone"));
 				birthdayV.setText(user.getString("birthday"));
 				if ("M".equals(user.getString("gender"))) {
-					gender="M";
+					gender = "M";
 					femaleV.setBackgroundColor(this.getResources().getColor(
 							R.color.white));
 					maleV.setBackgroundColor(this.getResources().getColor(
@@ -148,8 +149,8 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 							R.color.black));
 					maleV.setTextColor(this.getResources().getColor(
 							R.color.white));
-				}else {
-					gender="F";
+				} else {
+					gender = "F";
 					femaleV.setBackgroundColor(this.getResources().getColor(
 							R.color.blue_dark));
 					maleV.setBackgroundColor(this.getResources().getColor(
@@ -158,7 +159,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 							R.color.white));
 					maleV.setTextColor(this.getResources().getColor(
 							R.color.black));
-				}  
+				}
 			} else {
 				nicknameV.setText(DataTool.getPhone());
 				phoneV.setText(DataTool.getPhone());
@@ -230,62 +231,68 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				break;
 			}
 			break;
-	case R.id.userinfo_birthday:
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
+		case R.id.userinfo_birthday:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						birthday = msg.getData().getString("birthday");
+						birthdayV.setText(birthday);
+						super.handleMessage(msg);
+					}
+				};
+				// 实例化SelectPicPopupWindow
+				dateWindow = new SelectBirthday(UserInfoActivity.this, handler);
+				dateWindow.showAtLocation(UserInfoActivity.this
+						.findViewById(R.id.userinfo_birthday), Gravity.BOTTOM
+						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+				break;
+			}
 			break;
-		case MotionEvent.ACTION_UP:
-			final Handler handler = new Handler(){  
-				public void handleMessage(Message msg) {  
-					birthday=msg.getData().getString("birthday");
-					birthdayV.setText(birthday);
-					super.handleMessage(msg); 
-				}
-			};
-			//实例化SelectPicPopupWindow  
-            dateWindow = new SelectBirthday(UserInfoActivity.this,handler);
-            dateWindow.showAtLocation(UserInfoActivity.this.findViewById(R.id.userinfo_birthday), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+		case R.id.userinfo_height:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						height = msg.getData().getString("height");
+						heightV.setText(height);
+						super.handleMessage(msg);
+					}
+				};
+				// 实例化SelectPicPopupWindow
+				heightWindow = new SelectHeight(UserInfoActivity.this, handler);
+				heightWindow.showAtLocation(UserInfoActivity.this
+						.findViewById(R.id.userinfo_height), Gravity.BOTTOM
+						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+				break;
+			}
+			break;
+		case R.id.userinfo_weight:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						weight = msg.getData().getString("weight");
+						weightV.setText(weight);
+						super.handleMessage(msg);
+					}
+				};
+				// 实例化SelectPicPopupWindow
+				weightWindow = new SelectWeight(UserInfoActivity.this, handler);
+				weightWindow.showAtLocation(UserInfoActivity.this
+						.findViewById(R.id.userinfo_weight), Gravity.BOTTOM
+						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+
+				break;
+			}
 			break;
 		}
-		break;
-	case R.id.userinfo_height:
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			break;
-		case MotionEvent.ACTION_UP:
-			final Handler handler = new Handler(){  
-				public void handleMessage(Message msg) {  
-					height=msg.getData().getString("height");
-					heightV.setText(height);
-					super.handleMessage(msg); 
-				}
-			};
-			//实例化SelectPicPopupWindow  
-			heightWindow = new SelectHeight(UserInfoActivity.this,handler);
-			heightWindow.showAtLocation(UserInfoActivity.this.findViewById(R.id.userinfo_height), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
-			break;
-		}
-		break;
-	case R.id.userinfo_weight:
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			break;
-		case MotionEvent.ACTION_UP:
-			final Handler handler = new Handler(){  
-				public void handleMessage(Message msg) {  
-					weight=msg.getData().getString("weight");
-					weightV.setText(weight);
-					super.handleMessage(msg); 
-				}
-			};
-			//实例化SelectPicPopupWindow  
-			weightWindow = new SelectWeight(UserInfoActivity.this,handler);
-			weightWindow.showAtLocation(UserInfoActivity.this.findViewById(R.id.userinfo_weight), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
-			  
-			break;
-		}
-		break;
-	}
 		return true;
 	}
 
@@ -298,14 +305,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-//			if (!"".equals(femaleV.getText().toString().trim())
-//					&& femaleV.getText().toString().trim() != null) {
-//				gender = "M";
-//			}
-//			if (!"".equals(maleV.getText().toString().trim())
-//					&& maleV.getText().toString().trim() != null) {
-//				gender = "F";
-//			}
+			// if (!"".equals(femaleV.getText().toString().trim())
+			// && femaleV.getText().toString().trim() != null) {
+			// gender = "M";
+			// }
+			// if (!"".equals(maleV.getText().toString().trim())
+			// && maleV.getText().toString().trim() != null) {
+			// gender = "F";
+			// }
 			phone = phoneV.getText().toString().trim();
 			weight = weightV.getText().toString().trim();
 			height = heightV.getText().toString().trim();
@@ -319,9 +326,9 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 					+ birthday + "&height=" + height + "&weight=" + weight
 					+ "&signature=" + sign + "&uid=" + Variables.uid
 					+ "&utype=" + Variables.utype);
-			if (saveJson!=null&&!"".equals(saveJson)) {
+			if (saveJson != null && !"".equals(saveJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -336,10 +343,10 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				case 0:
 					Toast.makeText(UserInfoActivity.this, "修改成功",
 							Toast.LENGTH_LONG).show();
-					Log.v("wyuser", "保存修改返回的 ="+saveJson);
-					Log.v("wyuser", "存之前 ="+DataTool.getUserInfo());
+					Log.v("wyuser", "保存修改返回的 =" + saveJson);
+					Log.v("wyuser", "存之前 =" + DataTool.getUserInfo());
 					DataTool.setUserInfo(saveJson);
-					Log.v("wyuser", "存之后 ="+DataTool.getUserInfo());
+					Log.v("wyuser", "存之后 =" + DataTool.getUserInfo());
 					UserInfoActivity.this.finish();
 					break;
 				default:
@@ -348,8 +355,9 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 					break;
 				}
 
-			}else {
-				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -364,9 +372,9 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		protected Boolean doInBackground(String... params) {
 			upImgJson = NetworkHandler.upImg(1, "", imageByte);
 			Log.v("wy", upImgJson);
-			if (upImgJson!=null&&!"".equals(upImgJson)) {
+			if (upImgJson != null && !"".equals(upImgJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -396,35 +404,33 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 							Toast.LENGTH_LONG).show();
 				}
 
-			}else {
-				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
 
-    private void showSetPhotoDialog()
-	{
-		final String[] item_type = new String[] {	
-			"相机", "相册", "取消"};
-		
-		new AlertDialog.Builder(this).
-			setTitle ("选取来自").
-//			setIcon (R.drawable.icon). 
-			setItems (item_type,
-				new DialogInterface.OnClickListener() {
+	private void showSetPhotoDialog() {
+		final String[] item_type = new String[] { "相机", "相册", "取消" };
+
+		new AlertDialog.Builder(this).setTitle("选取来自").
+		// setIcon (R.drawable.icon).
+				setItems(item_type, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case 0:
-							goGetPhotoFromCamera () ;
-							break ;
+							goGetPhotoFromCamera();
+							break;
 						case 1:
-							goGetPhotoFromGallery () ;
-							break ;
+							goGetPhotoFromGallery();
+							break;
 						}
 					}
-			}).show();
+				}).show();
 	}
-    public void startPhotoZoom(Uri uri) {
+
+	public void startPhotoZoom(Uri uri) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, Constants.IMAGE_UNSPECIFIED);
 		intent.putExtra("crop", "true");
@@ -436,75 +442,75 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		intent.putExtra("outputY", 150);
 		intent.putExtra("return-data", true);
 		intent.putExtra("outputFormat", "JPEG");
-        intent.putExtra("noFaceDetection", true);
-		//intent.putExtra("output", Uri.parse(imagePath1));
+		intent.putExtra("noFaceDetection", true);
+		// intent.putExtra("output", Uri.parse(imagePath1));
 		startActivityForResult(intent, Constants.RET_CROP);
 	}
+
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-    {
-    	switch (requestCode)
-    	{
-    	case Constants.RET_CAMERA:
-			if (resultCode == Activity.RESULT_OK) 
-			{
-				File picture = new File(Constants.avatarPath+Constants.avatarName);
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case Constants.RET_CAMERA:
+			if (resultCode == Activity.RESULT_OK) {
+				File picture = new File(Constants.avatarPath
+						+ Constants.avatarName);
 				startPhotoZoom(Uri.fromFile(picture));
 			}
-			break ;
+			break;
 		case Constants.RET_GALLERY:
-			if (resultCode == Activity.RESULT_OK) 
-			{
+			if (resultCode == Activity.RESULT_OK) {
 				if (data != null) {
-					Log.v("zc","data");
+					Log.v("zc", "data");
 				}
 				startPhotoZoom(data.getData());
 			}
-			break ;
+			break;
 		case Constants.RET_CROP:
-			if (resultCode == Activity.RESULT_OK) 
-			{
-				doneGetPhotoFromCamera (data) ;
+			if (resultCode == Activity.RESULT_OK) {
+				doneGetPhotoFromCamera(data);
 			}
-			break ;
-    	}
-    	
-    	super.onActivityResult (requestCode, resultCode, data) ;
-    }
-	
-	private void goGetPhotoFromCamera () {
-		Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE) ;
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constants.avatarPath+Constants.avatarName)));
-		startActivityForResult (intent, Constants.RET_CAMERA) ;
-	}
-	
-	private void goGetPhotoFromGallery () {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT); 
-        intent.setType("image/*"); 
-        startActivityForResult ( Intent.createChooser(intent, 
-        		"选择图片"), Constants.RET_GALLERY ) ;
+			break;
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void doneGetPhotoFromCamera (Intent data) {
+	private void goGetPhotoFromCamera() {
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.putExtra(
+				MediaStore.EXTRA_OUTPUT,
+				Uri.fromFile(new File(Constants.avatarPath
+						+ Constants.avatarName)));
+		startActivityForResult(intent, Constants.RET_CAMERA);
+	}
+
+	private void goGetPhotoFromGallery() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("image/*");
+		startActivityForResult(Intent.createChooser(intent, "选择图片"),
+				Constants.RET_GALLERY);
+	}
+
+	private void doneGetPhotoFromCamera(Intent data) {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
 			Bitmap bmp = extras.getParcelable("data");
-			if (bmp == null)
-			{
-				return ;
+			if (bmp == null) {
+				return;
 			}
 			mPhotoBmp = bmp;
 			FileOutputStream output = null;
 			try {
-				output = new FileOutputStream (new File(Constants.avatarPath+Constants.avatarName));
+				output = new FileOutputStream(new File(Constants.avatarPath
+						+ Constants.avatarName));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}//初始化一个流对象
-	        bmp.compress(CompressFormat.JPEG, 100, output);//把bitmap100%高质量压缩 到 output对象里
-			headv.setImageBitmap(bmp) ;
+			}// 初始化一个流对象
+			bmp.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩 到
+															// output对象里
+			headv.setImageBitmap(bmp);
 		}
 	}
-	
-    
+
 }

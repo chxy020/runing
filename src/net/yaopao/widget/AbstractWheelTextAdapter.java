@@ -41,7 +41,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
 
 	/** Default text color */
 	public static final int LABEL_COLOR = 0xFF700070;
-	
+
 	public static final int CONFIG_TEXT_COLOR = 0xFF6699ff;
 
 	/** Default text size */
@@ -50,9 +50,8 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
 	// Text settings
 	private int textColor = DEFAULT_TEXT_COLOR;
 	private int textSize = DEFAULT_TEXT_SIZE;
-	
+
 	private String textType = "";
-	
 
 	// Current context
 	protected Context context;
@@ -66,8 +65,6 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
 	// Empty items resources
 	protected int emptyItemResourceId;
 
-	
-	
 	public String getTextType() {
 		return textType;
 	}
@@ -271,7 +268,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
 		view.setGravity(Gravity.CENTER);
 		view.setTextSize(textSize);
 		view.setLines(1);
-		view.setText(view.getText()+textType);
+		view.setText(view.getText() + textType);
 		view.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
 	}
 

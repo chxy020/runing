@@ -41,11 +41,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private ImageView d6v;
 	private Bitmap head;
 	private double distance;
-	/** 设置*/
+	/** 设置 */
 	private TextView mMainSetting = null;
 	/** 系统消息 */
 	private LinearLayout mMessageLayout = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -57,10 +57,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
-		d1v = (ImageView) this.findViewById(R.id.main_milage_num4);
-		d2v = (ImageView) this.findViewById(R.id.main_milage_num3);
-		d3v = (ImageView) this.findViewById(R.id.main_milage_num2);
-		d4v = (ImageView) this.findViewById(R.id.main_milage_num1);
+		d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
+		d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
+		d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
+		d4v = (ImageView) this.findViewById(R.id.main_milage_num4);
 		d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
 		d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
 		d1v.setVisibility(View.GONE);
@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL.setOnTouchListener(this);
 		start.setOnTouchListener(this);
 		recording.setOnTouchListener(this);
-		
+
 		this.initView();
 	}
 
@@ -112,20 +112,21 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	private void initMileage() {
 		DataBean data = YaoPao01App.db.queryData();
-		 distance = data.getDistance();
+		distance = data.getDistance();
+		distance = 549254;
 		int d1 = (int) distance / 1000000;
 		int d2 = (int) (distance % 1000000) / 100000;
-		int d3 = (int) (distance % 100000)/10000;
+		int d3 = (int) (distance % 100000) / 10000;
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
-		if (d1>0) {
+		if (d1 > 0) {
 			d1v.setVisibility(View.VISIBLE);
 		}
-		if (d2>0) {
+		if (d2 > 0) {
 			d2v.setVisibility(View.VISIBLE);
 		}
-		if (d3>0) {
+		if (d3 > 0) {
 			d3v.setVisibility(View.VISIBLE);
 		}
 		update(d1, d1v);
@@ -137,8 +138,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	}
 
 	protected void update(int i, ImageView view) {
-		if (i>9) {
-			i=i%10;
+		if (i > 9) {
+			i = i % 10;
 		}
 		switch (i) {
 		case 0:
@@ -262,35 +263,37 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		return false;
 	}
-	
-	/*************************chenxy add ******************/
-	
+
+	/************************* chenxy add ******************/
+
 	/**
 	 * 页面初始化
+	 * 
 	 * @author cxy
 	 * @date 2014-8-25
 	 */
-	private void initView(){
-		//获取设置
-		mMainSetting = (TextView)findViewById(R.id.main_setting);
-		//获取系统消息layout
-		mMessageLayout = (LinearLayout)findViewById(R.id.main_message_layout);
-		
-		//注册事件
+	private void initView() {
+		// 获取设置
+		mMainSetting = (TextView) findViewById(R.id.main_setting);
+		// 获取系统消息layout
+		mMessageLayout = (LinearLayout) findViewById(R.id.main_message_layout);
+
+		// 注册事件
 		this.setListener();
 	}
-	
+
 	/**
 	 * 注册事件
+	 * 
 	 * @author cxy
 	 * @date 2014-8-25
 	 */
 	private void setListener() {
-		//注册设置事件
+		// 注册设置事件
 		mMainSetting.setOnClickListener(mOnClickListener);
 		mMessageLayout.setOnClickListener(mOnClickListener);
 	}
-	
+
 	/**
 	 * 单击事件
 	 */
@@ -298,17 +301,19 @@ public class MainActivity extends Activity implements OnTouchListener {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-				case R.id.main_setting:
-					Intent settingIntent = new Intent(MainActivity.this,MainSettingActivity.class);
-					startActivity(settingIntent);
+			case R.id.main_setting:
+				Intent settingIntent = new Intent(MainActivity.this,
+						MainSettingActivity.class);
+				startActivity(settingIntent);
 				break;
-				case R.id.main_message_layout:
-					Intent messageIntent = new Intent(MainActivity.this,WebViewActivity.class);
-					messageIntent.putExtra("net.yaopao.activity.PageUrl","message_index.html");
-					startActivity(messageIntent);
+			case R.id.main_message_layout:
+				Intent messageIntent = new Intent(MainActivity.this,
+						WebViewActivity.class);
+				messageIntent.putExtra("net.yaopao.activity.PageUrl",
+						"message_index.html");
+				startActivity(messageIntent);
 				break;
 			}
 		}
 	};
 }
-

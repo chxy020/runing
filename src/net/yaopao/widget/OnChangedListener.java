@@ -1,5 +1,5 @@
 package net.yaopao.widget;
 
-public interface  OnChangedListener {
-	 abstract void OnChanged(boolean CheckState);
+public interface OnChangedListener {
+	abstract void OnChanged(boolean CheckState);
 }

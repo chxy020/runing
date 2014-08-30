@@ -24,7 +24,7 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 	SlipButton voiceSwitch;
 	ImageView tarIconV;
 	ImageView typeIconV;
-	
+
 	LinearLayout targetL;
 	LinearLayout typeL;
 
@@ -39,12 +39,12 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 		typeV = (TextView) this.findViewById(R.id.sport_set_type_select);
 		typeL = (LinearLayout) this.findViewById(R.id.sport_set_type);
 		startV = (TextView) this.findViewById(R.id.sport_set_start);
-		
+
 		tarIconV = (ImageView) this.findViewById(R.id.sport_set_target_icon);
 		typeIconV = (ImageView) this.findViewById(R.id.sport_set_type_icon);
-		
+
 		timeSwitch = (SlipButton) this.findViewById(R.id.sport_set_time_switch);
-		
+
 		voiceSwitch = (SlipButton) this
 				.findViewById(R.id.sport_set_voice_switch);
 
@@ -52,12 +52,11 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 
 			@Override
 			public void OnChanged(boolean CheckState) {
-				
-				
+
 				if (CheckState) {
-					Variables.switchTime = 0;//开
+					Variables.switchTime = 0;// 开
 				} else {
-					Variables.switchTime = 1;//关
+					Variables.switchTime = 1;// 关
 				}
 
 			}
@@ -102,7 +101,8 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSetActivity.this,SportTargetActivity.class);
+				myIntent = new Intent(SportSetActivity.this,
+						SportTargetActivity.class);
 				startActivity(myIntent);
 			}
 			break;
@@ -112,7 +112,8 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSetActivity.this,SportTypeActivity.class);
+				myIntent = new Intent(SportSetActivity.this,
+						SportTypeActivity.class);
 				startActivity(myIntent);
 			}
 			break;
@@ -149,63 +150,63 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 
 	private void initLayout() {
 		// 检测开关状态
-				switch (Variables.switchTime) {
-				case 0:
-					timeSwitch.setState(true);
-					break;
-				case 1:
-					timeSwitch.setState(false);
-					break;
-				}
-				switch (Variables.switchVoice) {
-				case 0:
-					voiceSwitch.setState(true);
-					break;
-				case 1:
-					voiceSwitch.setState(false);
-					break;
-				}
-				//检测运动目标
-				switch (Variables.runtar) {
-				case 0:
-					targetV.setText("自由");
-					tarIconV.setBackgroundResource(R.drawable.target_free);
-					break;
-				case 1:
-					targetV.setText("距离");
-					tarIconV.setBackgroundResource(R.drawable.target_dis);
-					break;
-				case 2:
-					targetV.setText("计时");
-					tarIconV.setBackgroundResource(R.drawable.target_time);
-					break;
+		switch (Variables.switchTime) {
+		case 0:
+			timeSwitch.setState(true);
+			break;
+		case 1:
+			timeSwitch.setState(false);
+			break;
+		}
+		switch (Variables.switchVoice) {
+		case 0:
+			voiceSwitch.setState(true);
+			break;
+		case 1:
+			voiceSwitch.setState(false);
+			break;
+		}
+		// 检测运动目标
+		switch (Variables.runtar) {
+		case 0:
+			targetV.setText("自由");
+			tarIconV.setBackgroundResource(R.drawable.target_free);
+			break;
+		case 1:
+			targetV.setText("距离");
+			tarIconV.setBackgroundResource(R.drawable.target_dis);
+			break;
+		case 2:
+			targetV.setText("计时");
+			tarIconV.setBackgroundResource(R.drawable.target_time);
+			break;
 
-				default:
-					targetV.setText("自由");
-					tarIconV.setBackgroundResource(R.drawable.target_free);
-					Variables.runtar=0;
-					break;
-				}
-				//检测运动类型
-				switch (Variables.runty) {
-				case 1:
-					typeV.setText("步行");
-					typeIconV.setBackgroundResource(R.drawable.runtype_walk);
-					break;
-				case 2:
-					typeV.setText("跑步");
-					typeIconV.setBackgroundResource(R.drawable.runtype_run);
-					break;
-				case 3:
-					typeV.setText("自行车骑行");
-					typeIconV.setBackgroundResource(R.drawable.runtype_ride);
-					break;
-				default:
-					typeV.setText("步行");
-					Variables.runty=1;
-					typeIconV.setBackgroundResource(R.drawable.runtype_walk);
-					break;
-				}
+		default:
+			targetV.setText("自由");
+			tarIconV.setBackgroundResource(R.drawable.target_free);
+			Variables.runtar = 0;
+			break;
+		}
+		// 检测运动类型
+		switch (Variables.runty) {
+		case 1:
+			typeV.setText("步行");
+			typeIconV.setBackgroundResource(R.drawable.runtype_walk);
+			break;
+		case 2:
+			typeV.setText("跑步");
+			typeIconV.setBackgroundResource(R.drawable.runtype_run);
+			break;
+		case 3:
+			typeV.setText("自行车骑行");
+			typeIconV.setBackgroundResource(R.drawable.runtype_ride);
+			break;
+		default:
+			typeV.setText("步行");
+			Variables.runty = 1;
+			typeIconV.setBackgroundResource(R.drawable.runtype_walk);
+			break;
+		}
 	}
 
 	@Override

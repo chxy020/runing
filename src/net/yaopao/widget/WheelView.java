@@ -17,7 +17,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-
 /**
  * Numeric wheel view.
  * 
@@ -437,7 +436,8 @@ public class WheelView extends View {
 	 */
 	private void initResourcesIfNecessary() {
 		if (centerDrawable == null) {
-			centerDrawable = getContext().getResources().getDrawable(R.drawable.com_ttshrk_view_scroll_picker_bar);
+			centerDrawable = getContext().getResources().getDrawable(
+					R.drawable.com_ttshrk_view_scroll_picker_bar);
 		}
 
 		if (topShadow == null) {
@@ -931,5 +931,5 @@ public class WheelView extends View {
 	public void stopScrolling() {
 		scroller.stopScrolling();
 	}
-	
+
 }

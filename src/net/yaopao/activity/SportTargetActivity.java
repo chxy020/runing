@@ -28,9 +28,9 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 	ImageView distanceImgV;
 	ImageView timeImgV;
 
-//	public static String distance;
-//	public static String time;
-//	int selected = 1;// 1-自由，2-距离，3-计时
+	// public static String distance;
+	// public static String time;
+	// int selected = 1;// 1-自由，2-距离，3-计时
 
 	public SelectDistance distanceWindow;
 	public SelectTime timeWindow;
@@ -80,7 +80,7 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runtar=0;
+				Variables.runtar = 0;
 				freeImgV.setBackgroundResource(R.drawable.check);
 				distanceImgV.setBackgroundResource(0);
 				timeImgV.setBackgroundResource(0);
@@ -92,25 +92,26 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runtar=1;
+				Variables.runtar = 1;
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(R.drawable.check);
 				timeImgV.setBackgroundResource(0);
-					final Handler handler = new Handler() {
-						public void handleMessage(Message msg) {
-//							distance = msg.getData().getString("distance");
-							Variables.runtarDis = Double.parseDouble(msg.getData().getString("distance"));
-							super.handleMessage(msg);
-						}
-					};
-					// 实例化SelectPicPopupWindow
-					distanceWindow = new SelectDistance(
-							SportTargetActivity.this, handler);
-					distanceWindow.showAtLocation(SportTargetActivity.this
-							.findViewById(R.id.target_distance_select),
-							Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
-					
-//				}
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						// distance = msg.getData().getString("distance");
+						Variables.runtarDis = Double.parseDouble(msg.getData()
+								.getString("distance"));
+						super.handleMessage(msg);
+					}
+				};
+				// 实例化SelectPicPopupWindow
+				distanceWindow = new SelectDistance(SportTargetActivity.this,
+						handler);
+				distanceWindow.showAtLocation(SportTargetActivity.this
+						.findViewById(R.id.target_distance_select),
+						Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+
+				// }
 				break;
 			}
 			break;
@@ -119,21 +120,22 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-					Variables.runtar=2;
-					freeImgV.setBackgroundResource(0);
-					distanceImgV.setBackgroundResource(0);
-					timeImgV.setBackgroundResource(R.drawable.check);
-					final Handler handler = new Handler() {
-						public void handleMessage(Message msg) {
-							Variables.runtarTime = Long.parseLong(msg.getData().getString("time")) ;
-							super.handleMessage(msg);
-						}
-					};
-					// 实例化SelectPicPopupWindow
-					timeWindow = new SelectTime(SportTargetActivity.this, handler);
-					timeWindow.showAtLocation(SportTargetActivity.this
-							.findViewById(R.id.target_time_select),
-							Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
+				Variables.runtar = 2;
+				freeImgV.setBackgroundResource(0);
+				distanceImgV.setBackgroundResource(0);
+				timeImgV.setBackgroundResource(R.drawable.check);
+				final Handler handler = new Handler() {
+					public void handleMessage(Message msg) {
+						Variables.runtarTime = Long.parseLong(msg.getData()
+								.getString("time"));
+						super.handleMessage(msg);
+					}
+				};
+				// 实例化SelectPicPopupWindow
+				timeWindow = new SelectTime(SportTargetActivity.this, handler);
+				timeWindow.showAtLocation(SportTargetActivity.this
+						.findViewById(R.id.target_time_select), Gravity.BOTTOM
+						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
 				break;
 			}
 			break;
@@ -143,14 +145,14 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onResume() {
-//		if (distance!=null) {
-			distanceTxtV.setText(Variables.runtarDis+" 千米");
-//		}
-//		Log.v("wydb", "time2 ="+time);
-//		if (time!=null) {
-			timeTxtV.setText(Variables.runtarTime+" 分钟");
-//		}
-		
+		// if (distance!=null) {
+		distanceTxtV.setText(Variables.runtarDis + " 千米");
+		// }
+		// Log.v("wydb", "time2 ="+time);
+		// if (time!=null) {
+		timeTxtV.setText(Variables.runtarTime + " 分钟");
+		// }
+
 		switch (Variables.runtar) {
 		case 0:
 			freeImgV.setBackgroundResource(R.drawable.check);
@@ -171,8 +173,7 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 		default:
 			break;
 		}
-		
-		
+
 		super.onResume();
 	}
 

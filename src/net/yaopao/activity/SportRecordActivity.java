@@ -47,13 +47,14 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private SliderRelativeLayout slider;
 	private static TextView distanceV;
 	private static TextView speedV;
-	
+
 	private DecimalFormat df;
-	private ProgressBar progressHorizontal ;
-//	private double distance = 0;
-	//测试代码
-	// public static double lon = 116.402894;
-	// public double lat = 39.923433;
+	private ProgressBar progressHorizontal;
+	// private double distance = 0;
+	// 测试代码
+	public static double lon = 116.402894;
+	public static double lat = 39.923433;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -61,7 +62,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
-//		distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
+		// distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
 		timeV = (TextView) findViewById(R.id.sport_recoding_time);
 		speedV = (TextView) findViewById(R.id.sport_recoding_speed);
 		doneV = (TextView) findViewById(R.id.slider_done);
@@ -75,7 +76,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
 		d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
 		d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
-		
+
 		if (Variables.sportStatus == 0) {
 			sliderIconV.setVisibility(View.VISIBLE);
 			sliderTextV.setVisibility(View.VISIBLE);
@@ -111,15 +112,15 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		pointsIndex.add(0);
 		startTimer();
 		startRecordGps();
-		 progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
-		if (Variables.runtar==1) {
-			progressHorizontal.setMax((int)Variables.runtarDis*10);
-		}else if(Variables.runtar==2) {
-			progressHorizontal.setMax((int)Variables.runtarTime);
-		}else {
+		progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
+		if (Variables.runtar == 1) {
+			progressHorizontal.setMax((int) Variables.runtarDis * 10);
+		} else if (Variables.runtar == 2) {
+			progressHorizontal.setMax((int) Variables.runtarTime);
+		} else {
 			progressHorizontal.setMax(100);
 		}
-		
+
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		// points.clear();
 		// pointsIndex.clear();
 		// Log.v("wygps", "des pointsIndex=" + pointsIndex);
-		
+
 	}
 
 	@Override
@@ -181,7 +182,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
-							Intent intent = new Intent(SportRecordActivity.this,
+							Intent intent = new Intent(
+									SportRecordActivity.this,
 									SportSaveActivity.class);
 							stopRecordGps();
 							SportRecordActivity.this.startActivity(intent);
@@ -191,7 +193,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					}
 				};
 				DialogTool.doneSport(SportRecordActivity.this, handler);
-				
+
 				break;
 			}
 			break;
@@ -286,16 +288,22 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		@Override
 		public void run() {
 			// 测试代码
-			// lat=lat+0.001;
-			// if (points.size()==0) {
-			// points.add(new GpsPoint(lon,lat,Variables.sportStatus));
-			// }else {
-			// points.add(new GpsPoint(lon,lat,Variables.sportStatus));
-			// }
+			lat = lat + 0.001;
+			double meter = 0;
+			GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
+			if (points.size() == 0) {
+				points.add(point);
+			} else {
+				meter = getDistanceFrom2ponit(points.get(points.size() - 1),
+						point);
+				points.add(point);
+			}
+			Variables.distance += meter;
+			// 以上测试代码
+
+			updateUI();
 
 			if (pushOnePoint()) {
-				//distanceV.setText(Variables.distance);
-				//speedV.setText(Variables.pspeed);
 				updateUI();
 			}
 			handler.postDelayed(this, 3000);
@@ -308,8 +316,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		@Override
 		public void run() {
 			Variables.utime += 1;
-//			timeV.setText(formatterM.format(Variables.utime * 1000) + "'"
-//					+ formatterS.format(Variables.utime * 1000) + "\"");
+			// timeV.setText(formatterM.format(Variables.utime * 1000) + "'"
+			// + formatterS.format(Variables.utime * 1000) + "\"");
 			int[] time = YaoPao01App.cal(Variables.utime);
 			int t1 = time[0] / 10;
 			int t2 = time[0] % 10;
@@ -317,7 +325,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			int t4 = time[1] % 10;
 			int t5 = time[2] / 10;
 			int t6 = time[2] % 10;
-			timeV.setText(t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
+			timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + ""
+					+ t6);
 			timer.postDelayed(this, 1000);
 		}
 
@@ -356,45 +365,36 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				new LatLng(before.lat, before.lon));
 
 	}
-	
+
 	private static void updateUI() {
-		Log.v("wygps", "distance ="+Variables.distance);
+		Log.v("wygps", "distance =" + Variables.distance);
 		int d1 = (int) Variables.distance / 10000;
 		int d2 = (int) (Variables.distance % 10000) / 1000;
 		int d3 = (int) (Variables.distance % 1000) / 100;
 		int d4 = (int) (Variables.distance % 100) / 10;
-		
-		
-		int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) * Variables.utime));
-		Variables.pspeed =(int) ((1000 / Variables.distance) * Variables.utime);
+
+		int[] speed = YaoPao01App
+				.cal((int) ((1000 / Variables.distance) * Variables.utime));
+		Variables.pspeed = (int) ((1000 / Variables.distance) * Variables.utime);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		speedV.setText( s1+""+s2+"'"+s3+""+s4+"\"");
-		
-		
+		speedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"");
+
+		if (d1 > 0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
 		update(d1, d1v);
 		update(d2, d2v);
 		update(d3, d3v);
 		update(d4, d4v);
-//
-//		update(t1, t1V);
-//		update(t2, t2V);
-//		update(t3, t3V);
-//		update(t4, t4V);
-//		update(t5, t5V);
-//		update(t6, t6V);
-//
-//		update(s1, s1V);
-//		update(s2, s2V);
-//		update(s3, s3V);
-//		update(s4, s4V);
 
 	}
+
 	protected static void update(int i, ImageView view) {
-		if (i>9) {
-			i=i%10;
+		if (i > 9) {
+			i = i % 10;
 		}
 		switch (i) {
 		case 0:
@@ -432,10 +432,11 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			break;
 		}
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
+			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}

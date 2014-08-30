@@ -10,12 +10,11 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
 /**
  */
 public class MatchRelayActivity extends Activity implements OnTouchListener {
 	private ImageView backV;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -29,7 +28,6 @@ public class MatchRelayActivity extends Activity implements OnTouchListener {
 		backV.setOnTouchListener(this);
 	}
 
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -42,7 +40,6 @@ public class MatchRelayActivity extends Activity implements OnTouchListener {
 	protected void onPause() {
 		super.onPause();
 	}
-
 
 	/**
 	 * 方法必须重写
@@ -72,6 +69,5 @@ public class MatchRelayActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}
-
 
 }

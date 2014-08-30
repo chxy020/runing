@@ -49,9 +49,9 @@ public class SportListActivity extends Activity implements OnTouchListener {
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
-	    df=(DecimalFormat)NumberFormat.getInstance(); 
-	    df.setMaximumFractionDigits(2);
-	    df.setRoundingMode(RoundingMode.DOWN);
+		df = (DecimalFormat) NumberFormat.getInstance();
+		df.setMaximumFractionDigits(2);
+		df.setRoundingMode(RoundingMode.DOWN);
 		listView = (ListView) this.findViewById(R.id.recording_list_data);
 
 		backV = (TextView) this.findViewById(R.id.recording_list_back);
@@ -115,8 +115,8 @@ public class SportListActivity extends Activity implements OnTouchListener {
 
 			map.put("date", sdf1.format(date) + "月" + sdf2.format(date) + "日 "
 					+ getWeekOfDate(date) + " " + sdf3.format(date));
-		
-			map.put("dis", df.format((sport.getDistance()/1000)) + "km");
+
+			map.put("dis", df.format((sport.getDistance() / 1000)) + "km");
 			if (sport.getMind() == 1) {
 				map.put("mind", R.drawable.mood1_h);
 			} else if (sport.getMind() == 2) {
@@ -147,15 +147,17 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			int s2 = speed[1] % 10;
 			int s3 = speed[2] / 10;
 			int s4 = speed[2] % 10;
-			map.put("speed",  s1+""+s2+"'"+s3+""+s4+"\""+ "/公里");
+			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
 			data.add(map);
-			Log.v("wy", "l dis1 ="+sport.getDistance());
-			Log.v("wy", "l dis2 ="+df.format((sport.getDistance()/1000)) + "km");
-			Log.v("wy", "l speed1 ="+sport.getPspeed());
-			Log.v("wy", "l speed2 ="+speed);
-			Log.v("wy", "l speed3 ="+s1+""+s2+"'"+s3+""+s4+"\""+ "/公里");
+			Log.v("wy", "l dis1 =" + sport.getDistance());
+			Log.v("wy", "l dis2 =" + df.format((sport.getDistance() / 1000))
+					+ "km");
+			Log.v("wy", "l speed1 =" + sport.getPspeed());
+			Log.v("wy", "l speed2 =" + speed);
+			Log.v("wy", "l speed3 =" + s1 + "" + s2 + "'" + s3 + "" + s4 + "\""
+					+ "/公里");
 		}
-		
+
 		return data;
 	}
 

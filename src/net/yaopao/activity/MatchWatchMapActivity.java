@@ -16,11 +16,12 @@ import com.amap.api.maps2d.model.CameraPosition;
 
 /**
  */
-public class MatchWatchMapActivity extends Activity implements OnTouchListener{
+public class MatchWatchMapActivity extends Activity implements OnTouchListener {
 
 	private ImageView backV;
 	private MapView mapView;
 	private AMap aMap;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -36,6 +37,7 @@ public class MatchWatchMapActivity extends Activity implements OnTouchListener{
 		backV.setOnTouchListener(this);
 		setUpMap();
 	}
+
 	/**
 	 * 设置一些amap的属性
 	 */
@@ -43,19 +45,17 @@ public class MatchWatchMapActivity extends Activity implements OnTouchListener{
 		if (aMap == null) {
 			aMap = mapView.getMap();
 			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
-				
+
 				@Override
 				public void onCameraChangeFinish(CameraPosition cameraPosition) {
-					
-					System.out.println("zoom level is:"+cameraPosition.tilt );
-					
-					
+
+					System.out.println("zoom level is:" + cameraPosition.tilt);
+
 				}
-				
+
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
-					 
-					
+
 				}
 			});
 		}
@@ -65,6 +65,7 @@ public class MatchWatchMapActivity extends Activity implements OnTouchListener{
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 
 	}
+
 	/**
 	 * 方法必须重写
 	 */

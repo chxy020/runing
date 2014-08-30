@@ -116,7 +116,6 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			return false;
 		}
 	}
-	
 
 	public boolean verifyCode() {
 		codeStr = codeV.getText().toString().trim();
@@ -206,10 +205,11 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			phoneNumStr = phoneNumV.getText().toString().trim();
 			DataTool.setPhone(phoneNumStr);
 			regJson = NetworkHandler.httpPost(Constants.endpoints
-					+ Constants.reg, "phone=" + phoneNumStr + "&passwd="+ pwdStr + "&vcode=" + codeStr);
-			if (regJson!=null&&!"".equals(regJson)) {
+					+ Constants.reg, "phone=" + phoneNumStr + "&passwd="
+					+ pwdStr + "&vcode=" + codeStr);
+			if (regJson != null && !"".equals(regJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -224,11 +224,11 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Variables.uid = rt.getInteger("uid");
-					Variables.utype=rt.getInteger("utype");
+					Variables.utype = rt.getInteger("utype");
 					Variables.islogin = 1;
 					DataTool.setUserInfo(regJson);
-					Log.v("wy", "save info ="+regJson);
-					Log.v("wy", "save info ="+DataTool.getUserInfo());
+					Log.v("wy", "save info =" + regJson);
+					Log.v("wy", "save info =" + DataTool.getUserInfo());
 					Toast.makeText(RegisterActivity.this, "注册成功",
 							Toast.LENGTH_LONG).show();
 					Intent myIntent = new Intent();
@@ -248,8 +248,9 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 							Toast.LENGTH_LONG).show();
 				}
 
-			}else {
-				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -266,9 +267,9 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 
 			verifyCodeJson = NetworkHandler.httpPost(Constants.endpoints
 					+ Constants.vcode, "phone=" + phoneNumStr);
-			if (verifyCodeJson!=null&&!"".equals(verifyCodeJson)) {
+			if (verifyCodeJson != null && !"".equals(verifyCodeJson)) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
@@ -280,13 +281,15 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
-					Toast.makeText(RegisterActivity.this, "验证码获取成功",Toast.LENGTH_LONG).show();
+					Toast.makeText(RegisterActivity.this, "验证码获取成功",
+							Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}
-			}else {
-				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}

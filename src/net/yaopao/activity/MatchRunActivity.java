@@ -153,8 +153,6 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 
 	}
 
-
-
 	@Override
 	protected void onDestroy() {
 		timer.cancel();
@@ -314,10 +312,11 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 			break;
 		}
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
+			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}

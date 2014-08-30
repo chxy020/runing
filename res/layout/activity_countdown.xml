@@ -9,33 +9,31 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true" >
 
-        <View
-            android:id="@+id/middle_line"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true" />
-
-        <ImageView
-            android:id="@+id/sport_time1"
-            android:layout_width="@dimen/countdown_tnum_width"
+        <LinearLayout
+            android:id="@+id/sport_time_layout"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/sport_time_middle_height"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/middle_line"
-            android:background="@drawable/r_0" />
+            android:layout_centerInParent="true" >
 
-        <ImageView
-            android:id="@+id/sport_time2"
-            android:layout_width="@dimen/countdown_tnum_width"
-            android:layout_height="@dimen/sport_time_middle_height"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/middle_line"
-            android:background="@drawable/r_1" />
+            <ImageView
+                android:id="@+id/sport_time1"
+                android:layout_width="@dimen/countdown_tnum_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/r_1"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/sport_time2"
+                android:layout_width="@dimen/countdown_tnum_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/r_0" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/sport_time_text"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
-            android:layout_below="@id/sport_time1"
+            android:layout_below="@id/sport_time_layout"
             android:gravity="center"
             android:text="  轻触立即开始"
             android:textColor="@color/black"

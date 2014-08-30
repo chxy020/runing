@@ -10,12 +10,11 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
 /**
  */
 public class BlankActivity extends Activity implements OnTouchListener {
 	private TextView backV;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -29,7 +28,6 @@ public class BlankActivity extends Activity implements OnTouchListener {
 		backV.setOnTouchListener(this);
 	}
 
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -42,7 +40,6 @@ public class BlankActivity extends Activity implements OnTouchListener {
 	protected void onPause() {
 		super.onPause();
 	}
-
 
 	/**
 	 * 方法必须重写
@@ -61,10 +58,10 @@ public class BlankActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-//				Intent intent = new Intent();
-//				intent = new Intent(LoginActivity.this,
-//						ResetPwdActivity.class);
-//				startActivity(intent);
+				// Intent intent = new Intent();
+				// intent = new Intent(LoginActivity.this,
+				// ResetPwdActivity.class);
+				// startActivity(intent);
 				finish();
 				break;
 			}
@@ -72,6 +69,5 @@ public class BlankActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}
-
 
 }

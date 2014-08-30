@@ -119,9 +119,9 @@ public class MatchWatchActivity extends Activity implements OnTouchListener,
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				 Intent intent = new Intent(MatchWatchActivity.this,
-				 MatchScoreListActivity.class);
-				 startActivity(intent);
+				Intent intent = new Intent(MatchWatchActivity.this,
+						MatchScoreListActivity.class);
+				startActivity(intent);
 				break;
 			}
 			break;
@@ -131,8 +131,8 @@ public class MatchWatchActivity extends Activity implements OnTouchListener,
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent intent = new Intent(MatchWatchActivity.this,
-						 MatchRelayActivity.class);
-						 startActivity(intent);
+						MatchRelayActivity.class);
+				startActivity(intent);
 				break;
 			}
 			break;
