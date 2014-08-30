@@ -37,8 +37,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static TextView sliderTextV;
 	public static TextView doneV;
 	public static TextView resumeV;
-	
-	private ImageView mapV;
+	public static ImageView gpsV;
+	private static ImageView d1v;
+	private static ImageView d2v;
+	private static ImageView d3v;
+	private static ImageView d4v;
+	private static ImageView mapV;
 	private SliderRelativeLayout slider;
 	private static TextView distanceV;
 	private static TextView speedV;
@@ -56,7 +60,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
-		distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
+//		distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
 		timeV = (TextView) findViewById(R.id.sport_recoding_time);
 		speedV = (TextView) findViewById(R.id.sport_recoding_speed);
 		doneV = (TextView) findViewById(R.id.slider_done);
@@ -65,6 +69,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		sliderIconV = (TextView) findViewById(R.id.slider_icon);
 		slider = (SliderRelativeLayout) findViewById(R.id.slider_layout);
 		sliderTextV = (TextView) findViewById(R.id.slider_text);
+		gpsV = (ImageView) findViewById(R.id.sport_gps_status);
+		d1v = (ImageView) this.findViewById(R.id.match_recoding_dis1);
+		d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
+		d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
+		d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
+		
 		if (Variables.sportStatus == 0) {
 			sliderIconV.setVisibility(View.VISIBLE);
 			sliderTextV.setVisibility(View.VISIBLE);
@@ -77,13 +87,11 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			sliderIconV.setVisibility(View.GONE);
 			sliderTextV.setVisibility(View.GONE);
 		}
-		distanceV.setOnTouchListener(this);
 		timeV.setOnTouchListener(this);
 		speedV.setOnTouchListener(this);
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
-		// switchV.setOnTouchListener(this);
 
 		points = new ArrayList<GpsPoint>();
 		//
@@ -299,8 +307,16 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		@Override
 		public void run() {
 			Variables.utime += 1;
-			timeV.setText(formatterM.format(Variables.utime * 1000) + "'"
-					+ formatterS.format(Variables.utime * 1000) + "\"");
+//			timeV.setText(formatterM.format(Variables.utime * 1000) + "'"
+//					+ formatterS.format(Variables.utime * 1000) + "\"");
+			int[] time = YaoPao01App.cal(Variables.utime);
+			int t1 = time[0] / 10;
+			int t2 = time[0] % 10;
+			int t3 = time[1] / 10;
+			int t4 = time[1] % 10;
+			int t5 = time[2] / 10;
+			int t6 = time[2] % 10;
+			timeV.setText(t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
 			timer.postDelayed(this, 1000);
 		}
 
@@ -341,40 +357,26 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	}
 	
 	private static void updateUI() {
-		
+		Log.v("wygps", "distance ="+Variables.distance);
 		int d1 = (int) Variables.distance / 10000;
 		int d2 = (int) (Variables.distance % 10000) / 1000;
 		int d3 = (int) (Variables.distance % 1000) / 100;
 		int d4 = (int) (Variables.distance % 100) / 10;
 		
-		int[] time = YaoPao01App.cal(Variables.utime);
-		int t1 = time[0] / 10;
-		int t2 = time[0] % 10;
-		int t3 = time[1] / 10;
-		int t4 = time[1] % 10;
-		int t5 = time[2] / 10;
-		int t6 = time[2] % 10;
-
+		
 		int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) * Variables.utime));
 		Variables.pspeed =(int) ((1000 / Variables.distance) * Variables.utime);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		distanceV.setText(d1+""+d2+"."+d3+""+d4);
 		speedV.setText( s1+""+s2+"'"+s3+""+s4+"\"");
-		Log.v("wy", "Variables.utime="+Variables.utime);
-		Log.v("wy", "distance1="+Variables.distance);
-		Log.v("wy", "distance2="+d1+""+d2+"."+d3+""+d4);
-		Log.v("wy", "speed1="+(1000 / Variables.distance) * Variables.utime);
-		Log.v("wy", "Variables.pspeed="+Variables.pspeed);
-		Log.v("wy", "speed3="+s1+""+s2+"'"+s3+""+s4+"\"");
 		
 		
-//		update(d1, d1V);
-//		update(d2, d2V);
-//		update(d3, d3V);
-//		update(d4, d4V);
+		update(d1, d1v);
+		update(d2, d2v);
+		update(d3, d3v);
+		update(d4, d4v);
 //
 //		update(t1, t1V);
 //		update(t2, t2V);
@@ -388,5 +390,45 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 //		update(s3, s3V);
 //		update(s4, s4V);
 
+	}
+	protected static void update(int i, ImageView view) {
+		if (i>9) {
+			i=i%10;
+		}
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.w_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.w_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.w_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.w_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.w_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.w_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.w_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.w_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.w_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.w_9);
+			break;
+
+		default:
+			break;
+		}
 	}
 }

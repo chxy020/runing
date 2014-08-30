@@ -71,23 +71,82 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/main_total_milage_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_total_milage_hight"
         android:layout_below="@id/main_user_info" >
 
-        <TextView
-            android:layout_margin="@dimen/margin1"
-            android:id="@+id/main_total_milage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="1024.08km"
-            android:textSize="50dp"
-            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/main_milage_dot"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_dot"
+            android:layout_centerInParent="true"
+             />
+        <ImageView
+            android:id="@+id/main_milage_dec1"
+            android:layout_width="@dimen/main_num_width"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_0"
+            android:layout_toRightOf="@id/main_milage_dot"
+            android:layout_centerInParent="true"
+             />
+        <ImageView
+            android:id="@+id/main_milage_dec2"
+            android:layout_width="@dimen/main_num_width"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_0"
+            android:layout_toRightOf="@id/main_milage_dec1"
+            android:layout_centerInParent="true"
+             />
+        <ImageView
+            android:id="@+id/main_milage_km"
+            android:layout_width="@dimen/common_height"
+            android:layout_marginLeft="@dimen/margin1"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_km"
+            android:layout_toRightOf="@id/main_milage_dec2"
+            android:layout_centerInParent="true"
+             />
+         <ImageView
+            android:id="@+id/main_milage_num1"
+             android:layout_toLeftOf="@id/main_milage_dot"
+            android:layout_width="@dimen/main_num_width"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_0"
+           
+            android:layout_centerInParent="true"
+             />
+         <ImageView
+            android:id="@+id/main_milage_num2"
+             android:layout_toLeftOf="@id/main_milage_num1"
+            android:layout_width="@dimen/main_num_width"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_0"
+           
+            android:layout_centerInParent="true"
+             />
+         <ImageView
+            android:id="@+id/main_milage_num3"
+             android:layout_toLeftOf="@id/main_milage_num2"
+            android:layout_width="@dimen/main_num_width"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_0"
+           
+            android:layout_centerInParent="true"
+             />
+         <ImageView
+            android:id="@+id/main_milage_num4"
+             android:layout_toLeftOf="@id/main_milage_num3"
+            android:layout_width="@dimen/main_num_width"
+            android:layout_height="@dimen/main_num_height"
+            android:background="@drawable/r_0"
+           
+            android:layout_centerInParent="true"
+             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/main_detail_data"

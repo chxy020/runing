@@ -13,62 +13,78 @@
     
     />
 
+<net.yaopao.widget.SliderRelativeLayout
+    android:id="@+id/slider_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/sport_set_height"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="center"
+    android:background="@color/gray_light" >
 
-<net.yaopao.widget.SliderRelativeLayout android:id="@+id/slider_layout"
-	    android:layout_width="fill_parent"
-		android:layout_height="@dimen/sport_set_height" 
-		android:layout_gravity="center"
-		android:background="@color/gray_light"
-		android:layout_alignParentBottom="true"
-		>
-        <TextView  
-            android:id="@+id/slider_text"
-            android:layout_width="wrap_content"
-		    android:layout_height="@dimen/sport_set_height" 
-		    android:text=""
-		    android:textColor="@color/white"
-		    android:textSize="@dimen/font_size2"
-		    android:gravity="center"
-		    android:layout_centerInParent="true"
-		    >
-		</TextView>
+    <TextView
+        android:id="@+id/slider_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/sport_set_height"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size2" >
+    </TextView>
 
-        <!-- slider img -->
-        <TextView  android:id="@+id/slider_icon"
-            android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:layout_marginRight="5dip"
-		    android:gravity="center"
-		    android:background="@drawable/ic_launcher"
-		    android:layout_centerVertical="true"
-		    >
-		</TextView>
+    <!-- slider img -->
 
- <TextView
-            android:id="@+id/slider_done"
-            android:layout_width="@dimen/width_half"
-            android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/slider_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/ic_launcher"
+        android:gravity="center" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/slider_done"
+        android:layout_width="@dimen/width_half"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="@color/red"
+        android:gravity="center"
+        android:text="完成"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size2"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/slider_resume"
+        android:layout_width="@dimen/width_half"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/slider_done"
+        android:background="@color/blue_dark"
+        android:gravity="center"
+        android:text="恢复"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size2"
+        android:visibility="gone" />
+</net.yaopao.widget.SliderRelativeLayout>
+
+<ImageView
+            android:id="@+id/map_loc"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_above="@id/slider_layout"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="完成"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size2"
-            android:visibility="gone" 
-            android:background="@color/red"/>
-
-        <TextView
-            android:layout_toRightOf="@id/slider_done"
-            android:id="@+id/slider_resume"
-            android:layout_width="@dimen/width_half"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="恢复"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size2"
-            android:visibility="gone" 
-            android:background="@color/blue_dark"/>
-	</net.yaopao.widget.SliderRelativeLayout>
-
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/button_position" />
+<ImageView
+            android:id="@+id/map_back"
+             android:layout_above="@id/slider_layout"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/button_back" />
 </RelativeLayout>

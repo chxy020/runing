@@ -14,9 +14,8 @@
     <dimen name="margin6">8dp</dimen>
     <dimen name="margin7">20dp</dimen>
     <dimen name="margin8">45dp</dimen>
-     <dimen name="margin9">5dp</dimen>
-     <dimen name="margin10">60dp</dimen>
-     
+    <dimen name="margin9">5dp</dimen>
+    <dimen name="margin10">60dp</dimen>
     <dimen name="font_size1">9dp</dimen>
     <dimen name="font_size2">18dp</dimen>
     <dimen name="font_size3">20dp</dimen>
@@ -24,7 +23,6 @@
     <dimen name="font_size5">40dp</dimen>
     <dimen name="font_size6">50dp</dimen>
     <dimen name="font_size7">15dp</dimen>
-    
     <dimen name="countdown_tnum_width">80dp</dimen>
     <dimen name="userInfo_headArrow_marginTop">38dp</dimen>
     <dimen name="userInfo_head_marginTop">15dp</dimen>
@@ -59,5 +57,11 @@
     <dimen name="match_countdown_num_width">90dp</dimen>
     <dimen name="match_bottom_height">180dp</dimen>
     <dimen name="match_tnum_width">15dp</dimen>
- <dimen name="match_tnum_l_width">45dp</dimen>
+    <dimen name="match_tnum_l_width">45dp</dimen>
+    <dimen name="match_dot_width">30dp</dimen>
+    <dimen name="main_num_height">60dp</dimen>
+    <dimen name="main_num_width">30dp</dimen>
+    <dimen name="relay_heigt1">280dp</dimen>
+    <dimen name="relay_heigt2">260dp</dimen>
+
 </resources>

@@ -147,11 +147,11 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 	     * @throws IOException 
 	     */  
 	    public  void saveFile() throws IOException {  
-	        File dirFile = new File(Constants.imagePath);  
+	        File dirFile = new File(Constants.avatarPath);  
 	        if(!dirFile.exists()){  
 	            dirFile.mkdirs();  
 	        }  
-	        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dirFile));  
+	        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Constants.avatarPath+Constants.avatarName)));  
 	        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);  
 	        bos.flush();  
 	        bos.close();  

@@ -55,6 +55,10 @@ public class SportListAdapter extends BaseAdapter {
             
             //设置控件集到convertView   
 //            convertView.setTag(listItemView);
+            Log.v("wygps", "runtyV= "+runtyV);
+            Log.v("wygps", "listItems= "+listItems);
+            Log.v("wygps", "listItems.get(position)= "+listItems.get(position));
+            Log.v("wygps", "type= "+listItems.get(position).get("type"));
            runtyV.setBackgroundResource((Integer) listItems.get(position).get("type"));
            mindV.setBackgroundResource((Integer) listItems.get(position).get("mind"));
            wayV.setBackgroundResource((Integer) listItems.get(position).get("way"));
