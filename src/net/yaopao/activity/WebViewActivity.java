@@ -11,6 +11,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class WebViewActivity extends Activity {
+	
+
 	/** webview */
 	private WebView mWebView = null;
 	private String mPageUrl = "";
@@ -30,22 +32,22 @@ public class WebViewActivity extends Activity {
 
 		// web设置
 		WebSettings setting = mWebView.getSettings();
-		// setting.setSupportZoom(false);
-		// setting.setBuiltInZoomControls(false);
+		setting.setSupportZoom(false);
 		setting.setJavaScriptEnabled(true);
 		setting.setDomStorageEnabled(true);
-		setting.setGeolocationEnabled(true);
+		setting.setBuiltInZoomControls(false);
 		mWebView.setHorizontalScrollBarEnabled(false);
 		mWebView.setHorizontalScrollbarOverlay(false);
 		mWebView.setVerticalScrollBarEnabled(false);
 		mWebView.setVerticalScrollbarOverlay(false);
 		mWebView.setWebViewClient(new UserWebClient());
-
-		// 设置本地接口给js调用
-		mWebView.addJavascriptInterface(new Object() {
-			// 回到前一页
-			public void gotoPrePage() {
-				// Log.e("","chxy _______prepage");
+		
+		
+		//设置本地接口给js调用
+		mWebView.addJavascriptInterface(new Object(){
+			//回到前一页
+			public void gotoPrePage(){
+				//Log.e("","chxy _______prepage");
 				WebViewActivity.this.finish();
 			}
 		}, "JSAndroidBridge");
@@ -68,13 +70,21 @@ public class WebViewActivity extends Activity {
 	private void initLoad() {
 
 	}
-
-	private void jsCallbackMethod(String param) {
+	
+	
+	
+	private void jsCallbackMethod(String param){
+		//Log.e("","chxy _______javascript" + param);
 		mWebView.loadUrl("javascript:" + param + ";");
 	}
-
-	class UserWebClient extends WebViewClient {
-
+	
+	class UserWebClient extends WebViewClient{
+		/* 设置webview的跳转始终在自己的activity,而不调用浏览器
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			view.loadUrl(url);
+			return true;
+		}
+		*/
 		@Override
 		public void onLoadResource(WebView view, String url) {
 			// TODO Auto-generated method stub
@@ -99,8 +109,9 @@ public class WebViewActivity extends Activity {
 			String userInfo = "";
 			String playInfo = "";
 			String deviceInfo = "";
-			if (mPageUrl.equals("message_index.html")) {
-				// 消息首页
+			//Log.e("","chxy ____url" + url);
+			if(-1 != url.indexOf("message_index.html")){
+				//消息首页
 				userInfo = "{\"uid\":\"" + "77" + "\"}";
 				playInfo = "{}";
 				deviceInfo = "{\"deviceid\":\"" + "tre211" + "\"}";
