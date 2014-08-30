@@ -274,8 +274,11 @@
             </View>
 
             <LinearLayout
+                android:id="@+id/main_message_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/main_fun_hight" >
+                android:layout_height="@dimen/main_fun_hight"
+                android:background="@drawable/setting_item_layout"
+                android:clickable="true" >
 
                 <ImageView
                     android:layout_width="@dimen/common_height"

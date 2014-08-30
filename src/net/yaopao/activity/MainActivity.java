@@ -43,6 +43,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private double distance;
 	/** 设置*/
 	private TextView mMainSetting = null;
+	/** 系统消息 */
+	private LinearLayout mMessageLayout = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -270,6 +273,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private void initView(){
 		//获取设置
 		mMainSetting = (TextView)findViewById(R.id.main_setting);
+		//获取系统消息layout
+		mMessageLayout = (LinearLayout)findViewById(R.id.main_message_layout);
+		
 		//注册事件
 		this.setListener();
 	}
@@ -282,6 +288,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private void setListener() {
 		//注册设置事件
 		mMainSetting.setOnClickListener(mOnClickListener);
+		mMessageLayout.setOnClickListener(mOnClickListener);
 	}
 	
 	/**
@@ -294,6 +301,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 				case R.id.main_setting:
 					Intent settingIntent = new Intent(MainActivity.this,MainSettingActivity.class);
 					startActivity(settingIntent);
+				break;
+				case R.id.main_message_layout:
+					Intent messageIntent = new Intent(MainActivity.this,WebViewActivity.class);
+					messageIntent.putExtra("net.yaopao.activity.PageUrl","message_index.html");
+					startActivity(messageIntent);
 				break;
 			}
 		}
