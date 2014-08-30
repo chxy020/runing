@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -33,7 +34,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static SimpleDateFormat formatterM;
 	public static SimpleDateFormat formatterS;
 	public static TextView timeV;
-	public static TextView sliderIconV;
+	public static ImageView sliderIconV;
 	public static TextView sliderTextV;
 	public static TextView doneV;
 	public static TextView resumeV;
@@ -66,7 +67,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		mapV = (ImageView) findViewById(R.id.sport_map);
-		sliderIconV = (TextView) findViewById(R.id.slider_icon);
+		sliderIconV = (ImageView) findViewById(R.id.slider_icon);
 		slider = (SliderRelativeLayout) findViewById(R.id.slider_layout);
 		sliderTextV = (TextView) findViewById(R.id.slider_text);
 		gpsV = (ImageView) findViewById(R.id.sport_gps_status);
@@ -430,5 +431,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		default:
 			break;
 		}
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			//DialogTool.quit(MainActivity.this);
+		}
+		return false;
 	}
 }

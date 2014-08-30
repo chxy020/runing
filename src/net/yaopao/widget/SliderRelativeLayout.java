@@ -1,7 +1,6 @@
 package net.yaopao.widget;
 
 import net.yaopao.activity.R;
-import net.yaopao.assist.Variables;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,15 +13,14 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SliderRelativeLayout extends RelativeLayout {
 
 	private static String TAG = "SliderRelativeLayout";
 
-	private TextView tv_slider_icon = null; // ��ʼ�ؼ��������ж��Ƿ�Ϊ�϶���
+	private ImageView tv_slider_icon = null; // ��ʼ�ؼ��������ж��Ƿ�Ϊ�϶���
 
 	private Bitmap dragBitmap = null; //��קͼƬ
 	private Context mContext = null; // ��ʼ��ͼƬ��קʱ��Bitmap����
@@ -53,7 +51,7 @@ public class SliderRelativeLayout extends RelativeLayout {
 	private void initDragBitmap() {
 		if (dragBitmap == null)
 			dragBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-					R.drawable.ic_launcher);
+					R.drawable.ic_slider);
 	}
 	
 	@Override
@@ -61,7 +59,7 @@ public class SliderRelativeLayout extends RelativeLayout {
 		// TODO Auto-generated method stub
 		super.onFinishInflate();
 		// �ÿؼ���Ҫ�ж��Ƿ��ڻ���������򡣻���ʱ ����INVISIBLE(���ɼ�)״̬������ʱ����VISIBLE(�ɼ�)״̬
-		tv_slider_icon = (TextView) findViewById(R.id.slider_icon);
+		tv_slider_icon = (ImageView) findViewById(R.id.slider_icon);
 	}
 	private int mLastMoveX = 1000;  //��ǰbitmapӦ�û��Ƶĵط� �� ��ʼֵΪ�㹻�󣬿�����Ϊ������	
 	public boolean onTouchEvent(MotionEvent event) {

@@ -127,10 +127,12 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 					myIntent = new Intent(SportSetActivity.this,
 							SportCountdownActivity.class);
 					startActivityForResult(myIntent, 103);
+					SportSetActivity.this.finish();
 				} else {
 					myIntent = new Intent(SportSetActivity.this,
 							SportRecordActivity.class);
 					startActivity(myIntent);
+					SportSetActivity.this.finish();
 				}
 
 			}

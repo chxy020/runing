@@ -210,10 +210,10 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					DataTool.setUserInfo(loginJson);
 					Toast.makeText(LoginActivity.this, "登录成功",
 							Toast.LENGTH_LONG).show();
-					Intent myIntent = new Intent();
-					myIntent = new Intent(LoginActivity.this,
-							MainActivity.class);
-					startActivity(myIntent);
+//					Intent myIntent = new Intent();
+//					myIntent = new Intent(LoginActivity.this,
+//							MainActivity.class);
+//					startActivity(myIntent);
 					LoginActivity.this.finish();
 					break;
 				case -8:

@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -122,17 +123,10 @@ public class MatchMapActivity extends Activity implements LocationSource,
 	private void setUpMap() {
 		aMap.getUiSettings().setZoomControlsEnabled(false);
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-		// 自定义系统定位小蓝点
-				MyLocationStyle myLocationStyle = new MyLocationStyle();
-				myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-						.fromResource(R.drawable.location_marker));// 设置小蓝点的图标
-				myLocationStyle.strokeColor(Color.BLACK);// 设置圆形的边框颜色
-				myLocationStyle.radiusFillColor(Color.argb(100, 0, 0, 180));// 设置圆形的填充颜色
-				myLocationStyle.strokeWidth(1.0f);// 设置圆形的边框粗细
-				aMap.setMyLocationStyle(myLocationStyle);
+		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		aMap.setLocationSource(this);// 设置定位监听
-		aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 
 	}
 
@@ -253,5 +247,11 @@ public class MatchMapActivity extends Activity implements LocationSource,
 		}
 		return true;
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			//DialogTool.quit(MainActivity.this);
+		}
+		return false;
+	}
 }

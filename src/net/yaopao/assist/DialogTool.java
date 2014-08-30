@@ -60,6 +60,7 @@ public class DialogTool {
 					confirm.setBackgroundResource(R.color.gray_light);
 					dialog.dismiss();
 					handker.obtainMessage(0).sendToTarget();
+					
 					break;
 				default:
 					break;

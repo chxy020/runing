@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -313,5 +314,11 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 			break;
 		}
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			//DialogTool.quit(MainActivity.this);
+		}
+		return false;
+	}
 }

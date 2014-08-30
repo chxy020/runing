@@ -80,23 +80,16 @@ public class SportListOneActivity extends Activity implements OnTouchListener, L
 	
 		aMap.getUiSettings().setZoomControlsEnabled(false);
 		if (pointCount!=0) {
-			GpsPoint center = pointsArray.get(pointCount/2);
-			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(center.lat, center.lon), 16));
+			GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+			
+			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(start.lat, start.lon), 16));
 		}else{
 			aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		}
 		
-		MyLocationStyle myLocationStyle = new MyLocationStyle();
-		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-				.fromResource(R.drawable.location_marker));// ����С�����ͼ��
-		myLocationStyle.strokeColor(Color.BLACK);// ����Բ�εı߿���ɫ
-		myLocationStyle.radiusFillColor(Color.argb(100, 0, 0, 180));// ����Բ�ε������ɫ
-		// myLocationStyle.anchor(int,int)//����С�����ê��
-		myLocationStyle.strokeWidth(1.0f);// ����Բ�εı߿��ϸ
-		aMap.setMyLocationStyle(myLocationStyle);
-		aMap.setLocationSource(this);// ���ö�λ����
-		aMap.getUiSettings().setMyLocationButtonEnabled(true);// ����Ĭ�϶�λ��ť�Ƿ���ʾ
-		aMap.setMyLocationEnabled(true);// ����Ϊtrue��ʾ��ʾ��λ�㲢�ɴ�����λ��false��ʾ���ض�λ�㲢���ɴ�����λ��Ĭ����false
+		aMap.setLocationSource(this);// 设置定位监听
+		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		
 		
 		if (pointCount==0) {

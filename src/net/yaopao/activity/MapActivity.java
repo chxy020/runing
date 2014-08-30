@@ -16,12 +16,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.a.am;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
@@ -31,10 +33,8 @@ import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.MyLocationStyle;
 import com.amap.api.maps2d.model.PolylineOptions;
 
 /**
@@ -47,13 +47,14 @@ public class MapActivity extends Activity implements LocationSource,
 	private LocationManagerProxy mAMapLocationManager;
 	private LonLatEncryption lonLatEncryption;
 	public GpsPoint lastDrawPoint;
-	SliderRelativeLayout slider;
+	private SliderRelativeLayout slider;
 	static TextView doneV;
 	static TextView resumeV;
-	static TextView sliderIconV;
+	static ImageView sliderIconV;
 	static TextView sliderTextV;
 	private ImageView backV;
 	private ImageView locV;
+	private int isFollow=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MapActivity extends Activity implements LocationSource,
 
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
-		sliderIconV = (TextView) findViewById(R.id.slider_icon);
+		sliderIconV = (ImageView) findViewById(R.id.slider_icon);
 		backV = (ImageView) findViewById(R.id.map_back);
 		locV = (ImageView) findViewById(R.id.map_loc);
 		resumeV.setOnTouchListener(this);
@@ -93,12 +94,12 @@ public class MapActivity extends Activity implements LocationSource,
 			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 				@Override
 				public void onCameraChangeFinish(CameraPosition cameraPosition) {
-					System.out.println("zoom level is:" + cameraPosition.tilt);
+					
 				}
 
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
-
+					isFollow=0;
 				}
 			});
 		}
@@ -107,14 +108,7 @@ public class MapActivity extends Activity implements LocationSource,
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-
-//		MyLocationStyle myLocationStyle = new MyLocationStyle();
-//		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-//				.fromResource(R.drawable.location_marker));// 设置小蓝点的图标
-//		aMap.setMyLocationStyle(myLocationStyle);
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-
-		// aMap.setMyLocationType()
 		int pointCount = SportRecordActivity.points.size();
 		if (pointCount == 0) {
 			return;
@@ -304,6 +298,10 @@ public class MapActivity extends Activity implements LocationSource,
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
 			mListener.onLocationChanged(aLocation);
+			if (isFollow==1) {
+				aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+						new LatLng(aLocation.getLatitude(), aLocation	.getLongitude()), 16));
+			}
 		}
 	}
 
@@ -335,10 +333,13 @@ public class MapActivity extends Activity implements LocationSource,
 				break;
 			case MotionEvent.ACTION_UP:
 				Location myloc = aMap.getMyLocation();
-				if (myloc!=null) {
-					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myloc.getLatitude(), myloc.getLongitude()), 16));
+				if (myloc != null) {
+//					aMap.setMyLocationType(AMap)
+					isFollow=1;
+					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+							new LatLng(myloc.getLatitude(), myloc
+									.getLongitude()), 16));
 				}
-			
 
 				break;
 			}
@@ -349,7 +350,7 @@ public class MapActivity extends Activity implements LocationSource,
 				break;
 			case MotionEvent.ACTION_UP:
 				MapActivity.this.finish();
-				
+
 				break;
 			}
 			break;
@@ -391,5 +392,12 @@ public class MapActivity extends Activity implements LocationSource,
 			break;
 		}
 		return true;
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			//DialogTool.quit(MainActivity.this);
+		}
+		return false;
 	}
 }

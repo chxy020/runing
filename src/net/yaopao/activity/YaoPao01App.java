@@ -112,8 +112,10 @@ public class YaoPao01App extends Application {
 
 				} else {
 					Variables.gpsStatus = 0;
-					// Log.v("wy", "Location changed : Lat: " + "NULL" +
-					// " Lng: " + "NULL");
+					if (SportRecordActivity.gpsV != null) {
+						SportRecordActivity.gpsV
+								.setBackgroundResource(R.drawable.gps_1_w);
+					}
 				}
 			}
 		};
