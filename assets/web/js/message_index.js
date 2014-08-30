@@ -46,15 +46,23 @@ PageManager.prototype = {
 		//this.bodyHeight = h;
 
 		//获取本地用户数据
-		this.localUserInfo = Base.getLocalDataInfo();
+		//this.localUserInfo = Base.getLocalDataInfo();
 		//根据状态初始化页面
 		//this.initLoadHtml();
 
 		//请求历史消息记录
-		this.getMessageList();
+		//this.getMessageList();
 	},
 	pageBack:function(evt){
-		Base.pageBack(-1);
+		//Base.pageBack(-1);
+		//首次启动页面,返回本地前一页
+		if (Base.mobilePlatform.android) {
+			window.JSAndroidBridge.gotoPrePage();
+		} else if (Base.mobilePlatform.iphone || Base.mobilePlatform.ipad) {
+			window.location.href=("objc:??gotoPrePage");
+		} else {
+			alert("调用本地goPersonal方法,PC不支持.");
+		}
 	},
 	pageMove:function(evt){
 		evt.preventDefault();
@@ -66,7 +74,20 @@ PageManager.prototype = {
 	*/
 	pageHide:function(){
 	},
-	
+	/*
+	 * 平台启动页面初始化参数
+	*/
+	initPageManager:function(){
+		this.localUserInfo = Base.getLocalDataInfo();
+
+		//更新比赛状态/用户状态初始化页面
+		//this.userStatus = this.countUserStatus();
+		//this.playStatus = this.countPlayStatus();
+		//this.initLoadHtml();
+
+		//请求比赛状态
+		this.getMessageList();
+	},
 	btnDown:function(evt){
 		//按钮按下通用高亮效果
 		this.moved = false;
@@ -149,7 +170,7 @@ PageManager.prototype = {
 
 		var options = {};
 		//用户ID,
-		options.uid = "77";//user.uid || "";
+		options.uid = user.uid || "";
 		//客户端唯一标识
 		options["X-PID"] = device.deviceid || "";
 		//第几页
