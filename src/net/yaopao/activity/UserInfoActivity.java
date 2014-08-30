@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import net.yaopao.activity.R;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 
@@ -25,15 +26,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
@@ -70,7 +68,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	public String upImgJson = "";
 	private Bitmap mPhotoBmp = null;
 	public byte[] imageByte;
-	ProgressDialog pd;
+	private LoadingDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +95,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		birthdayV.setOnTouchListener(this);
 		weightV.setOnTouchListener(this);
 		heightV.setOnTouchListener(this);
-
+		dialog = new LoadingDialog(this);
 		nicknameV.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
@@ -381,7 +379,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 
 		@Override
 		protected void onPostExecute(Boolean result) {
-			pd.dismiss();
+			dialog.dismiss();
 			if (result) {
 				JSONObject rt = JSON.parseObject(upImgJson);
 				if (rt != null && !"".equals(upImgJson)) {
@@ -452,8 +450,8 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		switch (requestCode) {
 		case Constants.RET_CAMERA:
 			if (resultCode == Activity.RESULT_OK) {
-				File picture = new File(Constants.avatarPath
-						+ Constants.avatarName);
+				File picture = new File(Constants.tempPath
+						+ "/"+ Constants.tempImage);
 				startPhotoZoom(Uri.fromFile(picture));
 			}
 			break;
@@ -479,8 +477,8 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(
 				MediaStore.EXTRA_OUTPUT,
-				Uri.fromFile(new File(Constants.avatarPath
-						+ Constants.avatarName)));
+				Uri.fromFile(new File(Constants.tempPath
+						+ "/"+Constants.tempImage)));
 		startActivityForResult(intent, Constants.RET_CAMERA);
 	}
 
@@ -506,10 +504,13 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}// 初始化一个流对象
+			}
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();//初始化一个流对象
 			bmp.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩 到
-															// output对象里
+	        imageByte = bos.toByteArray();//转换成功了
+			
 			headv.setImageBitmap(bmp);
+			new upImgAsyncTask().execute("");
 		}
 	}
 

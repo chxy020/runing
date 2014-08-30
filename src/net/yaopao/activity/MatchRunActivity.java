@@ -115,12 +115,13 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 	};
 
 	private void updateUI() {
-		int[] time = YaoPao01App.cal(totalTime);
+		
 		int d1 = (int) distance / 10000;
 		int d2 = (int) (distance % 10000) / 1000;
 		int d3 = (int) (distance % 1000) / 100;
 		int d4 = (int) (distance % 100) / 10;
-
+		
+		int[] time = YaoPao01App.cal(totalTime);
 		int t1 = time[0] / 10;
 		int t2 = time[0] % 10;
 		int t3 = time[1] / 10;
@@ -152,7 +153,43 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 		update(s4, s4V);
 
 	}
+	protected void update(int i, ImageView view) {
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.w_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.w_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.w_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.w_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.w_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.w_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.w_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.w_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.w_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.w_9);
+			break;
 
+		default:
+			break;
+		}
+	}
 	@Override
 	protected void onDestroy() {
 		timer.cancel();
@@ -275,43 +312,7 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 
 	}
 
-	protected void update(int i, ImageView view) {
-		switch (i) {
-		case 0:
-			view.setBackgroundResource(R.drawable.w_0);
-			break;
-		case 1:
-			view.setBackgroundResource(R.drawable.w_1);
-			break;
-		case 2:
-			view.setBackgroundResource(R.drawable.w_2);
-			break;
-		case 3:
-			view.setBackgroundResource(R.drawable.w_3);
-			break;
-		case 4:
-			view.setBackgroundResource(R.drawable.w_4);
-			break;
-		case 5:
-			view.setBackgroundResource(R.drawable.w_5);
-			break;
-		case 6:
-			view.setBackgroundResource(R.drawable.w_6);
-			break;
-		case 7:
-			view.setBackgroundResource(R.drawable.w_7);
-			break;
-		case 8:
-			view.setBackgroundResource(R.drawable.w_8);
-			break;
-		case 9:
-			view.setBackgroundResource(R.drawable.w_9);
-			break;
 
-		default:
-			break;
-		}
-	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

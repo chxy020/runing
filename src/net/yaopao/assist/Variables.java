@@ -44,8 +44,8 @@ public class Variables {
 	public static int state; // 运动中：0，暂停中：1
 
 	public static int runtar;// 自由：0，距离：1，时间：2
-	public static double runtarDis;// 目标距离,公里
-	public static long runtarTime = 5;// 目标时间，秒
+	public static int runtarDis;// 目标距离,米
+	public static int runtarTime ;// 目标时间，秒
 
 	public static int runty;// 步行：1，跑步：2，自行车骑行：3
 	public static int mind; // 心情

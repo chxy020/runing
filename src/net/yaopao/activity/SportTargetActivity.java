@@ -99,9 +99,9 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						// distance = msg.getData().getString("distance");
-						Variables.runtarDis = Double.parseDouble(msg.getData()
+						double runtarDis = Double.parseDouble(msg.getData()
 								.getString("distance"));
-						super.handleMessage(msg);
+						Variables.runtarDis = (int) runtarDis*1000;
 					}
 				};
 				// 实例化SelectPicPopupWindow
@@ -126,8 +126,7 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 				timeImgV.setBackgroundResource(R.drawable.check);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
-						Variables.runtarTime = Long.parseLong(msg.getData()
-								.getString("time"));
+						Variables.runtarTime =msg.getData().getInt("time");
 						super.handleMessage(msg);
 					}
 				};

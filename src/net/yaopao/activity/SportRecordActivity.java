@@ -1,6 +1,5 @@
 package net.yaopao.activity;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static List<Integer> pointsIndex;
 	public static SimpleDateFormat formatterM;
 	public static SimpleDateFormat formatterS;
-	public static TextView timeV;
 	public static ImageView sliderIconV;
 	public static TextView sliderTextV;
 	public static TextView doneV;
@@ -45,15 +43,26 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private static ImageView d4v;
 	private static ImageView mapV;
 	private SliderRelativeLayout slider;
-	private static TextView distanceV;
-	private static TextView speedV;
+	private static ProgressBar progressHorizontal;
+	private static ImageView t1V;
+	private static ImageView t2V;
+	private static ImageView t3V;
+	private static ImageView t4V;
+	private static ImageView t5V;
+	private static ImageView t6V;
 
-	private DecimalFormat df;
-	private ProgressBar progressHorizontal;
-	// private double distance = 0;
+	private static ImageView s1V;
+	private static ImageView s2V;
+	private static ImageView s3V;
+	private static ImageView s4V;
+	// 记录ProgressBar的完成进度
+	private static int status = 0;
+	private static int target = 0;
 	// 测试代码
 	public static double lon = 116.402894;
 	public static double lat = 39.923433;
+
+	// 以上测试代码
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +71,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
-		// distanceV = (TextView) findViewById(R.id.sport_recoding_mileage);
-		timeV = (TextView) findViewById(R.id.sport_recoding_time);
-		speedV = (TextView) findViewById(R.id.sport_recoding_speed);
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		mapV = (ImageView) findViewById(R.id.sport_map);
@@ -76,6 +82,45 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
 		d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
 		d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
+		t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
+		t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
+		t3V = (ImageView) findViewById(R.id.match_recoding_time_m1);
+		t4V = (ImageView) findViewById(R.id.match_recoding_time_m2);
+		t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
+		t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
+
+		s1V = (ImageView) findViewById(R.id.match_recoding_speed1);
+		s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
+		s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
+		s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
+		progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
+		if (Variables.runtar == 1) {
+			progressHorizontal.setMax(Variables.runtarDis);
+			target = Variables.runtarDis * 100;// 由于计算的时候距离是double
+		} else if (Variables.runtar == 2) {
+			progressHorizontal.setMax(Variables.runtarTime);
+			target = Variables.runtarTime;
+		}
+		/*// 启动线程,计算进度
+		if (Variables.runtar != 0) {
+			new Thread() {
+				public void run() {
+					while (status < target) {
+						// 获取耗时操作的完成百分比
+						if (Variables.runtar == 1) {
+							status = (int) (Variables.distance * 100);
+						} else if (Variables.runtar == 2) {
+							status = Variables.utime;
+						}
+						// 发送消息到Handler
+						Message m = new Message();
+						m.what = 0x111;
+						// 发送消息
+						procesHandler.sendMessage(m);
+					}
+				}
+			}.start();
+		}*/
 
 		if (Variables.sportStatus == 0) {
 			sliderIconV.setVisibility(View.VISIBLE);
@@ -89,30 +134,22 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			sliderIconV.setVisibility(View.GONE);
 			sliderTextV.setVisibility(View.GONE);
 		}
-		timeV.setOnTouchListener(this);
-		speedV.setOnTouchListener(this);
+		// timeV.setOnTouchListener(this);
+		// speedV.setOnTouchListener(this);
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
 
 		points = new ArrayList<GpsPoint>();
-		//
 		// points.add(new GpsPoint(116.403694,39.906744));
-		// points.add(new GpsPoint(116.413755,39.91516));
-		// points.add(new GpsPoint(116.413755,39.91616));
-		// points.add(new GpsPoint(116.413755,39.91716));
-		// points.add(new GpsPoint(116.413755,39.91816));
-		// points.add(new GpsPoint(116.413755,39.91916));
-
-		formatterM = new SimpleDateFormat("mm");//
-		formatterS = new SimpleDateFormat("ss");//
-		df = new java.text.DecimalFormat("#.##");
+		// formatterM = new SimpleDateFormat("mm");//
+		// formatterS = new SimpleDateFormat("ss");//
+		// //df = new java.text.DecimalFormat("#.##");
 		slider.setMainHandler(slipHandler);
 		pointsIndex = new ArrayList<Integer>();
 		pointsIndex.add(0);
 		startTimer();
 		startRecordGps();
-		progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
 		if (Variables.runtar == 1) {
 			progressHorizontal.setMax((int) Variables.runtarDis * 10);
 		} else if (Variables.runtar == 2) {
@@ -127,11 +164,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		stopTimer();
-		Log.v("wydb", "points=" + SportRecordActivity.points);
-		// points.clear();
-		// pointsIndex.clear();
-		// Log.v("wygps", "des pointsIndex=" + pointsIndex);
-
+		// Log.v("wydb", "points=" + SportRecordActivity.points);
 	}
 
 	@Override
@@ -305,6 +338,20 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 			if (pushOnePoint()) {
 				updateUI();
+				if (Variables.runtar != 0) {
+					if (status < target) {
+						if (Variables.runtar == 1) {
+							status = (int) (Variables.distance * 100);
+						} else if (Variables.runtar == 2) {
+							status = Variables.utime;
+						}
+						// 发送消息到Handler
+						Message m = new Message();
+						m.what = 0x111;
+						// 发送消息
+						procesHandler.sendMessage(m);
+					}
+				}
 			}
 			handler.postDelayed(this, 3000);
 		}
@@ -325,8 +372,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			int t4 = time[1] % 10;
 			int t5 = time[2] / 10;
 			int t6 = time[2] % 10;
-			timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + ""
-					+ t6);
+			update(t1, t1V);
+			update(t2, t2V);
+			update(t3, t3V);
+			update(t4, t4V);
+			update(t5, t5V);
+			update(t6, t6V);
 			timer.postDelayed(this, 1000);
 		}
 
@@ -372,6 +423,13 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		int d2 = (int) (Variables.distance % 10000) / 1000;
 		int d3 = (int) (Variables.distance % 1000) / 100;
 		int d4 = (int) (Variables.distance % 100) / 10;
+		if (d1 > 0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
+		update(d1, d1v);
+		update(d2, d2v);
+		update(d3, d3v);
+		update(d4, d4v);
 
 		int[] speed = YaoPao01App
 				.cal((int) ((1000 / Variables.distance) * Variables.utime));
@@ -380,15 +438,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		speedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"");
-
-		if (d1 > 0) {
-			d1v.setVisibility(View.VISIBLE);
-		}
-		update(d1, d1v);
-		update(d2, d2v);
-		update(d3, d3v);
-		update(d4, d4v);
+		update(s1, s1V);
+		update(s2, s2V);
+		update(s3, s3V);
+		update(s4, s4V);
 
 	}
 
@@ -439,5 +492,27 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
+	}
+
+	// 控制进度条
+	final static Handler procesHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// 表明消息是由该程序发送的。
+			if (msg.what == 0x111) {
+				progressHorizontal.setProgress(status);
+			}
+		}
+	};
+
+	// 模拟一个耗时的操作。
+	public int doWork() {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ++status;
 	}
 }

@@ -292,7 +292,6 @@
             style="@style/ProgressBar_sport"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            
             android:layout_marginLeft="@dimen/margin5"
             android:layout_marginRight="@dimen/margin5"
             android:layout_marginTop="@dimen/margin6"

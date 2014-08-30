@@ -4,6 +4,7 @@ import net.yaopao.assist.Variables;
 import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -49,12 +50,11 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		btn_submit = (Button) mMenuView.findViewById(R.id.user_time_submit);
 		btn_cancel = (Button) mMenuView.findViewById(R.id.user_time_cancel);
 		btn_submit.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
 				Message msg = new Message();
 				Bundle b = new Bundle();
-				b.putString("time", time);
+				b.putInt("time", Integer.parseInt(time));
 				msg.setData(b);
 				handler.sendMessage(msg);
 				SelectTime.this.dismiss();
@@ -104,6 +104,7 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		String curT = view.getCurrentItem() + 5 + "";
 		view.setCurrentItem(view.getCurrentItem(), true);
 		time = curT;
+		
 		timeTextV.setText(curT + " 分钟");
 	}
 

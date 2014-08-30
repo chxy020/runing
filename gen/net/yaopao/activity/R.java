@@ -45,8 +45,6 @@ public final class R {
         public static final int edit_img_margin=0x7f070021;
         public static final int edit_img_size=0x7f070020;
         public static final int extra_large_font_size=0x7f070048;
-        /**  hdpi 
-         */
         public static final int font_size1=0x7f070002;
         public static final int font_size2=0x7f070003;
         public static final int font_size3=0x7f070004;

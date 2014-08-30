@@ -48,6 +48,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 	private Bitmap bitmap;
 	private String headUrl;
 	private LoadingDialog dialog;
+	private int loginStatus;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,6 @@ public class LoginActivity extends Activity implements OnTouchListener {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			dialog.dismiss();
 			Log.v("wyuser", "login1");
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
@@ -184,15 +184,6 @@ public class LoginActivity extends Activity implements OnTouchListener {
 			Log.v("wyuser", "login2");
 			Log.v("wyuser", "loginJson" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (result) {
 
 				JSONObject rt = JSON.parseObject(loginJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
@@ -206,10 +197,15 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					// 下载头像
 					headUrl = Constants.endpoints
 							+ rt.getJSONObject("userinfo").getString("imgpath");
-					new Thread(connectNet).start();
+					try {
+						bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));
+						saveFile();
+					} catch (Exception e) {
+						Log.v("wyuser", e.toString());
+						e.printStackTrace();
+					}
 					DataTool.setUserInfo(loginJson);
-					Toast.makeText(LoginActivity.this, "登录成功",
-							Toast.LENGTH_LONG).show();
+					
 					// Intent myIntent = new Intent();
 					// myIntent = new Intent(LoginActivity.this,
 					// MainActivity.class);
@@ -217,18 +213,31 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					LoginActivity.this.finish();
 					break;
 				case -8:
-					Toast.makeText(LoginActivity.this, "密码错误",
-							Toast.LENGTH_LONG).show();
-					break;
+					loginStatus=-8;
+					return false;
 				default:
-					Toast.makeText(LoginActivity.this, "登录失败，请稍后重试",
-							Toast.LENGTH_LONG).show();
 					break;
 				}
-
+				return true;
 			} else {
-				Toast.makeText(LoginActivity.this, "网络异常，请稍后重试",
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			dialog.dismiss();
+			if (result) {
+				Toast.makeText(LoginActivity.this, "登录成功",
 						Toast.LENGTH_LONG).show();
+			} else {
+				if (loginStatus==-8) {
+					Toast.makeText(LoginActivity.this, "密码错误",
+							Toast.LENGTH_LONG).show();
+				}else {
+					Toast.makeText(LoginActivity.this, "登录失败，请稍后重试",
+							Toast.LENGTH_LONG).show();
+				}
 			}
 		}
 	}
@@ -243,8 +252,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 				bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));
 				saveFile();
 			} catch (Exception e) {
-				Toast.makeText(YaoPao01App.getAppContext(), "无法链接网络！",
-						Toast.LENGTH_SHORT).show();
+				Log.v("wyuser", e.toString());
 				e.printStackTrace();
 			}
 
