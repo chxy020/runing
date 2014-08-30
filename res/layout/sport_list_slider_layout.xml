@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true">
+	
+	<!-- 运动记录 android:background="@drawable/message_background"-->
+	<android.support.v4.view.ViewPager
+		android:id="@+id/vPager"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:flipInterval="30"
+		android:persistentDrawingCache="animation" />
+	
+	<!-- 运动记录圆点 -->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="6dp"
+		android:layout_alignBottom="@+id/vPager"
+		android:gravity="center_horizontal"
+		android:orientation="horizontal" >
+		
+		<ImageView
+			android:id="@+id/sport_list_cursor1"
+			android:layout_width="10dp"
+			android:layout_height="10dp"
+			android:background="@drawable/slider_cursor_curr"
+			android:contentDescription="@string/image_des" />
+		
+		<ImageView
+			android:id="@+id/sport_list_cursor2"
+			android:layout_width="10dp"
+			android:layout_height="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginLeft="10dp"
+			android:background="@drawable/slider_cursor"
+			android:contentDescription="@string/image_des" />
+		
+		<ImageView
+			android:id="@+id/sport_list_cursor3"
+			android:layout_width="10dp"
+			android:layout_height="10dp"
+			android:background="@drawable/slider_cursor"
+			android:contentDescription="@string/image_des" />
+	</LinearLayout>
+
+</RelativeLayout>
