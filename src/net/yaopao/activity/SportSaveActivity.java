@@ -105,10 +105,10 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSaveActivity.this,
-						MainActivity.class);
-				startActivity(myIntent);
+//				Intent myIntent = new Intent();
+//				myIntent = new Intent(SportSaveActivity.this,
+//						MainActivity.class);
+//				startActivity(myIntent);
 				SportSaveActivity.this.finish();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 

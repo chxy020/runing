@@ -62,5 +62,9 @@
     <dimen name="sport_num_width">62dp</dimen>
     <dimen name="relay_heigt1">280dp</dimen>
     <dimen name="relay_heigt2">260dp</dimen>
+    
+    <dimen name="sport_map_size">60dp</dimen>
+    <dimen name="sport_map_margin">20dp</dimen>
+    <dimen name="sport_vertival_height">60dp</dimen>
 
 </resources>

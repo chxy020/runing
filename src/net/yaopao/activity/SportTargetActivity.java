@@ -101,7 +101,8 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 						// distance = msg.getData().getString("distance");
 						double runtarDis = Double.parseDouble(msg.getData()
 								.getString("distance"));
-						Variables.runtarDis = (int) runtarDis*1000;
+						
+						Variables.runtarDis = (int) (runtarDis*1000);
 					}
 				};
 				// 实例化SelectPicPopupWindow
@@ -127,6 +128,7 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						Variables.runtarTime =msg.getData().getInt("time");
+						Log.v("wysport", "set time = "+Variables.runtarTime);
 						super.handleMessage(msg);
 					}
 				};

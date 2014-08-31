@@ -62,6 +62,10 @@ public class YaoPao01App extends Application {
 			public void onProviderDisabled(String arg0) {
 				Log.v("wy", "gps Disabled");
 				Variables.gpsStatus = 2;
+				if (SportRecordActivity.gpsV != null) {
+					  Variables.gpsStatus = 0;
+						SportRecordActivity.gpsV.setBackgroundResource(R.drawable.gps_1);
+					}
 			}
 
 			// 当坐标改变时触发此函数；如果Provider传进相同的坐标，它就不会被触发
@@ -171,7 +175,7 @@ public class YaoPao01App extends Application {
 	}
 
 	public static boolean isGpsAvailable() {
-		 if (Variables.gpsStatus!=2) {
+		/* if (Variables.gpsStatus!=2) {
 		 if (Variables.gpsStatus==1) {
 		 return true;
 		 }else {
@@ -181,8 +185,8 @@ public class YaoPao01App extends Application {
 		 }else {
 		 Toast.makeText(instance, "请开启GPS", Toast.LENGTH_LONG).show();
 		 return false;
-		 }
-   // return true;
+		 }*/
+    return true;
 	}
 
 	public static int[] cal(int second) {

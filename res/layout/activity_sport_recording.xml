@@ -82,13 +82,15 @@
                 android:gravity="center"
                 android:text="距离（公里）"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size3" />
+                android:textSize="@dimen/font_size3" 
+                android:layout_marginBottom="@dimen/margin1"
+                />
 
             <View
                 android:id="@+id/line_under_recoding_mileage"
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
-                android:layout_above="@+id/sport_recoding_time"
+                android:layout_above="@+id/line_vertical"
                 android:background="@color/white" >
             </View>
 
@@ -175,12 +177,13 @@
                 android:layout_above="@+id/line_under_recoding_speed_text"
                 android:gravity="center"
                 android:text="时间"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/margin1" />
 
             <View
                 android:id="@+id/line_vertical"
                 android:layout_width="1px"
-                android:layout_height="@dimen/sport_set_height"
+                android:layout_height="@dimen/sport_vertival_height"
                 android:layout_above="@+id/line_under_recoding_speed_text"
                 android:layout_toRightOf="@id/sport_recoding_time"
                 android:background="@color/white" >
@@ -257,6 +260,7 @@
                 android:layout_toRightOf="@id/line_vertical"
                 android:gravity="center"
                 android:text="平均配速"
+                android:layout_marginBottom="@dimen/margin1"
                 android:textColor="@color/white" />
 
             <View
@@ -264,7 +268,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
                 android:layout_above="@+id/recoding_process"
-                android:background="@color/white" >
+                android:background="@color/white" 
+                android:layout_marginBottom="@dimen/margin9">
             </View>
 
             <ProgressBar
@@ -295,16 +300,17 @@
                 android:layout_alignParentLeft="true"
                 android:gravity="center"
                 android:text="目标"
+                android:layout_marginBottom="@dimen/margin1"
                 android:textColor="@color/white" />
         </RelativeLayout>
 
         <ImageView
             android:id="@+id/sport_map"
-            android:layout_width="@dimen/sport_set_height"
-            android:layout_height="@dimen/sport_set_height"
+            android:layout_width="@dimen/sport_map_size"
+            android:layout_height="@dimen/sport_map_size"
             android:layout_above="@+id/slider_layout"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/margin2"
+            android:layout_margin="@dimen/sport_map_margin"
             android:background="@drawable/button_map" />
 
         <net.yaopao.widget.SliderRelativeLayout

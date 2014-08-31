@@ -41,6 +41,7 @@ import com.amap.api.maps2d.model.PolylineOptions;
  */
 public class MapActivity extends Activity implements LocationSource,
 		AMapLocationListener, OnTouchListener {
+	public static final String closeAction = "close.action";  
 	private MapView mapView;
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
@@ -367,12 +368,15 @@ public class MapActivity extends Activity implements LocationSource,
 							SportRecordActivity.stopRecordGps();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
+							   
 						}
 						super.handleMessage(msg);
 					}
 				};
 				DialogTool.doneSport(MapActivity.this, handler);
-
+				 Intent intent = new Intent(closeAction);  
+	                intent.putExtra("data", "close");  
+	                sendBroadcast(intent);
 				break;
 			}
 			break;
