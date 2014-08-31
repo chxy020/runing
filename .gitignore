@@ -17,5 +17,5 @@ images/download/*
 *.htm
 *.*~
 #####
-
+project.properties
 
