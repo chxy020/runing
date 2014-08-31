@@ -1,31 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
-	
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="10dp"
-		android:gravity="center_horizontal"
-		android:orientation="horizontal">
-		
-		<!-- 速度图片 -->
-		<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <!-- 速度图片 -->
+        <!--
+             <ImageView
 			android:id="@+id/imageView1"
 			android:layout_width="wrap_content"
 			android:layout_height="80dp"
 			android:src="@drawable/r_0" />
+        -->
 
-	</LinearLayout>
-	
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_horizontal"
-		android:textColor="#ffffff"
-		android:textSize="18sp" 
-		android:text="运动总时长" />
-	
+        <LinearLayout
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin9" >
+
+            <ImageView
+                android:id="@+id/time_h1"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:layout_marginLeft="@dimen/margin7"
+                android:background="@drawable/r_0" 
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/time_h2"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0"
+                  android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/time_h3"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0" 
+                 android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/time_h4"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0"
+                 android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/time_d1"
+                android:layout_width="@dimen/match_dot_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_colon"
+                 android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/time_m1"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0" />
+
+            <ImageView
+                android:id="@+id/time_m2"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0" />
+
+            <ImageView
+                android:id="@+id/time_d2"
+                android:layout_width="@dimen/match_dot_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_colon" />
+
+            <ImageView
+                android:id="@+id/time_s1"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0" />
+
+            <ImageView
+                android:id="@+id/time_s2"
+                android:layout_width="@dimen/slider_num_width"
+                android:layout_height="@dimen/slider_num_height"
+                android:background="@drawable/r_0" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="运动总时长"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
 </LinearLayout>

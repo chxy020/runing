@@ -6,17 +6,40 @@
 	
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="80dp"
 		android:layout_marginTop="10dp"
 		android:gravity="center_horizontal"
 		android:orientation="horizontal">
 		
-		<!-- 速度图片 -->
+		<LinearLayout 
+	    android:layout_marginLeft="@dimen/margin1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent"
+	    android:gravity="center"
+	    >
+
 		<ImageView
-			android:id="@+id/imageView1"
-			android:layout_width="wrap_content"
-			android:layout_height="80dp"
-			android:src="@drawable/r_0" />
+		    android:id="@+id/main_count_num1"
+		    android:layout_width="@dimen/slider_num_width"
+		    android:layout_height="@dimen/slider_num_height"
+		    android:background="@drawable/r_0" 
+		    android:visibility="gone"
+		    />
+
+         <ImageView
+            android:id="@+id/main_count_num2"
+            android:layout_width="@dimen/slider_num_width"
+            android:layout_height="@dimen/slider_num_height"
+            android:background="@drawable/r_0"
+            android:visibility="gone"
+             />
+         <ImageView
+            android:id="@+id/main_count_num3"
+            android:layout_width="@dimen/slider_num_width"
+            android:layout_height="@dimen/slider_num_height"
+            android:background="@drawable/r_0"
+             />
+	</LinearLayout>
 
 	</LinearLayout>
 	

@@ -51,6 +51,7 @@
             android:id="@+id/recording_save_pho"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:background="@drawable/photo_bg"
             />
           
         <ImageView
@@ -213,7 +214,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/edit"
                 />
-            <EditText 
+          <!--   <EditText 
                 android:id="@+id/recording_save_desc"
                 android:layout_toRightOf="@id/recording_save_desc_ic"
                 android:layout_height="wrap_content"
@@ -222,7 +223,17 @@
                 android:layout_centerVertical="true"
                  android:background="@null"
                 android:hint="说说这次运动感觉怎么样？"
+                /> -->
+            <TextView 
+                android:id="@+id/recording_save_desc"
+                android:layout_toRightOf="@id/recording_save_desc_ic"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_centerVertical="true"
+                android:hint="说说这次运动感觉怎么样？"
                 />
+            
     </RelativeLayout>
       <View
             android:layout_below="@id/recording_save_desc_layout"

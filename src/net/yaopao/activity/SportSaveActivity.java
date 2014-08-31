@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,7 +44,6 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
 	private String sportPho;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
