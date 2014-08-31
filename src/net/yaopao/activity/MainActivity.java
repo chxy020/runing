@@ -27,6 +27,9 @@ import com.alibaba.fastjson.JSONObject;
 public class MainActivity extends Activity implements OnTouchListener {
 	private TextView state;
 	private TextView desc;
+	private TextView toutalCount;
+	private TextView avgSpeed;
+	private TextView points;
 
 	private ImageView start;
 	private ImageView headv;
@@ -57,6 +60,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
+		toutalCount = (TextView) this.findViewById(R.id.main_count);
+		avgSpeed = (TextView) this.findViewById(R.id.main_speed);
+		points = (TextView) this.findViewById(R.id.main_points);
 		d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
 		d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
 		d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
@@ -107,6 +113,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 			state.setText("未登录");
 		}
 		initMileage();
+		DataBean data = YaoPao01App.db.queryData();
+		toutalCount.setText(data.getCount()); 
+//		avgSpeed.setText(data.getPspeed()); 
+//		toutalCount.setText(YaoPao01App.db.queryData().getCount()); 
+		
 
 	}
 

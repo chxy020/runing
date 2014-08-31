@@ -160,6 +160,7 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/main_count"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
@@ -190,6 +191,7 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/main_speed"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
@@ -219,6 +221,7 @@
             android:orientation="vertical" >
 
             <TextView
+                 android:id="@+id/main_points "
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
