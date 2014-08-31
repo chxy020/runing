@@ -20,7 +20,7 @@ public class Constants {
 	public static final String avatarName = "avatar.jpg";
 	public static final String tempPath = Environment
 			.getExternalStorageDirectory().toString();
-	public static final String tempImage = "avatar.jpg";
+	public static final String tempImage = "temp.jpg";
 	public static final String sportPho = Environment
 			.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/";
 

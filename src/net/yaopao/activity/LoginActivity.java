@@ -175,13 +175,11 @@ public class LoginActivity extends Activity implements OnTouchListener {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			Log.v("wyuser", "login1");
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
 			loginJson = NetworkHandler.httpPost(Constants.endpoints
 					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
 					+ pwdStr);
-			Log.v("wyuser", "login2");
 			Log.v("wyuser", "loginJson" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
 
@@ -201,7 +199,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 						bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));
 						saveFile();
 					} catch (Exception e) {
-						Log.v("wyuser", e.toString());
+						Log.v("wyuser", "eeeeee="+e.toString());
 						e.printStackTrace();
 					}
 					DataTool.setUserInfo(loginJson);

@@ -10,9 +10,11 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
@@ -42,8 +44,14 @@ public class YaoPao01App extends Application {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener locationlisten = new LocationListener() {
 
-			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+			public void onStatusChanged(String provider, int status, Bundle extras) {
 				Log.v("wy", "gps StatusChanged");
+				  if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE){
+					  if (SportRecordActivity.gpsV != null) {
+						  Variables.gpsStatus = 0;
+							SportRecordActivity.gpsV.setBackgroundResource(R.drawable.gps_1);
+						}
+				  }
 			}
 
 			public void onProviderEnabled(String arg0) {
@@ -67,13 +75,13 @@ public class YaoPao01App extends Application {
 					if (location.getAccuracy() > 200) {
 						if (SportRecordActivity.gpsV != null) {
 							SportRecordActivity.gpsV
-									.setBackgroundResource(R.drawable.gps_1_w);
+									.setBackgroundResource(R.drawable.gps_1);
 						}
 						rank = 1;
 					} else if (location.getAccuracy() > 50) {
 						if (SportRecordActivity.gpsV != null) {
 							SportRecordActivity.gpsV
-									.setBackgroundResource(R.drawable.gps_2_w);
+									.setBackgroundResource(R.drawable.gps_2);
 						}
 						rank = 2;
 					}
@@ -81,7 +89,7 @@ public class YaoPao01App extends Application {
 					else if (location.getAccuracy() > 20) {
 						if (SportRecordActivity.gpsV != null) {
 							SportRecordActivity.gpsV
-									.setBackgroundResource(R.drawable.gps_3_w);
+									.setBackgroundResource(R.drawable.gps_3);
 						}
 						rank = 3;
 					}
@@ -89,7 +97,7 @@ public class YaoPao01App extends Application {
 					else {
 						if (SportRecordActivity.gpsV != null) {
 							SportRecordActivity.gpsV
-									.setBackgroundResource(R.drawable.gps_4_w);
+									.setBackgroundResource(R.drawable.gps_4);
 						}
 						rank = 4;
 					}
@@ -105,8 +113,7 @@ public class YaoPao01App extends Application {
 				} else {
 					Variables.gpsStatus = 0;
 					if (SportRecordActivity.gpsV != null) {
-						SportRecordActivity.gpsV
-								.setBackgroundResource(R.drawable.gps_1_w);
+						SportRecordActivity.gpsV.setBackgroundResource(R.drawable.gps_1);
 					}
 				}
 			}
@@ -164,18 +171,18 @@ public class YaoPao01App extends Application {
 	}
 
 	public static boolean isGpsAvailable() {
-		// if (Variables.gpsStatus!=2) {
-		// if (Variables.gpsStatus==1) {
-		// return true;
-		// }else {
-		// Toast.makeText(instance, "当前位置GPS信号较弱", Toast.LENGTH_LONG).show();
-		// return false;
-		// }
-		// }else {
-		// Toast.makeText(instance, "请开启GPS", Toast.LENGTH_LONG).show();
-		// return false;
-		// }
-		return true;
+		 if (Variables.gpsStatus!=2) {
+		 if (Variables.gpsStatus==1) {
+		 return true;
+		 }else {
+		 Toast.makeText(instance, "当前位置GPS信号较弱", Toast.LENGTH_LONG).show();
+		 return false;
+		 }
+		 }else {
+		 Toast.makeText(instance, "请开启GPS", Toast.LENGTH_LONG).show();
+		 return false;
+		 }
+   // return true;
 	}
 
 	public static int[] cal(int second) {

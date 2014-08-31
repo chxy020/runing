@@ -115,7 +115,6 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.v("wy", "刷新个人信息页面");
 		initLayout();
 	}
 
@@ -369,7 +368,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			upImgJson = NetworkHandler.upImg(1, "", imageByte);
-			Log.v("wy", upImgJson);
+			Log.v("wyuser", upImgJson);
 			if (upImgJson != null && !"".equals(upImgJson)) {
 				return true;
 			} else {
@@ -492,11 +491,11 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	private void doneGetPhotoFromCamera(Intent data) {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
-			Bitmap bmp = extras.getParcelable("data");
-			if (bmp == null) {
+			mPhotoBmp = extras.getParcelable("data");
+			if (mPhotoBmp == null) {
 				return;
 			}
-			mPhotoBmp = bmp;
+//			mPhotoBmp = bmp;
 			FileOutputStream output = null;
 			try {
 				output = new FileOutputStream(new File(Constants.avatarPath
@@ -506,10 +505,11 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				e.printStackTrace();
 			}
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();//初始化一个流对象
-			bmp.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩 到
+			mPhotoBmp.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩 到
 	        imageByte = bos.toByteArray();//转换成功了
-			
-			headv.setImageBitmap(bmp);
+			Log.v("wyuser", "mPhotoBmp"+mPhotoBmp);
+			Log.v("wyuser", "imageByte"+imageByte.length);
+			//headv.setImageBitmap(mPhotoBmp);
 			new upImgAsyncTask().execute("");
 		}
 	}

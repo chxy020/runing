@@ -59,8 +59,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private static int status = 0;
 	private static int target = 0;
 	// 测试代码
-	public static double lon = 116.402894;
-	public static double lat = 39.923433;
+//	public static double lon = 116.402894;
+//	public static double lat = 39.923433;
 
 	// 以上测试代码
 
@@ -321,17 +321,17 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		@Override
 		public void run() {
 			// 测试代码
-			lat = lat + 0.001;
-			double meter = 0;
-			GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
-			if (points.size() == 0) {
-				points.add(point);
-			} else {
-				meter = getDistanceFrom2ponit(points.get(points.size() - 1),
-						point);
-				points.add(point);
-			}
-			Variables.distance += meter;
+//			lat = lat + 0.001;
+//			double meter = 0;
+//			GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
+//			if (points.size() == 0) {
+//				points.add(point);
+//			} else {
+//				meter = getDistanceFrom2ponit(points.get(points.size() - 1),
+//						point);
+//				points.add(point);
+//			}
+//			Variables.distance += meter;
 			// 以上测试代码
 
 			updateUI();

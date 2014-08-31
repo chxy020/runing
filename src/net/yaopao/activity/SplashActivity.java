@@ -87,11 +87,15 @@ public class SplashActivity extends Activity {
 		@Override
 		public void run() {
 			try {
+				Log.v("wyuser", "保存下载的图片");
 				bitmap = BitmapFactory
 						.decodeStream(getImageStream(Variables.headUrl));
+				Log.v("wyuser ", "下载headUrl="+Variables.headUrl);
+				Log.v("wyuser ", "下载bitmap="+bitmap);
 				saveFile(bitmap);
 
 			} catch (Exception e) {
+				e.printStackTrace();
 				Log.v("wyuser", e.toString());
 			}
 
@@ -189,7 +193,7 @@ public class SplashActivity extends Activity {
 			// dialog.dismiss();
 			if (result) {
 
-				JSONObject rt = JSON.parseObject(loginJson);
+				/*JSONObject rt = JSON.parseObject(loginJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				switch (rtCode) {
 				case 0:
@@ -210,7 +214,7 @@ public class SplashActivity extends Activity {
 					break;
 				default:
 					break;
-				}
+				}*/
 			} else {
 				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
 						Toast.LENGTH_LONG).show();

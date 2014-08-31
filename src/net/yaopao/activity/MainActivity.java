@@ -113,7 +113,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private void initMileage() {
 		DataBean data = YaoPao01App.db.queryData();
 		distance = data.getDistance();
-		distance = 549254;
+		//distance = 549254;
 		int d1 = (int) distance / 1000000;
 		int d2 = (int) (distance % 1000000) / 100000;
 		int d3 = (int) (distance % 100000) / 10000;
