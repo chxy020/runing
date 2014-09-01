@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		initMileage();
 		DataBean data = YaoPao01App.db.queryData();
-		toutalCount.setText(data.getCount()); 
+//		toutalCount.setText(data.getCount()); 
 //		avgSpeed.setText(data.getPspeed()); 
 //		toutalCount.setText(YaoPao01App.db.queryData().getCount()); 
 		
