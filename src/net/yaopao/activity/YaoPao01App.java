@@ -189,27 +189,27 @@ public class YaoPao01App extends Application {
     return true;
 	}
 
-	public static int[] cal(int second) {
+	public static int[] cal(long second) {
 		int h = 0;
 		int m = 0;
 		int s = 0;
-		int temp = second % 3600;
+		int temp = (int)(second % 3600);
 		if (second > 3600) {
-			h = second / 3600;
+			h =(int) (second / 3600);
 			if (temp != 0) {
 				if (temp > 60) {
-					m = temp / 60;
+					m = (int) (temp / 60);
 					if (temp % 60 != 0) {
-						s = temp % 60;
+						s = (int)(temp % 60);
 					}
 				} else {
 					s = temp;
 				}
 			}
 		} else {
-			m = second / 60;
+			m =(int) (second / 60);
 			if (second % 60 != 0) {
-				s = second % 60;
+				s = (int)(second % 60);
 			}
 		}
 

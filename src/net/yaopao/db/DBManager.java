@@ -164,6 +164,7 @@ public class DBManager {
 		DataBean data = new DataBean();
 		Cursor c = queryTheCursor();
 		int count = c.getCount();
+		Log.v("wysport", "db count="+count);
 		double totalDistance = 0;
 		int speed = 0;// 平均配速 单位秒
 		long totalTime = 0;// 秒

@@ -5,13 +5,9 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,13 +16,15 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 
 public class MainActivity extends Activity implements OnTouchListener {
 	private TextView state;
 	private TextView desc;
+	private TextView toutalCount;
+	private TextView avgSpeed;
+	private TextView points;
 
 	private ImageView start;
 	private ImageView headv;
@@ -57,6 +55,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
+		toutalCount = (TextView) this.findViewById(R.id.main_count);
+		avgSpeed = (TextView) this.findViewById(R.id.main_speed);
+		points = (TextView) this.findViewById(R.id.main_points);
 		d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
 		d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
 		d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
@@ -107,6 +108,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 			state.setText("未登录");
 		}
 		initMileage();
+		DataBean data = YaoPao01App.db.queryData();
+		toutalCount.setText(data.getCount()+""); 
+//		avgSpeed.setText(getSeed(data.getPspeed())); 
+		
 
 	}
 
@@ -135,6 +140,15 @@ public class MainActivity extends Activity implements OnTouchListener {
 		update(d4, d4v);
 		update(d5, d5v);
 		update(d6, d6v);
+	}
+	private String getSeed(double avgspeed) {
+		int[] speed = YaoPao01App
+				.cal((int) avgspeed);
+		String s1 = (speed[1] / 10)+"";
+		String s2 =( speed[1] % 10)+"";
+		String s3 = (speed[2] / 10)+"";
+		String s4 = (speed[2] % 10)+"";
+		return s1+""+s2+"'"+s3+""+s4+"\"";
 	}
 
 	protected void update(int i, ImageView view) {
