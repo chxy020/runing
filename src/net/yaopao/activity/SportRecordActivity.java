@@ -257,7 +257,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		return point;
 
 	}
-
+//返回true，更新ui，false不更新ui
 	public static boolean pushOnePoint() {
 
 		double meter = 0;
@@ -269,15 +269,23 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				last = point;
 				return false;
 			}
-
-			meter = getDistanceFrom2ponit(points.get(points.size() - 1), point);
-			if (meter == 0) {
-				return false;
+			last = points.get(points.size() - 1);
+//			meter = getDistanceFrom2ponit(points.get(points.size() - 1), point);
+			meter = getDistanceFrom2ponit(last, point);
+			//判断，如果距离小于5，并且两点状态相同，抛掉当前点，如果状态不同，记录，算距离，更新ui
+			if (meter < 5) {
+				if (last.status==point.status) {
+					last.time =point.time;
+					return false;
+				}else{
+					points.add(point);
+					return false;
+				}
+				
 			} else {
 				if (point.status == 0) {
-					last = points.get(points.size() - 1);
 					if (last.status == 0) {
-						meter = getDistanceFrom2ponit(last, point);
+						//meter = getDistanceFrom2ponit(last, point);
 						Variables.distance += meter;
 						points.add(point);
 						return true;
@@ -291,6 +299,31 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					return false;
 				}
 			}
+//			if (meter < 5) {
+//				if (last.status==point.status) {
+//					return false;
+//				}
+//				
+//			} else {
+//				if (point.status == 0) {
+////					last = points.get(points.size() - 1);
+//					if (last.status == 0) {
+//						meter = getDistanceFrom2ponit(last, point);
+//						Variables.distance += meter;
+//						points.add(point);
+//						return true;
+//					} else {
+//						points.add(point);
+//						return false;
+//					}
+//
+//				} else {
+//					points.add(point);
+//					return false;
+//				}
+//			}
+			
+			
 		}
 		return false;
 	}
