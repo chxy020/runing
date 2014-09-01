@@ -5,13 +5,9 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +16,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -114,9 +109,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		initMileage();
 		DataBean data = YaoPao01App.db.queryData();
-//		toutalCount.setText(data.getCount()); 
-//		avgSpeed.setText(data.getPspeed()); 
-//		toutalCount.setText(YaoPao01App.db.queryData().getCount()); 
+		toutalCount.setText(data.getCount()+""); 
+//		avgSpeed.setText(getSeed(data.getPspeed())); 
 		
 
 	}
@@ -146,6 +140,15 @@ public class MainActivity extends Activity implements OnTouchListener {
 		update(d4, d4v);
 		update(d5, d5v);
 		update(d6, d6v);
+	}
+	private String getSeed(double avgspeed) {
+		int[] speed = YaoPao01App
+				.cal((int) avgspeed);
+		String s1 = (speed[1] / 10)+"";
+		String s2 =( speed[1] % 10)+"";
+		String s3 = (speed[2] / 10)+"";
+		String s4 = (speed[2] % 10)+"";
+		return s1+""+s2+"'"+s3+""+s4+"\"";
 	}
 
 	protected void update(int i, ImageView view) {

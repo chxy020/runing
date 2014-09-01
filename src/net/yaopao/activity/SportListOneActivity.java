@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
@@ -27,15 +28,24 @@ import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.MyLocationStyle;
 import com.amap.api.maps2d.model.PolylineOptions;
 
 public class SportListOneActivity extends Activity implements OnTouchListener,
 		LocationSource, AMapLocationListener {
 	private TextView backV;
+	private TextView timeV;
+	private TextView pspeedV;
+	private TextView avgspeedV;
+	private TextView dateV;
+	private TextView desV;
+	private TextView titleV;
+	private ImageView typeV;
+	private ImageView mindV;
+	private ImageView wayV;
+	
+	
 	private MapView mapView;
 	private AMap aMap;
 	private SportBean oneSport;
@@ -57,7 +67,25 @@ public class SportListOneActivity extends Activity implements OnTouchListener,
 	private void initLayout() {
 
 		backV = (TextView) findViewById(R.id.recording_one_back);
+		timeV = (TextView) findViewById(R.id.one_time);
+		pspeedV = (TextView) findViewById(R.id.one_pspeed);
+		avgspeedV = (TextView) findViewById(R.id.one_avgspeed);
+		titleV = (TextView) findViewById(R.id.recording_one_title);
+		dateV = (TextView) findViewById(R.id.one_date);
+		desV = (TextView) findViewById(R.id.one_desc);
+		typeV= (ImageView) findViewById(R.id.one_type);
+		mindV= (ImageView) findViewById(R.id.one_mind);
+		wayV= (ImageView) findViewById(R.id.one_way);
+		backV = (TextView) findViewById(R.id.recording_one_back);
+		backV = (TextView) findViewById(R.id.recording_one_back);
 		backV.setOnTouchListener(this);
+		
+		
+		initMap();
+
+	}
+	private void initMap(){
+		
 		lonLatEncryption = new LonLatEncryption();
 		Intent intent = getIntent();
 		int id = Integer.parseInt(intent.getStringExtra("id"));
@@ -138,9 +166,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener,
 			}
 		}
 		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-
 	}
-
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();

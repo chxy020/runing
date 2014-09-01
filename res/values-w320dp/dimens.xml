@@ -69,5 +69,6 @@
     
     <dimen name="slider_num_height">50dp</dimen>
     <dimen name="slider_num_width">30dp</dimen>
+     <dimen name="one_date_width">160dp</dimen>
 
 </resources>
