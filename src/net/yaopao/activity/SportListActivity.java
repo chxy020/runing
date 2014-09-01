@@ -165,7 +165,8 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			
 			//获取运动总时长chenxy add
 			int uTime = sport.getUtime();
-			//uTime = 60;
+			//数据都是空的,先放个测试数据
+			uTime = 21230;
 			//Log.e("","chxy_____utime" + uTime);
 			String utime = getTimeOfSeconds(uTime);
 			map.put("utime",utime);
@@ -214,7 +215,8 @@ public class SportListActivity extends Activity implements OnTouchListener {
 				h = (int)second / 3600;
 				m = (int)second % 3600 / 60;
 				s = second % 3600 % 60;
-				String th = h > 10 ? h + "" : "0" + h;
+				//小时没加0,放不下
+				String th = h > 10 ? h + "" : "" + h;
 				String tm = m > 10 ? m + "" : "0" + m;
 				String ts = s > 10 ? s + "" : "0" + s;
 				time = th + ":" + tm + ":" + ts;

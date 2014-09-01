@@ -78,5 +78,5 @@
     <!-- chenxy add -->
     <dimen name="sport_size_5">5dp</dimen>
     <dimen name="sport_item_time_size">25dp</dimen>
-    <dimen name="sport_item_date_size">135dp</dimen>
+    <dimen name="sport_item_date_size">125dp</dimen>
 </resources>

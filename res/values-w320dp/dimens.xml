@@ -78,5 +78,5 @@
     <dimen name="sport_size_5">5dp</dimen>
     <dimen name="sport_size_15">15dp</dimen>
     <dimen name="sport_item_time_size">20dp</dimen>
-    <dimen name="sport_item_date_size">120dp</dimen>
+    <dimen name="sport_item_date_size">110dp</dimen>
 </resources>
