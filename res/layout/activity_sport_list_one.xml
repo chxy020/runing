@@ -65,7 +65,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:text="15.21 km"
+            android:text="0.0 km"
             android:textSize="@dimen/font_size3"
             android:textStyle="bold" />
 

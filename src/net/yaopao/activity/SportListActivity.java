@@ -125,7 +125,7 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			Date date = new Date(sport.getAddtime());
 
 			map.put("date", sdf1.format(date) + "月" + sdf2.format(date) + "日 "
-					+ getWeekOfDate(date) + " " + sdf3.format(date));
+					+ YaoPao01App.getWeekOfDate(date) + " " + sdf3.format(date));
 
 			map.put("dis", df.format((sport.getDistance() / 1000)) + "km");
 			if (sport.getMind() == 1) {
@@ -160,29 +160,12 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			int s4 = speed[2] % 10;
 			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
 			data.add(map);
-			/*
-			 * Log.v("wy", "l dis1 =" + sport.getDistance()); Log.v("wy",
-			 * "l dis2 =" + df.format((sport.getDistance() / 1000)) + "km");
-			 * Log.v("wy", "l speed1 =" + sport.getPspeed()); Log.v("wy",
-			 * "l speed2 =" + speed); Log.v("wy", "l speed3 =" + s1 + "" + s2 +
-			 * "'" + s3 + "" + s4 + "\"" + "/公里");
-			 */
 		}
 
 		return data;
 	}
 
-	public static String getWeekOfDate(Date dt) {
-		String[] weekDays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(dt);
-
-		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
-		if (w < 0)
-			w = 0;
-
-		return weekDays[w];
-	}
+	
 
 	/*************** chenxy add ******************/
 

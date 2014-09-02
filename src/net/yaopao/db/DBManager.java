@@ -62,9 +62,9 @@ public class DBManager {
 							Variables.utime, Variables.weather,
 							new Date().getTime() });
 
-			Log.v("wy", "s Variables.distance =" + Variables.distance);
-			Log.v("wy", "s Variables.pspeed =" + Variables.pspeed);
-			Log.v("wy", "s Variables.utime =" + Variables.utime);
+			Log.v("wydb", "s Variables.utime =" + Variables.utime);
+			Log.v("wydb", "s Variables.hspeed =" + Variables.hspeed);
+			Log.v("wydb", "s Variables.remarks =" + Variables.remarks);
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
 			// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
@@ -142,14 +142,15 @@ public class DBManager {
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
+			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
 			sports.add(sport);
-			YaoPao01App.lts.writeFileToSD(
-					"db list : id=" + c.getColumnIndex("id") + " rid="
-							+ c.getColumnIndex("rid")
-
-							+ " runtar=" + c.getColumnIndex("runtar")
-							+ " runty=" + c.getColumnIndex("runty"),
-					"uploadLocation");
+//			YaoPao01App.lts.writeFileToSD(
+//					"db list : id=" + c.getColumnIndex("id") + " rid="
+//							+ c.getColumnIndex("rid")
+//
+//							+ " runtar=" + c.getColumnIndex("runtar")
+//							+ " runty=" + c.getColumnIndex("runty"),
+//					"uploadLocation");
 		}
 		c.close();
 		return sports;
