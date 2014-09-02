@@ -92,4 +92,5 @@
             android:textSize="@dimen/font_size3" />
     </RelativeLayout>
 
+>>>>>>> 726a83fc00960bf886e1e3b1b1ee3349e5ee01f9
 </RelativeLayout>
