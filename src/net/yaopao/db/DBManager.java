@@ -1,5 +1,8 @@
 package net.yaopao.db;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +23,7 @@ import com.alibaba.fastjson.JSON;
 public class DBManager {
 	private DatabaseHelper helper;
 	private SQLiteDatabase db;
-
+	
 	public DBManager(Context context) {
 		Log.d("wydb", "DBManager --> Constructor");
 		helper = new DatabaseHelper(context);
@@ -43,6 +46,10 @@ public class DBManager {
 		String statusIndex = JSON.toJSONString(SportRecordActivity.pointsIndex,
 				true);
 		Log.v("wydb", "statusIndex=" + statusIndex);
+	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
+		df.setMaximumFractionDigits(2);
+		df.setRoundingMode(RoundingMode.DOWN);
+		Variables.hspeed =df.format((Variables.distance/Variables.utime)*3.6);
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
 		try {
@@ -62,9 +69,9 @@ public class DBManager {
 							Variables.utime, Variables.weather,
 							new Date().getTime() });
 
-			Log.v("wy", "s Variables.distance =" + Variables.distance);
-			Log.v("wy", "s Variables.pspeed =" + Variables.pspeed);
-			Log.v("wy", "s Variables.utime =" + Variables.utime);
+			Log.v("wydb", "s Variables.utime =" + Variables.utime);
+			Log.v("wydb", "s Variables.hspeed =" + Variables.hspeed);
+			Log.v("wydb", "s Variables.remarks =" + Variables.remarks);
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
 			// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
@@ -142,14 +149,15 @@ public class DBManager {
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
+			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
 			sports.add(sport);
-			YaoPao01App.lts.writeFileToSD(
-					"db list : id=" + c.getColumnIndex("id") + " rid="
-							+ c.getColumnIndex("rid")
-
-							+ " runtar=" + c.getColumnIndex("runtar")
-							+ " runty=" + c.getColumnIndex("runty"),
-					"uploadLocation");
+//			YaoPao01App.lts.writeFileToSD(
+//					"db list : id=" + c.getColumnIndex("id") + " rid="
+//							+ c.getColumnIndex("rid")
+//
+//							+ " runtar=" + c.getColumnIndex("runtar")
+//							+ " runty=" + c.getColumnIndex("runty"),
+//					"uploadLocation");
 		}
 		c.close();
 		return sports;
@@ -205,7 +213,10 @@ public class DBManager {
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
+			sport.setHspeed(c.getString(c.getColumnIndex("hspeed")));
 			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
+			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
+			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));
 			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
 			sports.add(sport);
 		}

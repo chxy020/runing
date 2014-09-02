@@ -32,7 +32,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SportListActivity extends Activity implements OnTouchListener {
@@ -128,7 +127,7 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			Date date = new Date(sport.getAddtime());
 
 			map.put("date", sdf1.format(date) + "月" + sdf2.format(date) + "日 "
-					+ getWeekOfDate(date) + " " + sdf3.format(date));
+					+ YaoPao01App.getWeekOfDate(date) + " " + sdf3.format(date));
 
 			map.put("dis", df.format((sport.getDistance() / 1000)) + "km");
 			if (sport.getMind() == 1) {
@@ -166,18 +165,11 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			//获取运动总时长chenxy add
 			int uTime = sport.getUtime();
 			//数据都是空的,先放个测试数据
-			uTime = 21230;
+			//uTime = 21230;
 			//Log.e("","chxy_____utime" + uTime);
 			String utime = getTimeOfSeconds(uTime);
 			map.put("utime",utime);
 			data.add(map);
-			/*
-			 * Log.v("wy", "l dis1 =" + sport.getDistance()); Log.v("wy",
-			 * "l dis2 =" + df.format((sport.getDistance() / 1000)) + "km");
-			 * Log.v("wy", "l speed1 =" + sport.getPspeed()); Log.v("wy",
-			 * "l speed2 =" + speed); Log.v("wy", "l speed3 =" + s1 + "" + s2 +
-			 * "'" + s3 + "" + s4 + "\"" + "/公里");
-			 */
 		}
 
 		return data;

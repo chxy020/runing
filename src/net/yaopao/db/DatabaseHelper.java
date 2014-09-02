@@ -102,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		sBuffer.append("  [aheart] INTEGER,  ");
 		sBuffer.append("  [distance] FLOAT,  ");
 		sBuffer.append("  [heat] INTEGER,  ");
-		sBuffer.append("  [hspeed] FLOAT,  ");
+		sBuffer.append("  [hspeed] TEXT,  ");
 		sBuffer.append("  [image_count] INTEGER,  ");
 		sBuffer.append("  [mheart] INTEGER,  ");
 		sBuffer.append("  [mind] INTEGER,  ");

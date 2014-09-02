@@ -45,12 +45,16 @@
         android:layout_height="@dimen/recording_save_pho_height"
         android:layout_below="@id/recording_one_top_bar" >
 
-        <com.amap.api.maps2d.MapView
+        <!-- <com.amap.api.maps2d.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/one_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent" /> -->
+<include
+		    android:id="@+id/sport_one_slider"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    layout="@layout/sport_one_slider_layout" />
         <ImageView
             android:id="@+id/one_type"
             android:layout_width="@dimen/common_height"
@@ -65,7 +69,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:text="15.21 km"
+            android:text="0.0 km"
             android:textSize="@dimen/font_size3"
             android:textStyle="bold" />
 
@@ -216,12 +220,12 @@
             android:layout_margin="@dimen/margin1"
             android:background="@drawable/edit" />
 
-        <EditText
+        <TextView
             android:id="@+id/one_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/one_desc_icon"
-            android:background="@null"
+            android:gravity="center_vertical"
             android:hint="说说这次运动感觉怎么样？" />
     </RelativeLayout>
 

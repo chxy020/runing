@@ -195,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
-                android:text="7 &apos; 09 &apos;&apos;/km"
+                android:text="0&apos; 00&apos;&apos;/km"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size3"
                 android:textStyle="bold" />

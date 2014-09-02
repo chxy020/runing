@@ -224,12 +224,13 @@
                  android:background="@null"
                 android:hint="说说这次运动感觉怎么样？"
                 /> -->
-            <TextView 
+            <EditText 
                 android:id="@+id/recording_save_desc"
                 android:layout_toRightOf="@id/recording_save_desc_ic"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/margin1"
+                 android:background="@null"
                 android:layout_centerVertical="true"
                 android:hint="说说这次运动感觉怎么样？"
                 />

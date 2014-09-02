@@ -6,7 +6,6 @@ import java.util.Date;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.Variables;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,12 +21,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SportSaveActivity extends Activity implements OnTouchListener {
 	public TextView deleV;
 	public TextView saveV;
+	public EditText descV;
 
 	public ImageView mind1V;
 	public ImageView mind2V;
@@ -59,6 +60,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				+ getPhotoFileName();
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
+		descV = (EditText) this.findViewById(R.id.recording_save_desc);
 		mind1V = (ImageView) this.findViewById(R.id.recording_save_mind1);
 		mind2V = (ImageView) this.findViewById(R.id.recording_save_mind2);
 		mind3V = (ImageView) this.findViewById(R.id.recording_save_mind3);
@@ -137,7 +139,8 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-
+				Variables.remarks=
+				descV.getText().toString();
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值

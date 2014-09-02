@@ -17,7 +17,11 @@ public class GpsPoint {
 		this.lon = lon;
 		this.lat = lat;
 	}
-
+	public GpsPoint(double lon, double lat,long time) {
+		this.lon = lon;
+		this.lat = lat;
+		this.time = time;
+	}
 	public GpsPoint(double lon, double lat, int status) {
 		this.lon = lon;
 		this.lat = lat;

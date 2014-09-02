@@ -125,17 +125,29 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		doneV.setOnTouchListener(this);
 
 		points = new ArrayList<GpsPoint>();
-		// points.add(new GpsPoint(116.403694,39.906744));
-		// formatterM = new SimpleDateFormat("mm");//
-		// formatterS = new SimpleDateFormat("ss");//
-		// //df = new java.text.DecimalFormat("#.##");
+		points.add(new GpsPoint(116.403694, 39.906744, 1409643285776L));
+		points.add(new GpsPoint(116.404694, 39.906744, 1409643285776L));
+		points.add(new GpsPoint(116.405694, 39.906744, 1409643285776L));
+		points.add(new GpsPoint(116.406694, 39.906744, 1409643285776L));
+		points.add(new GpsPoint(116.407694, 39.906744, 1409643285776L));
+		points.add(new GpsPoint(116.408694, 39.906744, 1409643285776L));
+		points.add(new GpsPoint(116.409694, 39.906744, 1409643285776L));
+//		points.add(new GpsPoint(116.403694, 39.906824, 1409643295776L));
+//		points.add(new GpsPoint(116.404694, 39.906934, 1409643305776L));
+//		points.add(new GpsPoint(116.403694, 39.907044, 1409643375776L));
+//		points.add(new GpsPoint(116.403794, 39.907154, 1409643485776L));
+//		points.add(new GpsPoint(116.403894, 39.907264, 140964435776L));
+//		points.add(new GpsPoint(116.403994, 39.907374, 1409645285776L));
+//		points.add(new GpsPoint(116.405694, 39.907484, 1409646285776L));
+//		points.add(new GpsPoint(116.406694, 39.908584, 1409646105776L));
+//		points.add(new GpsPoint(116.407694, 39.908684, 1409646105776L));
 		slider.setMainHandler(slipHandler);
 		pointsIndex = new ArrayList<Integer>();
 		pointsIndex.add(0);
 		startTimer();
 		startRecordGps();
-		 IntentFilter filter = new IntentFilter(MapActivity.closeAction);  
-	        registerReceiver(broadcastReceiver, filter);  
+		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
+		registerReceiver(broadcastReceiver, filter);
 
 	}
 
@@ -143,7 +155,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		stopTimer();
-		unregisterReceiver(broadcastReceiver);  
+		unregisterReceiver(broadcastReceiver);
 		// Log.v("wydb", "points=" + SportRecordActivity.points);
 	}
 
@@ -258,6 +270,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	}
 
+	// 返回true，更新ui，false不更新ui
 	public static boolean pushOnePoint() {
 
 		double meter = 0;
@@ -269,15 +282,24 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				last = point;
 				return false;
 			}
+			last = points.get(points.size() - 1);
+			// meter = getDistanceFrom2ponit(points.get(points.size() - 1),
+			// point);
+			meter = getDistanceFrom2ponit(last, point);
+			// 判断，如果距离小于5，并且两点状态相同，抛掉当前点，如果状态不同，记录，算距离，更新ui
+			if (meter < 5) {
+				if (last.status == point.status) {
+					last.time = point.time;
+					return false;
+				} else {
+					points.add(point);
+					return false;
+				}
 
-			meter = getDistanceFrom2ponit(points.get(points.size() - 1), point);
-			if (meter == 0) {
-				return false;
 			} else {
 				if (point.status == 0) {
-					last = points.get(points.size() - 1);
 					if (last.status == 0) {
-						meter = getDistanceFrom2ponit(last, point);
+						// meter = getDistanceFrom2ponit(last, point);
 						Variables.distance += meter;
 						points.add(point);
 						return true;
@@ -291,6 +313,30 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					return false;
 				}
 			}
+			// if (meter < 5) {
+			// if (last.status==point.status) {
+			// return false;
+			// }
+			//
+			// } else {
+			// if (point.status == 0) {
+			// // last = points.get(points.size() - 1);
+			// if (last.status == 0) {
+			// meter = getDistanceFrom2ponit(last, point);
+			// Variables.distance += meter;
+			// points.add(point);
+			// return true;
+			// } else {
+			// points.add(point);
+			// return false;
+			// }
+			//
+			// } else {
+			// points.add(point);
+			// return false;
+			// }
+			// }
+
 		}
 		return false;
 	}
@@ -311,21 +357,14 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			// points.add(point);
 			// }
 			// Variables.distance += meter;
-			/*Variables.distance += 55;
-			if (Variables.runtar != 0) {
-				if (status < target) {
-					if (Variables.runtar == 1) {
-						status = (int) (Variables.distance * 100);
-					} else if (Variables.runtar == 2) {
-						status = Variables.utime;
-					}
-					// 发送消息到Handler
-					Message m = new Message();
-					m.what = 0x111;
-					// 发送消息
-					procesHandler.sendMessage(m);
-				}
-			}*/
+			/*
+			 * Variables.distance += 55; if (Variables.runtar != 0) { if (status
+			 * < target) { if (Variables.runtar == 1) { status = (int)
+			 * (Variables.distance * 100); } else if (Variables.runtar == 2) {
+			 * status = Variables.utime; } // 发送消息到Handler Message m = new
+			 * Message(); m.what = 0x111; // 发送消息 procesHandler.sendMessage(m);
+			 * } }
+			 */
 			// 以上测试代码
 
 			updateUI();
@@ -495,14 +534,14 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			}
 		}
 	};
-	//在地图页面关闭此页面
-	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {  
-		  
-        @Override  
-        public void onReceive(Context context, Intent intent) {  
-        	if ("close".equals(intent.getExtras().getString("data"))) {
+	// 在地图页面关闭此页面
+	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if ("close".equals(intent.getExtras().getString("data"))) {
 				SportRecordActivity.this.finish();
 			}
-        }  
-    };  
+		}
+	};
 }

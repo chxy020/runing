@@ -8,9 +8,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -72,7 +75,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL.setOnTouchListener(this);
 		start.setOnTouchListener(this);
 		recording.setOnTouchListener(this);
-
+		
 		this.initView();
 	}
 
@@ -110,7 +113,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		initMileage();
 		DataBean data = YaoPao01App.db.queryData();
 		toutalCount.setText(data.getCount()+""); 
-//		avgSpeed.setText(getSeed(data.getPspeed())); 
+		avgSpeed.setText(getSeed(data.getPspeed())); 
 		
 
 	}
@@ -273,7 +276,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			DialogTool.quit(MainActivity.this);
+			//DialogTool.quit(MainActivity.this);
+//			DialogTool.alertGpsTip1(MainActivity.this);
+			DialogTool dialog = new DialogTool();
+			WindowManager m = getWindowManager();
+			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			DisplayMetrics dm = new DisplayMetrics();
+			dialog.alertGpsTip2(MainActivity.this,d,dm);
 		}
 		return false;
 	}

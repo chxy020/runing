@@ -31,7 +31,7 @@ public class SportBean {
 
 	private double distance;// 距离
 	private int pspeed;// 配速
-	private double hspeed;// 时速
+	private String hspeed;// 时速
 
 	public int getId() {
 		return id;
@@ -225,11 +225,11 @@ public class SportBean {
 		this.pspeed = pspeed;
 	}
 
-	public double getHspeed() {
+	public String getHspeed() {
 		return hspeed;
 	}
 
-	public void setHspeed(double hspeed) {
+	public void setHspeed(String hspeed) {
 		this.hspeed = hspeed;
 	}
 
