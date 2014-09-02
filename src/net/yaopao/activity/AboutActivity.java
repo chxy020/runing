@@ -30,7 +30,7 @@ public class AboutActivity extends Activity {
 		wSet.setJavaScriptEnabled(true);
 
 		// asset目录
-		mWebViewAbout.loadUrl("file:///android_asset/setting/about.html");
+		mWebViewAbout.loadUrl("file:///android_asset/web/setup_about.html");
 		// sd卡
 		// wView.loadUrl("content://com.android.htmlfileprovider/sdcard/index.html");
 		// wView.loadUrl("http://wap.baidu.com");
