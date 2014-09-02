@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="运动总距离"
-        android:textColor="#ffffff"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
 </LinearLayout>

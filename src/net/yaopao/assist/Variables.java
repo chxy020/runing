@@ -61,7 +61,7 @@ public class Variables {
 
 	public static double distance;// 距离 m
 	public static int pspeed;// 配速 s
-	public static double hspeed;// 时速
+	public static String hspeed;// 时速 km/h
 
 	public static double stateIndex;//
 

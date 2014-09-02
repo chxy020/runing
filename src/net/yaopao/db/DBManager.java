@@ -1,5 +1,8 @@
 package net.yaopao.db;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +23,7 @@ import com.alibaba.fastjson.JSON;
 public class DBManager {
 	private DatabaseHelper helper;
 	private SQLiteDatabase db;
-
+	
 	public DBManager(Context context) {
 		Log.d("wydb", "DBManager --> Constructor");
 		helper = new DatabaseHelper(context);
@@ -43,6 +46,12 @@ public class DBManager {
 		String statusIndex = JSON.toJSONString(SportRecordActivity.pointsIndex,
 				true);
 		Log.v("wydb", "statusIndex=" + statusIndex);
+	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
+		df.setMaximumFractionDigits(2);
+		df.setRoundingMode(RoundingMode.DOWN);
+		Variables.distance=1000;
+		Variables.utime=7250;
+		Variables.hspeed =df.format((Variables.distance/Variables.utime)*3.6);
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
 		try {
@@ -206,7 +215,10 @@ public class DBManager {
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
+			sport.setHspeed(c.getString(c.getColumnIndex("hspeed")));
 			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
+			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
+			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));
 			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
 			sports.add(sport);
 		}

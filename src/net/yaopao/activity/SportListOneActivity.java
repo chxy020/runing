@@ -197,7 +197,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener,
 	}
 	
 	private void initSportData(double distance, int runty, int mind,
-			int runway, String remarks, int utime, int pspeed, double hspeed,long addtime) {
+			int runway, String remarks, int utime, int pspeed, String hspeed,long addtime) {
 		
 		int[] time = YaoPao01App.cal(utime);
 		int t1 = time[0] / 10;
@@ -206,15 +206,17 @@ public class SportListOneActivity extends Activity implements OnTouchListener,
 		int t4 = time[1] % 10;
 		int t5 = time[2] / 10;
 		int t6 = time[2] % 10;
-		timeV.setText(t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
+		Log.v("wysport","utime ="+utime);
 		
+		timeV.setText(t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
+		Log.v("wysport","time ="+t1+""+t2+":"+t3+""+t4+":"+t5+""+t6);
 		int[] speed = YaoPao01App.cal(pspeed);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
-		avgspeedV.setText(hspeed+"km/h");
+		avgspeedV.setText(hspeed+" km/h");
 		disV.setText( df.format(distance/1000) +" km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);

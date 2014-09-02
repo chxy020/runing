@@ -106,7 +106,7 @@
             android:layout_below="@id/list_sport_mind"
             android:layout_toRightOf="@id/sport_item_time_img"
             android:gravity="center_vertical"
-            android:text="35:34"
+            android:text="00:00"
             android:textSize="@dimen/font_size8"
             android:textStyle="bold" />
         

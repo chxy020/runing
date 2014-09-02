@@ -32,7 +32,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SportListActivity extends Activity implements OnTouchListener {
@@ -166,7 +165,7 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			//获取运动总时长chenxy add
 			int uTime = sport.getUtime();
 			//数据都是空的,先放个测试数据
-			uTime = 21230;
+			//uTime = 21230;
 			//Log.e("","chxy_____utime" + uTime);
 			String utime = getTimeOfSeconds(uTime);
 			map.put("utime",utime);

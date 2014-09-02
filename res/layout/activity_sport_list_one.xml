@@ -216,12 +216,12 @@
             android:layout_margin="@dimen/margin1"
             android:background="@drawable/edit" />
 
-        <EditText
+        <TextView
             android:id="@+id/one_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/one_desc_icon"
-            android:background="@null"
+            android:gravity="center_vertical"
             android:hint="说说这次运动感觉怎么样？" />
     </RelativeLayout>
 

@@ -36,7 +36,7 @@
 		android:id="@+id/recording_list_pho"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/recording_List_main_height"
-		android:background="@color/gray_light" >
+		>
 		<!-- 运动记录头部滑动空间 -->
 		<include
 			android:id="@+id/sport_list_slider"
