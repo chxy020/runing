@@ -8,30 +8,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.activity.SportListActivity.MessageOnPageChangeListener;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
+import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
+import net.yaopao.widget.SliderRelativeLayout;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
+import com.amap.api.a.am;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
@@ -42,54 +42,57 @@ import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 
-public class SportListOneActivity extends Activity implements OnTouchListener {
-	private TextView backV;
-	private TextView timeV;
-	private TextView pspeedV;
-	private TextView avgspeedV;
-	private TextView dateV;
-	private TextView desV;
-	private TextView titleV;
-	private TextView disV;
-	private ImageView typeV;
-	private ImageView mindV;
-	private ImageView wayV;
-	/** 消息内容 */
-	private ViewPager mPager = null;
-	/** Tab页面列表 */
-	private List<View> mListViews;
-	/** 推送消息数据适配器 */
-	private MessagePagerAdapter mMessageAdapter = null;
-	/** 容器加载 */
-	private LayoutInflater mInflater = null;
-
+/**
+ */
+public class SportTrackMap extends Activity implements  OnTouchListener {
 	private MapView mapView;
-	private View mapLayout;
-	private View phoLayout;
 	private AMap aMap;
 	private SportBean oneSport;
 	private LonLatEncryption lonLatEncryption;
 	public GpsPoint lastDrawPoint;
+	public GpsPoint curPopPoint;
+	public GpsPoint lastPopPoint;
 
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
 	private SimpleDateFormat sdf4;
 	private DecimalFormat df;
-	String title = "";
-	int recordId=0;
+	private String title = "";
+	private TextView timeV;
+	private TextView pspeedV;
+	private TextView avgspeedV;
+	private TextView dateV;
+	private TextView titleV;
+	private TextView disV;
+	private ImageView typeV;
+	private TextView backV;
+	int oneDis=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sport_list_one);
-		initViewPager();
-		mapView = (MapView) mapLayout.findViewById(R.id.one_map);
+		setContentView(R.layout.activity_sport_list_one_full);
+		mapView = (MapView) findViewById(R.id.full_map);
 		mapView.onCreate(savedInstanceState);
+		lonLatEncryption = new LonLatEncryption();
+		backV = (TextView) findViewById(R.id.full_back);
+		titleV = (TextView) findViewById(R.id.full_title);
+		timeV = (TextView) findViewById(R.id.full_time);
+		pspeedV = (TextView) findViewById(R.id.full_pspeed);
+		avgspeedV = (TextView) findViewById(R.id.full_avgspeed);
+		titleV = (TextView) findViewById(R.id.full_title);
+		dateV = (TextView) findViewById(R.id.full_date);
+		disV = (TextView) findViewById(R.id.full_dis);
+		typeV = (ImageView) findViewById(R.id.full_type);
+		backV.setOnTouchListener(this);
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
@@ -98,47 +101,19 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
-		
-	}
-
-	private void initViewPager() {
-		
-		this.mPager = (ViewPager) this.findViewById(R.id.oneVPager);
-		this.mListViews = new ArrayList<View>();
-		this.mInflater = this.getLayoutInflater();
-		mapLayout = mInflater.inflate(R.layout.sport_one_slider_map, null);
-		phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
-		this.mListViews.add(mapLayout);
-		this.mListViews.add(phoLayout);
-		this.mMessageAdapter = new MessagePagerAdapter(mListViews);
-		this.mPager.setAdapter(this.mMessageAdapter);
-		this.mPager.setOnPageChangeListener(new MessageOnPageChangeListener());
-	}
-
-	private void initLayout() {
-
-		backV = (TextView) findViewById(R.id.recording_one_back);
-		timeV = (TextView) findViewById(R.id.one_time);
-		pspeedV = (TextView) findViewById(R.id.one_pspeed);
-		avgspeedV = (TextView) findViewById(R.id.one_avgspeed);
-		titleV = (TextView) findViewById(R.id.recording_one_title);
-		dateV = (TextView) findViewById(R.id.one_date);
-		desV = (TextView) findViewById(R.id.one_desc);
-		disV = (TextView) findViewById(R.id.one_dis);
-		typeV = (ImageView) findViewById(R.id.one_type);
-		mindV = (ImageView) findViewById(R.id.one_mind);
-		wayV = (ImageView) findViewById(R.id.one_way);
-		backV = (TextView) findViewById(R.id.recording_one_back);
-		backV.setOnTouchListener(this);
 		initMap();
 	}
 
-	private void initMap() {
+	private void initLayout() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	private void initMap() {
 		lonLatEncryption = new LonLatEncryption();
 		Intent intent = getIntent();
-		recordId = Integer.parseInt(intent.getStringExtra("id"));
-		oneSport = YaoPao01App.db.queryForOne(recordId);
+		int id = Integer.parseInt(intent.getStringExtra("id"));
+		oneSport = YaoPao01App.db.queryForOne(id);
 		initSportData(oneSport.getDistance(), oneSport.getRunty(),
 				oneSport.getMind(), oneSport.getRunway(),
 				oneSport.getRemarks(), oneSport.getUtime(),
@@ -174,17 +149,6 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		}
 		aMap.getUiSettings().setZoomControlsEnabled(false);
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-		aMap.getUiSettings().setScrollGesturesEnabled(false);
-		aMap.getUiSettings().setZoomGesturesEnabled(false);
-		aMap.setOnMapClickListener(new OnMapClickListener() {
-			
-			@Override
-			public void onMapClick(LatLng arg0) {
-				Intent intent = new Intent(SportListOneActivity.this,SportTrackMap.class);
-				intent.putExtra("id", recordId + "");
-				startActivity(intent);
-			}
-		});
 		if (pointCount == 0) {
 			return;
 		} else if (pointCount < 2) {
@@ -203,7 +167,20 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		int j = 0;
 		int i = 0;
 		int n = 0;
+		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray.size()-1));
+//		aMap.addMarker(new MarkerOptions().position(new LatLng(start.lat, start.lon))
+//		.icon(BitmapDescriptorFactory.fromResource(R.drawable.pop)).anchor(0f, 1f));
+		
+//		aMap.addMarker(new MarkerOptions().position(new LatLng(end.lat, end.lon))
+//				.icon(BitmapDescriptorFactory.fromResource(R.drawable.pop)).anchor(1f, 1f));
+		
+		
+		aMap.addMarker(new MarkerOptions().position(new LatLng(39.908156,116.397572))
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.pop)).anchor(0.5f, 0.5f));
+
 		for (j = 0; j < linesCount - 1; j++) {
+			
 			List<LatLng> oneLinePoints = new ArrayList<LatLng>();
 			int startIndex = (Integer) indexArray.get(j);
 			int endIndex = (Integer) indexArray.get(j + 1);
@@ -228,6 +205,8 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 			}
 		}
 		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+	}
+	private void addPop() {
 	}
 
 	private void initSportData(double distance, int runty, int mind,
@@ -254,42 +233,15 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
 		avgspeedV.setText(hspeed + " km/h");
 		disV.setText(df.format(distance / 1000) + " km");
-		desV.setText(remarks);
 		Date date = new Date(addtime);
 		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
 				+ sdf2.format(date) + "日 " + YaoPao01App.getWeekOfDate(date)
 				+ " " + sdf3.format(date));
 
 		initType(runty);
-		initMind(mind);
-		initWay(runway);
 		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
 
 	}
-
-	private void initMind(int mind) {
-		switch (mind) {
-		case 1:
-			mindV.setBackgroundResource(R.drawable.mood1_h);
-			break;
-		case 2:
-			mindV.setBackgroundResource(R.drawable.mood2_h);
-			break;
-		case 3:
-			mindV.setBackgroundResource(R.drawable.mood3_h);
-			break;
-		case 4:
-			mindV.setBackgroundResource(R.drawable.mood4_h);
-			break;
-		case 5:
-			mindV.setBackgroundResource(R.drawable.mood5_h);
-			break;
-
-		default:
-			break;
-		}
-	}
-
 	private void initType(int type) {
 		switch (type) {
 		case 1:
@@ -305,40 +257,34 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 			break;
 		}
 	}
+	private void drawNewLine() {
 
-	private void initWay(int way) {
-		switch (way) {
-		case 1:
-			wayV.setBackgroundResource(R.drawable.way1_h);
-			break;
-		case 2:
-			wayV.setBackgroundResource(R.drawable.way2_h);
-			break;
-		case 3:
-			wayV.setBackgroundResource(R.drawable.way3_h);
-			break;
-		case 4:
-			wayV.setBackgroundResource(R.drawable.way4_h);
-			break;
-		case 5:
-			wayV.setBackgroundResource(R.drawable.way5_h);
-			break;
+		if (SportRecordActivity.points.size() < 2) {
+			return;
+		}
 
-		default:
-			break;
+		GpsPoint newPoint = SportRecordActivity.points
+				.get(SportRecordActivity.points.size() - 1);
+		Log.v("wy", "SportRecordActivity.points=" + SportRecordActivity.points);
+		if (newPoint.lon != lastDrawPoint.lon
+				|| newPoint.lat != lastDrawPoint.lat) {// 5秒后点的位置有移动
+			int count = 2;
+			List<LatLng> newLine = new ArrayList<LatLng>();
+			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,
+					lonLatEncryption.encrypt(newPoint).lon));
+			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,
+					lonLatEncryption.encrypt(lastDrawPoint).lon));
+			if (lastDrawPoint.status == 0) {
+				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
+						Color.RED));
+			} else {
+				aMap.addPolyline((new PolylineOptions()).addAll(newLine)
+						.color(Color.BLACK).setDottedLine(true));
+			}
+			lastDrawPoint = newPoint;
 		}
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
-		switch (view.getId()) {
-		case R.id.recording_one_back:
-			SportListOneActivity.this.finish();
-			break;
-		}
-		return true;
-	}
 
 	@Override
 	protected void onResume() {
@@ -350,7 +296,6 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
-//		deactivate();
 	}
 
 	@Override
@@ -365,10 +310,12 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		mapView.onDestroy();
 	}
 
+
+
 	private List<LatLng> initPoints(List<GpsPoint> list) {
 		List points = new ArrayList<LatLng>();
 		LatLng ponit = null;
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < SportRecordActivity.points.size(); i++) {
 			ponit = new LatLng(list.get(i).lat, list.get(i).lon);
 			points.add(ponit);
 		}
@@ -377,82 +324,30 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	}
 
 
-	/**
-	 * ViewPager适配器
-	 */
-	protected class MessagePagerAdapter extends PagerAdapter {
-		public List<View> views;
 
-		public MessagePagerAdapter(List<View> mListViews) {
-			this.views = mListViews;
-		}
 
-		@Override
-		public void destroyItem(View arg0, int arg1, Object arg2) {
-			((ViewPager) arg0).removeView((View) arg2);
-		}
 
-		@Override
-		public void finishUpdate(View arg0) {
-		}
-
-		@Override
-		public int getCount() {
-			return this.views == null ? 0 : this.views.size();
-		}
-
-		@Override
-		public Object instantiateItem(View arg0, int arg1) {
-			((ViewPager) arg0).addView(this.views.get(arg1), 0);
-			return this.views.get(arg1);
-		}
-
-		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-			return arg0 == (arg1);
-		}
-
-		@Override
-		public void restoreState(Parcelable arg0, ClassLoader arg1) {
-		}
-
-		@Override
-		public Parcelable saveState() {
-			return null;
-		}
-
-		@Override
-		public void startUpdate(View arg0) {
-		}
-
-		@Override
-		public int getItemPosition(Object object) {
-			return POSITION_NONE;
-		}
-	}
-
-	/**
-	 * 消息切换监听
-	 */
-	protected class MessageOnPageChangeListener implements OnPageChangeListener {
-		@Override
-		public void onPageSelected(int arg0) {
-			// arg0是表示你当前选中的页面，这事件是在你页面跳转完毕的时候调用的。
-		}
-
-		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
-		}
-
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-			// arg0 ==1的时候表示正在滑动，arg0==2的时候表示滑动完毕了，arg0==0的时候表示什么都没做，就是停在那。
-			if (1 == arg0) {
-				// 停止自动轮播
-			} else if (0 == arg0) {
-				// 走完2之后,完全停下来之后就会走0,所以在最后重新启动轮播
-				// 重新启动自动轮播
+	@Override
+	public boolean onTouch(View view, MotionEvent event) {
+		int action = event.getAction();
+		switch (view.getId()) {
+		case R.id.full_back:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				SportTrackMap.this.finish();
+				break;
 			}
+			break;
+		
+	}return true;
 		}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		}
+		return false;
 	}
 }

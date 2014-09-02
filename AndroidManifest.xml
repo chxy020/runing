@@ -93,6 +93,9 @@
          <activity
             android:name="net.yaopao.activity.MatchRelayActivity"
             android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.SportTrackMap"
+            android:screenOrientation="portrait" />
           <receiver android:name="net.yaopao.listener.NetworkStateReceiver">  
             <intent-filter>  
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
@@ -132,7 +135,7 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 	
 
-    <uses-sdk android:minSdkVersion="8" >
-    </uses-sdk>
+    <!-- <uses-sdk android:minSdkVersion="8" >
+    </uses-sdk> -->
     
 </manifest>

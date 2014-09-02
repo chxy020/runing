@@ -19,6 +19,8 @@
     <dimen name="margin8">35dp</dimen>
     <dimen name="margin9">5dp</dimen>
     <dimen name="margin10">60dp</dimen>
+    <dimen name="margin11">140dp</dimen>
+    <dimen name="margin12">100dp</dimen>
     <dimen name="countdown_tnum_width">60dp</dimen>
     <dimen name="small_height">20dp</dimen>
     <dimen name="common_height">40dp</dimen>
@@ -79,4 +81,10 @@
     <dimen name="sport_size_15">15dp</dimen>
     <dimen name="sport_item_time_size">20dp</dimen>
     <dimen name="sport_item_date_size">110dp</dimen>
+    <dimen name="full_date_width">160dp</dimen>
+    <dimen name="full_dis_width">80dp</dimen>
+     <dimen name="full_bottom_data_width">45dp</dimen>
+     <dimen name="full_bottom_width">20dp</dimen>
+      <dimen name="full_bottom_height">50dp</dimen>
+        <dimen name="full_bottom_data_height">30dp</dimen>
 </resources>

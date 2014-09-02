@@ -38,9 +38,13 @@
 		android:layout_height="@dimen/recording_List_main_height"
 		>
 		<!-- 运动记录头部滑动空间 -->
+
 		<include
-			android:id="@+id/sport_list_slider"
-			layout="@layout/sport_list_slider_layout" />
+		    android:id="@+id/sport_list_slider"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    layout="@layout/sport_list_slider_layout" />
+
     </RelativeLayout>
     
     
