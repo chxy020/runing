@@ -231,7 +231,17 @@ public class MainActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				if (YaoPao01App.isGpsAvailable()) {
+				if (Variables.gpsStatus==2) {
+					DialogTool dialog = new DialogTool(MainActivity.this);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip2(d);
+				}else if (Variables.gpsStatus==0) {
+					DialogTool dialog = new DialogTool(MainActivity.this);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip1(d);
+				}else if(Variables.gpsStatus==1){
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
@@ -255,11 +265,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				if (YaoPao01App.isGpsAvailable()) {
+				/*if (YaoPao01App.isGpsAvailable()) {
 					Intent mainIntent = new Intent(MainActivity.this,
 							MatchCountdownActivity.class);
 					MainActivity.this.startActivity(mainIntent);
-				}
+				}*/
 				// Intent mainIntent = new Intent(MainActivity.this,
 				// MatchWatchActivity.class);
 				// MainActivity.this.startActivity(mainIntent);
@@ -276,13 +286,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
+			DialogTool.quit(MainActivity.this);
 //			DialogTool.alertGpsTip1(MainActivity.this);
-			DialogTool dialog = new DialogTool();
-			WindowManager m = getWindowManager();
-			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-			DisplayMetrics dm = new DisplayMetrics();
-			dialog.alertGpsTip2(MainActivity.this,d,dm);
 		}
 		return false;
 	}

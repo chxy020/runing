@@ -177,20 +177,20 @@ public class YaoPao01App extends Application {
 		return instance;
 	}
 
-	public static boolean isGpsAvailable() {
-		/* if (Variables.gpsStatus!=2) {
+/*	public static boolean isGpsAvailable() {
+		if (Variables.gpsStatus!=2) {
 		 if (Variables.gpsStatus==1) {
 		 return true;
 		 }else {
-		 Toast.makeText(instance, "当前位置GPS信号较弱", Toast.LENGTH_LONG).show();
+		 //Toast.makeText(instance, "当前位置GPS信号较弱", Toast.LENGTH_LONG).show();
 		 return false;
 		 }
 		 }else {
-		 Toast.makeText(instance, "请开启GPS", Toast.LENGTH_LONG).show();
+		 //Toast.makeText(instance, "请开启GPS", Toast.LENGTH_LONG).show();
 		 return false;
-		 }*/
-    return true;
-	}
+		 }
+//    return true;
+	}*/
 
 	public static int[] cal(long second) {
 		int h = 0;

@@ -5,10 +5,13 @@ import net.yaopao.activity.YaoPao01App;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -19,7 +22,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class DialogTool extends Activity {
+public class DialogTool implements OnTouchListener {
+	TextView openV;
+	TextView cancelV;
+	Dialog dialog;
+	TextView setV;
+	Context context;
+
+	public DialogTool(Context context) {
+		this.context = context;
+	}
+
 	public static void quit(Context context) {
 		new AlertDialog.Builder(context).setTitle(R.string.app_name)
 				.setMessage("确认退出？").setIcon(R.drawable.ic_launcher)
@@ -94,7 +107,7 @@ public class DialogTool extends Activity {
 	}
 
 	// gps信号弱
-	public void alertGpsTip1(Context context,Display d ) {
+	public void alertGpsTip1(Display d) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		final View dialogView = inflater.inflate(R.layout.tip_dialog1, null);
 		final TextView cancel = (TextView) dialogView
@@ -103,11 +116,11 @@ public class DialogTool extends Activity {
 		final Dialog dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		dialog.setCanceledOnTouchOutside(false);
-		
+
 		Window dialogWindow = dialog.getWindow();
 		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.9); // 
-		p.width = (int) (d.getWidth() * 0.8); // 
+		p.height = (int) (d.getHeight() * 0.9); //
+		p.width = (int) (d.getWidth() * 0.8); //
 		dialogWindow.setAttributes(p);
 
 		dialog.show();
@@ -134,49 +147,83 @@ public class DialogTool extends Activity {
 
 	// gps关闭
 	@SuppressWarnings("deprecation")
-	public  void alertGpsTip2(Context context,Display d,DisplayMetrics dm) {
+	public void alertGpsTip2(Display d) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		final View dialogView = inflater.inflate(R.layout.tip_dialog2, null);
-		final TextView cancel = (TextView) dialogView
-				.findViewById(R.id.tip_cancle);
-
-		final Dialog dialog = new Dialog(context, R.style.mydialog);
+		View dialogView = inflater.inflate(R.layout.tip_dialog2, null);
+		dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
-		dialog.setCanceledOnTouchOutside(false);
+		openV = (TextView) dialogView.findViewById(R.id.howto_open);
+		cancelV = (TextView) dialogView.findViewById(R.id.tip2_cancle);
+		setV = (TextView) dialogView.findViewById(R.id.tip2_set);
 		Window dialogWindow = dialog.getWindow();
 		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.9); // 
-		p.width = (int) (d.getWidth() * 0.8); // 
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.8);
 		dialogWindow.setAttributes(p);
-		
-		
-		TextView openV = (TextView) dialogView.findViewById(R.id.howto_open);
-		TextView cancelV = (TextView) dialogView.findViewById(R.id.tip_cancle);
-		TextView setV = (TextView) dialogView.findViewById(R.id.tip_set);
-		cancelV.setWidth(dm.widthPixels / 4);
-		setV.setWidth(dm.widthPixels / 4);
+		cancelV.getLayoutParams().width = p.width / 2;
+		setV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-		
-		
+
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
-		cancel.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View view, MotionEvent event) {
-				int action = event.getAction();
-				switch (action) {
-				case MotionEvent.ACTION_DOWN:
-					cancel.setBackgroundResource(R.color.gray_light);
-					break;
-				case MotionEvent.ACTION_UP:
-					cancel.setBackgroundResource(R.color.blue_dark);
-					dialog.dismiss();
-					// handker.obtainMessage(1).sendToTarget();
-					break;
-				default:
-					break;
-				}
-				return true;
+		cancelV.setOnTouchListener(this);
+		setV.setOnTouchListener(this);
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent event) {
+
+		int action = event.getAction();
+		switch (view.getId()) {
+		case R.id.tip2_cancle:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				cancelV.setBackgroundResource(R.color.gray_light);
+				break;
+			case MotionEvent.ACTION_UP:
+				cancelV.setBackgroundResource(R.color.blue_dark);
+				dialog.dismiss();
+				// handker.obtainMessage(1).sendToTarget();
+				break;
+			default:
+				break;
 			}
-		});
+			break;
+		case R.id.tip2_set:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				setV.setBackgroundResource(R.color.gray_light);
+				break;
+			case MotionEvent.ACTION_UP:
+				setV.setBackgroundResource(R.color.blue_dark);
+				openset();
+				dialog.dismiss();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		default:
+			break;
+		}
+
+		return true;
+	}
+
+	private void openset() {
+		Intent intent = new Intent();
+		intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		try {
+			context.startActivity(intent);
+		} catch (Exception ex) {
+
+			try {
+				context.startActivity(intent);
+			} catch (Exception e) {
+			}
+		}
+
 	}
 }

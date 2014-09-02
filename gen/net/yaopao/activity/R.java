@@ -282,7 +282,7 @@ public final class R {
     public static final class id {
         public static final int LinearLayout=0x7f0b014a;
         public static final int about_layout=0x7f0b002a;
-        public static final int action_settings=0x7f0b0191;
+        public static final int action_settings=0x7f0b0192;
         public static final int alert_cancle=0x7f0b0149;
         public static final int alert_confirm=0x7f0b0147;
         public static final int alert_title=0x7f0b0145;
@@ -620,8 +620,9 @@ public final class R {
         public static final int time_m2=0x7f0b0172;
         public static final int time_s1=0x7f0b0174;
         public static final int time_s2=0x7f0b0175;
+        public static final int tip2_cancle=0x7f0b0190;
+        public static final int tip2_set=0x7f0b0191;
         public static final int tip_cancle=0x7f0b018d;
-        public static final int tip_set=0x7f0b0190;
         public static final int to_login=0x7f0b00b0;
         public static final int to_reset=0x7f0b000e;
         public static final int tv=0x7f0b014c;
