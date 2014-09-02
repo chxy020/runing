@@ -115,11 +115,14 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			sport = list.get(i);
 
 			if (sport.getRunty() == 1) {
-				map.put("type", R.drawable.runtype_walk);
+				//map.put("type", R.drawable.runtype_walk);
+				map.put("type", R.drawable.runtype_walk_big);
 			} else if (sport.getRunty() == 2) {
-				map.put("type", R.drawable.runtype_run);
+				//map.put("type", R.drawable.runtype_run);
+				map.put("type", R.drawable.runtype_run_big);
 			} else if (sport.getRunty() == 3) {
-				map.put("type", R.drawable.runtype_ride);
+				//map.put("type", R.drawable.runtype_ride);
+				map.put("type", R.drawable.runtype_ride_big);
 			}
 
 			Date date = new Date(sport.getAddtime());
@@ -159,13 +162,71 @@ public class SportListActivity extends Activity implements OnTouchListener {
 			int s3 = speed[2] / 10;
 			int s4 = speed[2] % 10;
 			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
+			
+			//获取运动总时长chenxy add
+			int uTime = sport.getUtime();
+			//数据都是空的,先放个测试数据
+			uTime = 21230;
+			//Log.e("","chxy_____utime" + uTime);
+			String utime = getTimeOfSeconds(uTime);
+			map.put("utime",utime);
 			data.add(map);
 		}
 
 		return data;
 	}
 
+	public static String getWeekOfDate(Date dt) {
+		String[] weekDays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dt);
+
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		if (w < 0)
+			w = 0;
+
+		return weekDays[w];
+	}
 	
+	public static String getTimeOfSeconds(int second){
+		String time = "";
+		int h = 0;
+		int m = 0;
+		int s = 0;
+		if(second > 60){
+			//判断是否大于1小时
+			if(second > 60 && second < 3600){
+				//不超过1小时
+				m = (int)second / 60;
+				s = second % 60;
+				String tm = m > 10 ? m + "" : "0" + m;
+				String ts = s > 10 ? s + "" : "0" + s;
+				time = tm + ":" + ts;
+			}
+			else{
+				//超过1小时
+				h = (int)second / 3600;
+				m = (int)second % 3600 / 60;
+				s = second % 3600 % 60;
+				//小时没加0,放不下
+				String th = h > 10 ? h + "" : "" + h;
+				String tm = m > 10 ? m + "" : "0" + m;
+				String ts = s > 10 ? s + "" : "0" + s;
+				time = th + ":" + tm + ":" + ts;
+			}
+		}
+		else{
+			//刚好1分钟
+			if(60 == second){
+				time = "01:00";
+			}
+			else{
+				String ts = second > 10 ? second + "" : "0" + second;
+				time = "00:" + ts;
+			}
+		}
+		return time;
+	}
 
 	/*************** chenxy add ******************/
 
