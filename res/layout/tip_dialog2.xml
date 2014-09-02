@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/alert_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin1"
+            android:text="请打开GPS功能"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_below="@id/alert_title"
+            android:layout_marginLeft="@dimen/margin2"
+            android:gravity="center_vertical"
+            android:text="这是因为:"
+            android:textSize="@dimen/font_size2" />
+
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text1"
+            android:layout_centerHorizontal="true"
+           
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                 android:layout_marginLeft="@dimen/margin2"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="要跑通过GPS来精确记录运动轨"
+                android:textSize="@dimen/font_size2" />
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="match_parent"
+                 android:layout_marginLeft="@dimen/margin2"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="迹，或计算比赛成绩"
+                android:textSize="@dimen/font_size2" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/howto_open"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/l1"
+            android:layout_marginTop="@dimen/margin4"
+            android:gravity="center"
+            android:text="如何打开"
+            android:textColor="@color/text" />
+
+        <TextView
+            android:id="@+id/tip_cancle"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/l1"
+            android:layout_marginTop="@dimen/margin11"
+            android:background="@color/blue_dark"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/tip_set"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/l1"
+            android:layout_marginTop="@dimen/margin11"
+            android:layout_toRightOf="@id/tip_cancle"
+            android:background="@color/blue_dark"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+    </RelativeLayout>
+
+</RelativeLayout>

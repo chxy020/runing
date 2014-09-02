@@ -16,6 +16,8 @@
     <dimen name="margin8">45dp</dimen>
     <dimen name="margin9">5dp</dimen>
     <dimen name="margin10">60dp</dimen>
+    <dimen name="margin11">160dp</dimen>
+    <dimen name="margin12">120dp</dimen>
     <dimen name="font_size1">9dp</dimen>
     <dimen name="font_size2">18dp</dimen>
     <dimen name="font_size3">20dp</dimen>
@@ -79,4 +81,9 @@
     <dimen name="sport_size_5">5dp</dimen>
     <dimen name="sport_item_time_size">25dp</dimen>
     <dimen name="sport_item_date_size">125dp</dimen>
+    <dimen name="full_date_width">180dp</dimen>
+    <dimen name="full_dis_width">80dp</dimen>
+    <dimen name="full_bottom_data_width">60dp</dimen>
+    <dimen name="full_bottom_data_height">40dp</dimen>
+    <dimen name="full_bottom_height">60dp</dimen>
 </resources>

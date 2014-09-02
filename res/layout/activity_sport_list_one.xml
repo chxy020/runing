@@ -45,12 +45,16 @@
         android:layout_height="@dimen/recording_save_pho_height"
         android:layout_below="@id/recording_one_top_bar" >
 
-        <com.amap.api.maps2d.MapView
+        <!-- <com.amap.api.maps2d.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/one_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent" /> -->
+<include
+		    android:id="@+id/sport_one_slider"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    layout="@layout/sport_one_slider_layout" />
         <ImageView
             android:id="@+id/one_type"
             android:layout_width="@dimen/common_height"

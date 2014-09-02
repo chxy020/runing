@@ -1,0 +1,154 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_centerInParent="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/alert_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:gravity="center"
+            android:text="GPS信号较弱"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_below="@id/alert_title"
+            android:layout_marginLeft="@dimen/margin1"
+            android:gravity="center_vertical"
+            android:text="您可以:"
+            android:textSize="@dimen/font_size2" />
+
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/text1" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@drawable/slider_cursor_curr" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="走出室内，来到室外；"
+                android:textSize="@dimen/font_size2" />
+        </LinearLayout>
+  <LinearLayout
+            android:id="@+id/l2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/l1" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@drawable/slider_cursor_curr" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="绕开高楼大厦，离开隧道桥"
+                android:textSize="@dimen/font_size2" />
+        </LinearLayout>
+  <LinearLayout
+            android:id="@+id/l3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/l2" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"
+                 />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="下，离开其他遮挡物；"
+                android:textSize="@dimen/font_size2" />
+        </LinearLayout>
+          <LinearLayout
+            android:id="@+id/l4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/l3" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@drawable/slider_cursor_curr" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="等到GPS信号变好；"
+                android:textSize="@dimen/font_size2" />
+        </LinearLayout>
+            <LinearLayout
+            android:id="@+id/l5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/l4" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@drawable/slider_cursor_curr" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="实在不行......重启您的手机吧。"
+                android:textSize="@dimen/font_size2" />
+        </LinearLayout>
+         <TextView
+        android:id="@+id/tip_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:layout_below="@id/l5"
+        android:layout_marginTop="@dimen/margin4"
+        android:gravity="center"
+        android:text="返回"
+        android:textColor="@color/white"
+        android:background="@color/blue_dark"
+        android:textSize="@dimen/font_size3"
+         />
+    </RelativeLayout>
+
+</RelativeLayout>
