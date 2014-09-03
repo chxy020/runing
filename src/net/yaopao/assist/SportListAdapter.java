@@ -40,7 +40,15 @@ public class SportListAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	public void addItem(List<Map<String, Object>> list) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < list.size(); i++){
+			Map<String,Object> map = list.get(i);
+			this.listItems.add(map);
+		}
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// 获取list_item布局文件的视图

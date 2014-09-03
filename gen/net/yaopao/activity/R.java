@@ -278,11 +278,12 @@ public final class R {
         public static final int welcome=0x7f020085;
         public static final int wheel_bg=0x7f020086;
         public static final int wheel_val=0x7f020087;
+        public static final int xlistview_arrow=0x7f020088;
     }
     public static final class id {
         public static final int LinearLayout=0x7f0b014a;
         public static final int about_layout=0x7f0b002a;
-        public static final int action_settings=0x7f0b0191;
+        public static final int action_settings=0x7f0b019a;
         public static final int alert_cancle=0x7f0b0149;
         public static final int alert_confirm=0x7f0b0147;
         public static final int alert_title=0x7f0b0145;
@@ -682,6 +683,15 @@ public final class R {
         public static final int vPager=0x7f0b0176;
         public static final int webview_about=0x7f0b0001;
         public static final int webview_clause=0x7f0b0002;
+        public static final int xlistview_footer_content=0x7f0b0191;
+        public static final int xlistview_footer_hint_textview=0x7f0b0193;
+        public static final int xlistview_footer_progressbar=0x7f0b0192;
+        public static final int xlistview_header_arrow=0x7f0b0198;
+        public static final int xlistview_header_content=0x7f0b0194;
+        public static final int xlistview_header_hint_textview=0x7f0b0196;
+        public static final int xlistview_header_progressbar=0x7f0b0199;
+        public static final int xlistview_header_text=0x7f0b0195;
+        public static final int xlistview_header_time=0x7f0b0197;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -733,25 +743,34 @@ public final class R {
         public static final int sport_recording_adapter=0x7f03002e;
         public static final int tip_dialog1=0x7f03002f;
         public static final int tip_dialog2=0x7f030030;
+        public static final int xlistview_footer=0x7f030031;
+        public static final int xlistview_header=0x7f030032;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
     }
     public static final class string {
-        public static final int action_settings=0x7f080001;
-        public static final int app_name=0x7f080000;
-        public static final int back_text=0x7f080007;
-        public static final int hello_world=0x7f080002;
-        public static final int image_des=0x7f080006;
-        public static final int login_not=0x7f080003;
-        public static final int register_tip1=0x7f080004;
-        public static final int register_tip2=0x7f080005;
-        public static final int setting_about=0x7f08000b;
-        public static final int setting_clause=0x7f08000a;
-        public static final int setting_personal=0x7f080009;
+        public static final int action_settings=0x7f080008;
+        public static final int app_name=0x7f080007;
+        public static final int back_text=0x7f08000e;
+        public static final int hello=0x7f080000;
+        public static final int hello_world=0x7f080009;
+        public static final int image_des=0x7f08000d;
+        public static final int login_not=0x7f08000a;
+        public static final int register_tip1=0x7f08000b;
+        public static final int register_tip2=0x7f08000c;
+        public static final int setting_about=0x7f080012;
+        public static final int setting_clause=0x7f080011;
+        public static final int setting_personal=0x7f080010;
         /**  设置页面 
          */
-        public static final int setting_title=0x7f080008;
+        public static final int setting_title=0x7f08000f;
+        public static final int xlistview_footer_hint_normal=0x7f080005;
+        public static final int xlistview_footer_hint_ready=0x7f080006;
+        public static final int xlistview_header_hint_loading=0x7f080003;
+        public static final int xlistview_header_hint_normal=0x7f080001;
+        public static final int xlistview_header_hint_ready=0x7f080002;
+        public static final int xlistview_header_last_time=0x7f080004;
     }
     public static final class style {
         /** 

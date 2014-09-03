@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.yaopao.view.XListView;
+import net.yaopao.view.XListView.IXListViewListener;
 import net.yaopao.assist.SportListAdapter;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
@@ -18,6 +20,7 @@ import net.yaopao.bean.SportBean;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -34,7 +37,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SportListActivity extends Activity implements OnTouchListener {
+public class SportListActivity extends Activity implements OnTouchListener,IXListViewListener {
 	public TextView backV;
 
 	private ListView listView;
@@ -42,13 +45,18 @@ public class SportListActivity extends Activity implements OnTouchListener {
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
 	private DecimalFormat df;
-
+	/** 数据列表 */
+	private XListView mListView;
+	private Handler mHandler;
+	private SportListAdapter mAdapter = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_list);
-
+		mHandler = new Handler();
+		
 		initLayout();
 
 		// chenxy 初始化头部滑块
@@ -62,12 +70,15 @@ public class SportListActivity extends Activity implements OnTouchListener {
 		df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
-		listView = (ListView) this.findViewById(R.id.recording_list_data);
-
 		backV = (TextView) this.findViewById(R.id.recording_list_back);
-		SportListAdapter adapter = new SportListAdapter(this, getData());
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		backV.setOnTouchListener(this);
+		
+		mListView = (XListView) this.findViewById(R.id.recording_list_data);
+		mListView.setPullLoadEnable(true);
+		//SportListAdapter adapter = new SportListAdapter(this, getData());
+		mAdapter = new SportListAdapter(this, getData());
+		mListView.setAdapter(mAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int arg2,
@@ -81,10 +92,31 @@ public class SportListActivity extends Activity implements OnTouchListener {
 
 			}
 		});
-		backV.setOnTouchListener(this);
+		mListView.setXListViewListener(this);
+		
 
 	}
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		Log.e("","chxy____onRefresh");
+		
+	}
 
+	@Override
+	public void onLoadMore() {
+		// TODO Auto-generated method stub
+		Log.e("","chxy____onLoadMore");
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mAdapter.addItem(getData());
+				mAdapter.notifyDataSetChanged();
+				mListView.stopRefresh();
+				mListView.stopLoadMore();
+			}
+		}, 2000);
+	}
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();

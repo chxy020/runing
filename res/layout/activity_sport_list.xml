@@ -45,20 +45,31 @@
 		    android:layout_alignParentTop="true"
 		    layout="@layout/sport_list_slider_layout" />
 
-    </RelativeLayout>
-    
-    
-   <ListView
-        android:layout_below="@id/recording_list_pho"
-          android:id="@+id/recording_list_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        >
-    </ListView>
-        <View
-            android:layout_below="@id/recording_list_data"
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="#000000" >
-        </View>
+	</RelativeLayout>
+	
+
+	<!-- 运动记录列表
+	<ListView
+		android:layout_below="@id/recording_list_pho"
+		android:id="@+id/recording_list_data"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" >
+	</ListView>
+	 -->
+	<!-- 新运动记录列表 -->
+	<net.yaopao.view.XListView
+		android:id="@+id/recording_list_data"
+		android:layout_below="@id/recording_list_pho"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	</net.yaopao.view.XListView>
+	
+	<!-- 分割线 -->
+	<View
+		android:layout_below="@id/recording_list_data"
+		android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:background="#000000" >
+	</View>
+
 </RelativeLayout>
