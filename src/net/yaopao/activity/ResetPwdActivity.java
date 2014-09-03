@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -68,11 +70,10 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 		case R.id.reset_goback:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				goBack.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent myIntent = new Intent();
-				myIntent = new Intent(ResetPwdActivity.this, MainActivity.class);
-				startActivity(myIntent);
+				goBack.setBackgroundResource(R.color.red);
 				ResetPwdActivity.this.finish();
 				break;
 			}
@@ -80,8 +81,10 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 		case R.id.reset_go:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				reset.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				reset.setBackgroundResource(R.color.blue_dark);
 				if (verifyParam()) {
 					new resetAsyncTask().execute("");
 				}
@@ -91,8 +94,10 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 		case R.id.reset_get_code:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				getCodeV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				getCodeV.setBackgroundResource(R.color.blue_dark);
 				Log.v("wy", "点击了获取验证码按钮");
 				if (verifyPhone()) {
 					new verifyCodAsyncTask().execute("");
@@ -280,5 +285,11 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 			}
 		}
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			DialogTool.quit(ResetPwdActivity.this);
+		}
+		return false;
+	}
 }

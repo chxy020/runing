@@ -46,7 +46,6 @@
         android:id="@+id/full_map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/full_bottom"
         android:layout_below="@id/full_top_bar"
         android:layout_marginBottom="@dimen/full_bottom_height" >
 

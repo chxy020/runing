@@ -133,7 +133,7 @@ public class DialogTool implements OnTouchListener {
 				int action = event.getAction();
 				switch (action) {
 				case MotionEvent.ACTION_DOWN:
-					cancel.setBackgroundResource(R.color.gray_light);
+					cancel.setBackgroundResource(R.color.blue_h);
 					break;
 				case MotionEvent.ACTION_UP:
 					cancel.setBackgroundResource(R.color.blue_dark);
@@ -182,7 +182,7 @@ public class DialogTool implements OnTouchListener {
 		case R.id.tip2_cancle:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				cancelV.setBackgroundResource(R.color.gray_light);
+				cancelV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
 				cancelV.setBackgroundResource(R.color.blue_dark);
@@ -196,7 +196,7 @@ public class DialogTool implements OnTouchListener {
 		case R.id.tip2_set:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				setV.setBackgroundResource(R.color.gray_light);
+				setV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
 				setV.setBackgroundResource(R.color.blue_dark);

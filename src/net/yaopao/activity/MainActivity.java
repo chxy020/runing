@@ -5,9 +5,9 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -345,6 +345,11 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 				// Intent mainIntent = new Intent(MainActivity.this,
 				// MatchWatchActivity.class);
 				// MainActivity.this.startActivity(mainIntent);
+			 Intent intent= new Intent();        
+			    intent.setAction("android.intent.action.VIEW");    
+			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
+			    intent.setData(content_url);  
+			    startActivity(intent);
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,

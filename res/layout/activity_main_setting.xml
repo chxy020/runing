@@ -2,56 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical" >
+	android:orientation="vertical" 
+	android:background="@color/white">
 	
 	<!-- title栏 -->
-	<LinearLayout
+	 <RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/common_height"
 		android:background="@color/red_bg"
 		android:orientation="horizontal" >
 		<Button
 			android:id="@+id/setting_back_btn"
-			android:layout_width="75dp"
-			android:layout_height="45dp"
+			android:layout_width="@dimen/common_height"
+			android:layout_height="@dimen/common_height"
 			android:gravity="center"
-			android:background="@drawable/back_btn"
+			android:background="@drawable/btn_click_red"
 			android:text="@string/back_text"
 			android:textColor="@color/white"
-			android:textSize="18sp"/>
+			/>
 
 		<TextView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="75dp"
+			android:layout_height="match_parent"
 			android:gravity="center"
 			android:text="@string/setting_title"
 			android:textColor="@color/white"
-			android:textSize="22sp" />
+			android:textSize="@dimen/font_size2"  />
 
-	</LinearLayout>
+	</RelativeLayout>
 	
 	<!-- 个人信息 -->
 	<LinearLayout
 		android:id="@+id/personal_layout"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/setting_item_layout"
+		android:background="@drawable/btn_click_white"
 		android:clickable="true"
 		android:orientation="horizontal" >
 
 		<ImageView
-			android:layout_width="60dp"
-			android:layout_height="60dp"
+			android:layout_width="@dimen/main_head_size"
+			android:layout_height="@dimen/main_head_size"
 			android:src="@drawable/setting_personal"
-			android:contentDescription="@string/image_des" />
+			android:contentDescription="@string/image_des" />d
 
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:gravity="left|center"
 			android:text="@string/setting_personal"
-			android:textSize="24sp"/>
+			android:textSize="@dimen/font_size3"/>
 
 	</LinearLayout>
 	
@@ -67,13 +67,13 @@
 		android:id="@+id/clause_layout"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/setting_item_layout"
+		android:background="@drawable/btn_click_white"
 		android:clickable="true"
 		android:orientation="horizontal" >
 
 		<ImageView
-			android:layout_width="60dp"
-			android:layout_height="60dp"
+			android:layout_width="@dimen/main_head_size"
+			android:layout_height="@dimen/main_head_size"
 			android:src="@drawable/setting_clause"
 			android:contentDescription="@string/image_des" />
 
@@ -82,7 +82,7 @@
 			android:layout_height="match_parent"
 			android:gravity="left|center"
 			android:text="@string/setting_clause"
-			android:textSize="24sp"/>
+			android:textSize="@dimen/font_size3"/>
 
 	</LinearLayout>
 	
@@ -98,13 +98,13 @@
 		android:id="@+id/about_layout"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/setting_item_layout"
+		android:background="@drawable/btn_click_white"
 		android:clickable="true"
 		android:orientation="horizontal" >
 
 		<ImageView
-			android:layout_width="60dp"
-			android:layout_height="60dp"
+			android:layout_width="@dimen/main_head_size"
+			android:layout_height="@dimen/main_head_size"
 			android:src="@drawable/setting_about"
 			android:contentDescription="@string/image_des" />
 
@@ -113,7 +113,7 @@
 			android:layout_height="match_parent"
 			android:gravity="left|center"
 			android:text="@string/setting_about"
-			android:textSize="24sp"/>
+			android:textSize="@dimen/font_size3"/>
 
 	</LinearLayout>
 	

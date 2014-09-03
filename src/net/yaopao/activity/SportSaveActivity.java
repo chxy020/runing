@@ -123,8 +123,10 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		case R.id.recording_save_dele:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				deleV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				deleV.setBackgroundResource(R.color.red);
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				SportRecordActivity.points.clear();
 				SportRecordActivity.pointsIndex.clear();
@@ -139,8 +141,10 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		case R.id.recording_save_pho_icon:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				phoButton.setBackgroundResource(R.drawable.button_photo_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				phoButton.setBackgroundResource(R.drawable.button_photo);
 				showSetPhotoDialog();
 				break;
 			}
@@ -156,10 +160,12 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			}
 			break;
 		case R.id.recording_save:
+			saveV.setBackgroundResource(R.color.red_h);
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				saveV.setBackgroundResource(R.color.red);
 				Variables.remarks=descV.getText().toString();
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();

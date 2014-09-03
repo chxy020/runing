@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.SportListAdapter;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
@@ -23,6 +24,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;

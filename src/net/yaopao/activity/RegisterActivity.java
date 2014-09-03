@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 
@@ -17,6 +18,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -143,8 +145,10 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		case R.id.reg_goback:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				goBack.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				goBack.setBackgroundResource(R.color.red);
 				RegisterActivity.this.finish();
 				break;
 			}
@@ -159,15 +163,16 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				myIntent = new Intent(RegisterActivity.this,
 						LoginActivity.class);
 				startActivity(myIntent);
-				RegisterActivity.this.finish();
 				break;
 			}
 			break;
 		case R.id.reg_go:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				reg.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				reg.setBackgroundResource(R.color.blue_dark);
 				if (verifyParam()) {
 					new regAsyncTask().execute("");
 				}
@@ -177,8 +182,10 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		case R.id.reg_get_code:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				getCodeV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				getCodeV.setBackgroundResource(R.color.blue_dark);
 				Log.v("wy", "点击了获取验证码按钮");
 				if (verifyPhone()) {
 					new verifyCodAsyncTask().execute("");
@@ -293,5 +300,11 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			}
 		}
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			DialogTool.quit(RegisterActivity.this);
+		}
+		return false;
+	}
 }
