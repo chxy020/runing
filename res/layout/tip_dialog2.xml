@@ -67,29 +67,29 @@
             android:textColor="@color/text" />
 
         <TextView
-            android:id="@+id/tip_cancle"
+            android:id="@+id/tip2_cancle"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/common_height"
             android:layout_below="@id/l1"
             android:layout_marginTop="@dimen/margin11"
-            android:background="@color/blue_dark"
             android:gravity="center"
             android:text="返回"
+             android:background="@color/blue_dark"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size3" />
 
         <TextView
-            android:id="@+id/tip_set"
+            android:id="@+id/tip2_set"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/common_height"
             android:layout_below="@id/l1"
             android:layout_marginTop="@dimen/margin11"
-            android:layout_toRightOf="@id/tip_cancle"
+            android:layout_toRightOf="@id/tip2_cancle"
             android:background="@color/blue_dark"
             android:gravity="center"
             android:text="设置"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size3" />
     </RelativeLayout>
-
+    
 </RelativeLayout>

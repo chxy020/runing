@@ -76,15 +76,16 @@
     <dimen name="slider_num_width">30dp</dimen>
      <dimen name="one_date_width">160dp</dimen>
 	
-    <!-- chenxy add -->
-    <dimen name="sport_size_5">5dp</dimen>
+    <!-- chenxy add --><dimen name="sport_size_5">5dp</dimen>
     <dimen name="sport_size_15">15dp</dimen>
     <dimen name="sport_item_time_size">20dp</dimen>
     <dimen name="sport_item_date_size">110dp</dimen>
     <dimen name="full_date_width">160dp</dimen>
     <dimen name="full_dis_width">80dp</dimen>
-     <dimen name="full_bottom_data_width">45dp</dimen>
-     <dimen name="full_bottom_width">20dp</dimen>
-      <dimen name="full_bottom_height">50dp</dimen>
-        <dimen name="full_bottom_data_height">30dp</dimen>
+    <dimen name="full_bottom_data_width">45dp</dimen>
+    <dimen name="full_bottom_width">20dp</dimen>
+    <dimen name="full_bottom_height">50dp</dimen>
+    <dimen name="full_bottom_data_height">30dp</dimen>
+    <dimen name="one_map_height">240dp</dimen>
+
 </resources>

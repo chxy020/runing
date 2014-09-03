@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+     android:background="@color/white" >
 
     <RelativeLayout
         android:id="@+id/main_title_bar"
@@ -27,7 +28,9 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="设置"
-            android:textColor="@color/white" />
+            android:textColor="@color/white" 
+            android:background="@drawable/btn_click_red"
+            />
     </RelativeLayout>
 
     <LinearLayout
@@ -35,7 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_userinfo_hight"
         android:layout_below="@id/main_title_bar"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:background="@drawable/btn_click_white">
 
         <ImageView
             android:id="@+id/main_head"
@@ -75,7 +79,8 @@
         android:id="@+id/main_total_milage_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_total_milage_hight"
-        android:layout_below="@id/main_user_info" 
+        android:layout_below="@id/main_user_info"
+        
         >
 	<LinearLayout 
 	    android:layout_marginLeft="@dimen/margin1"
@@ -243,17 +248,20 @@
         android:id="@+id/main_fun"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_fun_total_height"
-        android:layout_below="@id/main_detail_data" >
+        android:layout_below="@id/main_detail_data" 
+         android:background="@drawable/btn_click_white">
 
         <LinearLayout
             android:layout_width="@dimen/main_fun_width"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+           >
 
             <LinearLayout
                 android:id="@+id/main_fun_recording"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/main_fun_hight" >
+                android:layout_height="@dimen/main_fun_hight"
+                android:background="@drawable/btn_click_white" >
 
                 <ImageView
                     android:layout_width="@dimen/common_height"
@@ -279,7 +287,7 @@
                 android:id="@+id/main_message_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_fun_hight"
-                android:background="@drawable/setting_item_layout"
+                android:background="@drawable/btn_click_white"
                 android:clickable="true" >
 
                 <ImageView
@@ -305,7 +313,9 @@
             <LinearLayout
                 android:id="@+id/main_fun_macth"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/main_fun_hight" >
+                android:layout_height="@dimen/main_fun_hight"
+              	 android:background="@drawable/btn_click_white"
+                >
 
                 <ImageView
                     android:layout_width="@dimen/common_height"

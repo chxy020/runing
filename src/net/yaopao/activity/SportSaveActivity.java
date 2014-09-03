@@ -28,6 +28,7 @@ import android.widget.TextView;
 public class SportSaveActivity extends Activity implements OnTouchListener {
 	public TextView deleV;
 	public TextView saveV;
+	public TextView titleV;
 	public EditText descV;
 
 	public ImageView mind1V;
@@ -45,6 +46,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
 	private String sportPho;
+	private String title;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,6 +62,10 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				+ getPhotoFileName();
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
+		titleV = (TextView) this.findViewById(R.id.recording_save_title);
+		initType();
+		Date date = new Date();
+		titleV.setText(YaoPao01App.getWeekOfDate(date)+title);
 		descV = (EditText) this.findViewById(R.id.recording_save_desc);
 		mind1V = (ImageView) this.findViewById(R.id.recording_save_mind1);
 		mind2V = (ImageView) this.findViewById(R.id.recording_save_mind2);
@@ -74,9 +80,6 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		way5V = (ImageView) this.findViewById(R.id.recording_save_way5);
 		phoV = (ImageView) this.findViewById(R.id.recording_save_pho);
 		phoButton = (ImageView) this.findViewById(R.id.recording_save_pho_icon);
-		// phoLaoutV = (RelativeLayout)
-		// this.findViewById(R.id.recording_save_pho_layout);
-
 		deleV.setOnTouchListener(this);
 		saveV.setOnTouchListener(this);
 		way1V.setOnTouchListener(this);
@@ -95,6 +98,23 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 
 	}
 
+	private void initType() {
+		switch (Variables.runty) {
+		case 1:
+			title = "的步行";
+			break;
+		case 2:
+			title = "的跑步";
+			break;
+		case 3:
+			title = "的自行车骑行";
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -103,23 +123,28 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		case R.id.recording_save_dele:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				deleV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
-//				Intent myIntent = new Intent();
-//				myIntent = new Intent(SportSaveActivity.this,
-//						MainActivity.class);
-//				startActivity(myIntent);
-				SportSaveActivity.this.finish();
+				deleV.setBackgroundResource(R.color.red);
 				// 这里要做的是将所有与运动有关的参数还原成默认值
-
+				SportRecordActivity.points.clear();
+				SportRecordActivity.pointsIndex.clear();
+				Variables.utime = 0;
+				Variables.pspeed = 0;
+				Variables.distance = 0;
+				Variables.points=0;
+				SportSaveActivity.this.finish();
 				break;
 			}
 			break;
 		case R.id.recording_save_pho_icon:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				phoButton.setBackgroundResource(R.drawable.button_photo_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				phoButton.setBackgroundResource(R.drawable.button_photo);
 				showSetPhotoDialog();
 				break;
 			}
@@ -135,12 +160,13 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			}
 			break;
 		case R.id.recording_save:
+			saveV.setBackgroundResource(R.color.red_h);
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.remarks=
-				descV.getText().toString();
+				saveV.setBackgroundResource(R.color.red);
+				Variables.remarks=descV.getText().toString();
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
@@ -149,6 +175,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				Variables.utime = 0;
 				Variables.pspeed = 0;
 				Variables.distance = 0;
+				Variables.points=0;
 				myIntent = new Intent(SportSaveActivity.this,
 						SportListActivity.class);
 				startActivity(myIntent);
@@ -419,7 +446,6 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
 		new AlertDialog.Builder(this).setTitle("选取来自")
-				.setIcon(R.drawable.ic_launcher)
 				.setItems(item_type, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {

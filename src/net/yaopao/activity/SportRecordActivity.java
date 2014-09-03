@@ -61,6 +61,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	// 记录ProgressBar的完成进度
 	private static int status = 0;
 	private static int target = 0;
+	private static int speedPerKm=0;
+	private static double disPerKm=0;
+	private static int timePerKm=0;
+	
 
 	// 测试代码
 	// public static double lon = 116.402894;
@@ -191,8 +195,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		case R.id.sport_map:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				mapV.setBackgroundResource(R.drawable.button_map_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				mapV.setBackgroundResource(R.drawable.button_map);
 				Intent intent = new Intent(SportRecordActivity.this,
 						MapActivity.class);
 				SportRecordActivity.this.startActivity(intent);
@@ -202,11 +208,14 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		case R.id.slider_done:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				doneV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				doneV.setBackgroundResource(R.color.red);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
+							YaoPao01App.calDisPoints();
 							Intent intent = new Intent(
 									SportRecordActivity.this,
 									SportSaveActivity.class);
@@ -218,15 +227,18 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					}
 				};
 				DialogTool.doneSport(SportRecordActivity.this, handler);
-
+				
 				break;
 			}
 			break;
 		case R.id.slider_resume:
+			
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				resumeV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				resumeV.setBackgroundResource(R.color.blue_dark);
 				startTimer();
 				sliderIconV.setVisibility(View.VISIBLE);
 				sliderTextV.setVisibility(View.VISIBLE);
@@ -301,6 +313,15 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					if (last.status == 0) {
 						// meter = getDistanceFrom2ponit(last, point);
 						Variables.distance += meter;
+						disPerKm += meter;
+						timePerKm += Variables.utime;
+				        if(disPerKm > 1000){
+				            int minute = timePerKm/60;
+				            Variables.points += YaoPao01App.calPspeedPoints(minute);
+				            disPerKm = 0;
+				            timePerKm = 0;
+				        }
+
 						points.add(point);
 						return true;
 					} else {

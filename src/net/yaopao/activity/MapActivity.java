@@ -331,8 +331,10 @@ public class MapActivity extends Activity implements LocationSource,
 		case R.id.map_loc:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				locV.setBackgroundResource(R.drawable.button_position_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				locV.setBackgroundResource(R.drawable.button_position);
 				Location myloc = aMap.getMyLocation();
 				if (myloc != null) {
 					// aMap.setMyLocationType(AMap)
@@ -348,8 +350,10 @@ public class MapActivity extends Activity implements LocationSource,
 		case R.id.map_back:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				backV.setBackgroundResource(R.drawable.button_back_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				backV.setBackgroundResource(R.drawable.button_back);
 				MapActivity.this.finish();
 
 				break;
@@ -358,8 +362,10 @@ public class MapActivity extends Activity implements LocationSource,
 		case R.id.slider_done:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				doneV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				doneV.setBackgroundResource(R.color.red);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
@@ -383,8 +389,10 @@ public class MapActivity extends Activity implements LocationSource,
 		case R.id.slider_resume:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				resumeV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				resumeV.setBackgroundResource(R.color.blue_dark);
 				SportRecordActivity.startTimer();
 				sliderIconV.setVisibility(View.VISIBLE);
 				sliderTextV.setVisibility(View.VISIBLE);

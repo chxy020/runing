@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white" >
 
     <RelativeLayout
         android:id="@+id/sport_set_top_bar"
@@ -27,14 +28,16 @@
             android:layout_alignParentLeft="true"
             android:gravity="center"
             android:text="返回"
-            android:textColor="@color/white" />
+            android:textColor="@color/white" 
+            android:background="@drawable/btn_click_red"/>
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/sport_set_target"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_height"
-        android:layout_below="@id/sport_set_top_bar" >
+        android:layout_below="@id/sport_set_top_bar" 
+         android:background="@drawable/btn_click_white">
 
         <ImageView
             android:id="@+id/sport_set_target_icon"
@@ -57,21 +60,18 @@
             android:gravity="center_vertical|right"
             android:text="自由"
             android:textColor="@color/gray_light"
-            android:textSize="@dimen/font_size3" />
+            android:textSize="@dimen/font_size3" 
+            />
     </LinearLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/sport_set_target"
-        android:background="#000000" >
-    </View>
+
 
     <LinearLayout
         android:id="@+id/sport_set_type"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_height"
-        android:layout_below="@id/sport_set_target" >
+        android:layout_below="@id/sport_set_target"
+         android:background="@drawable/btn_click_white" >
 
         <ImageView
             android:id="@+id/sport_set_type_icon"
@@ -200,10 +200,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/blue_dark"
         android:gravity="center"
         android:text="开始"
         android:textColor="@color/white"
-        android:textSize="@dimen/font_size2" />
+        android:textSize="@dimen/font_size2" 
+         android:background="@drawable/btn_click_blue"/>
+     <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/sport_set_target"
+        android:background="#000000" >
+    </View>
 
 </RelativeLayout>

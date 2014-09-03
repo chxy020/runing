@@ -69,8 +69,10 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 		case R.id.target_goback:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				backV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				backV.setBackgroundResource(R.color.red);
 				SportTargetActivity.this.finish();
 				break;
 			}
@@ -78,8 +80,10 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 		case R.id.target_type_free:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				freeV.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				freeV.setBackgroundResource(R.color.white);
 				Variables.runtar = 0;
 				freeImgV.setBackgroundResource(R.drawable.check);
 				distanceImgV.setBackgroundResource(0);
@@ -90,8 +94,10 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 		case R.id.target_type_distance:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				distanceV.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				distanceV.setBackgroundResource(R.color.white);
 				Variables.runtar = 1;
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(R.drawable.check);
@@ -119,8 +125,10 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 		case R.id.target_type_time:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				timeV.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				timeV.setBackgroundResource(R.color.white);
 				Variables.runtar = 2;
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(0);

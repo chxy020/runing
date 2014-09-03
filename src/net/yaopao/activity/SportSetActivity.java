@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SportSetActivity extends Activity implements OnTouchListener,
+public class SportSetActivity extends Activity implements OnClickListener,
 		OnChangedListener {
 	TextView backV;
 	TextView targetV;
@@ -44,7 +45,6 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 		typeIconV = (ImageView) this.findViewById(R.id.sport_set_type_icon);
 
 		timeSwitch = (SlipButton) this.findViewById(R.id.sport_set_time_switch);
-
 		voiceSwitch = (SlipButton) this
 				.findViewById(R.id.sport_set_voice_switch);
 
@@ -74,73 +74,12 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 			}
 		});// 设置事件监听
 
-		backV.setOnTouchListener(this);
-		targetL.setOnTouchListener(this);
-		typeL.setOnTouchListener(this);
-		startV.setOnTouchListener(this);
+		backV.setOnClickListener(this);
+		targetL.setOnClickListener(this);
+		typeL.setOnClickListener(this);
+		startV.setOnClickListener(this);
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
-		switch (view.getId()) {
-
-		case R.id.sport_set_goback:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				SportSetActivity.this.finish();
-				break;
-			}
-			break;
-
-		case R.id.sport_set_target:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSetActivity.this,
-						SportTargetActivity.class);
-				startActivity(myIntent);
-			}
-			break;
-		case R.id.sport_set_type:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				Intent myIntent = new Intent();
-				myIntent = new Intent(SportSetActivity.this,
-						SportTypeActivity.class);
-				startActivity(myIntent);
-			}
-			break;
-		case R.id.sport_set_start:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				YaoPao01App.db.saveSportParam();
-				Intent myIntent = new Intent();
-				if (Variables.switchTime == 0) {
-					myIntent = new Intent(SportSetActivity.this,
-							SportCountdownActivity.class);
-					startActivityForResult(myIntent, 103);
-					SportSetActivity.this.finish();
-				} else {
-					myIntent = new Intent(SportSetActivity.this,
-							SportRecordActivity.class);
-					startActivity(myIntent);
-					SportSetActivity.this.finish();
-				}
-
-			}
-			break;
-		}
-		return true;
-	}
 
 	@Override
 	protected void onResume() {
@@ -217,6 +156,45 @@ public class SportSetActivity extends Activity implements OnTouchListener,
 	@Override
 	public void OnChanged(boolean CheckState) {
 
+	}
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) {
+		case R.id.sport_set_goback:
+				SportSetActivity.this.finish();
+			break;
+
+		case R.id.sport_set_target:
+				Intent targetIntent = new Intent();
+				targetIntent = new Intent(SportSetActivity.this,
+						SportTargetActivity.class);
+				startActivity(targetIntent);
+			break;
+		case R.id.sport_set_type:
+				Intent typeIntent = new Intent();
+				typeIntent = new Intent(SportSetActivity.this,
+						SportTypeActivity.class);
+				startActivity(typeIntent);
+			break;
+		case R.id.sport_set_start:
+				YaoPao01App.db.saveSportParam();
+				Intent startIntent = new Intent();
+				if (Variables.switchTime == 0) {
+					startIntent = new Intent(SportSetActivity.this,
+							SportCountdownActivity.class);
+					startActivityForResult(startIntent, 103);
+					SportSetActivity.this.finish();
+				} else {
+					startIntent = new Intent(SportSetActivity.this,
+							SportRecordActivity.class);
+					startActivity(startIntent);
+					SportSetActivity.this.finish();
+				}
+			break;
+		default:
+			break;
+		}
 	}
 
 }

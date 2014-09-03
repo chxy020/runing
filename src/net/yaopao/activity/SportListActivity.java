@@ -13,6 +13,7 @@ import java.util.Map;
 
 import net.yaopao.view.XListView;
 import net.yaopao.view.XListView.IXListViewListener;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.SportListAdapter;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
@@ -26,9 +27,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -37,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SportListActivity extends Activity implements OnTouchListener,IXListViewListener {
+public class SportListActivity extends Activity implements OnClickListener,IXListViewListener {
 	public TextView backV;
 
 	private ListView listView;
@@ -71,7 +74,7 @@ public class SportListActivity extends Activity implements OnTouchListener,IXLis
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
 		backV = (TextView) this.findViewById(R.id.recording_list_back);
-		backV.setOnTouchListener(this);
+		backV.setOnClickListener(this);
 		
 		mListView = (XListView) this.findViewById(R.id.recording_list_data);
 		mListView.setPullLoadEnable(true);
@@ -93,8 +96,6 @@ public class SportListActivity extends Activity implements OnTouchListener,IXLis
 			}
 		});
 		mListView.setXListViewListener(this);
-		
-
 	}
 	@Override
 	public void onRefresh() {
@@ -102,7 +103,10 @@ public class SportListActivity extends Activity implements OnTouchListener,IXLis
 		Log.e("","chxy____onRefresh");
 		
 	}
-
+	
+	/**
+	 * 下一页刷新回调函数
+	 */
 	@Override
 	public void onLoadMore() {
 		// TODO Auto-generated method stub
@@ -110,29 +114,25 @@ public class SportListActivity extends Activity implements OnTouchListener,IXLis
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				//调用加载下一页方法
 				mAdapter.addItem(getData());
 				mAdapter.notifyDataSetChanged();
+				
+				//如果没有下一页数据直接调用,隐藏loading
 				mListView.stopRefresh();
 				mListView.stopLoadMore();
 			}
 		}, 2000);
 	}
+	
 	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
+	public void onClick(View view) {
 		switch (view.getId()) {
 
 		case R.id.recording_list_back:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
 				SportListActivity.this.finish();
 				break;
-			}
-			break;
 		}
-		return true;
 	}
 
 	private List<Map<String, Object>> getData() {

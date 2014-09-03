@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
@@ -23,6 +24,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -81,8 +83,10 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		case R.id.login_goback:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				goBack.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				goBack.setBackgroundResource(R.color.red);
 				LoginActivity.this.finish();
 				break;
 			}
@@ -96,15 +100,16 @@ public class LoginActivity extends Activity implements OnTouchListener {
 				myIntent = new Intent(LoginActivity.this,
 						ResetPwdActivity.class);
 				startActivity(myIntent);
-				LoginActivity.this.finish();
 				break;
 			}
 			break;
 		case R.id.login_go:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				login.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				login.setBackgroundResource(R.color.blue_dark);
 				if (verifyParam()) {
 					dialog.show();
 					Log.v("wyuser", "login0");
@@ -295,5 +300,12 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 		bos.flush();
 		bos.close();
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			DialogTool.quit(LoginActivity.this);
+		}
+		return false;
 	}
 }

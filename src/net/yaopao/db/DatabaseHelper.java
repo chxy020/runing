@@ -118,6 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		sBuffer.append("  [temp] INTEGER,  ");
 		sBuffer.append("  [utime] INTEGER,  ");
 		sBuffer.append("  [weather] INTEGER, ");
+		sBuffer.append("  [points] INTEGER, ");
 		sBuffer.append("  [addtime] INTEGER); ");
 		return sBuffer.toString();
 	}

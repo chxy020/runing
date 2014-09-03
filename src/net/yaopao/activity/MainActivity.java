@@ -7,28 +7,31 @@ import net.yaopao.bean.DataBean;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class MainActivity extends Activity implements OnTouchListener {
+public class MainActivity extends Activity implements OnTouchListener,OnClickListener{
 	private TextView state;
 	private TextView desc;
 	private TextView toutalCount;
 	private TextView avgSpeed;
 	private TextView points;
-
 	private ImageView start;
 	private ImageView headv;
 	private LinearLayout stateL;
@@ -71,11 +74,17 @@ public class MainActivity extends Activity implements OnTouchListener {
 		d2v.setVisibility(View.GONE);
 		d3v.setVisibility(View.GONE);
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
-		stateL.setOnTouchListener(this);
-		matchL.setOnTouchListener(this);
-		start.setOnTouchListener(this);
-		recording.setOnTouchListener(this);
+		stateL.setOnClickListener(this);
+		recording.setOnClickListener(this);
+		matchL.setOnClickListener(this);
 		
+		start.setOnTouchListener(this);
+		if (Variables.gpsStatus==2) {
+			DialogTool dialog = new DialogTool(MainActivity.this,handler);
+			WindowManager m = getWindowManager();
+			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			dialog.alertGpsTip2(d);
+		}
 		this.initView();
 	}
 
@@ -114,6 +123,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		DataBean data = YaoPao01App.db.queryData();
 		toutalCount.setText(data.getCount()+""); 
 		avgSpeed.setText(getSeed(data.getPspeed())); 
+		points.setText(data.getPoints()+"");
 		
 
 	}
@@ -208,61 +218,31 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
-		case R.id.main_user_info:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				Intent mainIntent;
-				if (Variables.islogin == 1) {
-					mainIntent = new Intent(MainActivity.this,
-							UserInfoActivity.class);
-				} else {
-					mainIntent = new Intent(MainActivity.this,
-							RegisterActivity.class);
-				}
-
-				startActivity(mainIntent);
-				break;
-			}
-			break;
 		case R.id.main_start:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				start.setBackgroundResource(R.drawable.button_start_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				if (YaoPao01App.isGpsAvailable()) {
+				start.setBackgroundResource(R.drawable.button_start);
+//				if (Variables.gpsStatus==2) {
+				if (Variables.gpsStatus==4) {
+					DialogTool dialog = new DialogTool(MainActivity.this,handler);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip2(d);
+//				}else if (Variables.gpsStatus==0) {
+				}else if (Variables.gpsStatus==5) {
+					DialogTool dialog = new DialogTool(MainActivity.this,null);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip1(d);
+//				}else if(Variables.gpsStatus==1){
+				}else {
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
 				}
-				break;
-			}
-			break;
-		case R.id.main_fun_recording:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				Intent mainIntent = new Intent(MainActivity.this,
-						SportListActivity.class);
-				MainActivity.this.startActivity(mainIntent);
-				break;
-			}
-			break;
-		case R.id.main_fun_macth:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				if (YaoPao01App.isGpsAvailable()) {
-					Intent mainIntent = new Intent(MainActivity.this,
-							MatchCountdownActivity.class);
-					MainActivity.this.startActivity(mainIntent);
-				}
-				// Intent mainIntent = new Intent(MainActivity.this,
-				// MatchWatchActivity.class);
-				// MainActivity.this.startActivity(mainIntent);
 				break;
 			}
 			break;
@@ -276,13 +256,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//DialogTool.quit(MainActivity.this);
-//			DialogTool.alertGpsTip1(MainActivity.this);
-			DialogTool dialog = new DialogTool();
-			WindowManager m = getWindowManager();
-			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-			DisplayMetrics dm = new DisplayMetrics();
-			dialog.alertGpsTip2(MainActivity.this,d,dm);
+			DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}
@@ -300,7 +274,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		mMainSetting = (TextView) findViewById(R.id.main_setting);
 		// 获取系统消息layout
 		mMessageLayout = (LinearLayout) findViewById(R.id.main_message_layout);
-
 		// 注册事件
 		this.setListener();
 	}
@@ -313,30 +286,87 @@ public class MainActivity extends Activity implements OnTouchListener {
 	 */
 	private void setListener() {
 		// 注册设置事件
-		mMainSetting.setOnClickListener(mOnClickListener);
-		mMessageLayout.setOnClickListener(mOnClickListener);
+		mMainSetting.setOnClickListener(this);
+		mMessageLayout.setOnClickListener(this);
 	}
 
 	/**
 	 * 单击事件
 	 */
-	private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.main_setting:
-				Intent settingIntent = new Intent(MainActivity.this,
-						MainSettingActivity.class);
-				startActivity(settingIntent);
-				break;
-			case R.id.main_message_layout:
-				Intent messageIntent = new Intent(MainActivity.this,
-						WebViewActivity.class);
-				messageIntent.putExtra("net.yaopao.activity.PageUrl",
-						"message_index.html");
-				startActivity(messageIntent);
-				break;
+//	private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+//		@Override
+//		public void onClick(View v) {
+//			switch (v.getId()) {
+//		
+//			}
+//		}
+//	};
+	 Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 0) {
+				Log.v("wyalert", "0");
+				openHtml();
 			}
+			super.handleMessage(msg);
 		}
 	};
+	private void openHtml() {
+		Intent intent =  new Intent(this,HelperActivity.class);
+//		startActivityForResult(intent, 0);
+		startActivity(intent);
+		
+	}
+
+
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) {
+		case R.id.main_user_info:
+			Intent userIntent;
+			if (Variables.islogin == 1) {
+				userIntent = new Intent(MainActivity.this, UserInfoActivity.class);
+			} else {
+				userIntent = new Intent(MainActivity.this, RegisterActivity.class);
+			}
+
+			startActivity(userIntent);
+			break;
+		case R.id.main_fun_recording:
+			Intent recIntent = new Intent(MainActivity.this, SportListActivity.class);
+			MainActivity.this.startActivity(recIntent);
+			break;
+			
+		case R.id.main_fun_macth:
+				/*if (YaoPao01App.isGpsAvailable()) {
+					Intent mainIntent = new Intent(MainActivity.this,
+							MatchCountdownActivity.class);
+					MainActivity.this.startActivity(mainIntent);
+				}*/
+				// Intent mainIntent = new Intent(MainActivity.this,
+				// MatchWatchActivity.class);
+				// MainActivity.this.startActivity(mainIntent);
+			 Intent intent= new Intent();        
+			    intent.setAction("android.intent.action.VIEW");    
+			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
+			    intent.setData(content_url);  
+			    startActivity(intent);
+			break;
+		case R.id.main_setting:
+			Intent settingIntent = new Intent(MainActivity.this,
+					MainSettingActivity.class);
+			startActivity(settingIntent);
+			break;
+		case R.id.main_message_layout:
+			Intent messageIntent = new Intent(MainActivity.this,
+					WebViewActivity.class);
+			messageIntent.putExtra("net.yaopao.activity.PageUrl",
+					"message_index.html");
+			startActivity(messageIntent);
+			break;
+		default:
+			break;
+		}
+
+	}
+	
 }

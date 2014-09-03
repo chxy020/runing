@@ -50,7 +50,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
-	private TextView avgspeedV;
+	private TextView ponitV;
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
@@ -120,7 +120,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		backV = (TextView) findViewById(R.id.recording_one_back);
 		timeV = (TextView) findViewById(R.id.one_time);
 		pspeedV = (TextView) findViewById(R.id.one_pspeed);
-		avgspeedV = (TextView) findViewById(R.id.one_avgspeed);
+		ponitV = (TextView) findViewById(R.id.one_ponit);
 		titleV = (TextView) findViewById(R.id.recording_one_title);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
@@ -142,7 +142,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		initSportData(oneSport.getDistance(), oneSport.getRunty(),
 				oneSport.getMind(), oneSport.getRunway(),
 				oneSport.getRemarks(), oneSport.getUtime(),
-				oneSport.getPspeed(), oneSport.getHspeed(),
+				oneSport.getPspeed(), oneSport.getPoints(),
 				oneSport.getAddtime());
 		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 				GpsPoint.class);
@@ -231,7 +231,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	}
 
 	private void initSportData(double distance, int runty, int mind,
-			int runway, String remarks, int utime, int pspeed, String hspeed,
+			int runway, String remarks, int utime, int pspeed, int ponit,
 			long addtime) {
 
 		int[] time = YaoPao01App.cal(utime);
@@ -252,7 +252,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
-		avgspeedV.setText(hspeed + " km/h");
+		ponitV.setText("+ "+ ponit);
 		disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
@@ -299,6 +299,10 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		case 2:
 			typeV.setBackgroundResource(R.drawable.runtype_run);
 			title = "的跑步";
+			break;
+		case 3:
+			typeV.setBackgroundResource(R.drawable.runtype_ride);
+			title = "的自行车骑行";
 			break;
 
 		default:

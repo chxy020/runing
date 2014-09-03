@@ -32,6 +32,7 @@ public class SportBean {
 	private double distance;// 距离
 	private int pspeed;// 配速
 	private String hspeed;// 时速
+	private int points;//积分
 
 	public int getId() {
 		return id;
@@ -239,6 +240,15 @@ public class SportBean {
 
 	public void setStatusIndex(String statusIndex) {
 		this.statusIndex = statusIndex;
+	}
+
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 	@Override
