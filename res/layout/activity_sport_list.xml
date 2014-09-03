@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/recording_list_top_bar"
@@ -28,7 +29,8 @@
             android:layout_alignParentLeft="true"
             android:gravity="center"
             android:text="返回"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:background="@drawable/btn_click_red" />
     </RelativeLayout>
     
     <RelativeLayout 
@@ -46,7 +48,7 @@
 		    layout="@layout/sport_list_slider_layout" />
 
     </RelativeLayout>
-    
+   
     
    <ListView
         android:layout_below="@id/recording_list_pho"
@@ -55,6 +57,12 @@
             android:layout_height="wrap_content"
         >
     </ListView>
+      <View
+          android:layout_above="@id/recording_list_data"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#000000" >
+        </View>
         <View
             android:layout_below="@id/recording_list_data"
             android:layout_width="fill_parent"

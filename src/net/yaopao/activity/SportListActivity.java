@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -34,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SportListActivity extends Activity implements OnTouchListener {
+public class SportListActivity extends Activity implements OnClickListener {
 	public TextView backV;
 
 	private ListView listView;
@@ -81,26 +82,18 @@ public class SportListActivity extends Activity implements OnTouchListener {
 
 			}
 		});
-		backV.setOnTouchListener(this);
+		backV.setOnClickListener(this);
 
 	}
 
 	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
+	public void onClick(View view) {
 		switch (view.getId()) {
 
 		case R.id.recording_list_back:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
 				SportListActivity.this.finish();
 				break;
-			}
-			break;
 		}
-		return true;
 	}
 
 	private List<Map<String, Object>> getData() {

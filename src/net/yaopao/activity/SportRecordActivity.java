@@ -195,8 +195,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		case R.id.sport_map:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				mapV.setBackgroundResource(R.drawable.button_map_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				mapV.setBackgroundResource(R.drawable.button_map);
 				Intent intent = new Intent(SportRecordActivity.this,
 						MapActivity.class);
 				SportRecordActivity.this.startActivity(intent);
@@ -206,8 +208,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		case R.id.slider_done:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				doneV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				doneV.setBackgroundResource(R.color.red);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
@@ -228,10 +232,13 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			}
 			break;
 		case R.id.slider_resume:
+			
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				resumeV.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				resumeV.setBackgroundResource(R.color.blue_dark);
 				startTimer();
 				sliderIconV.setVisibility(View.VISIBLE);
 				sliderTextV.setVisibility(View.VISIBLE);

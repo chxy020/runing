@@ -440,7 +440,6 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
 		new AlertDialog.Builder(this).setTitle("选取来自")
-				.setIcon(R.drawable.ic_launcher)
 				.setItems(item_type, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {

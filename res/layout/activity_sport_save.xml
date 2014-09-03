@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+	android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/recording_save_top_bar"
@@ -28,7 +29,8 @@
             android:layout_alignParentLeft="true"
             android:gravity="center"
             android:text="删除"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+             />
           <TextView
             android:id="@+id/recording_save"
             android:layout_width="@dimen/common_height"

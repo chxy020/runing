@@ -18,4 +18,9 @@
 	<!-- 设置栏目点击效果 -->
 	<color name="setting_item_bg">#e5e5e5</color>
 	<color name="setting_item_bg_curr">#CCCCCC</color>
+	
+	<!-- 点击颜色 -->
+	<color name="red_h">#FFFF5D35</color>
+	<color name="white_h">#FFE5E5E5</color>
+	<color name="blue_h">#FF9090CC</color>
 </resources>
