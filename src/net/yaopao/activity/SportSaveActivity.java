@@ -28,6 +28,7 @@ import android.widget.TextView;
 public class SportSaveActivity extends Activity implements OnTouchListener {
 	public TextView deleV;
 	public TextView saveV;
+	public TextView titleV;
 	public EditText descV;
 
 	public ImageView mind1V;
@@ -45,6 +46,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
 	private String sportPho;
+	private String title;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,6 +62,10 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				+ getPhotoFileName();
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
+		titleV = (TextView) this.findViewById(R.id.recording_save_title);
+		initType();
+		Date date = new Date();
+		titleV.setText(YaoPao01App.getWeekOfDate(date)+title);
 		descV = (EditText) this.findViewById(R.id.recording_save_desc);
 		mind1V = (ImageView) this.findViewById(R.id.recording_save_mind1);
 		mind2V = (ImageView) this.findViewById(R.id.recording_save_mind2);
@@ -74,9 +80,6 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		way5V = (ImageView) this.findViewById(R.id.recording_save_way5);
 		phoV = (ImageView) this.findViewById(R.id.recording_save_pho);
 		phoButton = (ImageView) this.findViewById(R.id.recording_save_pho_icon);
-		// phoLaoutV = (RelativeLayout)
-		// this.findViewById(R.id.recording_save_pho_layout);
-
 		deleV.setOnTouchListener(this);
 		saveV.setOnTouchListener(this);
 		way1V.setOnTouchListener(this);
@@ -95,6 +98,23 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 
 	}
 
+	private void initType() {
+		switch (Variables.runty) {
+		case 1:
+			title = "的步行";
+			break;
+		case 2:
+			title = "的跑步";
+			break;
+		case 3:
+			title = "的自行车骑行";
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -105,13 +125,14 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-//				Intent myIntent = new Intent();
-//				myIntent = new Intent(SportSaveActivity.this,
-//						MainActivity.class);
-//				startActivity(myIntent);
-				SportSaveActivity.this.finish();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
-
+				SportRecordActivity.points.clear();
+				SportRecordActivity.pointsIndex.clear();
+				Variables.utime = 0;
+				Variables.pspeed = 0;
+				Variables.distance = 0;
+				Variables.points=0;
+				SportSaveActivity.this.finish();
 				break;
 			}
 			break;
@@ -139,8 +160,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.remarks=
-				descV.getText().toString();
+				Variables.remarks=descV.getText().toString();
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
@@ -149,6 +169,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				Variables.utime = 0;
 				Variables.pspeed = 0;
 				Variables.distance = 0;
+				Variables.points=0;
 				myIntent = new Intent(SportSaveActivity.this,
 						SportListActivity.class);
 				startActivity(myIntent);

@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 public class DialogTool implements OnTouchListener {
@@ -28,15 +30,16 @@ public class DialogTool implements OnTouchListener {
 	Dialog dialog;
 	TextView setV;
 	Context context;
+	Handler handler;
 
-	public DialogTool(Context context) {
+	public DialogTool(Context context,Handler handler) {
 		this.context = context;
+		this.handler=handler;
 	}
 
 	public static void quit(Context context) {
 		new AlertDialog.Builder(context).setTitle(R.string.app_name)
-				.setMessage("确认退出？").setIcon(R.drawable.ic_launcher)
-				.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				.setMessage("确认退出？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						YaoPao01App.db.closeDB();
@@ -168,6 +171,7 @@ public class DialogTool implements OnTouchListener {
 		dialog.show();
 		cancelV.setOnTouchListener(this);
 		setV.setOnTouchListener(this);
+		openV.setOnTouchListener(this);
 	}
 
 	@Override
@@ -198,6 +202,18 @@ public class DialogTool implements OnTouchListener {
 				setV.setBackgroundResource(R.color.blue_dark);
 				openset();
 				dialog.dismiss();
+				break;
+			default:
+				break;
+			}
+			break;
+		case R.id.howto_open:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				//dialog.dismiss();
+				handler.obtainMessage(0).sendToTarget();
 				break;
 			default:
 				break;

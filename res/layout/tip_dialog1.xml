@@ -15,14 +15,16 @@
             android:layout_height="@dimen/common_height"
             android:gravity="center"
             android:text="GPS信号较弱"
+            android:layout_marginTop="@dimen/margin1"
             android:textSize="@dimen/font_size3" />
 
         <TextView
             android:id="@+id/text1"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/sport_set_height"
+            android:layout_height="@dimen/common_height"
             android:layout_below="@id/alert_title"
             android:layout_marginLeft="@dimen/margin1"
+            android:layout_marginBottom="@dimen/margin1"
             android:gravity="center_vertical"
             android:text="您可以:"
             android:textSize="@dimen/font_size2" />
@@ -39,7 +41,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_marginRight="@dimen/margin2"
-                android:background="@drawable/slider_cursor_curr" />
+                android:background="@drawable/dot_b" />
 
             <TextView
                 android:id="@+id/text2"
@@ -61,7 +63,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_marginRight="@dimen/margin2"
-                android:background="@drawable/slider_cursor_curr" />
+                android:background="@drawable/dot_b" />
 
             <TextView
                 android:id="@+id/text2"
@@ -105,7 +107,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_marginRight="@dimen/margin2"
-                android:background="@drawable/slider_cursor_curr" />
+                android:background="@drawable/dot_b" />
 
             <TextView
                 android:id="@+id/text2"
@@ -127,7 +129,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_marginRight="@dimen/margin2"
-                android:background="@drawable/slider_cursor_curr" />
+                android:background="@drawable/dot_b" />
 
             <TextView
                 android:id="@+id/text2"

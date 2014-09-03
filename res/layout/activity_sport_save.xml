@@ -43,7 +43,7 @@
         android:layout_below="@id/recording_save_top_bar"
           android:id="@+id/recording_save_pho_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/recording_save_pho_height"
+            android:layout_height="@dimen/one_map_height"
         android:background="@color/gray_light"
         >
           

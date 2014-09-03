@@ -91,5 +91,5 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_size3" />
     </RelativeLayout>
-
+    
 </RelativeLayout>

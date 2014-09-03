@@ -86,4 +86,5 @@
     <dimen name="full_bottom_data_width">60dp</dimen>
     <dimen name="full_bottom_data_height">40dp</dimen>
     <dimen name="full_bottom_height">60dp</dimen>
+    <dimen name="one_map_height">270dp</dimen>
 </resources>

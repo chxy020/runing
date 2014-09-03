@@ -42,7 +42,7 @@
     <RelativeLayout
         android:id="@+id/one_map_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/recording_save_pho_height"
+        android:layout_height="@dimen/one_map_height"
         android:layout_below="@id/recording_one_top_bar" >
 
         <!-- <com.amap.api.maps2d.MapView
@@ -159,11 +159,11 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/one_avgspeed"
+                android:id="@+id/one_ponit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
-                android:text="0.00 km/h"
+                android:text="+0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size2"
                 android:textStyle="bold" />
@@ -172,37 +172,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="平均时速"
+                android:text="积分"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/one_param"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/sport_set_height"
-        android:layout_below="@+id/one_middle" >
-
-        <ImageView
-            android:id="@+id/one_mind"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_margin="@dimen/margin1"
-            android:background="@drawable/mood1_h" />
-
-        <ImageView
-            android:id="@+id/one_way"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_marginTop="@dimen/margin1"
-            android:layout_toRightOf="@id/one_mind"
-            android:background="@drawable/way1" />
-    </RelativeLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/one_param"
+        android:layout_below="@id/one_middle"
         android:background="@color/black" >
     </View>
 
@@ -210,23 +187,39 @@
         android:id="@+id/one_desc_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_height"
-        android:layout_below="@id/one_param" >
-
+        android:layout_below="@id/one_middle" >
         <ImageView
+            android:id="@+id/one_way"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/way1" />
+          <ImageView
+            android:id="@+id/one_mind"
+            android:layout_toLeftOf="@id/one_way"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_margin="@dimen/margin1"
+            android:background="@drawable/mood1_h" />
+             <ImageView
             android:id="@+id/one_desc_icon"
             android:layout_width="@dimen/small_height"
             android:layout_height="@dimen/small_height"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/margin1"
-            android:background="@drawable/edit" />
-
-        <TextView
+            android:background="@drawable/edit" 
+            />
+          <TextView
             android:id="@+id/one_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/one_mind"
             android:layout_toRightOf="@id/one_desc_icon"
             android:gravity="center_vertical"
             android:hint="说说这次运动感觉怎么样？" />
+         
+          
     </RelativeLayout>
 
     <View

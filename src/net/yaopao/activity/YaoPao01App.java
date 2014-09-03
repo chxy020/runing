@@ -47,14 +47,17 @@ public class YaoPao01App extends Application {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener locationlisten = new LocationListener() {
 
-			public void onStatusChanged(String provider, int status, Bundle extras) {
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
 				Log.v("wy", "gps StatusChanged");
-				  if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE){
-					  if (SportRecordActivity.gpsV != null) {
-						  Variables.gpsStatus = 0;
-							SportRecordActivity.gpsV.setBackgroundResource(R.drawable.gps_1);
-						}
-				  }
+				if (status == LocationProvider.OUT_OF_SERVICE
+						|| status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
+					if (SportRecordActivity.gpsV != null) {
+						Variables.gpsStatus = 0;
+						SportRecordActivity.gpsV
+								.setBackgroundResource(R.drawable.gps_1);
+					}
+				}
 			}
 
 			public void onProviderEnabled(String arg0) {
@@ -66,9 +69,10 @@ public class YaoPao01App extends Application {
 				Log.v("wy", "gps Disabled");
 				Variables.gpsStatus = 2;
 				if (SportRecordActivity.gpsV != null) {
-					  Variables.gpsStatus = 0;
-						SportRecordActivity.gpsV.setBackgroundResource(R.drawable.gps_1);
-					}
+					Variables.gpsStatus = 0;
+					SportRecordActivity.gpsV
+							.setBackgroundResource(R.drawable.gps_1);
+				}
 			}
 
 			// 当坐标改变时触发此函数；如果Provider传进相同的坐标，它就不会被触发
@@ -120,7 +124,8 @@ public class YaoPao01App extends Application {
 				} else {
 					Variables.gpsStatus = 0;
 					if (SportRecordActivity.gpsV != null) {
-						SportRecordActivity.gpsV.setBackgroundResource(R.drawable.gps_1);
+						SportRecordActivity.gpsV
+								.setBackgroundResource(R.drawable.gps_1);
 					}
 				}
 			}
@@ -177,47 +182,41 @@ public class YaoPao01App extends Application {
 		return instance;
 	}
 
-/*	public static boolean isGpsAvailable() {
-		if (Variables.gpsStatus!=2) {
-		 if (Variables.gpsStatus==1) {
-		 return true;
-		 }else {
-		 //Toast.makeText(instance, "当前位置GPS信号较弱", Toast.LENGTH_LONG).show();
-		 return false;
-		 }
-		 }else {
-		 //Toast.makeText(instance, "请开启GPS", Toast.LENGTH_LONG).show();
-		 return false;
-		 }
-//    return true;
-	}*/
+	/*
+	 * public static boolean isGpsAvailable() { if (Variables.gpsStatus!=2) { if
+	 * (Variables.gpsStatus==1) { return true; }else {
+	 * //Toast.makeText(instance, "当前位置GPS信号较弱", Toast.LENGTH_LONG).show();
+	 * return false; } }else { //Toast.makeText(instance, "请开启GPS",
+	 * Toast.LENGTH_LONG).show(); return false; } // return true; }
+	 */
 
 	public static int[] cal(long second) {
 		int h = 0;
 		int m = 0;
 		int s = 0;
-		int temp = (int)(second % 3600);
+		int temp = (int) (second % 3600);
 		if (second > 3600) {
-			h =(int) (second / 3600);
+			h = (int) (second / 3600);
 			if (temp != 0) {
 				if (temp > 60) {
 					m = (int) (temp / 60);
 					if (temp % 60 != 0) {
-						s = (int)(temp % 60);
+						s = (int) (temp % 60);
 					}
 				} else {
 					s = temp;
 				}
 			}
 		} else {
-			m =(int) (second / 60);
+			m = (int) (second / 60);
 			if (second % 60 != 0) {
-				s = (int)(second % 60);
+				s = (int) (second % 60);
 			}
 		}
 
 		return new int[] { h, m, s };
 	}
+
 	public static String getWeekOfDate(Date dt) {
 		String[] weekDays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
 		Calendar cal = Calendar.getInstance();
@@ -228,5 +227,111 @@ public class YaoPao01App extends Application {
 			w = 0;
 
 		return weekDays[w];
+	}
+
+	/**
+	 * 计算平时跑步积分
+	 * 
+	 * @param min
+	 *            每公里的配速
+	 * @return
+	 */
+	public static int calPspeedPoints(int min) {
+		int ponits = 0;
+
+		if (min >= 12) {
+			ponits = 3;
+		} else if (min >= 11) {
+			ponits = 4;
+		} else if (min >= 10) {
+			ponits = 5;
+		} else if (min >= 9) {
+			ponits = 6;
+		} else if (min >= 8) {
+			ponits = 7;
+		} else if (min >= 7) {
+			ponits = 8;
+		} else if (min >= 6) {
+			ponits = 9;
+		} else if (min >= 5) {
+			ponits = 10;
+		} else if (min < 5&&min>0) {
+			ponits = 12;
+		}
+
+		return ponits;
+	}
+
+	/**
+	 * 计算比赛跑步积分
+	 * 
+	 * @param min
+	 *            每公里的配速
+	 * @return
+	 */
+	public static int calMatchPspeedPoints(int min) {
+		int ponits = 0;
+
+		if (min >= 12) {
+			ponits = 6;
+		} else if (min >= 11) {
+			ponits = 8;
+		} else if (min >= 10) {
+			ponits = 10;
+		} else if (min >= 9) {
+			ponits = 12;
+		} else if (min >= 8) {
+			ponits = 15;
+		} else if (min >= 7) {
+			ponits = 16;
+		} else if (min >= 6) {
+			ponits = 18;
+		} else if (min >= 5) {
+			ponits = 20;
+		} else if (min < 5&&min>0) {
+			ponits = 24;
+		}
+
+		return ponits;
+	}
+
+	/**
+	 * 计算平时跑步距离零头积分
+	 * 
+	 * @return
+	 */
+	public static void calDisPoints() {
+		double dis = Variables.distance % 1000;
+
+		if (Variables.distance / 1000 < 0) {
+			if (Variables.distance > 0) {
+				Variables.points += 1;
+			}
+		} else if (Variables.distance / 1000 > 0) {
+			if (dis >= 500) {
+				Variables.points += 2;
+			} else if (dis < 500 && dis > 0) {
+				Variables.points += 0;
+			}
+		}
+		}
+	/**
+	 * 计算比赛跑步距离零头积分
+	 * 
+	 * @return
+	 */
+	public static void calMatchDisPoints() {
+		double dis = Variables.distance % 1000;
+		if (Variables.distance / 1000 < 0) {
+			if (Variables.distance > 0) {
+				Variables.points += 2;
+			}
+		} else if (Variables.distance / 1000 > 0) {
+			if (dis >= 500) {
+				Variables.points += 4;
+			} else if (dis < 500 && dis > 0) {
+				Variables.points += 0;
+			}
+		}
 	}
 }

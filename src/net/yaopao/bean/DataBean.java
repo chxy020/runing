@@ -6,6 +6,7 @@ public class DataBean {
 	private double distance;// 距离 m
 	private double pspeed;// 平均配速 m/s
 	private int count;// 记录条数
+	private int points;// 积分
 
 	public long getTotalTime() {
 		return totalTime;
@@ -37,6 +38,14 @@ public class DataBean {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 }

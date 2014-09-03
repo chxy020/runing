@@ -64,6 +64,7 @@ public class Variables {
 	public static String hspeed;// 时速 km/h
 
 	public static double stateIndex;//
+	public static int points;//积分
 
 	// 获取rid
 	public static String getRid() {

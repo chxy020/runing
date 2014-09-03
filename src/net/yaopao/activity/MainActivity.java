@@ -8,14 +8,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +81,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 		matchL.setOnTouchListener(this);
 		start.setOnTouchListener(this);
 		recording.setOnTouchListener(this);
-		
+		if (Variables.gpsStatus==2) {
+			DialogTool dialog = new DialogTool(MainActivity.this,handler);
+			WindowManager m = getWindowManager();
+			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			dialog.alertGpsTip2(d);
+		}
 		this.initView();
 	}
 
@@ -114,6 +125,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		DataBean data = YaoPao01App.db.queryData();
 		toutalCount.setText(data.getCount()+""); 
 		avgSpeed.setText(getSeed(data.getPspeed())); 
+		points.setText(data.getPoints()+"");
 		
 
 	}
@@ -231,17 +243,20 @@ public class MainActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				if (Variables.gpsStatus==2) {
-					DialogTool dialog = new DialogTool(MainActivity.this);
+//				if (Variables.gpsStatus==2) {
+				if (Variables.gpsStatus==4) {
+					DialogTool dialog = new DialogTool(MainActivity.this,handler);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip2(d);
-				}else if (Variables.gpsStatus==0) {
-					DialogTool dialog = new DialogTool(MainActivity.this);
+//				}else if (Variables.gpsStatus==0) {
+				}else if (Variables.gpsStatus==5) {
+					DialogTool dialog = new DialogTool(MainActivity.this,null);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip1(d);
-				}else if(Variables.gpsStatus==1){
+//				}else if(Variables.gpsStatus==1){
+				}else {
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
@@ -287,7 +302,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			DialogTool.quit(MainActivity.this);
-//			DialogTool.alertGpsTip1(MainActivity.this);
 		}
 		return false;
 	}
@@ -305,7 +319,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 		mMainSetting = (TextView) findViewById(R.id.main_setting);
 		// 获取系统消息layout
 		mMessageLayout = (LinearLayout) findViewById(R.id.main_message_layout);
-
 		// 注册事件
 		this.setListener();
 	}
@@ -344,4 +357,20 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 		}
 	};
+	 Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 0) {
+				Log.v("wyalert", "0");
+				openHtml();
+			}
+			super.handleMessage(msg);
+		}
+	};
+	private void openHtml() {
+		Intent intent =  new Intent(this,HelperActivity.class);
+//		startActivityForResult(intent, 0);
+		startActivity(intent);
+		
+	}
+	
 }

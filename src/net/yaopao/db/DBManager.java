@@ -57,8 +57,8 @@ public class DBManager {
 					"INSERT INTO "
 							+ DatabaseHelper.SPORTDATA_TABLE
 							+ " (aheart,distance,rid,heat,hspeed,image_count,"
-							+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,addtime)"
-							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+							+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,points,addtime)"
+							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 					new Object[] { Variables.aheart, Variables.distance,
 							Variables.getRid(), Variables.heat,
 							Variables.hspeed, Variables.imageCount,
@@ -66,7 +66,7 @@ public class DBManager {
 							Variables.remarks, Variables.runtar,
 							Variables.runty, oneSport, Variables.runway,
 							Variables.stamp, statusIndex, Variables.temp,
-							Variables.utime, Variables.weather,
+							Variables.utime, Variables.weather,Variables.points,
 							new Date().getTime() });
 
 			Log.v("wydb", "s Variables.utime =" + Variables.utime);
@@ -176,9 +176,11 @@ public class DBManager {
 		double totalDistance = 0;
 		int speed = 0;// 平均配速 单位秒
 		long totalTime = 0;// 秒
+		int points = 0;// 秒
 		while (c.moveToNext()) {
 			totalDistance += c.getDouble(c.getColumnIndex("distance"));
 			totalTime += c.getLong(c.getColumnIndex("utime"));
+			points += c.getInt(c.getColumnIndex("points"));
 		}
 		c.close();
 		speed = (int) ((1000 / totalDistance) * totalTime);
@@ -186,6 +188,7 @@ public class DBManager {
 		data.setDistance(totalDistance);
 		data.setPspeed(speed);
 		data.setTotalTime(totalTime);
+		data.setPoints(points);
 		return data;
 	}
 
@@ -213,7 +216,7 @@ public class DBManager {
 			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
-			sport.setHspeed(c.getString(c.getColumnIndex("hspeed")));
+			sport.setPoints(c.getInt(c.getColumnIndex("points")));
 			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
 			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
 			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));

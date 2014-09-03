@@ -108,7 +108,8 @@
         android:id="@+id/type_ride"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_height"
-        android:layout_below="@id/type_run" >
+        android:layout_below="@id/type_run" 
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/type_step_icon"

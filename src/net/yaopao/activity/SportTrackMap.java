@@ -68,7 +68,7 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 	private String title = "";
 	private TextView timeV;
 	private TextView pspeedV;
-	private TextView avgspeedV;
+	private TextView ponitsV;
 	private TextView dateV;
 	private TextView titleV;
 	private TextView disV;
@@ -87,7 +87,7 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 		titleV = (TextView) findViewById(R.id.full_title);
 		timeV = (TextView) findViewById(R.id.full_time);
 		pspeedV = (TextView) findViewById(R.id.full_pspeed);
-		avgspeedV = (TextView) findViewById(R.id.full_avgspeed);
+		ponitsV = (TextView) findViewById(R.id.full_points);
 		titleV = (TextView) findViewById(R.id.full_title);
 		dateV = (TextView) findViewById(R.id.full_date);
 		disV = (TextView) findViewById(R.id.full_dis);
@@ -117,7 +117,7 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 		initSportData(oneSport.getDistance(), oneSport.getRunty(),
 				oneSport.getMind(), oneSport.getRunway(),
 				oneSport.getRemarks(), oneSport.getUtime(),
-				oneSport.getPspeed(), oneSport.getHspeed(),
+				oneSport.getPspeed(), oneSport.getPoints(),
 				oneSport.getAddtime());
 		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 				GpsPoint.class);
@@ -210,7 +210,7 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 	}
 
 	private void initSportData(double distance, int runty, int mind,
-			int runway, String remarks, int utime, int pspeed, String hspeed,
+			int runway, String remarks, int utime, int pspeed, int points,
 			long addtime) {
 
 		int[] time = YaoPao01App.cal(utime);
@@ -231,7 +231,7 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
-		avgspeedV.setText(hspeed + " km/h");
+		ponitsV.setText("+ "+points);
 		disV.setText(df.format(distance / 1000) + " km");
 		Date date = new Date(addtime);
 		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
@@ -251,6 +251,10 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 		case 2:
 			typeV.setBackgroundResource(R.drawable.runtype_run);
 			title = "的跑步";
+			break;
+		case 3:
+			typeV.setBackgroundResource(R.drawable.runtype_ride);
+			title = "的自行车骑行";
 			break;
 
 		default:
@@ -344,10 +348,10 @@ public class SportTrackMap extends Activity implements  OnTouchListener {
 	}return true;
 		}
 
-	@Override
+/*	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 		}
 		return false;
-	}
+	}*/
 }
