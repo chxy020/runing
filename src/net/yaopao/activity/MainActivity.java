@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	private ImageView d6v;
 	private Bitmap head;
 	private double distance;
+	private DataBean data;
 	/** 设置 */
 	private TextView mMainSetting = null;
 	/** 系统消息 */
@@ -86,6 +87,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			dialog.alertGpsTip2(d);
 		}
 		this.initView();
+		data = YaoPao01App.db.queryData();
 	}
 
 	@Override
@@ -120,7 +122,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			state.setText("未登录");
 		}
 		initMileage();
-		DataBean data = YaoPao01App.db.queryData();
+		
 		toutalCount.setText(data.getCount()+""); 
 		avgSpeed.setText(getSeed(data.getPspeed())); 
 		points.setText(data.getPoints()+"");
@@ -129,7 +131,6 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	}
 
 	private void initMileage() {
-		DataBean data = YaoPao01App.db.queryData();
 		distance = data.getDistance();
 		//distance = 549254;
 		int d1 = (int) distance / 1000000;

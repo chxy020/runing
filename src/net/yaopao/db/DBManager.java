@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
+import net.yaopao.assist.Constants;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
@@ -133,10 +134,10 @@ public class DBManager {
 	 * 
 	 * @return
 	 */
-	public List<SportBean> query() {
+	public List<SportBean> query(int page) {
 		Log.d("wydb", "DBManager --> query");
 		ArrayList<SportBean> sports = new ArrayList<SportBean>();
-		Cursor c = queryTheCursor();
+		Cursor c = queryTheCursorForPage(page);
 		while (c.moveToNext()) {
 
 			SportBean sport = new SportBean();
@@ -236,6 +237,11 @@ public class DBManager {
 		Log.d("wydb", "DBManager --> queryTheCursor");
 		Cursor c = db.rawQuery("SELECT * FROM "
 				+ DatabaseHelper.SPORTDATA_TABLE + " ORDER BY id DESC", null);
+		return c;
+	}
+	public Cursor queryTheCursorForPage(int page) {
+		Cursor c = db.rawQuery("SELECT * FROM "
+				+ DatabaseHelper.SPORTDATA_TABLE + "  ORDER BY id DESC  limit "+Constants.offset+" offset "+Constants.offset*(page-1), null);
 		return c;
 	}
 

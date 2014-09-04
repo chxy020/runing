@@ -113,6 +113,7 @@
         <activity
             android:name="net.yaopao.activity.AboutActivity"
             android:screenOrientation="portrait" />
+        <meta-data android:value="YOUR_APP_KEY" android:name="UMENG_APPKEY"></meta-data>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />

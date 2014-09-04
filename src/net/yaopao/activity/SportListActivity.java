@@ -142,7 +142,8 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 	private List<Map<String, Object>> getData() {
 
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-		List<SportBean> list = YaoPao01App.db.query();
+		//这里查询列表数据
+		List<SportBean> list = YaoPao01App.db.query(1);
 		Map<String, Object> map = null;
 		SportBean sport = null;
 		for (int i = 0; i < list.size(); i++) {
