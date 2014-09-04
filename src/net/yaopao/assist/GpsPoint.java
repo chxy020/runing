@@ -7,7 +7,7 @@ public class GpsPoint {
 	public double speed;
 	public float course;
 	public double altitude;
-	public int status;// 0-�˶�״̬�ĵ㣬1-��ͣ״̬�ĵ�
+	public int status;// 0-运动状态，1-暂停状态
 
 	public GpsPoint() {
 		// TODO Auto-generated constructor stub

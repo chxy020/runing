@@ -64,6 +64,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private static int speedPerKm=0;
 	private static double disPerKm=0;
 	private static int timePerKm=0;
+	private static long lastSportTime=0;//集合中最后一个运动点的时间
 	
 
 	// 测试代码
@@ -122,8 +123,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			sliderIconV.setVisibility(View.GONE);
 			sliderTextV.setVisibility(View.GONE);
 		}
-		// timeV.setOnTouchListener(this);
-		// speedV.setOnTouchListener(this);
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
@@ -136,15 +135,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		points.add(new GpsPoint(116.407694, 39.906744, 1409643285776L));
 		points.add(new GpsPoint(116.408694, 39.906744, 1409643285776L));
 		points.add(new GpsPoint(116.409694, 39.906744, 1409643285776L));
-//		points.add(new GpsPoint(116.403694, 39.906824, 1409643295776L));
-//		points.add(new GpsPoint(116.404694, 39.906934, 1409643305776L));
-//		points.add(new GpsPoint(116.403694, 39.907044, 1409643375776L));
-//		points.add(new GpsPoint(116.403794, 39.907154, 1409643485776L));
-//		points.add(new GpsPoint(116.403894, 39.907264, 140964435776L));
-//		points.add(new GpsPoint(116.403994, 39.907374, 1409645285776L));
-//		points.add(new GpsPoint(116.405694, 39.907484, 1409646285776L));
-//		points.add(new GpsPoint(116.406694, 39.908584, 1409646105776L));
-//		points.add(new GpsPoint(116.407694, 39.908684, 1409646105776L));
 		slider.setMainHandler(slipHandler);
 		pointsIndex = new ArrayList<Integer>();
 		pointsIndex.add(0);
@@ -292,6 +282,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			if (points.size() == 0) {
 				points.add(point);
 				last = point;
+				lastSportTime=last.getTime();
 				return false;
 			}
 			last = points.get(points.size() - 1);
@@ -302,6 +293,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			if (meter < 5) {
 				if (last.status == point.status) {
 					last.time = point.time;
+					if (last.status==0) {
+						lastSportTime=last.getTime();
+						Variables.utime+=(point.time-last.time)/1000;
+					}
 					return false;
 				} else {
 					points.add(point);
@@ -312,6 +307,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				if (point.status == 0) {
 					if (last.status == 0) {
 						// meter = getDistanceFrom2ponit(last, point);
+					//记录时间
+						
 						Variables.distance += meter;
 						disPerKm += meter;
 						timePerKm += Variables.utime;
@@ -323,6 +320,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				        }
 
 						points.add(point);
+						//要改用gps时间，改到这里了
+//						Variables.utime=point.getTime()-points
 						return true;
 					} else {
 						points.add(point);
@@ -416,7 +415,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	static Runnable timerTask = new Runnable() {
 		@Override
 		public void run() {
-			Variables.utime += 1;
+//			Variables.utime += 1;
 			int[] time = YaoPao01App.cal(Variables.utime);
 			int t1 = time[0] / 10;
 			int t2 = time[0] % 10;
