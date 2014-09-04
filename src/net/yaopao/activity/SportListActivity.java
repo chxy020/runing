@@ -52,6 +52,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 	private XListView mListView;
 	private Handler mHandler;
 	private SportListAdapter mAdapter = null;
+	private int mPage = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +80,19 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		mListView = (XListView) this.findViewById(R.id.recording_list_data);
 		//关闭下拉刷新
 		mListView.setPullRefreshEnable(false);
-		//开启上拉刷新
-		mListView.setPullLoadEnable(true);
+		
 		//SportListAdapter adapter = new SportListAdapter(this, getData());
-		mAdapter = new SportListAdapter(this, getData());
+		List<Map<String, Object>> data = getData(mPage);
+		//Log.e("","chxy____" + data.size());
+		if(data.size() >= 10){
+			//开启上拉刷新
+			mListView.setPullLoadEnable(true);
+		}
+		else{
+			//关闭上拉刷新
+			mListView.setPullLoadEnable(false);
+		}
+		mAdapter = new SportListAdapter(this, data);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -104,7 +114,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 	@Override
 	public void onRefresh() {
 		// TODO Auto-generated method stub
-		Log.e("","chxy____onRefresh");
+		//Log.e("","chxy____onRefresh");
 		
 	}
 	
@@ -114,12 +124,19 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 	@Override
 	public void onLoadMore() {
 		// TODO Auto-generated method stub
-		Log.e("","chxy____onLoadMore");
+		//Log.e("","chxy____onLoadMore");
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				mPage++;
+				List<Map<String, Object>> data = getData(mPage);
+				//Log.e("","chxy____" + data.size());
+				if(data.size() < 10){
+					//关闭上拉刷新
+					mListView.setPullLoadEnable(false);
+				}
+				 mAdapter.addItem(data);
 				//调用加载下一页方法
-				mAdapter.addItem(getData());
 				mAdapter.notifyDataSetChanged();
 				
 				//如果没有下一页数据直接调用,隐藏loading
@@ -139,11 +156,11 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		}
 	}
 
-	private List<Map<String, Object>> getData() {
+	private List<Map<String, Object>> getData(int page) {
 
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		//这里查询列表数据
-		List<SportBean> list = YaoPao01App.db.query(1);
+		List<SportBean> list = YaoPao01App.db.query(page);
 		Map<String, Object> map = null;
 		SportBean sport = null;
 		for (int i = 0; i < list.size(); i++) {
