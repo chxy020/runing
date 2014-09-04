@@ -79,7 +79,7 @@ public class XListView extends ListView implements OnScrollListener {
 		// user's listener (as a proxy).
 		super.setOnScrollListener(this);
 		
-		/*
+		/**/
 		// init header view
 		mHeaderView = new XListViewHeader(context);
 		mHeaderViewContent = (RelativeLayout) mHeaderView
@@ -98,7 +98,7 @@ public class XListView extends ListView implements OnScrollListener {
 								.removeGlobalOnLayoutListener(this);
 					}
 				});
-		*/
+		
 		// init footer view
 		mFooterView = new XListViewFooter(context);
 
@@ -271,11 +271,11 @@ public class XListView extends ListView implements OnScrollListener {
 			//下拉刷新不处理
 			final float deltaY = ev.getRawY() - mLastY;
 			mLastY = ev.getRawY();
-			if (getLastVisiblePosition() == mTotalItemCount - 1 && (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
+			/*if (getLastVisiblePosition() == mTotalItemCount - 1 && (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
 				// last item, already pulled up or want to pull up.
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
-			/*
+			*/
 			if (getFirstVisiblePosition() == 0 && (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
 				// the first item is showing, header has shown or pull down.
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
@@ -285,13 +285,13 @@ public class XListView extends ListView implements OnScrollListener {
 				// last item, already pulled up or want to pull up.
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
-			*/
+			
 			break;
 		default:
 			mLastY = -1; // reset
 			if (getFirstVisiblePosition() == 0) {
 				// invoke refresh 不处理
-				/*
+				/**/
 				if (mEnablePullRefresh && mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 					mPullRefreshing = true;
 					mHeaderView.setState(XListViewHeader.STATE_REFRESHING);
@@ -300,7 +300,7 @@ public class XListView extends ListView implements OnScrollListener {
 					}
 				}
 				resetHeaderHeight();
-				*/
+				
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1) {
 				// invoke load more.
 				if (mEnablePullLoad

@@ -77,6 +77,9 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		backV.setOnClickListener(this);
 		
 		mListView = (XListView) this.findViewById(R.id.recording_list_data);
+		//关闭下拉刷新
+		mListView.setPullRefreshEnable(false);
+		//开启上拉刷新
 		mListView.setPullLoadEnable(true);
 		//SportListAdapter adapter = new SportListAdapter(this, getData());
 		mAdapter = new SportListAdapter(this, getData());
@@ -96,6 +99,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			}
 		});
 		mListView.setXListViewListener(this);
+		
 	}
 	@Override
 	public void onRefresh() {
