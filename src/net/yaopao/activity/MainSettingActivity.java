@@ -17,7 +17,7 @@ public class MainSettingActivity extends Activity {
 	/** 个人信息 */
 	private LinearLayout mPersonalLayout = null;
 	/** 服务条款 */
-	private LinearLayout mClauseLayout = null;
+	//private LinearLayout mClauseLayout = null;
 	/** 关于 */
 	private LinearLayout mAboutLayout = null;
 
@@ -39,12 +39,9 @@ public class MainSettingActivity extends Activity {
 	 * @date 2014-8-25
 	 */
 	private void initLoad() {
-		this.mSettingBackBtn = (Button) this
-				.findViewById(R.id.setting_back_btn);
-		this.mPersonalLayout = (LinearLayout) this
-				.findViewById(R.id.personal_layout);
-		this.mClauseLayout = (LinearLayout) this
-				.findViewById(R.id.clause_layout);
+		this.mSettingBackBtn = (Button) this.findViewById(R.id.setting_back_btn);
+		this.mPersonalLayout = (LinearLayout) this.findViewById(R.id.personal_layout);
+		//this.mClauseLayout = (LinearLayout) this.findViewById(R.id.clause_layout);
 		this.mAboutLayout = (LinearLayout) this.findViewById(R.id.about_layout);
 		// 注册事件
 		this.setListener();
@@ -60,7 +57,7 @@ public class MainSettingActivity extends Activity {
 		// 注册设置事件
 		this.mSettingBackBtn.setOnClickListener(mOnClickListener);
 		this.mPersonalLayout.setOnClickListener(mOnClickListener);
-		this.mClauseLayout.setOnClickListener(mOnClickListener);
+		//this.mClauseLayout.setOnClickListener(mOnClickListener);
 		this.mAboutLayout.setOnClickListener(mOnClickListener);
 	}
 
@@ -78,17 +75,26 @@ public class MainSettingActivity extends Activity {
 			case R.id.personal_layout:
 				// 跳转到个人信息
 				// Toast.makeText(MainSettingActivity.this,"跳转到个人信息",Toast.LENGTH_LONG).show();
-				Intent userInfoIntent = new Intent(MainSettingActivity.this,
-						UserInfoActivity.class);
-				Variables.toUserInfo=1;
-				startActivity(userInfoIntent);
+				//判断是否登录0-未登录，1-登录成功，2-正在登录
+				int isLogin = Variables.islogin;
+				if(1 == isLogin){
+					Intent userInfoIntent = new Intent(MainSettingActivity.this,UserInfoActivity.class);
+					Variables.toUserInfo=1;
+					startActivity(userInfoIntent);
+				}
+				else{
+					Intent registerIntent = new Intent(MainSettingActivity.this,RegisterActivity.class);
+					startActivity(registerIntent);
+				}
 				break;
+			/*
 			case R.id.clause_layout:
 				Intent clauseIntent = new Intent(MainSettingActivity.this,
 						ClauseActivity.class);
 				startActivity(clauseIntent);
 				// Toast.makeText(MainSettingActivity.this,"跳转到服务条款",Toast.LENGTH_LONG).show();
 				break;
+			*/
 			case R.id.about_layout:
 				Intent aboutIntent = new Intent(MainSettingActivity.this,
 						AboutActivity.class);
