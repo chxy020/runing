@@ -62,12 +62,14 @@
                 android:layout_width="0.0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="1" />
-
+			
+            <!-- 
             <net.yaopao.widget.WheelView
                 android:id="@+id/user_distance2"
                 android:layout_width="0.0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="1" />
+        	 -->
         </LinearLayout>
 
         <FrameLayout

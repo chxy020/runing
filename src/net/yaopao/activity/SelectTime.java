@@ -1,6 +1,7 @@
 package net.yaopao.activity;
 
 import net.yaopao.assist.Variables;
+import net.yaopao.widget.ArrayWheelAdapter;
 import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
@@ -28,16 +29,21 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 	private View mMenuView;
 	private ViewFlipper viewfipper;
 	private Button btn_submit, btn_cancel;
-	private String time;
+	private int time;
 	private int curTime;
 	private TimeNumericAdapter timeAdapter;
 	private WheelView timeV;
 	private TextView timeTextV;
-
-	public SelectTime(Activity context, final Handler handler) {
+	/** 运动计时数据 */
+	private Integer[] timeArray = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,305,310,315,320,325,330,335,340,345,350,355,360};
+	private String[] timeTxtArray = {"05:00","10:00","15:00","20:00","25:00","30:00","35:00","40:00","45:00","50:00","0:55:00","1:00:00","1:05:00","1:10:00","1:15:00","1:20:00","1:25:00","1:30:00","1:35:00","1:40:00","1:45:00","1:50:00","1:55:00","2:00:00","2:05:00","2:10:00","2:15:00","2:20:00","2:25:00","2:30:00","2:35:00","2:40:00","2:45:00","2:50:00","2:55:00","3:00:00","3:05:00","3:10:00","3:15:00","3:20:00","3:25:00","3:30:00","3:35:00","3:40:00","3:45:00","3:50:00","3:55:00","4:00:00","4:05:00","4:10:00","4:15:00","4:20:00","4:25:00","4:30:00","4:35:00","4:40:00","4:45:00","4:50:00","4:55:00","5:00:00","5:05:00","5:10:00","5:15:00","5:20:00","5:25:00","5:30:00","5:35:00","5:40:00","5:45:00","5:50:00","5:55:00","6:00:00"};
+	
+	public SelectTime(Activity context, final Handler handler,int distanceTime) {
 		super(context);
 		mContext = context;
-		this.time = Variables.runtarTime + "";
+		//this.time = Variables.runtarTime + "";
+		this.time = distanceTime;
+		
 		Log.v("wydb", "time1 =" + time);
 		timeTextV = (TextView) mContext.findViewById(R.id.target_time_select);
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -54,7 +60,7 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 			public void onClick(View arg0) {
 				Message msg = new Message();
 				Bundle b = new Bundle();
-				b.putInt("time", Integer.parseInt(time));
+				b.putInt("time", time);
 				msg.setData(b);
 				handler.sendMessage(msg);
 				SelectTime.this.dismiss();
@@ -63,10 +69,14 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		btn_cancel.setOnClickListener(this);
 		OnWheelChangedListener listener = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				updateDistance(timeV);
+				updateDistance(timeV,false);
 
 			}
 		};
+		
+		updateDistance(timeV,true);
+		timeV.addChangingListener(listener);
+		/*
 		if (time != null) {
 			String[] times = time.split(" ");
 			curTime = Integer.parseInt(times[0]);
@@ -77,7 +87,8 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		timeV.setCurrentItem(curTime - 5);
 		timeV.addChangingListener(listener);
 		updateDistance(timeV);
-
+		*/
+		
 		viewfipper.addView(mMenuView);
 		viewfipper.setFlipInterval(6000000);
 		this.setContentView(viewfipper);
@@ -97,7 +108,18 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		viewfipper.startFlipping();
 	}
 
-	private void updateDistance(WheelView view) {
+	private void updateDistance(WheelView view1,boolean setDefault) {
+		view1.setViewAdapter(new ArrayWheelAdapter<String>(mContext, timeTxtArray));
+		if(setDefault){
+			int sub = countItemSub(this.time);
+			view1.setCurrentItem(sub);
+		}
+		
+		int st = view1.getCurrentItem();
+		String t = this.timeTxtArray[st];
+		this.time = this.timeArray[st];
+		timeTextV.setText(t);
+		/*
 		TimeNumericAdapter timeAd = new TimeNumericAdapter(mContext, 5, 180,
 				curTime);
 		view.setViewAdapter(timeAd);
@@ -106,8 +128,29 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		time = curT;
 		
 		timeTextV.setText(curT + " 分钟");
+		*/
 	}
-
+	
+	/**
+	 * 计算当前数据在数组中的下标
+	 * @param dis
+	 * @return
+	 * @author cxy
+	 * @date 2014-9-6
+	 */
+	private int countItemSub(int time){
+		int sub = 0;
+		int len = this.timeArray.length;
+		for(int i = 0; i < len; i++){
+			int d = this.timeArray[i];
+			if(time == d){
+				sub = i;
+				break;
+			}
+		}
+		return sub;
+	}
+	
 	/**
 	 * Adapter for numeric wheels. Highlights the current value.
 	 */

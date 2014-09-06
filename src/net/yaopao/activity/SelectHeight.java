@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,14 +29,16 @@ public class SelectHeight extends PopupWindow implements OnClickListener {
 	private ViewFlipper viewfipper;
 	private Button btn_submit, btn_cancel;
 	private String height;
-	private int curH = 120;
+	private int curH = 10;
 	private HeightNumericAdapter heightAdapter;
 	private WheelView heightV;
 
-	public SelectHeight(Activity context, final Handler handler) {
+	public SelectHeight(Activity context, final Handler handler,String heightData) {
 		super(context);
 		mContext = context;
-		this.height = "170";
+		//this.height = "185";
+		this.curH = Integer.parseInt(heightData.substring(0,heightData.length() - 2)) - 100;
+		
 		LayoutInflater inflater = LayoutInflater.from(context);
 
 		mMenuView = inflater.inflate(R.layout.pop_height, null, true);
@@ -62,13 +65,14 @@ public class SelectHeight extends PopupWindow implements OnClickListener {
 		Calendar calendar = Calendar.getInstance();
 		OnWheelChangedListener listener = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				updateheight(heightV);
+				updateheight(heightV,false);
 
 			}
 		};
-
-		heightV.setCurrentItem(curH);
-		updateheight(heightV);
+		
+		updateheight(heightV,true);
+		
+		
 		heightV.addChangingListener(listener);
 
 		viewfipper.addView(mMenuView);
@@ -90,14 +94,17 @@ public class SelectHeight extends PopupWindow implements OnClickListener {
 		viewfipper.startFlipping();
 	}
 
-	private void updateheight(WheelView view) {
+	private void updateheight(WheelView view,boolean setDefault) {
 
-		heightAdapter = new HeightNumericAdapter(mContext, 50, 240,
-				view.getCurrentItem());
+		heightAdapter = new HeightNumericAdapter(mContext, 100, 240,this.curH);
 		heightAdapter.setTextType("cm");
 		view.setViewAdapter(heightAdapter);
-		int curheight = view.getCurrentItem() + 50;
-		view.setCurrentItem(view.getCurrentItem(), true);
+		
+		if(setDefault){
+			view.setCurrentItem(this.curH);
+		}
+		
+		int curheight = view.getCurrentItem() + 100;
 		height = curheight + "cm";
 	}
 
