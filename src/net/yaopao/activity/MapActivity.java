@@ -151,10 +151,11 @@ public class MapActivity extends Activity implements LocationSource,
 					.size() - 1);
 			if (gpsPointEnd.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.RED));
+						.color(Color.GREEN));
+				
 			} else {
 				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.BLACK).setDottedLine(true));
+						.color(Color.GRAY));
 			}
 		}
 		lastDrawPoint = SportRecordActivity.points
@@ -181,10 +182,12 @@ public class MapActivity extends Activity implements LocationSource,
 					lonLatEncryption.encrypt(lastDrawPoint).lon));
 			if (lastDrawPoint.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
-						Color.RED));
+						Color.GREEN));
+				aMap.invalidate();
 			} else {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine)
-						.color(Color.BLACK).setDottedLine(true));
+						.color(Color.GRAY).setDottedLine(true));
+				aMap.invalidate();
 			}
 			lastDrawPoint = newPoint;
 		}
@@ -337,7 +340,6 @@ public class MapActivity extends Activity implements LocationSource,
 				locV.setBackgroundResource(R.drawable.button_position);
 				Location myloc = aMap.getMyLocation();
 				if (myloc != null) {
-					// aMap.setMyLocationType(AMap)
 					isFollow = 1;
 					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
 							new LatLng(myloc.getLatitude(), myloc
@@ -374,15 +376,14 @@ public class MapActivity extends Activity implements LocationSource,
 							SportRecordActivity.stopRecordGps();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
-							   
+							Intent closeintent = new Intent(closeAction);  
+							closeintent.putExtra("data", "close");  
+				            sendBroadcast(closeintent);
 						}
 						super.handleMessage(msg);
 					}
 				};
 				DialogTool.doneSport(MapActivity.this, handler);
-				 Intent intent = new Intent(closeAction);  
-	                intent.putExtra("data", "close");  
-	                sendBroadcast(intent);
 				break;
 			}
 			break;
@@ -409,7 +410,6 @@ public class MapActivity extends Activity implements LocationSource,
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}

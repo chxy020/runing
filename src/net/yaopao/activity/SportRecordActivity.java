@@ -64,12 +64,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private static int speedPerKm=0;
 	private static double disPerKm=0;
 	private static int timePerKm=0;
-	private static long lastSportTime=0;//集合中最后一个运动点的时间
-	
+	//private static long lastSportTime=0;//集合中最后一个运动点的时间
+	private static long sprortTime;
 
 	// 测试代码
-	// public static double lon = 116.402894;
-	// public static double lat = 39.923433;
+//	 public static double lon = 116.402894;
+//	 public static double lat = 39.923433;
 
 	// 以上测试代码
 
@@ -128,16 +128,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		doneV.setOnTouchListener(this);
 
 		points = new ArrayList<GpsPoint>();
-		points.add(new GpsPoint(116.403694, 39.906744, 1409643285776L));
-		points.add(new GpsPoint(116.404694, 39.906744, 1409643285776L));
-		points.add(new GpsPoint(116.405694, 39.906744, 1409643285776L));
-		points.add(new GpsPoint(116.406694, 39.906744, 1409643285776L));
-		points.add(new GpsPoint(116.407694, 39.906744, 1409643285776L));
-		points.add(new GpsPoint(116.408694, 39.906744, 1409643285776L));
-		points.add(new GpsPoint(116.409694, 39.906744, 1409643285776L));
 		slider.setMainHandler(slipHandler);
 		pointsIndex = new ArrayList<Integer>();
-		pointsIndex.add(0);
+//		pointsIndex.add(0);
 		startTimer();
 		startRecordGps();
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
@@ -150,7 +143,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		super.onDestroy();
 		stopTimer();
 		unregisterReceiver(broadcastReceiver);
-		// Log.v("wydb", "points=" + SportRecordActivity.points);
 	}
 
 	@Override
@@ -273,8 +265,63 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	}
 
 	// 返回true，更新ui，false不更新ui
+//	public static boolean pushOnePoint() {
+//		double meter = 0;
+//		GpsPoint last = null;
+//		GpsPoint point = getOnePoint();
+//		if (point != null) {
+//			if (points.size() == 0) {
+//				points.add(point);
+//				last = point;
+//				return false;
+//			}
+//			last = points.get(points.size() - 1);
+//			meter = getDistanceFrom2ponit(last, point);
+//			// 判断，如果距离小于5，并且两点状态相同，抛掉当前点，如果状态不同，记录，算距离，更新ui
+//			if (meter < 5) {
+//				if (last.status == point.status) {
+//					last.time = point.time;
+//					if (last.status==0) {
+//						Variables.utime+=(point.time-last.time)/1000;
+//						return true;
+//					}
+//					return false;
+//				} else {
+//					 if ( point.status==0) {
+//						 Variables.utime+=(point.time-last.time)/1000;
+//					}
+//					points.add(point);
+//					return false;
+//				}
+//
+//			} else {
+//				if (point.status == 0) {
+////					if (last.status == 0) {
+//					//记录时间
+//						Variables.distance += meter;
+//						disPerKm += meter;
+//						timePerKm += (point.time-last.time)/1000;
+//				        if(disPerKm > 1000){
+//				            int minute = timePerKm/60;
+//				            Variables.points += YaoPao01App.calPspeedPoints(minute);
+//				            disPerKm = 0;
+//				            timePerKm = 0;
+//				        }
+//						points.add(point);
+//						Variables.utime+=(int)((point.getTime()-points.get(points.size()-1).getTime())/1000);
+//						return true;
+//				} else {
+//					points.add(point);
+//					return false;
+//				}
+//			}
+//
+//		}
+//		return false;
+//	}
+	
 	public static boolean pushOnePoint() {
-
+		boolean result = true;
 		double meter = 0;
 		GpsPoint last = null;
 		GpsPoint point = getOnePoint();
@@ -282,101 +329,76 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			if (points.size() == 0) {
 				points.add(point);
 				last = point;
-				lastSportTime=last.getTime();
-				return false;
+				//lastSportTime=last.getTime();
+				result = false;
 			}
 			last = points.get(points.size() - 1);
-			// meter = getDistanceFrom2ponit(points.get(points.size() - 1),
-			// point);
+			
+			long currentTime = point.getTime();
+		    long beforeTime = last.getTime();
+		    int duringTime = (int)((currentTime - beforeTime)/1000);
+			
 			meter = getDistanceFrom2ponit(last, point);
 			// 判断，如果距离小于5，并且两点状态相同，抛掉当前点，如果状态不同，记录，算距离，更新ui
 			if (meter < 5) {
 				if (last.status == point.status) {
 					last.time = point.time;
 					if (last.status==0) {
-						lastSportTime=last.getTime();
-						Variables.utime+=(point.time-last.time)/1000;
+						Variables.utime+=duringTime;
+						result = true;
 					}
-					return false;
+					result = false;
 				} else {
+					if(last.status == 0){
+						Variables.utime+=duringTime;
+						Variables.distance += meter;
+					}
 					points.add(point);
-					return false;
+					result = false;
 				}
 
 			} else {
 				if (point.status == 0) {
-					if (last.status == 0) {
-						// meter = getDistanceFrom2ponit(last, point);
-					//记录时间
-						
-						Variables.distance += meter;
-						disPerKm += meter;
-						timePerKm += Variables.utime;
-				        if(disPerKm > 1000){
-				            int minute = timePerKm/60;
-				            Variables.points += YaoPao01App.calPspeedPoints(minute);
-				            disPerKm = 0;
-				            timePerKm = 0;
-				        }
-
-						points.add(point);
-						//要改用gps时间，改到这里了
-//						Variables.utime=point.getTime()-points
-						return true;
-					} else {
-						points.add(point);
-						return false;
-					}
-
-				} else {
-					points.add(point);
-					return false;
+					Variables.utime+=duringTime;
+					Variables.distance += meter;
+				} 
+				points.add(point);
+				result = true;
+			}
+			if(point.status == 0){//算积分
+				disPerKm += meter;
+				timePerKm += duringTime;
+				if (disPerKm > 1000) {
+					int minute = timePerKm / 60;
+					Variables.points += YaoPao01App.calPspeedPoints(minute);
+					disPerKm = 0;
+					timePerKm = 0;
 				}
 			}
-			// if (meter < 5) {
-			// if (last.status==point.status) {
-			// return false;
-			// }
-			//
-			// } else {
-			// if (point.status == 0) {
-			// // last = points.get(points.size() - 1);
-			// if (last.status == 0) {
-			// meter = getDistanceFrom2ponit(last, point);
-			// Variables.distance += meter;
-			// points.add(point);
-			// return true;
-			// } else {
-			// points.add(point);
-			// return false;
-			// }
-			//
-			// } else {
-			// points.add(point);
-			// return false;
-			// }
-			// }
-
+			 
 		}
-		return false;
+		return result;
 	}
+
 
 	final static Handler handler = new Handler();
 	static Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
 			// 测试代码
-			// lat = lat + 0.001;
-			// double meter = 0;
-			// GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
-			// if (points.size() == 0) {
-			// points.add(point);
-			// } else {
-			// meter = getDistanceFrom2ponit(points.get(points.size() - 1),
-			// point);
-			// points.add(point);
-			// }
-			// Variables.distance += meter;
+//			 lat = lat + 0.001;
+//			 double meter = 0;
+//			 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
+//			 if (points.size() == 0) {
+//			 points.add(point);
+//			 } else {
+//			 meter = getDistanceFrom2ponit(points.get(points.size() - 1),
+//			 point);
+//			 points.add(point);
+//			 }
+//			 Variables.distance += meter;
+//			 Variables.utime+=1;
+//			 updateUI();
 			/*
 			 * Variables.distance += 55; if (Variables.runtar != 0) { if (status
 			 * < target) { if (Variables.runtar == 1) { status = (int)
@@ -385,9 +407,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			 * Message(); m.what = 0x111; // 发送消息 procesHandler.sendMessage(m);
 			 * } }
 			 */
+			
 			// 以上测试代码
 
-			updateUI();
+			
 
 			if (pushOnePoint()) {
 				updateUI();
@@ -415,8 +438,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	static Runnable timerTask = new Runnable() {
 		@Override
 		public void run() {
-//			Variables.utime += 1;
-			int[] time = YaoPao01App.cal(Variables.utime);
+			sprortTime+=1;
+			int[] time = YaoPao01App.cal(sprortTime);
 			int t1 = time[0] / 10;
 			int t2 = time[0] % 10;
 			int t3 = time[1] / 10;
@@ -440,7 +463,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		if (points.size() > 0) {
 			pointsIndex.add(points.size() - 1);
 		}
-
+		if (points.size()==0) {
+			pointsIndex.add(0);
+		}
+		
 	}
 
 	public static void stopTimer() {
@@ -481,8 +507,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		update(d3, d3v);
 		update(d4, d4v);
 
-		int[] speed = YaoPao01App
-				.cal((int) ((1000 / Variables.distance) * Variables.utime));
+		int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) * Variables.utime));
 		Variables.pspeed = (int) ((1000 / Variables.distance) * Variables.utime);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;

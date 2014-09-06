@@ -22,7 +22,8 @@ public class Constants {
 	public static final String sportPho = Environment
 			.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/";
 
-	public static final String endpoints = "http://182.92.97.144:8080/chSports";// 线上服务地址
+	public static  String endpoints = "";// 线上服务地址
+	public static  String endpoints1 = "http://182.92.97.144:8080/chSports";// 当友盟参数获取不到的时候，使用这个参数
 
 	public static final String reg = "/login/useregister.htm";// 注册
 

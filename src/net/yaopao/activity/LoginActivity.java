@@ -47,8 +47,6 @@ public class LoginActivity extends Activity implements OnTouchListener {
 	private String phoneNumStr;
 	private String pwdStr;
 	private String loginJson;
-	private Bitmap bitmap;
-	private String headUrl;
 	private LoadingDialog dialog;
 	private int loginStatus;
 
@@ -112,7 +110,6 @@ public class LoginActivity extends Activity implements OnTouchListener {
 				login.setBackgroundResource(R.color.blue_dark);
 				if (verifyParam()) {
 					dialog.show();
-					Log.v("wyuser", "login0");
 					new loginAsyncTask().execute("");
 				}
 				break;
@@ -185,7 +182,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 			loginJson = NetworkHandler.httpPost(Constants.endpoints
 					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
 					+ pwdStr);
-			Log.v("wyuser", "loginJson" + loginJson);
+			Log.v("wyuser", "loginJson=" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
 
 				JSONObject rt = JSON.parseObject(loginJson);
@@ -198,22 +195,16 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
 					// 下载头像
-					headUrl = Constants.endpoints
+					Variables.headUrl  = Constants.endpoints
 							+ rt.getJSONObject("userinfo").getString("imgpath");
 					try {
-						bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));
-						saveFile();
+						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
 					} catch (Exception e) {
 						Log.v("wyuser", "eeeeee="+e.toString());
 						e.printStackTrace();
 					}
 					DataTool.setUserInfo(loginJson);
 					
-					// Intent myIntent = new Intent();
-					// myIntent = new Intent(LoginActivity.this,
-					// MainActivity.class);
-					// startActivity(myIntent);
-					LoginActivity.this.finish();
 					break;
 				case -8:
 					loginStatus=-8;
@@ -231,6 +222,8 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		protected void onPostExecute(Boolean result) {
 			dialog.dismiss();
 			if (result) {
+				setResult(Activity.RESULT_OK);
+				LoginActivity.this.finish();
 				Toast.makeText(LoginActivity.this, "登录成功",
 						Toast.LENGTH_LONG).show();
 			} else {
@@ -245,23 +238,6 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		}
 	}
 
-	/*
-	 * 连接网络 由于在4.0中不允许在主线程中访问网络，所以需要在子线程中访问
-	 */
-	private Runnable connectNet = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				bitmap = BitmapFactory.decodeStream(getImageStream(headUrl));
-				saveFile();
-			} catch (Exception e) {
-				Log.v("wyuser", e.toString());
-				e.printStackTrace();
-			}
-
-		}
-
-	};
 
 	/**
 	 * Get image from newwork
@@ -282,30 +258,4 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		return null;
 	}
 
-	/**
-	 * 保存文件
-	 * 
-	 * @param bm
-	 * @param fileName
-	 * @throws IOException
-	 */
-	public void saveFile() throws IOException {
-		File dirFile = new File(Constants.avatarPath);
-		if (!dirFile.exists()) {
-			dirFile.mkdirs();
-		}
-		BufferedOutputStream bos = new BufferedOutputStream(
-				new FileOutputStream(new File(Constants.avatarPath
-						+ Constants.avatarName)));
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-		bos.flush();
-		bos.close();
-	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			DialogTool.quit(LoginActivity.this);
-		}
-		return false;
-	}
 }

@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="@dimen/marker_width"
+            android:layout_height="@dimen/marker_height" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/pop" />
+
+            <TextView
+                android:id="@+id/marker_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/marker_text_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/marker_margin2"
+                android:gravity="center"
+                android:text="第100公里" 
+                android:textSize="@dimen/font_size1"/>
+
+            <TextView
+                android:id="@+id/marker_text"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/marker_text_height"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/marker_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/marker_margin2"
+                android:gravity="center"
+                android:text="101&apos;30 &quot;"
+				android:textSize="@dimen/font_size1"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

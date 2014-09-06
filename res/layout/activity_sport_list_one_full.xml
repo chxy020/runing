@@ -147,12 +147,6 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/white" />
-
         <LinearLayout
              android:id="@+id/l3"
               android:layout_toRightOf="@+id/l2"
@@ -179,11 +173,7 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/white" />
+        
 
         <LinearLayout
              android:id="@+id/l4"

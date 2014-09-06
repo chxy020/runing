@@ -49,7 +49,7 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		setContentView(R.layout.activity_register);
 		initLayout();
 	}
-
+	
 	private void initLayout() {
 		goBack = (TextView) this.findViewById(R.id.reg_goback);
 		toLogin = (TextView) this.findViewById(R.id.to_login);
@@ -162,7 +162,7 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				Intent myIntent = new Intent();
 				myIntent = new Intent(RegisterActivity.this,
 						LoginActivity.class);
-				startActivity(myIntent);
+				startActivityForResult(myIntent, 0);
 				break;
 			}
 			break;
@@ -197,7 +197,7 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}
-
+	
 	private class regAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 		@Override
@@ -241,6 +241,7 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 					Intent myIntent = new Intent();
 					myIntent = new Intent(RegisterActivity.this,
 							UserInfoActivity.class);
+					Variables.toUserInfo=0;
 					startActivity(myIntent);
 					RegisterActivity.this.finish();
 
@@ -272,8 +273,9 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		@Override
 		protected Boolean doInBackground(String... params) {
 
-			verifyCodeJson = NetworkHandler.httpPost(Constants.endpoints
-					+ Constants.vcode, "phone=" + phoneNumStr);
+			verifyCodeJson = NetworkHandler.httpPost(Constants.endpoints+ Constants.vcode, "phone=" + phoneNumStr);
+			Log.v("wyuser","Constants.endpoints+ Constants.vcode = "+"&phone=" + phoneNumStr );
+			Log.v("wyuser","verifyCodeJson = "+verifyCodeJson );
 			if (verifyCodeJson != null && !"".equals(verifyCodeJson)) {
 				return true;
 			} else {
@@ -284,13 +286,16 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				Log.v("wy", verifyCodeJson);
 				JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Toast.makeText(RegisterActivity.this, "验证码获取成功",
 							Toast.LENGTH_LONG).show();
-				} else {
+				}else if(rtCode == -1){
+					Toast.makeText(RegisterActivity.this, "手机号码已经注册过，请直接登录",
+							Toast.LENGTH_LONG).show();
+				}
+				else {
 					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}
@@ -301,10 +306,10 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		}
 	}
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			DialogTool.quit(RegisterActivity.this);
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode==Activity.RESULT_OK) {
+			RegisterActivity.this.finish();
 		}
-		return false;
 	}
 }

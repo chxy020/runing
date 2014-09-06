@@ -2,6 +2,8 @@ package net.yaopao.assist;
 
 import java.util.Date;
 
+import android.graphics.Bitmap;
+
 /**
  * @author dell 供全局使用的一些变量
  */
@@ -65,7 +67,10 @@ public class Variables {
 
 	public static double stateIndex;//
 	public static int points;//积分
+	public static Bitmap avatar;//头像
+	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
 
+	
 	// 获取rid
 	public static String getRid() {
 		return uid + new Date().getTime() + "";

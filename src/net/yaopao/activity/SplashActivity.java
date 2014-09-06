@@ -10,6 +10,8 @@ import java.net.URL;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
@@ -26,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -33,13 +36,20 @@ import android.widget.Toast;
  * 显示起始画面
  */
 public class SplashActivity extends Activity {
-	private Bitmap bitmap;
-
-	// private LoadingDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
+		UmengUpdateAgent.update(this);
+		MobclickAgent.updateOnlineConfig( this );
+		
+		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
+		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
+		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
+			Constants.endpoints=Constants.endpoints1;
+		}else{
+			Constants.endpoints+="/chSports";
+		}
 		setContentView(R.layout.splash);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
@@ -88,11 +98,9 @@ public class SplashActivity extends Activity {
 		public void run() {
 			try {
 				Log.v("wyuser", "保存下载的图片");
-				bitmap = BitmapFactory
-						.decodeStream(getImageStream(Variables.headUrl));
+				Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
 				Log.v("wyuser ", "下载headUrl="+Variables.headUrl);
-				Log.v("wyuser ", "下载bitmap="+bitmap);
-				saveFile(bitmap);
+				//saveFile(bitmap);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -221,5 +229,11 @@ public class SplashActivity extends Activity {
 			}
 		}
 
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		}
+		return false;
 	}
 }

@@ -285,11 +285,4 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 			}
 		}
 	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			DialogTool.quit(ResetPwdActivity.this);
-		}
-		return false;
-	}
 }

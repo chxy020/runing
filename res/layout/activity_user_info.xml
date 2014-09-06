@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/userinfo_title_bar"
@@ -28,6 +29,15 @@
             android:gravity="center"
             android:text="保存"
             android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/userinfo_goback"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white" 
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -91,7 +101,7 @@
                     android:layout_width="@dimen/common_height"
                     android:layout_height="@dimen/common_height"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/forword" />
+                    android:background="@drawable/ic_slider" />
             </LinearLayout>
         </LinearLayout>
 

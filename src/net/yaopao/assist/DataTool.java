@@ -45,47 +45,47 @@ public class DataTool {
 	}
 
 	@SuppressLint("NewApi")
-	public static boolean saveHead(Bitmap mPhotoBmp) {
-		Log.v("wy", "save head=" + mPhotoBmp.getByteCount());
-		FileOutputStream m_fileOutPutStream = null;
-		try {
-			m_fileOutPutStream = new FileOutputStream(Constants.avatarPath
-					+ Constants.avatarName);// 写入的文件路径
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		mPhotoBmp.compress(CompressFormat.PNG, 100, m_fileOutPutStream);
-		try {
-			m_fileOutPutStream.flush();
-			m_fileOutPutStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-		Log.v("wy", "save head=true");
-		return true;
-	}
+//	public static boolean saveHead(Bitmap mPhotoBmp) {
+//		Log.v("wy", "save head=" + mPhotoBmp.getByteCount());
+//		FileOutputStream m_fileOutPutStream = null;
+//		try {
+//			m_fileOutPutStream = new FileOutputStream(Constants.avatarPath
+//					+ Constants.avatarName);// 写入的文件路径
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		mPhotoBmp.compress(CompressFormat.PNG, 100, m_fileOutPutStream);
+//		try {
+//			m_fileOutPutStream.flush();
+//			m_fileOutPutStream.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//		Log.v("wy", "save head=true");
+//		return true;
+//	}
 
-	public static Bitmap getHead() {
-		Bitmap bitmap = null;
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(Constants.avatarPath
-					+ Constants.avatarName);
-			bitmap = BitmapFactory.decodeStream(fis);
-			fis.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			try {
-				fis.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		return bitmap;
-	}
+//	public static Bitmap getHead() {
+//		Bitmap bitmap = null;
+//		FileInputStream fis = null;
+//		try {
+//			fis = new FileInputStream(Constants.avatarPath
+//					+ Constants.avatarName);
+//			bitmap = BitmapFactory.decodeStream(fis);
+//			fis.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			try {
+//				fis.close();
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//			e.printStackTrace();
+//		}
+//		return bitmap;
+//	}
 
 	public static void setHead(String data) {
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();

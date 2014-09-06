@@ -39,7 +39,7 @@
         android:layout_height="@dimen/main_userinfo_hight"
         android:layout_below="@id/main_title_bar"
         android:orientation="horizontal" 
-        android:background="@drawable/btn_click_white">
+        >
 
         <ImageView
             android:id="@+id/main_head"

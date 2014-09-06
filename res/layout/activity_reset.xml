@@ -49,13 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
-
-            <ImageView
+             <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
-                android:background="@color/blue_dark" />
+                android:background="@drawable/acount"></ImageView>
 
             <EditText
                 android:id="@+id/reset_phoneNum"
@@ -84,7 +83,7 @@
                 android:layout_height="@dimen/edit_img_size"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
-                android:background="@color/blue_dark" />
+                android:background="@drawable/pwd" />
 
             <EditText
                 android:id="@+id/reset_pwd"

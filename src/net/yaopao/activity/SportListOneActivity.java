@@ -14,6 +14,7 @@ import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.bean.SportBean;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -42,8 +44,11 @@ import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 
 public class SportListOneActivity extends Activity implements OnTouchListener {
@@ -81,7 +86,8 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private SimpleDateFormat sdf4;
 	private DecimalFormat df;
 	String title = "";
-	int recordId=0;
+	int recordId = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -98,11 +104,11 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
-		
+
 	}
 
 	private void initViewPager() {
-		
+
 		this.mPager = (ViewPager) this.findViewById(R.id.oneVPager);
 		this.mListViews = new ArrayList<View>();
 		this.mInflater = this.getLayoutInflater();
@@ -150,20 +156,8 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		JSONArray indexArray = JSONArray.parseArray(oneSport.getStatusIndex());
 		if (aMap == null) {
 			aMap = mapView.getMap();
-//			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
-//				@Override
-//				public void onCameraChangeFinish(CameraPosition cameraPosition) {
-//
-//				}
-//
-//				@Override
-//				public void onCameraChange(CameraPosition arg0) {
-//
-//				}
-//			});
 		}
 
-		
 		if (pointCount != 0) {
 			GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 
@@ -177,10 +171,11 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		aMap.getUiSettings().setScrollGesturesEnabled(false);
 		aMap.getUiSettings().setZoomGesturesEnabled(false);
 		aMap.setOnMapClickListener(new OnMapClickListener() {
-			
+
 			@Override
 			public void onMapClick(LatLng arg0) {
-				Intent intent = new Intent(SportListOneActivity.this,SportTrackMap.class);
+				Intent intent = new Intent(SportListOneActivity.this,
+						SportTrackMap.class);
 				intent.putExtra("id", recordId + "");
 				startActivity(intent);
 			}
@@ -194,11 +189,32 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 
 		if (indexArray.size() == 0) {
 			aMap.addPolyline((new PolylineOptions()).addAll(
-					initPoints(pointsArray)).color(Color.RED));
+					initPoints(pointsArray)).color(Color.GREEN));
 			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
 			return;
 		}
 		indexArray.add(pointCount - 1);
+		// 先绘制黑色底线和灰色线
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
+				.size() - 1));
+		aMap.addMarker(new MarkerOptions()
+				.position(new LatLng(end.lat, end.lon))
+				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
+				.anchor(0.5f, 0.5f));
+		aMap.addMarker(new MarkerOptions()
+				.position(new LatLng(start.lat, start.lon))
+				.icon(BitmapDescriptorFactory
+						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
+		GpsPoint firstPoint = (GpsPoint) pointsArray.get(0);
+		double min_lat = firstPoint.lat;
+		double max_lat = firstPoint.lat;
+		double min_lon = firstPoint.lon;
+		double max_lon = firstPoint.lon;
 		int linesCount = indexArray.size();
 		int j = 0;
 		int i = 0;
@@ -212,22 +228,38 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 				continue;
 			for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
 				GpsPoint gpsPoint = (GpsPoint) pointsArray.get(i);
+				GpsPoint encryptPoint = lonLatEncryption.encrypt(gpsPoint);
 				oneLinePoints.add(new LatLng(
 						lonLatEncryption.encrypt(gpsPoint).lat,
 						lonLatEncryption.encrypt(gpsPoint).lon));
+				if (encryptPoint.lon < min_lon) {
+					min_lon = encryptPoint.lon;
+				}
+				if (encryptPoint.lat < min_lat) {
+					min_lat = encryptPoint.lat;
+				}
+				if (encryptPoint.lon > max_lon) {
+					max_lon = encryptPoint.lon;
+				}
+				if (encryptPoint.lat > max_lat) {
+					max_lat = encryptPoint.lat;
+				}
 			}
 
 			GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
 					.size() - 1);
 			if (gpsPointEnd.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.RED));
-			} else {
-				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.BLACK).setDottedLine(true));
+						.color(Color.GREEN).width(8f));
 			}
 		}
+		// 移动到中心
+		LatLng latlon1 = new LatLng(min_lat, min_lon);
+		LatLng latlon2 = new LatLng(max_lat, max_lon);
+		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
 		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+
 	}
 
 	private void initSportData(double distance, int runty, int mind,
@@ -252,7 +284,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
-		ponitV.setText("+ "+ ponit);
+		ponitV.setText("+ " + ponit);
 		disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
@@ -354,7 +386,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
-//		deactivate();
+		// deactivate();
 	}
 
 	@Override
@@ -373,13 +405,13 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		List points = new ArrayList<LatLng>();
 		LatLng ponit = null;
 		for (int i = 0; i < list.size(); i++) {
-			ponit = new LatLng(list.get(i).lat, list.get(i).lon);
+			GpsPoint one = lonLatEncryption.encrypt(list.get(i));
+			ponit = new LatLng(one.lat, one.lon);
 			points.add(ponit);
 		}
 		return points;
 
 	}
-
 
 	/**
 	 * ViewPager适配器
@@ -459,4 +491,25 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 			}
 		}
 	}
+
+	public View start() {
+		return getLayoutInflater().inflate(R.layout.marker_s, null);
+	}
+
+	public View end() {
+		return getLayoutInflater().inflate(R.layout.marker_e, null);
+	}
+
+	/**
+	 * 把一个view转化成bitmap对象
+	 * */
+	public static Bitmap getViewBitmap(View view) {
+		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+		view.buildDrawingCache();
+		Bitmap bitmap = view.getDrawingCache();
+		return bitmap;
+	}
+
 }

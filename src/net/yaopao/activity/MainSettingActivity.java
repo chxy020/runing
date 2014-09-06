@@ -1,5 +1,6 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ public class MainSettingActivity extends Activity {
 				// Toast.makeText(MainSettingActivity.this,"跳转到个人信息",Toast.LENGTH_LONG).show();
 				Intent userInfoIntent = new Intent(MainSettingActivity.this,
 						UserInfoActivity.class);
+				Variables.toUserInfo=1;
 				startActivity(userInfoIntent);
 				break;
 			case R.id.clause_layout:

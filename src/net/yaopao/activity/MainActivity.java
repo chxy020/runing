@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			dialog.alertGpsTip2(d);
 		}
 		this.initView();
-		data = YaoPao01App.db.queryData();
+		
 	}
 
 	@Override
@@ -97,18 +97,18 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	}
 
 	private void initLayout() {
-
+		data = YaoPao01App.db.queryData();
 		if (Variables.islogin == 1) {
 			JSONObject userInfo = DataTool.getUserInfo();
 			if (userInfo != null) {
-				if (!"".equals(userInfo.getString("nickname"))) {
+				if (!"".equals(userInfo.getString("nickname"))||userInfo.getString("nickname")!=null) {
 					state.setText(userInfo.getString("nickname"));
 				} else {
 					state.setText(YaoPao01App.sharedPreferences.getString(
 							"phone", ""));
 				}
 				desc.setText(userInfo.getString("signature"));
-				head = DataTool.getHead();
+				head = Variables.avatar;
 				if (head != null) {
 					headv.setImageBitmap(head);
 				}

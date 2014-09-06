@@ -102,7 +102,7 @@ public class NetworkHandler extends Activity {
 			if (imageByte != null) {
 				mpEntity.addPart("avatar", new ByteArrayBody(imageByte, ""));
 			}
-			Log.v("wy", "上传图片--size=" + imageByte.length);
+			Log.v("wy", "上传图片--size=" + imageByte);
 			httpRequest.setEntity(mpEntity);
 			HttpClient httpclient = getHttpClient();
 
