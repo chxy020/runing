@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.bean.SportBean;
@@ -24,6 +25,7 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSONArray;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapUtils;
@@ -111,9 +113,27 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 				oneSport.getAddtime());
 		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 				GpsPoint.class);
+		
 		if (pointsArray.size()==0) {
 			return;
 		}
+		//从增强还原成全量
+		GpsPoint befor = null;
+		GpsPoint curr = null;
+		YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
+		for (int i = 0; i < pointsArray.size(); i++) {
+			if (i==0) {
+				befor=pointsArray.get(0);
+				continue;
+			}
+			befor =pointsArray.get(i-1);
+			curr = pointsArray.get(i);
+			curr.setLat(curr.lat+befor.lat);
+			curr.setLon(curr.lon+befor.lon);
+			curr.setTime(curr.time+befor.time);
+			pointsArray.set(i, curr);
+		}
+		YaoPao01App.lts.writeFileToSD("track 转换后的数组: " +pointsArray, "uploadLocation");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));

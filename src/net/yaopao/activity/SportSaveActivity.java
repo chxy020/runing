@@ -128,12 +128,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_UP:
 				deleV.setBackgroundResource(R.color.red);
 				// 这里要做的是将所有与运动有关的参数还原成默认值
-				SportRecordActivity.points.clear();
-//				SportRecordActivity.pointsIndex.clear();
-				Variables.utime = 0;
-				Variables.pspeed = 0;
-				Variables.distance = 0;
-				Variables.points=0;
+				reset();
 				SportSaveActivity.this.finish();
 				break;
 			}
@@ -170,16 +165,12 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				YaoPao01App.db.saveOneSport();
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
-				SportRecordActivity.points.clear();
-//				SportRecordActivity.pointsIndex.clear();
-				Variables.utime = 0;
-				Variables.pspeed = 0;
-				Variables.distance = 0;
-				Variables.points=0;
+				reset();
 				myIntent = new Intent(SportSaveActivity.this,
 						SportListActivity.class);
 				startActivity(myIntent);
 				SportSaveActivity.this.finish();
+				Log.v("wysport","save  Variables.utime="+Variables.utime);
 				break;
 			}
 			break;
@@ -466,5 +457,19 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(
 				"'IMG'_yyyy-MM-dd HH:mm:ss");
 		return dateFormat.format(date) + ".jpg";
+	}
+	//还原运动参数
+	private void reset(){
+		SportRecordActivity.points.clear();
+//		SportRecordActivity.status = 0;
+//		SportRecordActivity.target = 0;
+//		SportRecordActivity.speedPerKm=0;
+//		SportRecordActivity.disPerKm=0;
+//		SportRecordActivity.timePerKm=0;
+//		SportRecordActivity.sprortTime=0;
+		Variables.utime = 0;
+		Variables.pspeed = 0;
+		Variables.distance = 0;
+		Variables.points=0;
 	}
 }

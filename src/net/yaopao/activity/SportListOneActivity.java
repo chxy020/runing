@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.activity.SportListActivity.MessageOnPageChangeListener;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.bean.SportBean;
@@ -17,7 +16,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -31,23 +29,14 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.LocationManagerProxy;
-import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
-import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.CameraUpdateFactory;
-import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
-import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
@@ -155,20 +144,10 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 				oneSport.getAddtime());
 		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 				GpsPoint.class);
-//		int pointCount = pointsArray.size();
-//		JSONArray indexArray = JSONArray.parseArray(oneSport.getStatusIndex());
 		if (aMap == null) {
 			aMap = mapView.getMap();
 		}
 
-//		if (pointCount != 0) {
-//			GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
-//
-//			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-//					start.lat, start.lon), 16));
-//		} else {
-//			aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-//		}
 		aMap.getUiSettings().setZoomControlsEnabled(false);
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		aMap.getUiSettings().setScrollGesturesEnabled(false);
@@ -186,6 +165,22 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		if (pointsArray.size()==0) {
 			return;
 		}
+		//从增强还原成全量
+				GpsPoint befor = null;
+				GpsPoint curr = null;
+				YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
+				for (int i = 0; i < pointsArray.size(); i++) {
+					if (i==0) {
+						befor=pointsArray.get(0);
+						continue;
+					}
+					befor =pointsArray.get(i-1);
+					curr = pointsArray.get(i);
+					curr.setLat(curr.lat+befor.lat);
+					curr.setLon(curr.lon+befor.lon);
+					curr.setTime(curr.time+befor.time);
+					pointsArray.set(i, curr);
+				}
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
@@ -199,85 +194,6 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
 		drawLine(pointsArray);
 		
-//		if (pointCount == 0) {
-//			return;
-//		} else if (pointCount < 2) {
-//			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-//			return;
-//		}
-//
-//		if (indexArray.size() == 0) {
-//			aMap.addPolyline((new PolylineOptions()).addAll(
-//					initPoints(pointsArray)).color(Color.GREEN));
-//			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-//			return;
-//		}
-//		indexArray.add(pointCount - 1);
-//		// 先绘制黑色底线和灰色线
-//		aMap.addPolyline((new PolylineOptions())
-//				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
-//		aMap.addPolyline((new PolylineOptions())
-//				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
-//		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
-//		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
-//				.size() - 1));
-//		aMap.addMarker(new MarkerOptions()
-//				.position(new LatLng(end.lat, end.lon))
-//				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
-//				.anchor(0.5f, 0.5f));
-//		aMap.addMarker(new MarkerOptions()
-//				.position(new LatLng(start.lat, start.lon))
-//				.icon(BitmapDescriptorFactory
-//						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
-//		GpsPoint firstPoint = (GpsPoint) pointsArray.get(0);
-//		double min_lat = firstPoint.lat;
-//		double max_lat = firstPoint.lat;
-//		double min_lon = firstPoint.lon;
-//		double max_lon = firstPoint.lon;
-//		int linesCount = indexArray.size();
-//		int j = 0;
-//		int i = 0;
-//		int n = 0;
-//		for (j = 0; j < linesCount - 1; j++) {
-//			List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-//			int startIndex = (Integer) indexArray.get(j);
-//			int endIndex = (Integer) indexArray.get(j + 1);
-//
-//			if (endIndex - startIndex + 1 < 2)
-//				continue;
-//			for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
-//				GpsPoint gpsPoint = (GpsPoint) pointsArray.get(i);
-//				GpsPoint encryptPoint = lonLatEncryption.encrypt(gpsPoint);
-//				oneLinePoints.add(new LatLng(
-//						lonLatEncryption.encrypt(gpsPoint).lat,
-//						lonLatEncryption.encrypt(gpsPoint).lon));
-//				if (encryptPoint.lon < min_lon) {
-//					min_lon = encryptPoint.lon;
-//				}
-//				if (encryptPoint.lat < min_lat) {
-//					min_lat = encryptPoint.lat;
-//				}
-//				if (encryptPoint.lon > max_lon) {
-//					max_lon = encryptPoint.lon;
-//				}
-//				if (encryptPoint.lat > max_lat) {
-//					max_lat = encryptPoint.lat;
-//				}
-//			}
-//
-//			GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
-//					.size() - 1);
-//			if (gpsPointEnd.status == 0) {
-//				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-//						.color(Color.GREEN).width(8f));
-//			}
-//		}
-//		// 移动到中心
-//		LatLng latlon1 = new LatLng(min_lat, min_lon);
-//		LatLng latlon2 = new LatLng(max_lat, max_lon);
-//		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-//		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
-//		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
 		
 
 	}

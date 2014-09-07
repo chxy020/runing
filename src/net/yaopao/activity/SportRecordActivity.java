@@ -3,6 +3,8 @@ package net.yaopao.activity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
@@ -32,50 +34,55 @@ import com.amap.api.maps2d.model.LatLng;
 
 public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static List<GpsPoint> points;
-	//public static List<Integer> pointsIndex;
-	public static SimpleDateFormat formatterM;
-	public static SimpleDateFormat formatterS;
-	public static ImageView sliderIconV;
-	public static TextView sliderTextV;
-	public static TextView doneV;
-	public static TextView resumeV;
-	public static ImageView gpsV;
-	private static ImageView d1v;
-	private static ImageView d2v;
-	private static ImageView d3v;
-	private static ImageView d4v;
-	private static ImageView mapV;
-	private SliderRelativeLayout slider;
-	private static ProgressBar progressHorizontal;
-	private static ImageView t1V;
-	private static ImageView t2V;
-	private static ImageView t3V;
-	private static ImageView t4V;
-	private static ImageView t5V;
-	private static ImageView t6V;
+	
+	private  TextView sliderTextV;
+	private  TextView doneV;
+	private  TextView resumeV;
+	private  ImageView gpsV;
+	private  ImageView d1v;
+	private  ImageView d2v;
+	private  ImageView d3v;
+	private  ImageView d4v;
+	private  ImageView mapV;
+	private  SliderRelativeLayout slider;
+	private  ProgressBar progressHorizontal;
+	private  ImageView t1V;
+	private  ImageView t2V;
+	private  ImageView t3V;
+	private  ImageView t4V;
+	private  ImageView t5V;
+	private  ImageView t6V;
 
-	private static ImageView s1V;
-	private static ImageView s2V;
-	private static ImageView s3V;
-	private static ImageView s4V;
+	private  ImageView s1V;
+	private  ImageView s2V;
+	private  ImageView s3V;
+	private  ImageView s4V;
+	
+	private  ImageView sliderIconV;
 	// 记录ProgressBar的完成进度
-	private static int status = 0;
-	private static int target = 0;
-	private static int speedPerKm=0;
-	private static double disPerKm=0;
-	private static int timePerKm=0;
+	private  SimpleDateFormat formatterM;
+	private  SimpleDateFormat formatterS;
+	public  int status = 0;
+	public  int target = 0;
+	public  int speedPerKm=0;
+	public  double disPerKm=0;
+	public  int timePerKm=0;
 	//private static long lastSportTime=0;//集合中最后一个运动点的时间
-	private static long sprortTime;
-
+	public  long sprortTime;
+	private  Timer timer = null;
+	 TimerTask task = null;
+	public static Handler timerListenerHandler;
+	public static Handler gpsListenerHandler;
 	// 测试代码
-	 public static double lon = 116.395823;
-	 public static double lat = 39.839016;
+//	 public static double lon = 116.395823;
+//	 public static double lat = 39.839016;
 
 	// 以上测试代码
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); 
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
@@ -104,8 +111,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
 		progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
 		if (Variables.runtar == 1) {
-			progressHorizontal.setMax(Variables.runtarDis * 100);
-			target = Variables.runtarDis * 100;// 由于计算的时候距离是double
+			progressHorizontal.setMax(Variables.runtarDis * 1000);
+			target = Variables.runtarDis * 1000;// 
 		} else if (Variables.runtar == 2) {
 			progressHorizontal.setMax(Variables.runtarTime * 60);
 			target = Variables.runtarTime * 60;
@@ -130,11 +137,34 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		points = new ArrayList<GpsPoint>();
 		slider.setMainHandler(slipHandler);
 //		pointsIndex = new ArrayList<Integer>();
+//		timer = new Timer();
 		startTimer();
 		startRecordGps();
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
 		registerReceiver(broadcastReceiver, filter);
-
+		Log.v("wysport","spre Variables.utime="+Variables.utime);
+	    timerListenerHandler = new Handler() {
+				public void handleMessage(Message msg) {
+					//1-开始，2-停止
+					if (msg.what == 1) {
+						startTimer();
+					}else if(msg.what == 2){
+						stopTimer();
+					}
+					super.handleMessage(msg);
+				}
+			};
+			gpsListenerHandler = new Handler() {
+				public void handleMessage(Message msg) {
+					//3-开始，4-停止
+					if (msg.what == 3) {
+						startRecordGps();
+					}else if(msg.what == 4){
+						stopRecordGps();
+					}
+					super.handleMessage(msg);
+				}
+			};
 	}
 
 	@Override
@@ -158,6 +188,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			sliderIconV.setVisibility(View.GONE);
 			sliderTextV.setVisibility(View.GONE);
 		}
+		Log.v("wysport","spre r sprortTime="+sprortTime);
 		super.onResume();
 	}
 
@@ -192,12 +223,11 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				doneV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
-//				YaoPao01App.lts.writeFileToSD("slider_done : " + points, "uploadLocation");
 				doneV.setBackgroundResource(R.color.red);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
-							YaoPao01App.calDisPoints();
+							
 							Intent intent = new Intent(
 									SportRecordActivity.this,
 									SportSaveActivity.class);
@@ -264,63 +294,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	}
 
-	// 返回true，更新ui，false不更新ui
-//	public static boolean pushOnePoint() {
-//		double meter = 0;
-//		GpsPoint last = null;
-//		GpsPoint point = getOnePoint();
-//		if (point != null) {
-//			if (points.size() == 0) {
-//				points.add(point);
-//				last = point;
-//				return false;
-//			}
-//			last = points.get(points.size() - 1);
-//			meter = getDistanceFrom2ponit(last, point);
-//			// 判断，如果距离小于5，并且两点状态相同，抛掉当前点，如果状态不同，记录，算距离，更新ui
-//			if (meter < 5) {
-//				if (last.status == point.status) {
-//					last.time = point.time;
-//					if (last.status==0) {
-//						Variables.utime+=(point.time-last.time)/1000;
-//						return true;
-//					}
-//					return false;
-//				} else {
-//					 if ( point.status==0) {
-//						 Variables.utime+=(point.time-last.time)/1000;
-//					}
-//					points.add(point);
-//					return false;
-//				}
-//
-//			} else {
-//				if (point.status == 0) {
-////					if (last.status == 0) {
-//					//记录时间
-//						Variables.distance += meter;
-//						disPerKm += meter;
-//						timePerKm += (point.time-last.time)/1000;
-//				        if(disPerKm > 1000){
-//				            int minute = timePerKm/60;
-//				            Variables.points += YaoPao01App.calPspeedPoints(minute);
-//				            disPerKm = 0;
-//				            timePerKm = 0;
-//				        }
-//						points.add(point);
-//						Variables.utime+=(int)((point.getTime()-points.get(points.size()-1).getTime())/1000);
-//						return true;
-//				} else {
-//					points.add(point);
-//					return false;
-//				}
-//			}
-//
-//		}
-//		return false;
-//	}
 	
-	public static boolean pushOnePoint() {
+	public  boolean pushOnePoint() {
 		boolean result = true;
 		double meter = 0;
 		GpsPoint last = null;
@@ -384,8 +359,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	}
 
 
-	final static Handler handler = new Handler();
-	static Runnable runnable = new Runnable() {
+	  Handler handler = new Handler();
+	  Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
 			// 测试代码
@@ -420,7 +395,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				if (Variables.runtar != 0) {
 					if (status < target) {
 						if (Variables.runtar == 1) {
-							status = (int) (Variables.distance * 100);
+							status = (int) (Variables.distance);
 						} else if (Variables.runtar == 2) {
 							status = Variables.utime;
 						}
@@ -437,56 +412,81 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	};
 
-	final static Handler timer = new Handler();
-	static Runnable timerTask = new Runnable() {
-		@Override
-		public void run() {
-			sprortTime+=1;
-			int[] time = YaoPao01App.cal(sprortTime);
-			int t1 = time[0] / 10;
-			int t2 = time[0] % 10;
-			int t3 = time[1] / 10;
-			int t4 = time[1] % 10;
-			int t5 = time[2] / 10;
-			int t6 = time[2] % 10;
-			update(t1, t1V);
-			update(t2, t2V);
-			update(t3, t3V);
-			update(t4, t4V);
-			update(t5, t5V);
-			update(t6, t6V);
-			timer.postDelayed(this, 1000);
-		}
+	
+//	final static Handler timer = new Handler();
+//	static Runnable timerTask = new Runnable() {
+//		@Override
+//		public void run() {
+//			sprortTime+=1;
+//			int[] time = YaoPao01App.cal(sprortTime);
+//			int t1 = time[0] / 10;
+//			int t2 = time[0] % 10;
+//			int t3 = time[1] / 10;
+//			int t4 = time[1] % 10;
+//			int t5 = time[2] / 10;
+//			int t6 = time[2] % 10;
+//			update(t1, t1V);
+//			update(t2, t2V);
+//			update(t3, t3V);
+//			update(t4, t4V);
+//			update(t5, t5V);
+//			update(t6, t6V);
+//			timer.postDelayed(this, 1000);
+//		}
+//
+//	};
 
-	};
-
-	public static void startTimer() {
-		timer.postDelayed(timerTask, 1000);
+	public  void startTimer() {
+//		timer.postDelayed(timerTask, 1000);
 		Variables.sportStatus = 0;
-//		if (points.size() > 0) {
-//			pointsIndex.add(points.size() - 1);
-//		}
-//		if (points.size()==0) {
-//			pointsIndex.add(0);
-//		}
-//		YaoPao01App.lts.writeFileToSD("startTimer : " + points, "uploadLocation");
+		timer = new Timer();
+		 task = new TimerTask() {
+				@Override
+				public void run() {
+
+					runOnUiThread(new Runnable() { // UI thread
+						@Override
+						public void run() {
+							sprortTime+=1;
+							int[] time = YaoPao01App.cal(sprortTime);
+							int t1 = time[0] / 10;
+							int t2 = time[0] % 10;
+							int t3 = time[1] / 10;
+							int t4 = time[1] % 10;
+							int t5 = time[2] / 10;
+							int t6 = time[2] % 10;
+							update(t1, t1V);
+							update(t2, t2V);
+							update(t3, t3V);
+							update(t4, t4V);
+							update(t5, t5V);
+							update(t6, t6V);
+						}
+					});
+				}
+			};
+		timer.schedule(task, 0, 1000);
 	}
 
-	public static void stopTimer() {
-		timer.removeCallbacks(timerTask);
+	public  void stopTimer() {
+		if (task!=null) {
+			task.cancel(); 
+	         task = null;  
+		}
+		 if (timer!=null) {
+			 timer.cancel(); // Cancel timer  
+	         timer.purge();  
+	         timer = null;  
+		}
 		Variables.sportStatus = 1;
-//		if (points.size() > 0) {
-//			pointsIndex.add(points.size() - 1);
-//		}
-//		YaoPao01App.lts.writeFileToSD("stopTimer : " + points, "uploadLocation");
 	}
 
-	public static void startRecordGps() {
+	public  void startRecordGps() {
 		handler.postDelayed(runnable, 1000);
 	}
 
 	//
-	public static void stopRecordGps() {
+	public  void stopRecordGps() {
 		handler.removeCallbacks(runnable);
 	}
 
@@ -496,7 +496,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	}
 
-	private static void updateUI() {
+	private  void updateUI() {
 		Log.v("wygps", "distance =" + Variables.distance);
 		int d1 = (int) Variables.distance / 10000;
 		int d2 = (int) (Variables.distance % 10000) / 1000;
@@ -567,13 +567,12 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
 	}
 
 	// 控制进度条
-	final static Handler procesHandler = new Handler() {
+	 Handler procesHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// 表明消息是由该程序发送的。

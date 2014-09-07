@@ -27,6 +27,15 @@ public class GpsPoint {
 		this.lat = lat;
 		this.status = status;
 	}
+	public GpsPoint(double lon, double lat, int status,long time,double speed,float course,double altitude) {
+		this.lon = lon;
+		this.lat = lat;
+		this.status = status;
+		this.time = time;
+		this.speed = speed;
+		this.course = course;
+		this.altitude = altitude;
+	}
 
 	@Override
 	public String toString() {

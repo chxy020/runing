@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +62,8 @@ public class MapActivity extends Activity implements LocationSource,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		mapView = (MapView) findViewById(R.id.map);
@@ -157,7 +161,7 @@ public class MapActivity extends Activity implements LocationSource,
 					lonLatEncryption.encrypt(newPoint).lon));
 			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,
 					lonLatEncryption.encrypt(lastDrawPoint).lon));
-			if (lastDrawPoint.status == 0) {
+			if (newPoint.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
 						Color.GREEN));
 				aMap.invalidate();
@@ -173,7 +177,8 @@ public class MapActivity extends Activity implements LocationSource,
 	Handler slipHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
-				SportRecordActivity.stopTimer();
+//				SportRecordActivity.stopTimer();
+				SportRecordActivity.timerListenerHandler.obtainMessage(2).sendToTarget();
 				doneV.setVisibility(View.VISIBLE);
 				resumeV.setVisibility(View.VISIBLE);
 				sliderIconV.setVisibility(View.GONE);
@@ -350,7 +355,8 @@ public class MapActivity extends Activity implements LocationSource,
 						if (msg.what == 0) {
 							Intent intent = new Intent(MapActivity.this,
 									SportSaveActivity.class);
-							SportRecordActivity.stopRecordGps();
+//							SportRecordActivity.stopRecordGps();
+							SportRecordActivity.gpsListenerHandler.obtainMessage(4).sendToTarget();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
 							Intent closeintent = new Intent(closeAction);
@@ -371,7 +377,8 @@ public class MapActivity extends Activity implements LocationSource,
 				break;
 			case MotionEvent.ACTION_UP:
 				resumeV.setBackgroundResource(R.color.blue_dark);
-				SportRecordActivity.startTimer();
+//				SportRecordActivity.startTimer();
+				SportRecordActivity.timerListenerHandler.obtainMessage(1).sendToTarget();
 				sliderIconV.setVisibility(View.VISIBLE);
 				sliderTextV.setVisibility(View.VISIBLE);
 				sliderTextV.setText("滑动暂停");

@@ -4,11 +4,14 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
@@ -18,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 
 public class DBManager {
@@ -42,9 +46,25 @@ public class DBManager {
 	@SuppressLint("NewApi")
 	public void saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
-
+		YaoPao01App.lts.writeFileToSD("db 还算之前数组: " +SportRecordActivity.points, "uploadLocation");
+		GpsPoint befor =null;
+		for (int i = 0; i < SportRecordActivity.points.size(); i++) {
+			if (i==0) {
+				befor=SportRecordActivity.points.get(0);
+				continue;
+			}
+			GpsPoint temp = SportRecordActivity.points.get(i);
+			GpsPoint curr = new GpsPoint(temp.lon,temp.lat,temp.status,temp.time,temp.speed,temp.course,temp.altitude);
+			curr.setLat(curr.lat-befor.lat);
+			curr.setLon(curr.lon-befor.lon);
+			curr.setTime(curr.time-befor.time);
+			befor=SportRecordActivity.points.get(i);
+			SportRecordActivity.points.set(i, curr);
+			
+		}
+		YaoPao01App.lts.writeFileToSD("db 还算之后数组: " +SportRecordActivity.points, "uploadLocation");
+		Log.d("wysport", "DBManager SportRecordActivity.points="+SportRecordActivity.points);
 		String oneSport = JSON.toJSONString(SportRecordActivity.points, true);
-//		String statusIndex = JSON.toJSONString(SportRecordActivity.pointsIndex,	true);
 		String statusIndex = "";
 	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
@@ -69,9 +89,9 @@ public class DBManager {
 							Variables.utime, Variables.weather,Variables.points,
 							new Date().getTime() });
 
-			Log.v("wydb", "s Variables.utime =" + Variables.utime);
-			Log.v("wydb", "s Variables.hspeed =" + Variables.hspeed);
-			Log.v("wydb", "s Variables.remarks =" + Variables.remarks);
+//			Log.v("wydb", "s Variables.utime =" + Variables.utime);
+//			Log.v("wydb", "s Variables.hspeed =" + Variables.hspeed);
+//			Log.v("wydb", "s Variables.remarks =" + Variables.remarks);
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
 			// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义

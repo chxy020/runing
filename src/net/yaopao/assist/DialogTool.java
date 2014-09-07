@@ -85,6 +85,8 @@ public class DialogTool implements OnTouchListener {
 						for (int i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
 							SportRecordActivity.points.remove(i);
 					}
+						//计算距离积分
+						YaoPao01App.calDisPoints();
 					}
 					
 					handker.obtainMessage(0).sendToTarget();
