@@ -12,6 +12,7 @@ import net.yaopao.activity.SportListActivity.MessageOnPageChangeListener;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.bean.SportBean;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -41,6 +42,7 @@ import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
+import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
@@ -88,6 +90,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	String title = "";
 	int recordId = 0;
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -152,20 +155,20 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 				oneSport.getAddtime());
 		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 				GpsPoint.class);
-		int pointCount = pointsArray.size();
-		JSONArray indexArray = JSONArray.parseArray(oneSport.getStatusIndex());
+//		int pointCount = pointsArray.size();
+//		JSONArray indexArray = JSONArray.parseArray(oneSport.getStatusIndex());
 		if (aMap == null) {
 			aMap = mapView.getMap();
 		}
 
-		if (pointCount != 0) {
-			GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
-
-			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-					start.lat, start.lon), 16));
-		} else {
-			aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-		}
+//		if (pointCount != 0) {
+//			GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+//
+//			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+//					start.lat, start.lon), 16));
+//		} else {
+//			aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+//		}
 		aMap.getUiSettings().setZoomControlsEnabled(false);
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		aMap.getUiSettings().setScrollGesturesEnabled(false);
@@ -180,25 +183,9 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 				startActivity(intent);
 			}
 		});
-		if (pointCount == 0) {
-			return;
-		} else if (pointCount < 2) {
-			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+		if (pointsArray.size()==0) {
 			return;
 		}
-
-		if (indexArray.size() == 0) {
-			aMap.addPolyline((new PolylineOptions()).addAll(
-					initPoints(pointsArray)).color(Color.GREEN));
-			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-			return;
-		}
-		indexArray.add(pointCount - 1);
-		// 先绘制黑色底线和灰色线
-		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
-		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
@@ -210,58 +197,134 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 				.position(new LatLng(start.lat, start.lon))
 				.icon(BitmapDescriptorFactory
 						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
-		GpsPoint firstPoint = (GpsPoint) pointsArray.get(0);
+		drawLine(pointsArray);
+		
+//		if (pointCount == 0) {
+//			return;
+//		} else if (pointCount < 2) {
+//			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+//			return;
+//		}
+//
+//		if (indexArray.size() == 0) {
+//			aMap.addPolyline((new PolylineOptions()).addAll(
+//					initPoints(pointsArray)).color(Color.GREEN));
+//			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+//			return;
+//		}
+//		indexArray.add(pointCount - 1);
+//		// 先绘制黑色底线和灰色线
+//		aMap.addPolyline((new PolylineOptions())
+//				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+//		aMap.addPolyline((new PolylineOptions())
+//				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+//		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+//		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
+//				.size() - 1));
+//		aMap.addMarker(new MarkerOptions()
+//				.position(new LatLng(end.lat, end.lon))
+//				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
+//				.anchor(0.5f, 0.5f));
+//		aMap.addMarker(new MarkerOptions()
+//				.position(new LatLng(start.lat, start.lon))
+//				.icon(BitmapDescriptorFactory
+//						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
+//		GpsPoint firstPoint = (GpsPoint) pointsArray.get(0);
+//		double min_lat = firstPoint.lat;
+//		double max_lat = firstPoint.lat;
+//		double min_lon = firstPoint.lon;
+//		double max_lon = firstPoint.lon;
+//		int linesCount = indexArray.size();
+//		int j = 0;
+//		int i = 0;
+//		int n = 0;
+//		for (j = 0; j < linesCount - 1; j++) {
+//			List<LatLng> oneLinePoints = new ArrayList<LatLng>();
+//			int startIndex = (Integer) indexArray.get(j);
+//			int endIndex = (Integer) indexArray.get(j + 1);
+//
+//			if (endIndex - startIndex + 1 < 2)
+//				continue;
+//			for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
+//				GpsPoint gpsPoint = (GpsPoint) pointsArray.get(i);
+//				GpsPoint encryptPoint = lonLatEncryption.encrypt(gpsPoint);
+//				oneLinePoints.add(new LatLng(
+//						lonLatEncryption.encrypt(gpsPoint).lat,
+//						lonLatEncryption.encrypt(gpsPoint).lon));
+//				if (encryptPoint.lon < min_lon) {
+//					min_lon = encryptPoint.lon;
+//				}
+//				if (encryptPoint.lat < min_lat) {
+//					min_lat = encryptPoint.lat;
+//				}
+//				if (encryptPoint.lon > max_lon) {
+//					max_lon = encryptPoint.lon;
+//				}
+//				if (encryptPoint.lat > max_lat) {
+//					max_lat = encryptPoint.lat;
+//				}
+//			}
+//
+//			GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
+//					.size() - 1);
+//			if (gpsPointEnd.status == 0) {
+//				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
+//						.color(Color.GREEN).width(8f));
+//			}
+//		}
+//		// 移动到中心
+//		LatLng latlon1 = new LatLng(min_lat, min_lon);
+//		LatLng latlon2 = new LatLng(max_lat, max_lon);
+//		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+//		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+//		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+		
+
+	}
+	private void drawLine(List<GpsPoint> pointsArray) {
+		GpsPoint firstPoint = lonLatEncryption.encrypt(pointsArray.get(0));
 		double min_lat = firstPoint.lat;
 		double max_lat = firstPoint.lat;
 		double min_lon = firstPoint.lon;
 		double max_lon = firstPoint.lon;
-		int linesCount = indexArray.size();
-		int j = 0;
-		int i = 0;
-		int n = 0;
-		for (j = 0; j < linesCount - 1; j++) {
-			List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-			int startIndex = (Integer) indexArray.get(j);
-			int endIndex = (Integer) indexArray.get(j + 1);
-
-			if (endIndex - startIndex + 1 < 2)
-				continue;
-			for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
-				GpsPoint gpsPoint = (GpsPoint) pointsArray.get(i);
-				GpsPoint encryptPoint = lonLatEncryption.encrypt(gpsPoint);
-				oneLinePoints.add(new LatLng(
-						lonLatEncryption.encrypt(gpsPoint).lat,
-						lonLatEncryption.encrypt(gpsPoint).lon));
-				if (encryptPoint.lon < min_lon) {
-					min_lon = encryptPoint.lon;
-				}
-				if (encryptPoint.lat < min_lat) {
-					min_lat = encryptPoint.lat;
-				}
-				if (encryptPoint.lon > max_lon) {
-					max_lon = encryptPoint.lon;
-				}
-				if (encryptPoint.lat > max_lat) {
-					max_lat = encryptPoint.lat;
-				}
+		List<LatLng> runPoints =new ArrayList<LatLng>();
+		GpsPoint crrPoint =null;
+		// 先绘制黑色底线和灰色线
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+		for (int i = 0; i < pointsArray.size(); i++) {
+			crrPoint = pointsArray.get(i);
+			GpsPoint  encryptPoint = lonLatEncryption.encrypt(crrPoint);
+			if (encryptPoint.lon < min_lon) {
+				min_lon = encryptPoint.lon;
 			}
-
-			GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
-					.size() - 1);
-			if (gpsPointEnd.status == 0) {
-				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.GREEN).width(8f));
+			if (encryptPoint.lat < min_lat) {
+				min_lat = encryptPoint.lat;
+			}
+			if (encryptPoint.lon > max_lon) {
+				max_lon = encryptPoint.lon;
+			}
+			if (encryptPoint.lat > max_lat) {
+				max_lat = encryptPoint.lat;
+			}
+			if (crrPoint.status==0) {
+				LatLng latlon = new LatLng( lonLatEncryption.encrypt(crrPoint).lat, lonLatEncryption.encrypt(crrPoint).lon);
+				runPoints.add(latlon);
+			}else if(crrPoint.status==1){
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+				runPoints = new ArrayList<LatLng>();
+			}if (i==(pointsArray.size()-1)) {
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+			}
+			// 移动到中心
+			LatLng latlon1 = new LatLng(min_lat, min_lon);
+			LatLng latlon2 = new LatLng(max_lat, max_lon);
+			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
 			}
 		}
-		// 移动到中心
-		LatLng latlon1 = new LatLng(min_lat, min_lon);
-		LatLng latlon2 = new LatLng(max_lat, max_lon);
-		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
-		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-
-	}
-
 	private void initSportData(double distance, int runty, int mind,
 			int runway, String remarks, int utime, int pspeed, int ponit,
 			long addtime) {

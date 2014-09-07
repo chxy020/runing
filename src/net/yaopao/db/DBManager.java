@@ -6,19 +6,18 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
 
 public class DBManager {
@@ -40,13 +39,13 @@ public class DBManager {
 	 * 
 	 * @param sports
 	 */
+	@SuppressLint("NewApi")
 	public void saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
 
 		String oneSport = JSON.toJSONString(SportRecordActivity.points, true);
-		String statusIndex = JSON.toJSONString(SportRecordActivity.pointsIndex,
-				true);
-		Log.v("wydb", "statusIndex=" + statusIndex);
+//		String statusIndex = JSON.toJSONString(SportRecordActivity.pointsIndex,	true);
+		String statusIndex = "";
 	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
@@ -204,7 +203,7 @@ public class DBManager {
 		ArrayList<SportBean> sports = new ArrayList<SportBean>();
 		Cursor c = db.rawQuery("SELECT * FROM "
 				+ DatabaseHelper.SPORTDATA_TABLE + " WHERE id =" + id, null);
-		YaoPao01App.lts.writeFileToSD("db : " + c, "uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("db : " + c, "uploadLocation");
 		SportBean sport = new SportBean();
 		while (c.moveToNext()) {
 

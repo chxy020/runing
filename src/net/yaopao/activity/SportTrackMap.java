@@ -7,10 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.bean.SportBean;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,7 +24,6 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSONArray;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapUtils;
@@ -66,6 +65,7 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 	int targetDis = 1000;
 	GpsPoint lastSportPoint = null;
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -91,16 +91,16 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
-		// initLayout();
 		initMap();
 	}
 
-	// private void initLayout() {
-	//
-	// }
-
 	private void initMap() {
-		lonLatEncryption = new LonLatEncryption();
+		if (aMap == null) {
+			aMap = mapView.getMap();
+		}
+		aMap.getUiSettings().setZoomControlsEnabled(false);
+		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+
 		Intent intent = getIntent();
 		int id = Integer.parseInt(intent.getStringExtra("id"));
 		oneSport = YaoPao01App.db.queryForOne(id);
@@ -111,50 +111,12 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 				oneSport.getAddtime());
 		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 				GpsPoint.class);
-
-		int pointCount = pointsArray.size();
-		JSONArray indexArray = JSONArray.parseArray(oneSport.getStatusIndex());
-		if (aMap == null) {
-			aMap = mapView.getMap();
-		}
-
-		if (pointCount != 0) {
-			GpsPoint center = lonLatEncryption.encrypt(pointsArray
-					.get(pointsArray.size() / 2));
-			aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-					center.lat, center.lon), 16));
-		} else {
-			aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-		}
-		aMap.getUiSettings().setZoomControlsEnabled(false);
-		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-		if (pointCount == 0) {
-			return;
-		} else if (pointCount < 2) {
-			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+		if (pointsArray.size()==0) {
 			return;
 		}
-
-		if (indexArray.size() == 0) {
-			aMap.addPolyline((new PolylineOptions()).addAll(
-					initPoints(pointsArray)).color(Color.GREEN));
-			lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-			return;
-		}
-		// 先绘制黑色底线和灰色线
-		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
-		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
-		indexArray.add(pointCount - 1);
-		int linesCount = indexArray.size();
-		int j = 0;
-		int i = 0;
-		int n = 0;
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
-
 		aMap.addMarker(new MarkerOptions()
 				.position(new LatLng(end.lat, end.lon))
 				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
@@ -163,36 +125,178 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 				.position(new LatLng(start.lat, start.lon))
 				.icon(BitmapDescriptorFactory
 						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
-		lastSportPoint = pointsArray.get(0);
-		GpsPoint firstPoint = (GpsPoint) pointsArray.get(0);
+		drawLine(pointsArray);
+		
+		// int pointCount = pointsArray.size();
+		// JSONArray indexArray =
+		// JSONArray.parseArray(oneSport.getStatusIndex());
+		// if (aMap == null) {
+		// aMap = mapView.getMap();
+		// }
+		//
+		// if (pointCount != 0) {
+		// GpsPoint center = lonLatEncryption.encrypt(pointsArray
+		// .get(pointsArray.size() / 2));
+		// aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+		// center.lat, center.lon), 16));
+		// } else {
+		// aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+		// }
+		//
+		// if (pointCount == 0) {
+		// return;
+		// } else if (pointCount < 2) {
+		// lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+		// return;
+		// }
+		//
+		// if (indexArray.size() == 0) {
+		// aMap.addPolyline((new PolylineOptions()).addAll(
+		// initPoints(pointsArray)).color(Color.GREEN));
+		// lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+		// return;
+		// }
+		// // 先绘制黑色底线和灰色线
+		// aMap.addPolyline((new PolylineOptions())
+		// .addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+		// aMap.addPolyline((new PolylineOptions())
+		// .addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+		// indexArray.add(pointCount - 1);
+		// int linesCount = indexArray.size();
+		// int j = 0;
+		// int i = 0;
+		// int n = 0;
+		// GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+		// GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
+		// .size() - 1));
+		//
+		// aMap.addMarker(new MarkerOptions()
+		// .position(new LatLng(end.lat, end.lon))
+		// .icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
+		// .anchor(0.5f, 0.5f));
+		// aMap.addMarker(new MarkerOptions()
+		// .position(new LatLng(start.lat, start.lon))
+		// .icon(BitmapDescriptorFactory
+		// .fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
+		// lastSportPoint = pointsArray.get(0);
+		// GpsPoint firstPoint = (GpsPoint) pointsArray.get(0);
+		// double min_lat = firstPoint.lat;
+		// double max_lat = firstPoint.lat;
+		// double min_lon = firstPoint.lon;
+		// double max_lon = firstPoint.lon;
+		//
+		// for (j = 0; j < linesCount - 1; j++) {
+		//
+		// List<LatLng> oneLinePoints = new ArrayList<LatLng>();
+		// int startIndex = (Integer) indexArray.get(j);
+		// int endIndex = (Integer) indexArray.get(j + 1);
+		//
+		// if (endIndex - startIndex + 1 < 2)
+		// continue;
+		// for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
+		// GpsPoint gpsPoint = (GpsPoint) pointsArray.get(i);
+		// GpsPoint encryptPoint = lonLatEncryption.encrypt(gpsPoint);
+		// if (gpsPoint.status == 0) {
+		// double meter = AMapUtils.calculateLineDistance(new LatLng(
+		// gpsPoint.lat, gpsPoint.lon), new LatLng(
+		// lastSportPoint.lat, lastSportPoint.lon));
+		//
+		// distance_add += meter;
+		// long during_time = gpsPoint.time - lastSportPoint.time;
+		// time_one_km += during_time;
+		// if (distance_add > targetDis) {
+		// Log.v("wymap", "distance_add=" + distance_add);
+		// Log.v("wymap", "targetDis=" + targetDis);
+		// GpsPoint onekm = lonLatEncryption.encrypt(gpsPoint);
+		// aMap.addMarker(new MarkerOptions()
+		// .position(new LatLng(onekm.lat, onekm.lon))
+		// .icon(BitmapDescriptorFactory
+		// .fromBitmap(getViewBitmap(getView("第"+
+		// (int)Math.floor(distance_add/1000)+ "公里", time_one_km / 1000 / 60+
+		// "'" + (time_one_km / 1000)
+		// % 60 + "\""))))
+		// .anchor(0.5f, 0.5f));
+		// targetDis += 1000;
+		// time_one_km = 0;
+		// }
+		// }
+		// lastSportPoint = gpsPoint;
+		// oneLinePoints.add(new LatLng(
+		// lonLatEncryption.encrypt(gpsPoint).lat,
+		// lonLatEncryption.encrypt(gpsPoint).lon));
+		// if (encryptPoint.lon < min_lon) {
+		// min_lon = encryptPoint.lon;
+		// }
+		// if (encryptPoint.lat < min_lat) {
+		// min_lat = encryptPoint.lat;
+		// }
+		// if (encryptPoint.lon > max_lon) {
+		// max_lon = encryptPoint.lon;
+		// }
+		// if (encryptPoint.lat > max_lat) {
+		// max_lat = encryptPoint.lat;
+		// }
+		//
+		// }
+		//
+		// GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
+		// .size() - 1);
+		// if (gpsPointEnd.status == 0) {
+		// aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
+		// .color(Color.GREEN).width(8f));
+		// }
+		// }
+		// // 移动到中心
+		// LatLng latlon1 = new LatLng(min_lat, min_lon);
+		// LatLng latlon2 = new LatLng(max_lat, max_lon);
+		// LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+		// aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+		//
+		// lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
+	}
+
+	private void drawLine(List<GpsPoint> pointsArray) {
+		GpsPoint firstPoint = lonLatEncryption.encrypt(pointsArray.get(0));
 		double min_lat = firstPoint.lat;
 		double max_lat = firstPoint.lat;
 		double min_lon = firstPoint.lon;
 		double max_lon = firstPoint.lon;
-
-		for (j = 0; j < linesCount - 1; j++) {
-
-			List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-			int startIndex = (Integer) indexArray.get(j);
-			int endIndex = (Integer) indexArray.get(j + 1);
-
-			if (endIndex - startIndex + 1 < 2)
-				continue;
-			for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
-				GpsPoint gpsPoint = (GpsPoint) pointsArray.get(i);
-				GpsPoint encryptPoint = lonLatEncryption.encrypt(gpsPoint);
-				if (gpsPoint.status == 0) {
-						double meter = AMapUtils.calculateLineDistance(new LatLng(
-								gpsPoint.lat, gpsPoint.lon), new LatLng(
-								lastSportPoint.lat, lastSportPoint.lon));
+		List<LatLng> runPoints =new ArrayList<LatLng>();
+		GpsPoint crrPoint =null;
+		// 先绘制黑色底线和灰色线
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+		lastSportPoint = pointsArray.get(0);
+		for (int i = 0; i < pointsArray.size(); i++) {
+			crrPoint = pointsArray.get(i);
+			GpsPoint  encryptPoint = lonLatEncryption.encrypt(crrPoint);
+			if (encryptPoint.lon < min_lon) {
+				min_lon = encryptPoint.lon;
+			}
+			if (encryptPoint.lat < min_lat) {
+				min_lat = encryptPoint.lat;
+			}
+			if (encryptPoint.lon > max_lon) {
+				max_lon = encryptPoint.lon;
+			}
+			if (encryptPoint.lat > max_lat) {
+				max_lat = encryptPoint.lat;
+			}
+			if (crrPoint.status==0) {
+				LatLng latlon = new LatLng( lonLatEncryption.encrypt(crrPoint).lat, lonLatEncryption.encrypt(crrPoint).lon);
+				runPoints.add(latlon);
+				double meter = AMapUtils.calculateLineDistance(new LatLng(crrPoint.lat, crrPoint.lon), new LatLng(
+						lastSportPoint.lat, lastSportPoint.lon));
 
 						distance_add += meter;
-						long during_time = gpsPoint.time - lastSportPoint.time;
+						long during_time = crrPoint.time - lastSportPoint.time;
 						time_one_km += during_time;
 						if (distance_add > targetDis) {
 							Log.v("wymap", "distance_add=" + distance_add);
 							Log.v("wymap", "targetDis=" + targetDis);
-							GpsPoint onekm = lonLatEncryption.encrypt(gpsPoint);
+							GpsPoint onekm = lonLatEncryption.encrypt(crrPoint);
 							aMap.addMarker(new MarkerOptions()
 									.position(new LatLng(onekm.lat, onekm.lon))
 									.icon(BitmapDescriptorFactory
@@ -202,43 +306,19 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 							targetDis += 1000;
 							time_one_km = 0;
 						}
-				}
-				lastSportPoint = gpsPoint;
-				oneLinePoints.add(new LatLng(
-						lonLatEncryption.encrypt(gpsPoint).lat,
-						lonLatEncryption.encrypt(gpsPoint).lon));
-				if (encryptPoint.lon < min_lon) {
-					min_lon = encryptPoint.lon;
-				}
-				if (encryptPoint.lat < min_lat) {
-					min_lat = encryptPoint.lat;
-				}
-				if (encryptPoint.lon > max_lon) {
-					max_lon = encryptPoint.lon;
-				}
-				if (encryptPoint.lat > max_lat) {
-					max_lat = encryptPoint.lat;
-				}
-
+			}else if(crrPoint.status==1){
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+				runPoints = new ArrayList<LatLng>();
+			}if (i==(pointsArray.size()-1)) {
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
 			}
-
-			GpsPoint gpsPointEnd = (GpsPoint) pointsArray.get(oneLinePoints
-					.size() - 1);
-			if (gpsPointEnd.status == 0) {
-				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.GREEN).width(8f));
+			// 移动到中心
+			LatLng latlon1 = new LatLng(min_lat, min_lon);
+			LatLng latlon2 = new LatLng(max_lat, max_lon);
+			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+			lastSportPoint= crrPoint;
 			}
-		}
-		// 移动到中心
-		LatLng latlon1 = new LatLng(min_lat, min_lon);
-		LatLng latlon2 = new LatLng(max_lat, max_lon);
-		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
-
-		lastDrawPoint = (GpsPoint) pointsArray.get(pointsArray.size() - 1);
-	}
-
-	private void addPop() {
 	}
 
 	private void initSportData(double distance, int runty, int mind,

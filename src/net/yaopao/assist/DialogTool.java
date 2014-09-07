@@ -1,6 +1,7 @@
 package net.yaopao.assist;
 
 import net.yaopao.activity.R;
+import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -79,8 +80,14 @@ public class DialogTool implements OnTouchListener {
 				case MotionEvent.ACTION_UP:
 					confirm.setBackgroundResource(R.color.gray_light);
 					dialog.dismiss();
+					//抛掉最后暂停的点
+					if (SportRecordActivity.points.size()>0) {
+						for (int i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
+							SportRecordActivity.points.remove(i);
+					}
+					}
+					
 					handker.obtainMessage(0).sendToTarget();
-
 					break;
 				default:
 					break;

@@ -35,13 +35,14 @@ import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.PolylineOptions;
 
 /**
  */
 public class MapActivity extends Activity implements LocationSource,
 		AMapLocationListener, OnTouchListener {
-	public static final String closeAction = "close.action";  
+	public static final String closeAction = "close.action";
 	private MapView mapView;
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
@@ -86,9 +87,6 @@ public class MapActivity extends Activity implements LocationSource,
 		startTimer();
 	}
 
-	/**
-	 * ��ʼ��AMap����
-	 */
 	private void init() {
 		if (aMap == null) {
 			aMap = mapView.getMap();
@@ -110,57 +108,36 @@ public class MapActivity extends Activity implements LocationSource,
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-		int pointCount = SportRecordActivity.points.size();
-		if (pointCount == 0) {
-			return;
-		} else if (pointCount < 2) {
-			lastDrawPoint = SportRecordActivity.points
-					.get(SportRecordActivity.points.size() - 1);
-			return;
-		}
+		drawLine(SportRecordActivity.points);
+	}
 
-		List<Integer> indexList = new ArrayList<Integer>();
-		indexList.addAll(SportRecordActivity.pointsIndex);
-		if (indexList.size() == 0) {
-			aMap.addPolyline((new PolylineOptions()).addAll(
-					initPoints(SportRecordActivity.points)).color(Color.RED));
-			lastDrawPoint = SportRecordActivity.points
-					.get(SportRecordActivity.points.size() - 1);
-			return;
-		}
-		indexList.add(pointCount - 1);
-		int linesCount = indexList.size();
-		int j = 0;
-		int i = 0;
-		int n = 0;
-		for (j = 0; j < linesCount - 1; j++) {
-			List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-			int startIndex = indexList.get(j);
-			int endIndex = indexList.get(j + 1);
-
-			if (endIndex - startIndex + 1 < 2)
-				continue;
-			for (i = startIndex, n = 0; i <= endIndex; i++, n++) {
-				GpsPoint gpsPoint = SportRecordActivity.points.get(i);
-				oneLinePoints.add(new LatLng(
-						lonLatEncryption.encrypt(gpsPoint).lat,
-						lonLatEncryption.encrypt(gpsPoint).lon));
+	private void drawLine(List<GpsPoint> pointsArray) {
+		List<LatLng> runPoints = new ArrayList<LatLng>();
+		GpsPoint crrPoint = null;
+		// 先绘制灰色线
+		aMap.addPolyline((new PolylineOptions())
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+		for (int i = 0; i < pointsArray.size(); i++) {
+			crrPoint = pointsArray.get(i);
+			if (crrPoint.status == 0) {
+				LatLng latlon = new LatLng(
+						lonLatEncryption.encrypt(crrPoint).lat,
+						lonLatEncryption.encrypt(crrPoint).lon);
+				runPoints.add(latlon);
+			} else if (crrPoint.status == 1) {
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
+						.color(Color.GREEN).width(8f));
+				runPoints = new ArrayList<LatLng>();
+				lastDrawPoint =crrPoint;
+				aMap.invalidate();
 			}
-
-			GpsPoint gpsPointEnd = SportRecordActivity.points.get(oneLinePoints
-					.size() - 1);
-			if (gpsPointEnd.status == 0) {
-				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.GREEN));
-				
-			} else {
-				aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints)
-						.color(Color.GRAY));
+			if (i == (pointsArray.size() - 1)) {
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
+						.color(Color.GREEN).width(8f));
+				lastDrawPoint =crrPoint;
+				aMap.invalidate();
 			}
 		}
-		lastDrawPoint = SportRecordActivity.points
-				.get(SportRecordActivity.points.size() - 1);
-
 	}
 
 	private void drawNewLine() {
@@ -185,8 +162,8 @@ public class MapActivity extends Activity implements LocationSource,
 						Color.GREEN));
 				aMap.invalidate();
 			} else {
-				aMap.addPolyline((new PolylineOptions()).addAll(newLine)
-						.color(Color.GRAY).setDottedLine(true));
+				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
+						Color.GRAY));
 				aMap.invalidate();
 			}
 			lastDrawPoint = newPoint;
@@ -266,12 +243,12 @@ public class MapActivity extends Activity implements LocationSource,
 	private List<LatLng> initPoints(List<GpsPoint> list) {
 		List points = new ArrayList<LatLng>();
 		LatLng ponit = null;
-		for (int i = 0; i < SportRecordActivity.points.size(); i++) {
-			ponit = new LatLng(list.get(i).lat, list.get(i).lon);
+		for (int i = 0; i < list.size(); i++) {
+			GpsPoint one = lonLatEncryption.encrypt(list.get(i));
+			ponit = new LatLng(one.lat, one.lon);
 			points.add(ponit);
 		}
 		return points;
-
 	}
 
 	@Override
@@ -376,9 +353,9 @@ public class MapActivity extends Activity implements LocationSource,
 							SportRecordActivity.stopRecordGps();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
-							Intent closeintent = new Intent(closeAction);  
-							closeintent.putExtra("data", "close");  
-				            sendBroadcast(closeintent);
+							Intent closeintent = new Intent(closeAction);
+							closeintent.putExtra("data", "close");
+							sendBroadcast(closeintent);
 						}
 						super.handleMessage(msg);
 					}

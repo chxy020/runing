@@ -255,7 +255,7 @@ public class YaoPao01App extends Application {
 			ponits = 9;
 		} else if (min >= 5) {
 			ponits = 10;
-		} else if (min < 5&&min>0) {
+		} else if (min < 5) {
 			ponits = 12;
 		}
 
@@ -301,19 +301,22 @@ public class YaoPao01App extends Application {
 	 * @return
 	 */
 	public static void calDisPoints() {
+		YaoPao01App.lts.writeFileToSD("完成时  计算前 累计积分 : " +Variables.points, "uploadLocation");
 		double dis = Variables.distance % 1000;
 
-		if (Variables.distance / 1000 < 0) {
+		if (Variables.distance / 1000 < 1) {
 			if (Variables.distance > 0) {
 				Variables.points += 1;
 			}
-		} else if (Variables.distance / 1000 > 0) {
+		} else if (Variables.distance / 1000 > 1) {
 			if (dis >= 500) {
 				Variables.points += 2;
 			} else if (dis < 500 && dis > 0) {
 				Variables.points += 0;
 			}
 		}
+		YaoPao01App.lts.writeFileToSD("完成时    运动 : " +Variables.distance+"米 "+Variables.utime+"秒", "uploadLocation");
+		YaoPao01App.lts.writeFileToSD("完成时    计算后积分 : " +Variables.points, "uploadLocation");
 		}
 	/**
 	 * 计算比赛跑步距离零头积分

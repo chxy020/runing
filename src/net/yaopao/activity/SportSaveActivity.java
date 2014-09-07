@@ -129,7 +129,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				deleV.setBackgroundResource(R.color.red);
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				SportRecordActivity.points.clear();
-				SportRecordActivity.pointsIndex.clear();
+//				SportRecordActivity.pointsIndex.clear();
 				Variables.utime = 0;
 				Variables.pspeed = 0;
 				Variables.distance = 0;
@@ -171,7 +171,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				SportRecordActivity.points.clear();
-				SportRecordActivity.pointsIndex.clear();
+//				SportRecordActivity.pointsIndex.clear();
 				Variables.utime = 0;
 				Variables.pspeed = 0;
 				Variables.distance = 0;

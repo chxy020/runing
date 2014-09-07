@@ -32,7 +32,7 @@ import com.amap.api.maps2d.model.LatLng;
 
 public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static List<GpsPoint> points;
-	public static List<Integer> pointsIndex;
+	//public static List<Integer> pointsIndex;
 	public static SimpleDateFormat formatterM;
 	public static SimpleDateFormat formatterS;
 	public static ImageView sliderIconV;
@@ -68,8 +68,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private static long sprortTime;
 
 	// 测试代码
-//	 public static double lon = 116.402894;
-//	 public static double lat = 39.923433;
+	 public static double lon = 116.395823;
+	 public static double lat = 39.839016;
 
 	// 以上测试代码
 
@@ -129,8 +129,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 		points = new ArrayList<GpsPoint>();
 		slider.setMainHandler(slipHandler);
-		pointsIndex = new ArrayList<Integer>();
-//		pointsIndex.add(0);
+//		pointsIndex = new ArrayList<Integer>();
 		startTimer();
 		startRecordGps();
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
@@ -193,6 +192,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				doneV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+//				YaoPao01App.lts.writeFileToSD("slider_done : " + points, "uploadLocation");
 				doneV.setBackgroundResource(R.color.red);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
@@ -365,12 +365,15 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				points.add(point);
 				result = true;
 			}
-			if(point.status == 0){//算积分
+			if(point.status == 0){
+				//算积分
 				disPerKm += meter;
 				timePerKm += duringTime;
 				if (disPerKm > 1000) {
 					int minute = timePerKm / 60;
 					Variables.points += YaoPao01App.calPspeedPoints(minute);
+					YaoPao01App.lts.writeFileToSD("re 满一公里算积分 : " +YaoPao01App.calPspeedPoints(minute), "uploadLocation");
+					YaoPao01App.lts.writeFileToSD("re 累计积分 : " +Variables.points, "uploadLocation");
 					disPerKm = 0;
 					timePerKm = 0;
 				}
@@ -460,22 +463,22 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static void startTimer() {
 		timer.postDelayed(timerTask, 1000);
 		Variables.sportStatus = 0;
-		if (points.size() > 0) {
-			pointsIndex.add(points.size() - 1);
-		}
-		if (points.size()==0) {
-			pointsIndex.add(0);
-		}
-		
+//		if (points.size() > 0) {
+//			pointsIndex.add(points.size() - 1);
+//		}
+//		if (points.size()==0) {
+//			pointsIndex.add(0);
+//		}
+//		YaoPao01App.lts.writeFileToSD("startTimer : " + points, "uploadLocation");
 	}
 
 	public static void stopTimer() {
 		timer.removeCallbacks(timerTask);
 		Variables.sportStatus = 1;
-		if (points.size() > 0) {
-			pointsIndex.add(points.size() - 1);
-		}
-
+//		if (points.size() > 0) {
+//			pointsIndex.add(points.size() - 1);
+//		}
+//		YaoPao01App.lts.writeFileToSD("stopTimer : " + points, "uploadLocation");
 	}
 
 	public static void startRecordGps() {
