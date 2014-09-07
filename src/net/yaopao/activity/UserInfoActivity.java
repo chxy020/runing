@@ -69,7 +69,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	public String upImgJson = "";
 	public byte[] imageByte;
 	private LoadingDialog dialog;
-
+	
+	/** 生日数据 */
+	private String birthDayData = "";
+	/** 身高数据 */
+	private String heightData = "";
+	/** 体重数据 */
+	private String weigthData = "";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -112,6 +119,17 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 
 			}
 		});
+		
+		//保存生日
+		JSONObject user = DataTool.getUserInfo();
+		birthDayData = user.getString("birthday");
+		birthDayData = birthDayData == null ? "1985-7-15" : birthDayData;
+		//保存身高
+		heightData = user.getString("height");
+		heightData = heightData == null ? "170cm" : heightData;
+		//保存体重
+		weigthData = user.getString("weight");
+		weigthData = weigthData == null ? "70kg" : weigthData;
 	}
 
 	@Override
@@ -252,12 +270,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						birthday = msg.getData().getString("birthday");
+						//保存数据
+						birthDayData = birthday;
 						birthdayV.setText(birthday);
 						super.handleMessage(msg);
 					}
 				};
 				// 实例化SelectPicPopupWindow
-				dateWindow = new SelectBirthday(UserInfoActivity.this, handler);
+				dateWindow = new SelectBirthday(UserInfoActivity.this, handler,birthDayData);
 				dateWindow.showAtLocation(UserInfoActivity.this
 						.findViewById(R.id.userinfo_birthday), Gravity.BOTTOM
 						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
@@ -272,12 +292,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						height = msg.getData().getString("height");
+						//保存身高数据
+						heightData = height;
 						heightV.setText(height);
 						super.handleMessage(msg);
 					}
 				};
 				// 实例化SelectPicPopupWindow
-				heightWindow = new SelectHeight(UserInfoActivity.this, handler);
+				heightWindow = new SelectHeight(UserInfoActivity.this, handler,heightData);
 				heightWindow.showAtLocation(UserInfoActivity.this
 						.findViewById(R.id.userinfo_height), Gravity.BOTTOM
 						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
@@ -292,12 +314,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						weight = msg.getData().getString("weight");
+						//保存数据
+						weigthData = weight;
 						weightV.setText(weight);
 						super.handleMessage(msg);
 					}
 				};
 				// 实例化SelectPicPopupWindow
-				weightWindow = new SelectWeight(UserInfoActivity.this, handler);
+				weightWindow = new SelectWeight(UserInfoActivity.this, handler,weigthData);
 				weightWindow.showAtLocation(UserInfoActivity.this
 						.findViewById(R.id.userinfo_weight), Gravity.BOTTOM
 						| Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置

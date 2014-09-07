@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,13 +30,21 @@ public class SelectWeight extends PopupWindow implements OnClickListener {
 	private Button btn_submit, btn_cancel;
 	private String weight;
 	private int curW = 30;
-	private WeightNumericAdapter weightAdapter;
-	private WheelView weightV;
+	private int curNumber = 0;
+	private WeightNumericAdapter weightAdapter,weigthNumberAdapter;
+	private WheelView weightV,weightNumber;
 
-	public SelectWeight(Activity context, final Handler handler) {
+	public SelectWeight(Activity context, final Handler handler,String weigthData) {
 		super(context);
 		mContext = context;
 		this.weight = "50";
+		
+		String[] wd = weigthData.substring(0,weigthData.length() - 2).split("\\.");
+		this.curW = Integer.parseInt(wd[0]) - 15;
+		if(wd.length > 1){
+			this.curNumber = Integer.parseInt(wd[1]);
+		}
+		
 		LayoutInflater inflater = LayoutInflater.from(context);
 
 		mMenuView = inflater.inflate(R.layout.pop_weight, null, true);
@@ -44,6 +53,7 @@ public class SelectWeight extends PopupWindow implements OnClickListener {
 				LayoutParams.WRAP_CONTENT));
 
 		weightV = (WheelView) mMenuView.findViewById(R.id.user_weight);
+		weightNumber = (WheelView) mMenuView.findViewById(R.id.user_weight_number);
 		btn_submit = (Button) mMenuView.findViewById(R.id.user_weight_submit);
 		btn_cancel = (Button) mMenuView.findViewById(R.id.user_weight_cancel);
 		btn_submit.setOnClickListener(new OnClickListener() {
@@ -62,15 +72,20 @@ public class SelectWeight extends PopupWindow implements OnClickListener {
 		Calendar calendar = Calendar.getInstance();
 		OnWheelChangedListener listener = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				updateWeight(weightV);
+				updateWeight(weightV,weightNumber,false);
 
 			}
 		};
-
-		weightV.setCurrentItem(curW);
-		updateWeight(weightV);
+		
+		updateWeight(weightV,weightNumber,true);
+//		weightV.setCurrentItem(curW);
+//		weightNumber.setCurrentItem(curNumber);
+		
+		
+		
 		weightV.addChangingListener(listener);
-
+		weightNumber.addChangingListener(listener);
+		
 		viewfipper.addView(mMenuView);
 		viewfipper.setFlipInterval(6000000);
 		this.setContentView(viewfipper);
@@ -90,16 +105,29 @@ public class SelectWeight extends PopupWindow implements OnClickListener {
 		viewfipper.startFlipping();
 	}
 
-	private void updateWeight(WheelView view) {
+	private void updateWeight(WheelView view,WheelView number,boolean setDefault) {
 
-		weightAdapter = new WeightNumericAdapter(mContext, 20, 220, 40);
-		weightAdapter.setTextType("kg");
+		weightAdapter = new WeightNumericAdapter(mContext,15,200,curW);
+		weightAdapter.setTextType(".");
 		view.setViewAdapter(weightAdapter);
 		// int curWeight = Math.min(220, view.getCurrentItem());
-		int curWeight = view.getCurrentItem() + 20;
-
-		view.setCurrentItem(view.getCurrentItem(), true);
-		weight = curWeight + "kg";
+		
+		weigthNumberAdapter = new WeightNumericAdapter(mContext,0,9,curNumber);
+		weigthNumberAdapter.setTextType("kg");
+		number.setViewAdapter(weigthNumberAdapter);
+		
+		//number.setCurrentItem(view.getCurrentItem(), true);
+		//view.setCurrentItem(view.getCurrentItem(), true);
+		
+		if(setDefault){
+			view.setCurrentItem(curW);
+			number.setCurrentItem(curNumber);
+		}
+		
+		int curWeight = view.getCurrentItem() + 15;
+		int curWeightNumber = number.getCurrentItem();
+		weight = curWeight + "." + curWeightNumber + "kg";
+		//Log.e("","chxy _________weigth" + weight);
 	}
 
 	/**

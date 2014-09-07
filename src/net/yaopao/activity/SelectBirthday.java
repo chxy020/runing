@@ -2,6 +2,9 @@ package net.yaopao.activity;
 
 import java.util.Calendar;
 
+import com.alibaba.fastjson.JSONObject;
+
+import net.yaopao.assist.DataTool;
 import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
@@ -12,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,13 +34,13 @@ public class SelectBirthday extends PopupWindow implements OnClickListener {
 	private String age;
 	private DateNumericAdapter monthAdapter, dayAdapter, yearAdapter;
 	private WheelView year, month, day;
-	private int mCurYear = 80, mCurMonth = 5, mCurDay = 14;
+	private int mCurYear = 85, mCurMonth = 6, mCurDay = 15;
 	private String[] dateType;
-
-	public SelectBirthday(Activity context, final Handler handler) {
+	
+	public SelectBirthday(Activity context, final Handler handler,String birthday) {
 		super(context);
 		mContext = context;
-		this.age = "2012-9-25";
+		this.age = birthday;
 		LayoutInflater inflater = LayoutInflater.from(context);
 
 		mMenuView = inflater.inflate(R.layout.pop_date, null, true);
@@ -72,7 +76,8 @@ public class SelectBirthday extends PopupWindow implements OnClickListener {
 		int curYear = calendar.get(Calendar.YEAR);
 		if (age != null && age.contains("-")) {
 			String str[] = age.split("-");
-			mCurYear = 100 - (curYear - Integer.parseInt(str[0]));
+			//mCurYear = 100 - (curYear - Integer.parseInt(str[0]));
+			mCurYear = Integer.parseInt(str[0].substring(2,4));
 			mCurMonth = Integer.parseInt(str[1]) - 1;
 			mCurDay = Integer.parseInt(str[2]) - 1;
 			;
@@ -85,8 +90,8 @@ public class SelectBirthday extends PopupWindow implements OnClickListener {
 		month.addChangingListener(listener);
 		// year
 
-		yearAdapter = new DateNumericAdapter(context, curYear - 100,
-				curYear + 100, 100 - 20);
+//		yearAdapter = new DateNumericAdapter(context, curYear - 100,curYear + 100, 100 - 20);
+		yearAdapter = new DateNumericAdapter(context, 1900,curYear, 100 - 20);
 		yearAdapter.setTextType(dateType[0]);
 		year.setViewAdapter(yearAdapter);
 		year.setCurrentItem(mCurYear);
@@ -118,7 +123,6 @@ public class SelectBirthday extends PopupWindow implements OnClickListener {
 	}
 
 	private void updateDays(WheelView year, WheelView month, WheelView day) {
-
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR,
 				calendar.get(Calendar.YEAR) + year.getCurrentItem());
@@ -131,7 +135,8 @@ public class SelectBirthday extends PopupWindow implements OnClickListener {
 		day.setViewAdapter(dayAdapter);
 		int curDay = Math.min(maxDays, day.getCurrentItem() + 1);
 		day.setCurrentItem(curDay - 1, true);
-		int years = calendar.get(Calendar.YEAR) - 100;
+		//int years = calendar.get(Calendar.YEAR) - 100;
+		int years = calendar.get(Calendar.YEAR) - 114;
 		age = years + "-" + (month.getCurrentItem() + 1) + "-"
 				+ (day.getCurrentItem() + 1);
 	}

@@ -1,6 +1,10 @@
 package net.yaopao.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.yaopao.assist.Variables;
+import net.yaopao.widget.ArrayWheelAdapter;
 import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
@@ -34,11 +38,16 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 	private DistanceNumericAdapter2 distanceAdapter2;
 	private WheelView distanceV1, distanceV2;
 	private TextView distanceV;
-
-	public SelectDistance(Activity context, final Handler handler) {
+	private int distanceKm = 0;
+	private Integer[] distanceArray = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,25,30,35,40,42,45,50,55,60,65,70,75,80,85,90,95,100};
+	private String[] distanceTxtArray = {"1km","2km","3km","4km","5km","6km","7km","8km","9km","10km","11km","12km","13km","14km","15km","16km","17km","18km","19km","20km","21km","25km","30km","35km","40km","42km","45km","50km","55km","60km","65km","70km","75km","80km","85km","90km","95km","100km"};
+	public SelectDistance(Activity context, final Handler handler,int distanceData) {
 		super(context);
 		mContext = context;
 		this.distance = Variables.runtarDis + "";
+		
+		this.distanceKm = distanceData;
+		
 		distanceV = (TextView) mContext
 				.findViewById(R.id.target_distance_select);
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -48,7 +57,7 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 				LayoutParams.WRAP_CONTENT));
 
 		distanceV1 = (WheelView) mMenuView.findViewById(R.id.user_distance1);
-		distanceV2 = (WheelView) mMenuView.findViewById(R.id.user_distance2);
+		//distanceV2 = (WheelView) mMenuView.findViewById(R.id.user_distance2);
 		btn_submit = (Button) mMenuView.findViewById(R.id.user_distance_submit);
 		btn_cancel = (Button) mMenuView.findViewById(R.id.user_distance_cancel);
 		btn_submit.setOnClickListener(new OnClickListener() {
@@ -66,10 +75,14 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 		btn_cancel.setOnClickListener(this);
 		OnWheelChangedListener listener = new OnWheelChangedListener() {
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				updateDistance(distanceV1, distanceV2);
+				updateDistance(distanceV1,false);
 
 			}
 		};
+		
+		updateDistance(distanceV1,true);
+		distanceV1.addChangingListener(listener);
+		/*
 		if (distance != null && distance.contains(".")) {
 			String str[] = distance.split("\\.");
 			curD1 = Integer.parseInt(str[0]);
@@ -85,7 +98,8 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 		distanceV1.addChangingListener(listener);
 		distanceV2.addChangingListener(listener);
 		updateDistance(distanceV1, distanceV2);
-
+		*/
+		
 		viewfipper.addView(mMenuView);
 		viewfipper.setFlipInterval(6000000);
 		this.setContentView(viewfipper);
@@ -105,21 +119,55 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 		viewfipper.startFlipping();
 	}
 
-	private void updateDistance(WheelView view1, WheelView view2) {
-
-		distanceAdapter1 = new DistanceNumericAdapter1(mContext, 0, 99, curD1);
-		view1.setViewAdapter(distanceAdapter1);
-		String curDistance = view1.getCurrentItem() + ".";
-		view1.setCurrentItem(view1.getCurrentItem(), true);
-
+	private void updateDistance(WheelView view1, boolean setDefault) {
+		
+		view1.setViewAdapter(new ArrayWheelAdapter<String>(mContext, distanceTxtArray));
+		if(setDefault){
+			int sub = countItemSub(this.distanceKm);
+			view1.setCurrentItem(sub);
+		}
+		
+		int dis = view1.getCurrentItem();
+		String km = this.distanceTxtArray[dis];
+		int disId = this.distanceArray[dis];
+		distance = disId + "";
+		distanceV.setText(km);
+		//int curWeight = view.getCurrentItem() + 15;
+		//int curWeightNumber = number.getCurrentItem();
+		//weight = curWeight + "." + curWeightNumber + "kg";
+		//view1.setViewAdapter(distanceAdapter1);
+		//String curDistance = view1.getCurrentItem() + ".";
+		//view1.setCurrentItem(view1.getCurrentItem(), true);
+/*
 		distanceAdapter2 = new DistanceNumericAdapter2(mContext, 0, 9, curD2);
 		view2.setViewAdapter(distanceAdapter2);
 		curDistance += view2.getCurrentItem() + "";
 		view2.setCurrentItem(view2.getCurrentItem(), true);
 		distance = curDistance;
 		distanceV.setText(distance + " 千米");
+		*/
 	}
-
+	
+	/**
+	 * 计算当前数据在数组中的下标
+	 * @param dis
+	 * @return
+	 * @author cxy
+	 * @date 2014-9-6
+	 */
+	private int countItemSub(int dis){
+		int sub = 0;
+		int len = this.distanceArray.length;
+		for(int i = 0; i < len; i++){
+			int d = this.distanceArray[i];
+			if(dis == d){
+				sub = i;
+				break;
+			}
+		}
+		return sub;
+	}
+	
 	/**
 	 * Adapter for numeric wheels. Highlights the current value.
 	 */

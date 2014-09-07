@@ -62,7 +62,7 @@
 		android:background="#d6d6d6">
 	</LinearLayout>
 	
-	<!-- 服务条款 -->
+	<!-- 服务条款 
 	<LinearLayout
 		android:id="@+id/clause_layout"
 		android:layout_width="match_parent"
@@ -85,13 +85,14 @@
 			android:textSize="@dimen/font_size3"/>
 
 	</LinearLayout>
-	
-	<!-- 边线 -->
+	-->
+	<!-- 边线 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
 		android:background="#d6d6d6">
 	</LinearLayout>
+	-->
 	
 	<!-- 关于 -->
 	<LinearLayout
