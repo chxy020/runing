@@ -146,7 +146,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			state.setText("未登录");
 		}
 		initMileage();
-		initCountView(data);
+		//initCountView(data);
 		toutalCount.setText(data.getCount()+""); 
 		avgSpeed.setText(getSeed(data.getPspeed())); 
 		points.setText(data.getPoints()+"");
