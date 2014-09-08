@@ -47,7 +47,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
-	private DecimalFormat df;
+	//private DecimalFormat df;
 	/** 数据列表 */
 	private XListView mListView;
 	private Handler mHandler;
@@ -71,9 +71,9 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
-		df = (DecimalFormat) NumberFormat.getInstance();
-		df.setMaximumFractionDigits(2);
-		df.setRoundingMode(RoundingMode.DOWN);
+//		df = (DecimalFormat) NumberFormat.getInstance();
+//		df.setMaximumFractionDigits(2);
+//		df.setRoundingMode(RoundingMode.DOWN);
 		backV = (TextView) this.findViewById(R.id.recording_list_back);
 		backV.setOnClickListener(this);
 		
@@ -183,7 +183,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			map.put("date", sdf1.format(date) + "月" + sdf2.format(date) + "日 "
 					+ YaoPao01App.getWeekOfDate(date) + " " + sdf3.format(date));
 
-			map.put("dis", df.format((sport.getDistance() / 1000)) + "km");
+			map.put("dis",sport.getDistance());
 			if (sport.getMind() == 1) {
 				map.put("mind", R.drawable.mood1_h);
 			} else if (sport.getMind() == 2) {

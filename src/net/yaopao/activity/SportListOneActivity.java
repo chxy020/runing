@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
@@ -50,10 +51,14 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
-	private TextView disV;
+	//private TextView disV;
 	private ImageView typeV;
 	private ImageView mindV;
 	private ImageView wayV;
+	private ImageView d1v;
+	private ImageView d2v;
+	private ImageView d3v;
+	private ImageView d4v;
 	/** 消息内容 */
 	private ViewPager mPager = null;
 	/** Tab页面列表 */
@@ -75,7 +80,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
 	private SimpleDateFormat sdf4;
-	private DecimalFormat df;
+	//private DecimalFormat df;
 	String title = "";
 	int recordId = 0;
 
@@ -92,9 +97,9 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
 		sdf4 = new SimpleDateFormat("yyyy");
-		df = (DecimalFormat) NumberFormat.getInstance();
-		df.setMaximumFractionDigits(2);
-		df.setRoundingMode(RoundingMode.DOWN);
+//		df = (DecimalFormat) NumberFormat.getInstance();
+//		df.setMaximumFractionDigits(2);
+//		df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
 
 	}
@@ -122,11 +127,17 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		titleV = (TextView) findViewById(R.id.recording_one_title);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
-		disV = (TextView) findViewById(R.id.one_dis);
+		//disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
 		mindV = (ImageView) findViewById(R.id.one_mind);
 		wayV = (ImageView) findViewById(R.id.one_way);
 		backV = (TextView) findViewById(R.id.recording_one_back);
+		
+		 d1v = (ImageView) findViewById(R.id.list_sport_num1);
+		 d2v = (ImageView) findViewById(R.id.list_sport_num2);
+		 d3v = (ImageView) findViewById(R.id.list_sport_dec1);
+		 d4v = (ImageView) findViewById(R.id.list_sport_dec2);
+		
 		backV.setOnTouchListener(this);
 		initMap();
 	}
@@ -264,7 +275,8 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		int s4 = speed[2] % 10;
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
 		ponitV.setText("+ " + ponit);
-		disV.setText(df.format(distance / 1000) + " km");
+		initDis(distance);
+		//disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
 		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
@@ -278,7 +290,61 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 
 	}
+	private void initDis(double distance) {
+		int d1 = (int) (distance % 100000) / 10000;
+		int d2 = (int) (distance % 10000) / 1000;
+		int d3 = (int) (distance % 1000) / 100;
+		int d4 = (int) (distance % 100) / 10;
+		if (d1 > 0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
+		update(d1, d1v);
+		update(d2, d2v);
+		update(d3, d3v);
+		update(d4, d4v);
+		
+	}
+	protected void update(int i, ImageView view) {
+		if (i > 9) {
+			i = i % 10;
+		}
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.r_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.r_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.r_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.r_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.r_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.r_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.r_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.r_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.r_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.r_9);
+			break;
 
+		default:
+			break;
+		}
+	}
+	
 	private void initMind(int mind) {
 		switch (mind) {
 		case 1:

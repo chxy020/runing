@@ -50,7 +50,7 @@
             android:id="@+id/one_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" /> -->
-<include
+		<include
 		    android:id="@+id/sport_one_slider"
 		    android:layout_alignParentLeft="true"
 		    android:layout_alignParentTop="true"
@@ -61,7 +61,7 @@
             android:layout_height="@dimen/common_height"
             android:layout_margin="@dimen/margin1"
             />
-
+<!-- 
         <TextView
             android:id="@+id/one_dis"
             android:layout_width="@dimen/recording_List_main_height"
@@ -71,7 +71,63 @@
             android:gravity="center"
             android:text="0.0 km"
             android:textSize="@dimen/font_size3"
-            android:textStyle="bold" />
+            android:textStyle="bold" /> -->
+        
+        	<RelativeLayout
+		    android:id="@+id/one_dis"
+            android:layout_width="@dimen/recording_List_main_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentBottom="true"
+			android:orientation="horizontal" >
+			<!-- 把textview换成多个imageview -->
+				
+				 <LinearLayout
+		            android:id="@+id/list_sport_distance"
+		            android:layout_width="wrap_content"
+		            android:layout_height="match_parent"
+		            android:layout_marginLeft="@dimen/margin1"
+		            android:gravity="center">
+		            <ImageView
+		                android:id="@+id/list_sport_num1"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0"
+		                android:visibility="gone"
+		                 />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_num2"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0" />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_dot"
+		                android:layout_width="@dimen/list_dot_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_dot" />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_dec1"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0" />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_dec2"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0" />
+		       	 </LinearLayout> 
+		       	 
+				<ImageView
+	                android:id="@+id/list_sport_km"
+	                android:layout_toRightOf="@id/list_sport_distance"
+	                android:layout_width="@dimen/list_km_width"
+	                android:layout_height="@dimen/list_num_height"
+	                android:background="@drawable/r_km" 
+	                android:layout_centerInParent="true"/>
+		</RelativeLayout>
 
         <TextView
             android:id="@+id/one_date"

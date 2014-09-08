@@ -25,24 +25,65 @@
             android:textSize="@dimen/font_size8"
             android:textStyle="bold" />
 		
-		<LinearLayout
+		<RelativeLayout
 			android:id="@+id/list_sport_distance_layout"
 			android:layout_width="@dimen/sport_item_date_size"
 			android:layout_height="match_parent"
-			android:gravity="left|center"
 			android:layout_below="@id/list_sport_date"
 			android:layout_toRightOf="@id/list_sport_type"
 			android:orientation="horizontal" >
 			<!-- 把textview换成多个imageview -->
-			<TextView
-				android:id="@+id/list_sport_distance"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:gravity="center"
-				android:text="0 km"
-				android:textSize="@dimen/font_size2"
-				android:textStyle="bold" />
-		</LinearLayout>
+				
+				 <LinearLayout
+		            android:id="@+id/list_sport_distance"
+		            android:layout_width="wrap_content"
+		            android:layout_height="match_parent"
+		            android:layout_alignParentBottom="true" 
+		            android:layout_centerHorizontal="true"
+		            android:layout_toLeftOf="@+id/list_sport_km"
+		            android:gravity="center">
+		            <ImageView
+		                android:id="@+id/list_sport_num1"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0"
+		                android:visibility="gone"
+		                 />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_num2"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0" />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_dot"
+		                android:layout_width="@dimen/list_dot_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_dot" />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_dec1"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0" />
+		
+		            <ImageView
+		                android:id="@+id/list_sport_dec2"
+		                android:layout_width="@dimen/list_num_width"
+		                android:layout_height="@dimen/list_num_height"
+		                android:background="@drawable/r_0" />
+		       	 </LinearLayout> 
+		       	 
+				<ImageView
+	                android:id="@+id/list_sport_km"
+	                android:layout_alignParentRight="true"
+	                android:layout_width="@dimen/list_km_width"
+	                android:layout_height="@dimen/list_num_height"
+	                android:layout_marginRight="@dimen/margin7"
+	                android:background="@drawable/r_km" 
+	                android:layout_centerInParent="true"/>
+		</RelativeLayout>
         
         <ImageView
             android:id="@+id/list_sport_mind"
@@ -86,7 +127,7 @@
             android:layout_below="@id/list_sport_mind"
             android:layout_toRightOf="@id/sport_item_dis_img"
             android:gravity="center_vertical"
-            android:text="0&apos;0&apos;&apos;/公里"
+            android:text="00&apos;00&apos;&apos;"
             android:textSize="@dimen/font_size8"
             android:textStyle="bold" />
 		

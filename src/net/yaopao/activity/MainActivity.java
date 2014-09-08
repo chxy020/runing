@@ -30,8 +30,8 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	private TextView state;
 	private TextView desc;
 //	private TextView toutalCount;
-	private TextView avgSpeed;
-	private TextView points;
+	//private TextView avgSpeed;
+	//private TextView points;
 	private ImageView start;
 	private ImageView headv;
 	private LinearLayout stateL;
@@ -62,9 +62,9 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
-		toutalCount = (TextView) this.findViewById(R.id.main_count);
-		avgSpeed = (TextView) this.findViewById(R.id.main_speed);
-		points = (TextView) this.findViewById(R.id.main_points);
+		//toutalCount = (TextView) this.findViewById(R.id.main_count);
+		//avgSpeed = (TextView) this.findViewById(R.id.main_speed);
+		//points = (TextView) this.findViewById(R.id.main_points);
 		d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
 		d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
 		d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
@@ -106,13 +106,74 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		int c3 =count%10;
 		if (c1 > 0) {
 			views[0].setVisibility(View.VISIBLE);
-			update(c1, views[0]);
+			updateMiddleData(c1, views[0]);
 		}
 		if (c2 > 0) {
 			views[1].setVisibility(View.VISIBLE);
-			update(c2, views[1]);
+			updateMiddleData(c2, views[1]);
 		}
-		update(c3, views[2]);
+		updateMiddleData(c3, views[2]);
+	}
+	//初始化平均配速
+	private void initPspeed(DataBean data) {
+		
+		int[] speed = YaoPao01App.cal((int) (data.getPspeed()));
+//		int[] speed = YaoPao01App.cal((int) (200));
+		
+		int s1 = speed[1] / 10;
+		int s2 = speed[1] % 10;
+		int s3 = speed[2] / 10;
+		int s4 = speed[2] % 10;
+		ImageView s1V = (ImageView) findViewById(R.id.match_recoding_speed1);
+		ImageView	s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
+		ImageView	s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
+		ImageView s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
+		  
+		updateMiddleData(s1, s1V);
+		updateMiddleData(s2, s2V);
+		updateMiddleData(s3, s3V);
+		updateMiddleData(s4, s4V);
+		
+	}
+	//初始化积分
+	private void initPoints(DataBean data) {
+		int point = data.getPoints();
+		int d1 = (int) point / 100000;
+		int d2 = (int) (point % 100000) / 10000;
+		int d3 = (int) (point % 10000) / 1000;
+		int d4 = (int) (point % 1000) / 100;
+		int d5 = (int) (point % 100) / 10;
+		int d6 = (int) (point % 10);
+		
+		d1v = (ImageView) this.findViewById(R.id.main_point_num1);
+		d2v = (ImageView) this.findViewById(R.id.main_point_num2);
+		d3v = (ImageView) this.findViewById(R.id.main_point_num3);
+		d4v = (ImageView) this.findViewById(R.id.main_point_num4);
+		d5v = (ImageView) this.findViewById(R.id.main_point_num5);
+		d6v = (ImageView) this.findViewById(R.id.main_point_num6);
+		
+		if (d1 > 0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
+		if (d2 > 0) {
+			d2v.setVisibility(View.VISIBLE);
+		}
+		if (d3 > 0) {
+			d3v.setVisibility(View.VISIBLE);
+		}
+		if (d4 > 0) {
+			d4v.setVisibility(View.VISIBLE);
+		}
+		if (d5 > 0) {
+			d5v.setVisibility(View.VISIBLE);
+		}
+		updateMiddleData(d1, d1v);
+		updateMiddleData(d2, d2v);
+		updateMiddleData(d3, d3v);
+		updateMiddleData(d4, d4v);
+		updateMiddleData(d5, d5v);
+		updateMiddleData(d6, d6v);
+		
 	}
 	@Override
 	protected void onResume() {
@@ -147,13 +208,14 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		}
 		initMileage();
 		initCountView(data);
-		toutalCount.setText(data.getCount()+""); 
-		avgSpeed.setText(getSeed(data.getPspeed())); 
-		points.setText(data.getPoints()+"");
+		initPspeed(data);
+		initPoints(data);
+		//toutalCount.setText(data.getCount()+""); 
+		//avgSpeed.setText(getSeed(data.getPspeed())); 
+		//points.setText(data.getPoints()+"");
 		
 
 	}
-
 	private void initMileage() {
 		distance = data.getDistance();
 		//distance = 549254;
@@ -225,6 +287,46 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			view.setBackgroundResource(R.drawable.r_9);
 			break;
 
+		default:
+			break;
+		}
+	}
+	protected void updateMiddleData(int i, ImageView view) {
+		if (i > 9) {
+			i = i % 10;
+		}
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.w_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.w_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.w_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.w_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.w_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.w_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.w_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.w_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.w_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.w_9);
+			break;
+			
 		default:
 			break;
 		}
