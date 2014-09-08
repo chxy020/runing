@@ -255,6 +255,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	protected void onDestroy() {
 		super.onDestroy();
 		stopTimer();
+		stopRecordGps();
 		unregisterReceiver(broadcastReceiver);
 	}
 

@@ -438,9 +438,8 @@
                 android:layout_height="@dimen/sport_set_height"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="滑动解锁"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size2" >
+                android:textColor="@color/black"
+        		android:textSize="@dimen/font_size3" >
             </TextView>
 
             <!-- slider img -->
