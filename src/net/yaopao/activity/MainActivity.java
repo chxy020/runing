@@ -89,7 +89,31 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		this.initView();
 		
 	}
-
+	//初始化总次数
+	private void initCountView(DataBean data) {
+		ImageView c1v = (ImageView) findViewById(R.id.main_count_num1);
+		ImageView c2v = (ImageView) findViewById(R.id.main_count_num2);
+		ImageView c3v = (ImageView) findViewById(R.id.main_count_num3);
+		c1v.setVisibility(View.GONE);
+		c2v.setVisibility(View.GONE);
+		initCount(new ImageView[]{c1v,c2v,c3v},data);
+	}
+	private void initCount(ImageView[] views,DataBean data){
+		int count = data.getCount();
+		Log.v("wysport", " count="+count);
+		int c1 = count /100;
+		int c2 =  (count%100)/10;
+		int c3 =count%10;
+		if (c1 > 0) {
+			views[0].setVisibility(View.VISIBLE);
+			update(c1, views[0]);
+		}
+		if (c2 > 0) {
+			views[1].setVisibility(View.VISIBLE);
+			update(c2, views[1]);
+		}
+		update(c3, views[2]);
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -122,7 +146,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			state.setText("未登录");
 		}
 		initMileage();
-		
+		initCountView(data);
 		toutalCount.setText(data.getCount()+""); 
 		avgSpeed.setText(getSeed(data.getPspeed())); 
 		points.setText(data.getPoints()+"");
