@@ -252,8 +252,8 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 				//不超过1小时
 				m = (int)second / 60;
 				s = second % 60;
-				String tm = m > 10 ? m + "" : "0" + m;
-				String ts = s > 10 ? s + "" : "0" + s;
+				String tm = m >= 10 ? m + "" : "0" + m;
+				String ts = s >= 10 ? s + "" : "0" + s;
 				time = tm + ":" + ts;
 			}
 			else{
@@ -263,8 +263,8 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 				s = second % 3600 % 60;
 				//小时没加0,放不下
 				String th = h > 10 ? h + "" : "" + h;
-				String tm = m > 10 ? m + "" : "0" + m;
-				String ts = s > 10 ? s + "" : "0" + s;
+				String tm = m >= 10 ? m + "" : "0" + m;
+				String ts = s >= 10 ? s + "" : "0" + s;
 				time = th + ":" + tm + ":" + ts;
 			}
 		}
@@ -274,7 +274,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 				time = "01:00";
 			}
 			else{
-				String ts = second > 10 ? second + "" : "0" + second;
+				String ts = second >= 10 ? second + "" : "0" + second;
 				time = "00:" + ts;
 			}
 		}
