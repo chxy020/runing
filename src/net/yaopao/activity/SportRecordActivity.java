@@ -26,8 +26,11 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
@@ -38,6 +41,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private  TextView sliderTextV;
 	private  TextView doneV;
 	private  TextView resumeV;
+	private  TextView processTextV;
+	private  TextView recodingTimeTextV;
+	private  TextView recodingMileageTextV;
 	public static  ImageView gpsV;
 	private  ImageView d1v;
 	private  ImageView d2v;
@@ -59,6 +65,11 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private  ImageView s4V;
 	
 	private  ImageView sliderIconV;
+	
+	private RelativeLayout leftTime;
+	private RelativeLayout leftDis;
+	private LinearLayout topTime;
+	private LinearLayout toptDis;
 	// 记录ProgressBar的完成进度
 	private  SimpleDateFormat formatterM;
 	private  SimpleDateFormat formatterS;
@@ -87,23 +98,32 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
+		Log.v("wysport","spre========================== Variables.utime="+Variables.utime);
+		Log.v("wysport","spre========================== points="+points);
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		mapV = (ImageView) findViewById(R.id.sport_map);
 		sliderIconV = (ImageView) findViewById(R.id.slider_icon);
 		slider = (SliderRelativeLayout) findViewById(R.id.slider_layout);
 		sliderTextV = (TextView) findViewById(R.id.slider_text);
+		processTextV = (TextView) findViewById(R.id.recoding_process_text);
 		gpsV = (ImageView) findViewById(R.id.sport_gps_status);
-		d1v = (ImageView) this.findViewById(R.id.match_recoding_dis1);
-		d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
-		d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
-		d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
-		t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
-		t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
-		t3V = (ImageView) findViewById(R.id.match_recoding_time_m1);
-		t4V = (ImageView) findViewById(R.id.match_recoding_time_m2);
-		t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
-		t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
+		leftTime = (RelativeLayout) findViewById(R.id.sport_recoding_time);
+		leftDis = (RelativeLayout) findViewById(R.id.sport_recoding_dis2);
+		topTime = (LinearLayout) findViewById(R.id.sport_time2);
+		toptDis = (LinearLayout) findViewById(R.id.sport_dis);
+		recodingTimeTextV =(TextView) findViewById(R.id.sport_recoding_time_text);
+		recodingMileageTextV =(TextView) findViewById(R.id.sport_recoding_mileage_text);
+//		d1v = (ImageView) this.findViewById(R.id.match_recoding_dis1);
+//		d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
+//		d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
+//		d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
+//		t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
+//		t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
+//		t3V = (ImageView) findViewById(R.id.match_recoding_time_m1);
+//		t4V = (ImageView) findViewById(R.id.match_recoding_time_m2);
+//		t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
+//		t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
 
 		s1V = (ImageView) findViewById(R.id.match_recoding_speed1);
 		s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
@@ -133,7 +153,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
-
+		//根据运动类型初始化跑步界面的布局
+		initRunLayout();
 		points = new ArrayList<GpsPoint>();
 		slider.setMainHandler(slipHandler);
 //		pointsIndex = new ArrayList<Integer>();
@@ -142,7 +163,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		startRecordGps();
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
 		registerReceiver(broadcastReceiver, filter);
-		Log.v("wysport","spre Variables.utime="+Variables.utime);
+		
 	    timerListenerHandler = new Handler() {
 				public void handleMessage(Message msg) {
 					//1-开始，2-停止
@@ -165,6 +186,69 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					super.handleMessage(msg);
 				}
 			};
+	}
+
+	private void initRunLayout() {
+		if (Variables.runtar==0) {
+			progressHorizontal.setVisibility(View.GONE);
+			processTextV.setText("自由运动");
+			toptDis.setVisibility(View.VISIBLE);
+			topTime.setVisibility(View.GONE);
+			leftTime.setVisibility(View.VISIBLE);
+			leftDis.setVisibility(View.GONE);
+			recodingTimeTextV.setText("时间");
+			recodingMileageTextV.setText("距离（公里）");
+			d1v = (ImageView) this.findViewById(R.id.match_recoding_dis1);
+			d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
+			d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
+			d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
+			
+			t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
+			t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
+			t3V = (ImageView) findViewById(R.id.match_recoding_time_m1);
+			t4V = (ImageView) findViewById(R.id.match_recoding_time_m2);
+			t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
+			t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
+			
+		}
+		if (Variables.runtar==1) {
+			toptDis.setVisibility(View.VISIBLE);
+			topTime.setVisibility(View.GONE);
+			leftTime.setVisibility(View.VISIBLE);
+			leftDis.setVisibility(View.GONE);
+			recodingTimeTextV.setText("时间");
+			recodingMileageTextV.setText("距离（公里）");
+			d1v = (ImageView) this.findViewById(R.id.match_recoding_dis1);
+			d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
+			d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
+			d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
+			
+			t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
+			t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
+			t3V = (ImageView) findViewById(R.id.match_recoding_time_m1);
+			t4V = (ImageView) findViewById(R.id.match_recoding_time_m2);
+			t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
+			t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
+		}
+		if (Variables.runtar==2) {
+			toptDis.setVisibility(View.GONE);
+			topTime.setVisibility(View.VISIBLE);
+			leftTime.setVisibility(View.GONE);
+			leftDis.setVisibility(View.VISIBLE);
+			recodingTimeTextV.setText("距离（公里）");
+			recodingMileageTextV.setText("时间");
+			d1v = (ImageView) this.findViewById(R.id.sport_recoding_dis2_1);
+			d2v = (ImageView) this.findViewById(R.id.sport_recoding_dis2_2);
+			d3v = (ImageView) this.findViewById(R.id.sport_recoding_dis2_3);
+			d4v = (ImageView) this.findViewById(R.id.sport_recoding_dis2_4);
+			
+			t1V = (ImageView) findViewById(R.id.match_recoding_time2_h1);
+			t2V = (ImageView) findViewById(R.id.match_recoding_time2_h2);
+			t3V = (ImageView) findViewById(R.id.match_recoding_time2_m1);
+			t4V = (ImageView) findViewById(R.id.match_recoding_time2_m2);
+			t5V = (ImageView) findViewById(R.id.match_recoding_time2_s1);
+			t6V = (ImageView) findViewById(R.id.match_recoding_time2_s2);
+		}
 	}
 
 	@Override
@@ -224,21 +308,31 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				doneV.setBackgroundResource(R.color.red);
-				final Handler handler = new Handler() {
+				final Handler sliderHandler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
-							
 							Intent intent = new Intent(
 									SportRecordActivity.this,
 									SportSaveActivity.class);
 							stopRecordGps();
 							SportRecordActivity.this.startActivity(intent);
 							SportRecordActivity.this.finish();
+						}else if(msg.what == 1){
+							//运动距离小于50米
+							Toast.makeText(SportRecordActivity.this, "您运动距离也太短了吧！这次就不给您记录了，下次一定要加油！", Toast.LENGTH_LONG).show();
+							Variables.utime = 0;
+							Variables.pspeed = 0;
+							Variables.distance = 0;
+							Variables.points=0;
+							if (points!=null) {
+								points=null;
+							}
+							SportRecordActivity.this.finish();
 						}
 						super.handleMessage(msg);
 					}
 				};
-				DialogTool.doneSport(SportRecordActivity.this, handler);
+				DialogTool.doneSport(SportRecordActivity.this, sliderHandler);
 				
 				break;
 			}

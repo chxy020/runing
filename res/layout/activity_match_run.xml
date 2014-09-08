@@ -134,13 +134,14 @@
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
             android:layout_above="@+id/match_recoding_time_text"
-    		android:layout_margin="@dimen/margin9"
+    		android:layout_marginLeft="@dimen/margin6"
+    		android:layout_marginTop="@dimen/margin9"
+    		android:layout_marginBottom="@dimen/margin9"
     >
        <ImageView
             android:id="@+id/match_recoding_time_h1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin7"
             android:background="@drawable/w_0"
              />
         <ImageView
@@ -210,7 +211,7 @@
             android:layout_width="1px"
             android:layout_height="@dimen/sport_set_height"
             android:layout_above="@id/line_under_recoding_speed_text"
-            android:layout_toRightOf="@id/match_recoding_time"
+            android:layout_centerHorizontal="true"
             android:background="@color/white" >
         </View>
         

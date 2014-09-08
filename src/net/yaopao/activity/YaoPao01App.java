@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -300,13 +301,16 @@ public class YaoPao01App extends Application {
 	 * 
 	 * @return
 	 */
-	public static void calDisPoints() {
+	public static void calDisPoints(Context context,Handler handler) {
 		YaoPao01App.lts.writeFileToSD("完成时  计算前 累计积分 : " +Variables.points, "uploadLocation");
 		double dis = Variables.distance % 1000;
 
 		if (Variables.distance / 1000 < 1) {
-			if (Variables.distance > 0) {
+			if (Variables.distance > 50) {
 				Variables.points += 1;
+			}else{
+				handler.obtainMessage(1).sendToTarget();
+				return;
 			}
 		} else if (Variables.distance / 1000 > 1) {
 			if (dis >= 500) {
@@ -315,6 +319,7 @@ public class YaoPao01App extends Application {
 				Variables.points += 0;
 			}
 		}
+		handler.obtainMessage(0).sendToTarget();
 		YaoPao01App.lts.writeFileToSD("完成时    运动 : " +Variables.distance+"米 "+Variables.utime+"秒", "uploadLocation");
 		YaoPao01App.lts.writeFileToSD("完成时    计算后积分 : " +Variables.points, "uploadLocation");
 		}

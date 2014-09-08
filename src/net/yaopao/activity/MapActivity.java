@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.a.am;
 import com.amap.api.location.AMapLocation;
@@ -108,7 +109,7 @@ public class MapActivity extends Activity implements LocationSource,
 		}
 
 		aMap.getUiSettings().setZoomControlsEnabled(false);
-		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+		aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
@@ -120,7 +121,7 @@ public class MapActivity extends Activity implements LocationSource,
 		GpsPoint crrPoint = null;
 		// 先绘制灰色线
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(13f));
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
 			if (crrPoint.status == 0) {
@@ -130,14 +131,14 @@ public class MapActivity extends Activity implements LocationSource,
 				runPoints.add(latlon);
 			} else if (crrPoint.status == 1) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
-						.color(Color.GREEN).width(8f));
+						.color(Color.GREEN).width(13f));
 				runPoints = new ArrayList<LatLng>();
 				lastDrawPoint =crrPoint;
 				aMap.invalidate();
 			}
 			if (i == (pointsArray.size() - 1)) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
-						.color(Color.GREEN).width(8f));
+						.color(Color.GREEN).width(13f));
 				lastDrawPoint =crrPoint;
 				aMap.invalidate();
 			}
@@ -350,7 +351,7 @@ public class MapActivity extends Activity implements LocationSource,
 				break;
 			case MotionEvent.ACTION_UP:
 				doneV.setBackgroundResource(R.color.red);
-				final Handler handler = new Handler() {
+				final Handler sliderHandler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
 							Intent intent = new Intent(MapActivity.this,
@@ -359,14 +360,26 @@ public class MapActivity extends Activity implements LocationSource,
 							SportRecordActivity.gpsListenerHandler.obtainMessage(4).sendToTarget();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
-							Intent closeintent = new Intent(closeAction);
-							closeintent.putExtra("data", "close");
-							sendBroadcast(closeintent);
+							
+						}else if(msg.what == 1){
+							//运动距离小于50米
+							Toast.makeText(MapActivity.this, "您运动距离也太短了吧！这次就不给您记录了，下次一定要加油", Toast.LENGTH_LONG).show();
+							Variables.utime = 0;
+							Variables.pspeed = 0;
+							Variables.distance = 0;
+							Variables.points=0;
+							if (SportRecordActivity.points!=null) {
+								SportRecordActivity.points=null;
+							}
+							MapActivity.this.finish();
 						}
 						super.handleMessage(msg);
 					}
 				};
-				DialogTool.doneSport(MapActivity.this, handler);
+				Intent closeintent = new Intent(closeAction);
+				closeintent.putExtra("data", "close");
+				sendBroadcast(closeintent);
+				DialogTool.doneSport(MapActivity.this, sliderHandler);
 				break;
 			}
 			break;

@@ -49,6 +49,8 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	private Bitmap mPhotoBmp;
 	private String sportPho;
 	private String title;
+	private SimpleDateFormat sdf1;
+	private SimpleDateFormat sdf2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -67,7 +69,11 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		titleV = (TextView) this.findViewById(R.id.recording_save_title);
 		initType();
 		Date date = new Date();
-		titleV.setText(YaoPao01App.getWeekOfDate(date)+title);
+		
+//		titleV.setText(YaoPao01App.getWeekOfDate(date)+title);
+		sdf1 = new SimpleDateFormat("MM");
+		sdf2 = new SimpleDateFormat("dd");
+		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 		descV = (EditText) this.findViewById(R.id.recording_save_desc);
 		mind1V = (ImageView) this.findViewById(R.id.recording_save_mind1);
 		mind2V = (ImageView) this.findViewById(R.id.recording_save_mind2);

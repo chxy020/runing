@@ -81,7 +81,7 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		timeV = (TextView) findViewById(R.id.full_time);
 		pspeedV = (TextView) findViewById(R.id.full_pspeed);
 		ponitsV = (TextView) findViewById(R.id.full_points);
-		titleV = (TextView) findViewById(R.id.full_title);
+//		titleV = (TextView) findViewById(R.id.full_title);
 		dateV = (TextView) findViewById(R.id.full_date);
 		disV = (TextView) findViewById(R.id.full_dis);
 		typeV = (ImageView) findViewById(R.id.full_type);
@@ -285,9 +285,9 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		GpsPoint crrPoint =null;
 		// 先绘制黑色底线和灰色线
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(15f));
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(13f));
 		lastSportPoint = pointsArray.get(0);
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
@@ -327,10 +327,10 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 							time_one_km = 0;
 						}
 			}else if(crrPoint.status==1){
-				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(13f));
 				runPoints = new ArrayList<LatLng>();
 			}if (i==(pointsArray.size()-1)) {
-				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(13f));
 			}
 			// 移动到中心
 			LatLng latlon1 = new LatLng(min_lat, min_lon);
@@ -371,22 +371,23 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 				+ " " + sdf3.format(date));
 
 		initType(runty);
-		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
+//		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
+		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 
 	}
 
 	private void initType(int type) {
 		switch (type) {
 		case 1:
-			typeV.setBackgroundResource(R.drawable.runtype_walk);
+			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
 			title = "的步行";
 			break;
 		case 2:
-			typeV.setBackgroundResource(R.drawable.runtype_run);
+			typeV.setBackgroundResource(R.drawable.runtype_run_big);
 			title = "的跑步";
 			break;
 		case 3:
-			typeV.setBackgroundResource(R.drawable.runtype_ride);
+			typeV.setBackgroundResource(R.drawable.runtype_ride_big);
 			title = "的自行车骑行";
 			break;
 

@@ -57,7 +57,7 @@ public class DialogTool implements OnTouchListener {
 
 	}
 
-	public static void doneSport(Context context, final Handler handker) {
+	public static void doneSport(final Context context, final Handler handler) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		final View dialogView = inflater.inflate(R.layout.alert_dialog, null);
 		final TextView confirm = (TextView) dialogView
@@ -84,12 +84,10 @@ public class DialogTool implements OnTouchListener {
 					if (SportRecordActivity.points.size()>0) {
 						for (int i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
 							SportRecordActivity.points.remove(i);
+						}
 					}
-						//计算距离积分
-						YaoPao01App.calDisPoints();
-					}
-					
-					handker.obtainMessage(0).sendToTarget();
+					//计算距离积分
+					YaoPao01App.calDisPoints(context,handler);
 					break;
 				default:
 					break;
@@ -108,7 +106,7 @@ public class DialogTool implements OnTouchListener {
 				case MotionEvent.ACTION_UP:
 					cancel.setBackgroundResource(R.color.gray_light);
 					dialog.dismiss();
-					handker.obtainMessage(1).sendToTarget();
+					//handker.obtainMessage(1).sendToTarget();
 					break;
 				default:
 					break;

@@ -274,7 +274,8 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		initType(runty);
 		initMind(mind);
 		initWay(runway);
-		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
+//		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
+		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 
 	}
 
@@ -304,15 +305,15 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private void initType(int type) {
 		switch (type) {
 		case 1:
-			typeV.setBackgroundResource(R.drawable.runtype_walk);
+			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
 			title = "的步行";
 			break;
 		case 2:
-			typeV.setBackgroundResource(R.drawable.runtype_run);
+			typeV.setBackgroundResource(R.drawable.runtype_run_big);
 			title = "的跑步";
 			break;
 		case 3:
-			typeV.setBackgroundResource(R.drawable.runtype_ride);
+			typeV.setBackgroundResource(R.drawable.runtype_ride_big);
 			title = "的自行车骑行";
 			break;
 
