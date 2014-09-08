@@ -1,11 +1,13 @@
 package net.yaopao.activity;
 
 import net.yaopao.assist.Variables;
+import net.yaopao.bean.SportParaBean;
 import net.yaopao.widget.OnChangedListener;
 import net.yaopao.widget.SlipButton;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,6 +80,29 @@ public class SportSetActivity extends Activity implements OnClickListener,
 		targetL.setOnClickListener(this);
 		typeL.setOnClickListener(this);
 		startV.setOnClickListener(this);
+		initSportParam();
+	}
+
+
+	private void initSportParam() {
+		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
+		if (param.getTargetdis()!=0) {
+			Variables.runtarDis=param.getTargetdis();
+		}
+		if (param.getTargettime()!=0) {
+			Variables.runtarTime=param.getTargettime();
+		}
+		if (param.getTypeIndex()!=0) {
+			Variables.runty=param.getTypeIndex();
+		}
+		Variables.switchTime=param.getCountDown();
+		Variables.switchVoice=param.getVioce();
+		Variables.runtar =param.getTargetIndex();
+		Log.v("wysport", " runtarDis ="+param.getTargetdis());
+		Log.v("wysport", " runtarTime ="+param.getTargettime());
+		Log.v("wysport", " runty ="+param.getTypeIndex());
+		Log.v("wysport", " runtar ="+param.getTargetIndex());
+		
 	}
 
 
@@ -162,6 +187,7 @@ public class SportSetActivity extends Activity implements OnClickListener,
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.sport_set_goback:
+				YaoPao01App.db.saveSportParam();
 				SportSetActivity.this.finish();
 			break;
 

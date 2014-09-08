@@ -72,13 +72,23 @@ public class SportListAdapter extends BaseAdapter {
 			TextView uTimeV = (TextView)convertView.findViewById(R.id.sport_list_time);
 			
 			// 设置控件集到convertView
-			Log.v("wygps", "runtyV= " + runtyV);
-			Log.v("wygps", "listItems= " + listItems);
-			Log.v("wygps", "listItems.get(position)= " + listItems.get(position));
-			Log.v("wygps", "type= " + listItems.get(position).get("type"));
+			Log.v("wylist", "id= " + listItems.get(position).get("id"));
+			Log.v("wylist", "type= " + listItems.get(position).get("type"));
+			Log.v("wylist", "mind= " + listItems.get(position).get("mind"));
+			Log.v("wylist", "way= " + listItems.get(position).get("way"));
+			Log.v("wylist", "date= " + listItems.get(position).get("date"));
+			Log.v("wylist", "dis=" + listItems.get(position).get("dis"));
+			Log.v("wylist", "speed= " + listItems.get(position).get("speed"));
+			
+			Log.v("wylist", "utime= " + listItems.get(position).get("utime"));
+			Log.v("wylist", "========================================================== " );
 			runtyV.setBackgroundResource((Integer) listItems.get(position).get("type"));
-			mindV.setBackgroundResource((Integer) listItems.get(position).get("mind"));
-			wayV.setBackgroundResource((Integer) listItems.get(position).get("way"));
+			if (listItems.get(position).get("mind")!=null) {
+				mindV.setBackgroundResource((Integer) listItems.get(position).get("mind"));
+			}
+			if (listItems.get(position).get("way")!=null) {
+				wayV.setBackgroundResource((Integer) listItems.get(position).get("way"));
+			}
 			dateyV.setText((String) listItems.get(position).get("date"));
 			disyV.setText((String) listItems.get(position).get("dis"));
 			spedV.setText((String) listItems.get(position).get("speed"));
@@ -86,7 +96,7 @@ public class SportListAdapter extends BaseAdapter {
 			//修改所用时间
 			uTimeV.setText(listItems.get(position).get("utime") + "");	
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		return convertView;

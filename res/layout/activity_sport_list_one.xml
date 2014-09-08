@@ -16,7 +16,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="周三的自行车骑行"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/font_size2" />
 
@@ -29,14 +29,14 @@
             android:text="返回"
             android:textColor="@color/white" />
 
-        <TextView
+       <!--  <TextView
             android:id="@+id/recording_one_share"
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="分享"
-            android:textColor="@color/white" />
+            android:textColor="@color/white" /> -->
     </RelativeLayout>
 
     <RelativeLayout
@@ -193,15 +193,16 @@
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_marginTop="@dimen/margin1"
+            android:layout_marginRight="@dimen/margin1"
             android:layout_alignParentRight="true"
-            android:background="@drawable/way1" />
+            />
           <ImageView
             android:id="@+id/one_mind"
             android:layout_toLeftOf="@id/one_way"
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_margin="@dimen/margin1"
-            android:background="@drawable/mood1_h" />
+            />
              <ImageView
             android:id="@+id/one_desc_icon"
             android:layout_width="@dimen/small_height"
@@ -217,7 +218,7 @@
             android:layout_toLeftOf="@id/one_mind"
             android:layout_toRightOf="@id/one_desc_icon"
             android:gravity="center_vertical"
-            android:hint="说说这次运动感觉怎么样？" />
+            />
          
           
     </RelativeLayout>

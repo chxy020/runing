@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -56,8 +58,8 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	}
 
 	private void initLayout() {
-		Variables.mind = 1;
-		Variables.runway = 1;
+		Variables.mind = 0;
+		Variables.runway = 0;
 		sportPho = Constants.sportPho + new Date().getTime()
 				+ getPhotoFileName();
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
@@ -471,5 +473,9 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		Variables.pspeed = 0;
 		Variables.distance = 0;
 		Variables.points=0;
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return false;
 	}
 }

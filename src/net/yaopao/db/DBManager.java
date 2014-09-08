@@ -15,6 +15,7 @@ import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
+import net.yaopao.bean.SportParaBean;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -77,8 +78,12 @@ public class DBManager {
 					"INSERT INTO "
 							+ DatabaseHelper.SPORTDATA_TABLE
 							+ " (aheart,distance,rid,heat,hspeed,image_count,"
-							+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,points,addtime)"
-							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+							+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,points,"
+							+ "sportty,sportpho,sport_pho_path,"
+							+ "addtime)"
+							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+							+ ",?,?,?"
+							+ ")",
 					new Object[] { Variables.aheart, Variables.distance,
 							Variables.getRid(), Variables.heat,
 							Variables.hspeed, Variables.imageCount,
@@ -87,11 +92,9 @@ public class DBManager {
 							Variables.runty, oneSport, Variables.runway,
 							Variables.stamp, statusIndex, Variables.temp,
 							Variables.utime, Variables.weather,Variables.points,
+							Variables.sportty,Variables.sportpho,Variables.sport_pho_path,
 							new Date().getTime() });
 
-//			Log.v("wydb", "s Variables.utime =" + Variables.utime);
-//			Log.v("wydb", "s Variables.hspeed =" + Variables.hspeed);
-//			Log.v("wydb", "s Variables.remarks =" + Variables.remarks);
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
 			// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
@@ -102,16 +105,18 @@ public class DBManager {
 			db.endTransaction(); // 结束事务
 		}
 	}
-
+/**
+ * 保存运动参数
+ */
 	public void saveSportParam() {
 		Log.d("wydb", "DBManager --> add saveSportParam");
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
 		try {
 			db.execSQL("REPLACE INTO " + DatabaseHelper.SPORTPARAM_TABLE
-					+ " (uid,countDown,vioce,typeIndex,targetIndex)"
-					+ " VALUES (?,?,?,?,?)", new Object[] { Variables.uid,
-					Variables.switchTime, Variables.switchVoice,
+					+ " (uid,countDown,vioce,targetdis,targettime,typeIndex,targetIndex)"
+					+ " VALUES (?,?,?,?,?,?,?)", new Object[] { Variables.uid,
+					Variables.switchTime, Variables.switchVoice,Variables.runtarDis,Variables.runtarTime,
 					Variables.runty, Variables.runtar });
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
@@ -126,7 +131,7 @@ public class DBManager {
 
 	/**
 	 * 更新数据
-	 * 
+	 * 未实现
 	 * @param sport
 	 */
 	public void update(SportBean sport) {
@@ -170,6 +175,9 @@ public class DBManager {
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
 			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
+			sport.setSportty(c.getInt(c.getColumnIndex("sportty")));
+			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
+			sport.setSportPhoPath(c.getString(c.getColumnIndex("sport_pho_path")));
 			sports.add(sport);
 //			YaoPao01App.lts.writeFileToSD(
 //					"db list : id=" + c.getColumnIndex("id") + " rid="
@@ -242,6 +250,29 @@ public class DBManager {
 			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));
 			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
 			sports.add(sport);
+		}
+		c.close();
+		return sport;
+	}
+	/**
+	 * 查询用户的运动参数
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public SportParaBean querySportParam(int uid) {
+		ArrayList<SportBean> sports = new ArrayList<SportBean>();
+		Cursor c = db.rawQuery("SELECT * FROM "+ DatabaseHelper.SPORTPARAM_TABLE + " WHERE uid =" + uid, null);
+		SportParaBean sport = new SportParaBean();
+		while (c.moveToNext()) {
+			sport.setId(c.getInt(c.getColumnIndex("id")));
+			sport.setUid(c.getInt(c.getColumnIndex("uid")));
+			sport.setCountDown(c.getInt(c.getColumnIndex("countDown")));
+			sport.setVioce(c.getInt(c.getColumnIndex("vioce")));
+			sport.setTargetdis(c.getInt(c.getColumnIndex("targetdis")));
+			sport.setTargettime(c.getInt(c.getColumnIndex("targettime")));
+			sport.setTypeIndex(c.getInt(c.getColumnIndex("typeIndex")));
+			sport.setTargetIndex(c.getInt(c.getColumnIndex("targetIndex")));
 		}
 		c.close();
 		return sport;

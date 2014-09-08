@@ -21,7 +21,7 @@
             android:layout_height="@dimen/small_height"
             android:layout_toRightOf="@id/list_sport_type"
             android:gravity="center_vertical"
-            android:text="7月21日 周三 15:34"
+            android:text="-月-日 周- -:-"
             android:textSize="@dimen/font_size8"
             android:textStyle="bold" />
 		
@@ -39,7 +39,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:gravity="center"
-				android:text="15.21 km"
+				android:text="0 km"
 				android:textSize="@dimen/font_size2"
 				android:textStyle="bold" />
 		</LinearLayout>
@@ -50,7 +50,7 @@
             android:layout_height="@dimen/small_height"
             android:layout_marginTop="@dimen/margin1"
             android:layout_toRightOf="@id/list_sport_distance_layout"
-            android:background="@drawable/mood1_h" />
+             />
 
         <ImageView
             android:id="@+id/list_sport_way"
@@ -59,7 +59,7 @@
             android:layout_marginLeft="@dimen/sport_size_15"
             android:layout_marginTop="@dimen/margin1"
             android:layout_toRightOf="@id/list_sport_mind" 
-            android:background="@drawable/way1_h" />
+            />
 
         <ImageView
             android:id="@+id/list_sport_pho"
@@ -68,7 +68,7 @@
             android:layout_marginLeft="@dimen/sport_size_15"
             android:layout_marginTop="@dimen/margin1"
             android:layout_toRightOf="@id/list_sport_way"
-            android:background="@drawable/button_photo" />
+            />
 		
         <ImageView
             android:id="@+id/sport_item_dis_img"
@@ -86,7 +86,7 @@
             android:layout_below="@id/list_sport_mind"
             android:layout_toRightOf="@id/sport_item_dis_img"
             android:gravity="center_vertical"
-            android:text="7&apos;12&apos;&apos;/公里"
+            android:text="0&apos;0&apos;&apos;/公里"
             android:textSize="@dimen/font_size8"
             android:textStyle="bold" />
 		

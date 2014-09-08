@@ -38,7 +38,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private  TextView sliderTextV;
 	private  TextView doneV;
 	private  TextView resumeV;
-	private  ImageView gpsV;
+	public static  ImageView gpsV;
 	private  ImageView d1v;
 	private  ImageView d2v;
 	private  ImageView d3v;
@@ -296,7 +296,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	
 	public  boolean pushOnePoint() {
-		boolean result = true;
+		boolean result = false;
 		double meter = 0;
 		GpsPoint last = null;
 		GpsPoint point = getOnePoint();
@@ -321,8 +321,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					if (last.status==0) {
 						Variables.utime+=duringTime;
 						result = true;
+					}else{
+						result = false;
 					}
-					result = false;
+					
 				} else {
 					if(last.status == 0){
 						Variables.utime+=duringTime;

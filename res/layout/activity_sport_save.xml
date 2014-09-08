@@ -88,7 +88,7 @@
                 android:layout_width="@dimen/common_height"
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_centerVertical="true"
-                android:background="@drawable/mood1_h"
+                android:background="@drawable/mood1"
                 />
             <ImageView 
                 android:id="@+id/recording_save_mind2"
@@ -157,7 +157,7 @@
                 android:layout_width="@dimen/common_height"
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_centerVertical="true"
-                android:background="@drawable/way1_h"
+                android:background="@drawable/way1"
                 />
             <ImageView 
                 android:id="@+id/recording_save_way2"

@@ -45,11 +45,11 @@ public class Variables {
 	public static int height; // gps高度，米，保留1位小数，乘以10取整
 	public static int state; // 运动中：0，暂停中：1
 
-	public static int runtar;// 自由：0，距离：1，时间：2
+	public static int runtar=0;// 自由：0，距离：1，时间：2
 	public static int runtarDis = 5;// 目标距离,千米
 	public static int runtarTime = 30;// 目标时间，分钟
 
-	public static int runty;// 步行：1，跑步：2，自行车骑行：3
+	public static int runty=1;// 步行：1，跑步：2，自行车骑行：3
 	public static int mind; // 心情
 	public static int runway;// 跑道
 	public static int aheart;// 平均心率
@@ -69,7 +69,10 @@ public class Variables {
 	public static int points;//积分
 	public static Bitmap avatar;//头像
 	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
-
+	
+	public static int sportty=0;//跑步类型0-日常，1-比赛
+	public static int sportpho=0;//跑步是否拍照0-无，1-有
+	public static String sport_pho_path;//跑步拍照大图存放路径
 	
 	// 获取rid
 	public static String getRid() {
