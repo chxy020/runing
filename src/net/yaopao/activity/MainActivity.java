@@ -29,7 +29,7 @@ import com.alibaba.fastjson.JSONObject;
 public class MainActivity extends Activity implements OnTouchListener,OnClickListener{
 	private TextView state;
 	private TextView desc;
-	private TextView toutalCount;
+//	private TextView toutalCount;
 	private TextView avgSpeed;
 	private TextView points;
 	private ImageView start;
@@ -146,7 +146,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			state.setText("未登录");
 		}
 		initMileage();
-		//initCountView(data);
+		initCountView(data);
 		toutalCount.setText(data.getCount()+""); 
 		avgSpeed.setText(getSeed(data.getPspeed())); 
 		points.setText(data.getPoints()+"");

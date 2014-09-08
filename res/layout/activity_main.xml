@@ -156,7 +156,8 @@
         android:id="@+id/main_detail_data"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_height"
-        android:layout_below="@id/main_total_milage_layout" >
+        android:layout_below="@id/main_total_milage_layout" 
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:layout_width="@dimen/main_middle_width2"
@@ -164,7 +165,7 @@
             android:background="@color/gray_dark"
             android:orientation="vertical" >
 
-            <TextView
+           <!--  <TextView
                 android:id="@+id/main_count"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
@@ -173,6 +174,33 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size3"
                 android:textStyle="bold" />
+             -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/main_middle_height"
+                android:layout_marginLeft="@dimen/margin1"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/main_count_num1"
+                    android:layout_width="@dimen/main_mnum_height"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/w_0"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/main_count_num2"
+                    android:layout_width="@dimen/main_mnum_height"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/w_0"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/main_count_num3"
+                    android:layout_width="@dimen/main_mnum_height"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/w_0" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"

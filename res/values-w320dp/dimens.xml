@@ -47,6 +47,8 @@
     <dimen name="main_middle_height">20dp</dimen>
     <dimen name="main_middle_width1">118dp</dimen>
     <dimen name="main_middle_width2">100dp</dimen>
+    <dimen name="main_mnum_height">13dp</dimen>
+    
     <dimen name="sport_set_height">60dp</dimen>
     <dimen name="sport_item_width">70dp</dimen>
     <dimen name="sport_set_icon_size">40dp</dimen>
