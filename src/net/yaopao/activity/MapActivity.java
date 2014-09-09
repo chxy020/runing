@@ -82,11 +82,6 @@ public class MapActivity extends Activity implements LocationSource,
 		doneV.setOnTouchListener(this);
 		backV.setOnTouchListener(this);
 		locV.setOnTouchListener(this);
-		// if (Variables.sportStatus == 0) {
-		// sliderTextV.setText("滑动暂停");
-		// } else {
-		// sliderTextV.setText("滑动恢复");
-		// }
 		slider.setMainHandler(slipHandler);
 		init();
 		startTimer();

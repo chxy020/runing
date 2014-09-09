@@ -9,7 +9,7 @@
 	 <RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/common_height"
-		android:background="@color/red_bg"
+		android:background="@color/red"
 		android:orientation="horizontal" >
 		<Button
 			android:id="@+id/setting_back_btn"

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -39,7 +40,7 @@ import com.amap.api.maps2d.model.PolylineOptions;
 
 /**
  */
-public class SportTrackMap extends Activity implements OnTouchListener {
+public class SportTrackMap extends Activity{
 	private MapView mapView;
 	private AMap aMap;
 	private SportBean oneSport;
@@ -85,7 +86,15 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		dateV = (TextView) findViewById(R.id.full_date);
 		disV = (TextView) findViewById(R.id.full_dis);
 		typeV = (ImageView) findViewById(R.id.full_type);
-		backV.setOnTouchListener(this);
+//		backV.setOnTouchListener(this);
+		backV.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				SportTrackMap.this.finish();
+				
+			}
+		});
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
@@ -466,23 +475,23 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		return bitmap;
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
-		switch (view.getId()) {
-		case R.id.full_back:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				SportTrackMap.this.finish();
-				break;
-			}
-			break;
-
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onTouch(View view, MotionEvent event) {
+//		int action = event.getAction();
+//		switch (view.getId()) {
+//		case R.id.full_back:
+//			switch (action) {
+//			case MotionEvent.ACTION_DOWN:
+//				break;
+//			case MotionEvent.ACTION_UP:
+//				SportTrackMap.this.finish();
+//				break;
+//			}
+//			break;
+//
+//		}
+//		return true;
+//	}
 
 	/*
 	 * @Override public boolean onKeyDown(int keyCode, KeyEvent event) { if

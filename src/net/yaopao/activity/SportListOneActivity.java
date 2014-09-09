@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 
-public class SportListOneActivity extends Activity implements OnTouchListener {
+public class SportListOneActivity extends Activity {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -138,7 +139,15 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		 d3v = (ImageView) findViewById(R.id.list_sport_dec1);
 		 d4v = (ImageView) findViewById(R.id.list_sport_dec2);
 		
-		backV.setOnTouchListener(this);
+//		backV.setOnTouchListener(this);
+		backV.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				 SportListOneActivity.this.finish();
+				
+			}
+		});
 		initMap();
 	}
 
@@ -411,16 +420,16 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		}
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
-		switch (view.getId()) {
-		case R.id.recording_one_back:
-			SportListOneActivity.this.finish();
-			break;
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onTouch(View view, MotionEvent event) {
+//		int action = event.getAction();
+//		switch (view.getId()) {
+//		case R.id.recording_one_back:
+//			SportListOneActivity.this.finish();
+//			break;
+//		}
+//		return true;
+//	}
 
 	@Override
 	protected void onResume() {
