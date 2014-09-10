@@ -15,7 +15,10 @@ import com.alibaba.fastjson.JSONObject;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -47,6 +50,8 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
+		registerReceiver(broadcastReceiver, filter);
 		initLayout();
 	}
 	
@@ -312,4 +317,14 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			RegisterActivity.this.finish();
 		}
 	}
+	// 如果重置密码成功，关闭此页面
+		BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if ("close".equals(intent.getExtras().getString("data"))) {
+					RegisterActivity.this.finish();
+				}
+			}
+		};
 }

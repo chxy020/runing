@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -451,6 +452,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		case R.id.main_user_info:
 			Intent userIntent;
 			if (Variables.islogin == 1) {
+				Variables.toUserInfo=0;
 				userIntent = new Intent(MainActivity.this, UserInfoActivity.class);
 			} else {
 				userIntent = new Intent(MainActivity.this, RegisterActivity.class);
@@ -484,10 +486,17 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			startActivity(settingIntent);
 			break;
 		case R.id.main_message_layout:
-			Intent messageIntent = new Intent(MainActivity.this,
-					WebViewActivity.class);
-			messageIntent.putExtra("net.yaopao.activity.PageUrl",
-					"message_index.html");
+			Intent messageIntent=null;
+			if (Variables.islogin == 1) {
+				messageIntent= new Intent(MainActivity.this,
+						WebViewActivity.class);
+				messageIntent.putExtra("net.yaopao.activity.PageUrl",
+						"message_index.html");
+				
+			} else {
+				Toast.makeText(MainActivity.this, "您必须注册并登录，才会收到系统消息，所以现在没有系统消息哦", Toast.LENGTH_LONG).show();
+				messageIntent = new Intent(MainActivity.this, RegisterActivity.class);
+			}
 			startActivity(messageIntent);
 			break;
 		default:

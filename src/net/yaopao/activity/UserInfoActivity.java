@@ -259,6 +259,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundResource(R.color.red);
+				UserInfoActivity.this.finish();
 				break;
 			}
 			break;

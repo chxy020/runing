@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResetPwdActivity extends Activity implements OnTouchListener {
+	public static final String closeAction = "resetpwd_close.action";
 	public TextView reset;
 	public TextView goBack;
 	public TextView getCodeV;
@@ -219,10 +220,14 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 					Variables.islogin = 1;
 					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
 							Toast.LENGTH_LONG).show();
-					Intent myIntent = new Intent();
-					myIntent = new Intent(ResetPwdActivity.this,
-							MainActivity.class);
-					startActivity(myIntent);
+					//发广播通知注册和登录页面关闭
+					Intent closeintent = new Intent(closeAction);
+					closeintent.putExtra("data", "close");
+					sendBroadcast(closeintent);
+//					Intent myIntent = new Intent();
+//					myIntent = new Intent(ResetPwdActivity.this,
+//							MainActivity.class);
+//					startActivity(myIntent);
 					ResetPwdActivity.this.finish();
 					break;
 				case -2:

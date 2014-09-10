@@ -71,7 +71,7 @@ public class SplashActivity extends Activity {
 			}
 
 		} else {
-			Toast.makeText(this, "请检查网络", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "请检查网络", Toast.LENGTH_LONG).show();
 		}
 	}
 

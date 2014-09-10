@@ -98,8 +98,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
-		Log.v("wysport","spre========================== Variables.utime="+Variables.utime);
-		Log.v("wysport","spre========================== points="+points);
+//		Log.v("wysport","spre========================== Variables.utime="+Variables.utime);
+//		Log.v("wysport","spre========================== points="+points);
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		mapV = (ImageView) findViewById(R.id.sport_map);

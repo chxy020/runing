@@ -99,6 +99,7 @@ public class MapActivity extends Activity implements LocationSource,
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
 					isFollow = 0;
+					Log.v("wymap", "移动地图，isfollow="+isFollow);
 				}
 			});
 		}
@@ -281,9 +282,9 @@ public class MapActivity extends Activity implements LocationSource,
 		if (mListener != null && aLocation != null) {
 			mListener.onLocationChanged(aLocation);
 			if (isFollow == 1) {
-				aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-						aLocation.getLatitude(), aLocation.getLongitude()), 16));
+				aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aLocation.getLatitude(), aLocation.getLongitude())));
 			}
+			Log.v("wymap", "位置变化，isfollow="+isFollow);
 		}
 	}
 
@@ -319,9 +320,10 @@ public class MapActivity extends Activity implements LocationSource,
 				Location myloc = aMap.getMyLocation();
 				if (myloc != null) {
 					isFollow = 1;
-					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-							new LatLng(myloc.getLatitude(), myloc
-									.getLongitude()), 16));
+					aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(myloc.getLatitude(), myloc.getLongitude())));
+//					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//							new LatLng(myloc.getLatitude(), myloc
+//									.getLongitude()), 16));
 				}
 
 				break;

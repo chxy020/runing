@@ -83,6 +83,7 @@ public class MainSettingActivity extends Activity {
 					startActivity(userInfoIntent);
 				}
 				else{
+					Toast.makeText(MainSettingActivity.this, "请先登录", Toast.LENGTH_LONG).show();
 					Intent registerIntent = new Intent(MainSettingActivity.this,RegisterActivity.class);
 					startActivity(registerIntent);
 				}
