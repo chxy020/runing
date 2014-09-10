@@ -5,23 +5,17 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -29,6 +23,10 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class RegisterActivity extends Activity implements OnTouchListener {
 	public TextView reg;
@@ -327,4 +325,13 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				}
 			}
 		};
+		public void onResume() {
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
 }

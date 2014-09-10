@@ -1,5 +1,7 @@
 package net.yaopao.activity;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,17 +36,14 @@ public class HelperActivity extends Activity implements OnTouchListener {
         wView.loadUrl("file:///android_asset/setting/gps.html");
 	}
 
-	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
-	/**
-	 * 方法必须重写
-	 */
-	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

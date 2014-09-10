@@ -4,19 +4,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -24,6 +18,10 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class ResetPwdActivity extends Activity implements OnTouchListener {
 	public static final String closeAction = "resetpwd_close.action";
@@ -289,5 +287,14 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 						Toast.LENGTH_LONG).show();
 			}
 		}
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -9,23 +9,20 @@ import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.match.track.TrackData;
-
-import com.amap.api.maps2d.AMapUtils;
-import com.amap.api.maps2d.model.LatLng;
-
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.amap.api.maps2d.AMapUtils;
+import com.amap.api.maps2d.model.LatLng;
+import com.umeng.analytics.MobclickAgent;
 
 public class MatchRunActivity extends Activity implements OnTouchListener {
 	private ImageView mapV;
@@ -320,5 +317,14 @@ public class MatchRunActivity extends Activity implements OnTouchListener {
 			// DialogTool.quit(MainActivity.this);
 		}
 		return false;
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

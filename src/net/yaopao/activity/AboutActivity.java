@@ -78,12 +78,14 @@ public class AboutActivity extends Activity {
 			}
 		}
 	};
+
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
-		}
-		public void onPause() {
+	}
+
+	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-		}
+	}
 }

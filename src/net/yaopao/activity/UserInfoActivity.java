@@ -2,32 +2,23 @@ package net.yaopao.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
-import net.yaopao.activity.R;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -39,6 +30,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class UserInfoActivity extends Activity implements OnTouchListener {
 	public TextView save;
@@ -136,8 +131,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	protected void onResume() {
 		super.onResume();
 		initLayout();
+		MobclickAgent.onResume(this);
 	}
-
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	private void initLayout() {
 		if (Variables.toUserInfo==0) {
 			back.setVisibility(View.GONE);

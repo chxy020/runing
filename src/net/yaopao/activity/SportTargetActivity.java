@@ -1,11 +1,10 @@
 package net.yaopao.activity;
 
 import net.yaopao.assist.Variables;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -15,6 +14,8 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportTargetActivity extends Activity implements OnTouchListener {
 	TextView backV;
@@ -164,6 +165,7 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onResume() {
+		MobclickAgent.onResume(this);
 		// if (distance!=null) {
 		distanceTxtV.setText(Variables.runtarDis + "km");
 		// }
@@ -196,7 +198,10 @@ public class SportTargetActivity extends Activity implements OnTouchListener {
 
 		super.onResume();
 	}
-
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	private void initLayout() {
 
 	}

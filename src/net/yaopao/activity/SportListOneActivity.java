@@ -1,13 +1,9 @@
 package net.yaopao.activity;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
@@ -24,11 +20,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +37,7 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
 public class SportListOneActivity extends Activity {
 	private TextView backV;
@@ -435,12 +430,14 @@ public class SportListOneActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
+		MobclickAgent.onPause(this);
 		// deactivate();
 	}
 

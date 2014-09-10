@@ -19,14 +19,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.a.am;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
@@ -38,8 +37,8 @@ import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -187,6 +186,7 @@ public class MapActivity extends Activity implements LocationSource,
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 		mapView.onResume();
 		if (Variables.sportStatus == 0) {
 			sliderIconV.setVisibility(View.VISIBLE);
@@ -205,6 +205,7 @@ public class MapActivity extends Activity implements LocationSource,
 	@Override
 	protected void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 		mapView.onPause();
 		stopTimer();
 		deactivate();

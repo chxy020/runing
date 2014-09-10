@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
+import com.umeng.analytics.MobclickAgent;
 
 public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static List<GpsPoint> points;
@@ -261,6 +262,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	@Override
 	protected void onResume() {
+		MobclickAgent.onResume(this);
 		if (Variables.sportStatus == 0) {
 			sliderIconV.setVisibility(View.VISIBLE);
 			sliderTextV.setVisibility(View.VISIBLE);
@@ -276,7 +278,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		Log.v("wysport","spre r sprortTime="+sprortTime);
 		super.onResume();
 	}
-
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
@@ -688,4 +693,5 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 			}
 		}
 	};
+	
 }

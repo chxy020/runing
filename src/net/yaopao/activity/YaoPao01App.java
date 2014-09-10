@@ -309,8 +309,8 @@ public class YaoPao01App extends Application {
 			if (Variables.distance > 50) {
 				Variables.points += 1;
 			}else{
-				handler.obtainMessage(1).sendToTarget();
-				return;
+				//handler.obtainMessage(1).sendToTarget();
+				//return;
 			}
 		} else if (Variables.distance / 1000 > 1) {
 			if (dis >= 500) {

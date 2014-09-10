@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -31,6 +32,7 @@ public class MatchRelayActivity extends Activity implements OnTouchListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	/**
@@ -39,6 +41,7 @@ public class MatchRelayActivity extends Activity implements OnTouchListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

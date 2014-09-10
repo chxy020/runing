@@ -236,4 +236,13 @@ public class SplashActivity extends Activity {
 		}
 		return false;
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

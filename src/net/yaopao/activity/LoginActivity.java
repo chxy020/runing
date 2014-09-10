@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class LoginActivity extends Activity implements OnTouchListener {
 	private TextView to_reset;
@@ -272,4 +273,14 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					}
 				}
 			};
+			
+			public void onResume() {
+				super.onResume();
+				MobclickAgent.onResume(this);
+			}
+
+			public void onPause() {
+				super.onPause();
+				MobclickAgent.onPause(this);
+			}
 }

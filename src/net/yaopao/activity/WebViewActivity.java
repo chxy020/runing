@@ -4,11 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class WebViewActivity extends Activity {
 	
@@ -17,7 +18,7 @@ public class WebViewActivity extends Activity {
 	private WebView mWebView = null;
 	private String mPageUrl = "";
 
-	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -120,5 +121,14 @@ public class WebViewActivity extends Activity {
 				jsCallbackMethod(param);
 			}
 		}
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -1,8 +1,5 @@
 package net.yaopao.activity;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,13 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.yaopao.view.XListView;
-import net.yaopao.view.XListView.IXListViewListener;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.SportListAdapter;
-import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import net.yaopao.bean.SportBean;
+import net.yaopao.view.XListView;
+import net.yaopao.view.XListView.IXListViewListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,18 +22,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportListActivity extends Activity implements OnClickListener,IXListViewListener {
 	public TextView backV;
@@ -630,5 +624,14 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		default:
 			break;
 		}
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

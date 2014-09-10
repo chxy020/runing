@@ -18,11 +18,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +35,7 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -409,12 +408,14 @@ public class SportTrackMap extends Activity{
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

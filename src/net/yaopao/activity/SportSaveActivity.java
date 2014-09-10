@@ -5,11 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.yaopao.assist.Constants;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +13,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -26,6 +25,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportSaveActivity extends Activity implements OnTouchListener {
 	public TextView deleV;
@@ -483,5 +484,14 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		return false;
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }
