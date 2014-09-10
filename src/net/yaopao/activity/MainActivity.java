@@ -4,6 +4,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
+import net.yaopao.voice.PlayVoice;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -277,6 +278,10 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		mMessageLayout = (LinearLayout) findViewById(R.id.main_message_layout);
 		// 注册事件
 		this.setListener();
+	
+		//播放语音测试
+		PlayVoice.StartPlayVoice("100000,100001,100002,100003,100004",this);
+		PlayVoice.StartPlayVoice("120225,130201,131101",this);
 	}
 
 	/**
