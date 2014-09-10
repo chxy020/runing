@@ -89,7 +89,17 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			dialog.alertGpsTip2(d);
 		}
 		this.initView();
-		
+		checkLogin();
+	}
+	//检查用户是否在其他设备上登录
+	private void checkLogin() {
+		if (Variables.islogin ==3) {
+			Intent mainIntent = new Intent(MainActivity.this,
+					LoginActivity.class);
+			Toast.makeText(this, "此用户已在其他设备上登录，请重新登录", Toast.LENGTH_LONG).show();
+			startActivity(mainIntent);
+			return;
+		}
 	}
 	//初始化总次数
 	private void initCountView(DataBean data) {
@@ -359,20 +369,20 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 				break;
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
-//				if (Variables.gpsStatus==2) {
-				if (Variables.gpsStatus==4) {
+				if (Variables.gpsStatus==2) {
+//				if (Variables.gpsStatus==4) {
 					DialogTool dialog = new DialogTool(MainActivity.this,handler);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip2(d);
-//				}else if (Variables.gpsStatus==0) {
-				}else if (Variables.gpsStatus==5) {
+				}else if (Variables.gpsStatus==0) {
+//				}else if (Variables.gpsStatus==5) {
 					DialogTool dialog = new DialogTool(MainActivity.this,null);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip1(d);
-//				}else if(Variables.gpsStatus==1){
-				}else {
+				}else if(Variables.gpsStatus==1){
+//				}else {
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);

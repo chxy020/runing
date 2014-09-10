@@ -1,6 +1,9 @@
 package net.yaopao.activity;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,9 +13,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +26,7 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
@@ -48,7 +51,8 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	public ImageView phoV;
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
-	private String sportPho;
+//	private String sportPho;
+	private String tempPath;
 	private String title;
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
@@ -63,8 +67,8 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	private void initLayout() {
 		Variables.mind = 0;
 		Variables.runway = 0;
-		sportPho = Constants.sportPho + new Date().getTime()
-				+ getPhotoFileName();
+//		sportPho = Constants.sportPho+ getPhotoFileName();
+		tempPath = Constants.sportPho+Constants.tempImage;
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
 		titleV = (TextView) this.findViewById(R.id.recording_save_title);
@@ -88,6 +92,7 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		way4V = (ImageView) this.findViewById(R.id.recording_save_way4);
 		way5V = (ImageView) this.findViewById(R.id.recording_save_way5);
 		phoV = (ImageView) this.findViewById(R.id.recording_save_pho);
+		phoV.setScaleType(ScaleType.CENTER_CROP);
 		phoButton = (ImageView) this.findViewById(R.id.recording_save_pho_icon);
 		deleV.setOnTouchListener(this);
 		saveV.setOnTouchListener(this);
@@ -327,73 +332,206 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		return true;
 	}
 
-	private void goGetPhotoFromCamera() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT,
-				Uri.fromFile(new File(sportPho)));
-		startActivityForResult(intent, Constants.RET_CAMERA);
+//	private void goGetPhotoFromCamera() {
+//		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//		intent.putExtra(MediaStore.EXTRA_OUTPUT,
+//				Uri.fromFile(new File(sportPho)));
+//		startActivityForResult(intent, Constants.RET_CAMERA);
+//	}
+//
+//	private void goGetPhotoFromGallery() {
+//		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//		intent.setType("image/*");
+//		Log.v("wydb", "1==");
+//		startActivityForResult(Intent.createChooser(intent, "选择图片"),
+//				Constants.RET_GALLERY);
+//	}
+//
+//	private void doneGetPhotoFromCamera(Intent data) {
+//		Bundle extras = data.getExtras();
+//		if (extras != null) {
+//
+//			mPhotoBmp = extras.getParcelable("data");
+//			Log.v("wydb", "mPhotoBmp2==" + mPhotoBmp);
+//			if (mPhotoBmp == null) {
+//				return;
+//			}
+//			phoV.setImageBitmap(mPhotoBmp);
+//			phoButton.setVisibility(View.GONE);
+//			Log.v("wysave", "mPhotoBmp11="+mPhotoBmp);
+//		}
+//	}
+//
+//	private void doneGetPhotoFromGallery(Intent data) {
+//		if (data == null) {
+//			return;
+//		}
+//		Uri originalUri = data.getData();
+//		String imagePath = getAbsoluteImagePath(originalUri);
+//
+//		BitmapFactory.Options opts = new BitmapFactory.Options();
+//		opts.inPurgeable = true;
+//		opts.inInputShareable = true;
+//		opts.inDither = false;
+//		opts.inJustDecodeBounds = false;
+//		opts.outWidth = 160;
+//		opts.outHeight = 160;
+//		opts.inPreferredConfig = Bitmap.Config.RGB_565;
+//
+//		mPhotoBmp = BitmapFactory.decodeFile(imagePath, opts);
+//		Log.v("wydb", "mPhotoBmp1==" + mPhotoBmp);
+//		if (mPhotoBmp == null) {
+//			return;
+//		}
+//		phoV.setImageBitmap(mPhotoBmp);
+//		phoButton.setVisibility(View.GONE);
+//	}
+//
+//	private String getAbsoluteImagePath(Uri uri) {
+//		// can post image
+//		String[] proj = { MediaStore.Images.Media.DATA };
+//		Cursor cursor = managedQuery(uri, proj, // Which columns to return
+//				null, // WHERE clause; which rows to return (all rows)
+//				null, // WHERE clause selection arguments (none)
+//				null); // Order-by clause (ascending by name)
+//
+//		int column_index = cursor
+//				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//		cursor.moveToFirst();
+//
+//		return cursor.getString(column_index);
+//	}
+//
+//	public void startPhotoZoom(Uri uri) {
+//		Intent intent = new Intent("com.android.camera.action.CROP");
+//		intent.setDataAndType(uri, Constants.IMAGE_UNSPECIFIED);
+//		intent.putExtra("crop", "true");
+//		// aspectX aspectY 是宽高的比例
+//		intent.putExtra("aspectX", 1);
+//		intent.putExtra("aspectY", 1);
+//		// outputX outputY 是裁剪图片宽高
+//		intent.putExtra("outputX", 640);
+//		intent.putExtra("outputY", 640);
+//		intent.putExtra("return-data", true);
+//		intent.putExtra("outputFormat", "JPEG");
+//		intent.putExtra("noFaceDetection", true);
+//		// intent.putExtra("output", Uri.parse(imagePath1));
+//		startActivityForResult(intent, Constants.RET_CROP);
+//	}
+//
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		switch (requestCode) {
+//		case Constants.RET_CAMERA:
+//			Log.v("wydb", "4==" + resultCode);
+//			if (resultCode == Activity.RESULT_OK) {
+//				File picture = new File(sportPho);
+//				// startPhotoZoom(Uri.fromFile(picture));
+//			}
+//			break;
+//		case Constants.RET_GALLERY:
+//			Log.v("wydb", "2==" + resultCode);
+//			if (resultCode == Activity.RESULT_OK) {
+//				if (data != null) {
+//					Log.v("wydb", "3==");
+//				}
+//				startPhotoZoom(data.getData());
+//			}
+//			break;
+//		case Constants.RET_CROP:
+//			if (resultCode == Activity.RESULT_OK) {
+//				doneGetPhotoFromCamera(data);
+//			}
+//			break;
+//		}
+//
+//		super.onActivityResult(requestCode, resultCode, data);
+//	}
+//	public void saveFile(Bitmap bm) throws IOException {
+//		File dirFile = new File(Constants.avatarPath);
+//		if (!dirFile.exists()) {
+//			dirFile.mkdir();
+//		}
+//		BufferedOutputStream bos = new BufferedOutputStream(
+//				new FileOutputStream(new File(Constants.avatarPath
+//						+ Constants.avatarName)));
+//		bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//		bos.flush();
+//		bos.close();
+//	}
+//	private void showSetPhotoDialog() {
+//		final String[] item_type = new String[] { "相机", "相册", "取消" };
+//
+//		new AlertDialog.Builder(this).setTitle("选取来自")
+//				.setItems(item_type, new DialogInterface.OnClickListener() {
+//					public void onClick(DialogInterface dialog, int which) {
+//						switch (which) {
+//						case 0:
+//							goGetPhotoFromCamera();
+//							break;
+//						case 1:
+//							goGetPhotoFromGallery();
+//							break;
+//						}
+//					}
+//				}).show();
+//
+//	}
+
+	private String getPhotoFileName() {
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+				"'IMG'_yyyyMMddHHmmss");
+		return dateFormat.format(date) + ".jpg";
+	}
+	//还原运动参数
+	private void reset(){
+		SportRecordActivity.points.clear();
+//		SportRecordActivity.status = 0;
+//		SportRecordActivity.target = 0;
+//		SportRecordActivity.speedPerKm=0;
+//		SportRecordActivity.disPerKm=0;
+//		SportRecordActivity.timePerKm=0;
+//		SportRecordActivity.sprortTime=0;
+		Variables.utime = 0;
+		Variables.pspeed = 0;
+		Variables.distance = 0;
+		Variables.points=0;
+		Variables.sport_pho = "";
+		Variables.hassportpho=0;
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return false;
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
-	private void goGetPhotoFromGallery() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-		intent.setType("image/*");
-		Log.v("wydb", "1==");
-		startActivityForResult(Intent.createChooser(intent, "选择图片"),
-				Constants.RET_GALLERY);
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
+	
+	//拍照
+	private void showSetPhotoDialog() {
+		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
-	private void doneGetPhotoFromCamera(Intent data) {
-		Bundle extras = data.getExtras();
-		if (extras != null) {
-
-			mPhotoBmp = extras.getParcelable("data");
-			Log.v("wydb", "mPhotoBmp2==" + mPhotoBmp);
-			if (mPhotoBmp == null) {
-				return;
-			}
-			phoV.setImageBitmap(mPhotoBmp);
-			phoButton.setVisibility(View.GONE);
-		}
-	}
-
-	private void doneGetPhotoFromGallery(Intent data) {
-		if (data == null) {
-			return;
-		}
-		Uri originalUri = data.getData();
-		String imagePath = getAbsoluteImagePath(originalUri);
-
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inPurgeable = true;
-		opts.inInputShareable = true;
-		opts.inDither = false;
-		opts.inJustDecodeBounds = false;
-		opts.outWidth = 160;
-		opts.outHeight = 160;
-		opts.inPreferredConfig = Bitmap.Config.RGB_565;
-
-		mPhotoBmp = BitmapFactory.decodeFile(imagePath, opts);
-		Log.v("wydb", "mPhotoBmp1==" + mPhotoBmp);
-		if (mPhotoBmp == null) {
-			return;
-		}
-		phoV.setImageBitmap(mPhotoBmp);
-		phoButton.setVisibility(View.GONE);
-	}
-
-	private String getAbsoluteImagePath(Uri uri) {
-		// can post image
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = managedQuery(uri, proj, // Which columns to return
-				null, // WHERE clause; which rows to return (all rows)
-				null, // WHERE clause selection arguments (none)
-				null); // Order-by clause (ascending by name)
-
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-		cursor.moveToFirst();
-
-		return cursor.getString(column_index);
+		new AlertDialog.Builder(this).setTitle("选取来自").
+		// setIcon (R.drawable.icon).
+				setItems(item_type, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							goGetPhotoFromCamera();
+							break;
+						case 1:
+							goGetPhotoFromGallery();
+							break;
+						}
+					}
+				}).show();
 	}
 
 	public void startPhotoZoom(Uri uri) {
@@ -417,17 +555,15 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case Constants.RET_CAMERA:
-			Log.v("wydb", "4==" + resultCode);
 			if (resultCode == Activity.RESULT_OK) {
-				File picture = new File(sportPho);
-				// startPhotoZoom(Uri.fromFile(picture));
+				File picture = new File(tempPath);
+				startPhotoZoom(Uri.fromFile(picture));
 			}
 			break;
 		case Constants.RET_GALLERY:
-			Log.v("wydb", "2==" + resultCode);
 			if (resultCode == Activity.RESULT_OK) {
 				if (data != null) {
-					Log.v("wydb", "3==");
+					Log.v("zc", "data");
 				}
 				startPhotoZoom(data.getData());
 			}
@@ -442,56 +578,60 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void showSetPhotoDialog() {
-		final String[] item_type = new String[] { "相机", "相册", "取消" };
-
-		new AlertDialog.Builder(this).setTitle("选取来自")
-				.setItems(item_type, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							goGetPhotoFromCamera();
-							break;
-						case 1:
-							goGetPhotoFromGallery();
-							break;
-						}
-					}
-				}).show();
-
+	private void goGetPhotoFromCamera() {
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.putExtra(
+				MediaStore.EXTRA_OUTPUT,
+				Uri.fromFile(new File(tempPath)));
+		startActivityForResult(intent, Constants.RET_CAMERA);
 	}
 
-	private String getPhotoFileName() {
-		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"'IMG'_yyyy-MM-dd HH:mm:ss");
-		return dateFormat.format(date) + ".jpg";
-	}
-	//还原运动参数
-	private void reset(){
-		SportRecordActivity.points.clear();
-//		SportRecordActivity.status = 0;
-//		SportRecordActivity.target = 0;
-//		SportRecordActivity.speedPerKm=0;
-//		SportRecordActivity.disPerKm=0;
-//		SportRecordActivity.timePerKm=0;
-//		SportRecordActivity.sprortTime=0;
-		Variables.utime = 0;
-		Variables.pspeed = 0;
-		Variables.distance = 0;
-		Variables.points=0;
-	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		return false;
-	}
-	public void onResume() {
-		super.onResume();
-		MobclickAgent.onResume(this);
+	private void goGetPhotoFromGallery() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("image/*");
+		startActivityForResult(Intent.createChooser(intent, "选择图片"),
+				Constants.RET_GALLERY);
 	}
 
-	public void onPause() {
-		super.onPause();
-		MobclickAgent.onPause(this);
+	private void doneGetPhotoFromCamera(Intent data) {
+		Bundle extras = data.getExtras();
+		if (extras != null) {
+			mPhotoBmp = extras.getParcelable("data");
+			
+			phoV.setImageBitmap(mPhotoBmp);
+			
+			phoButton.setVisibility(View.GONE);
+			try {
+				saveFile(mPhotoBmp);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	public void saveFile(Bitmap bm) throws IOException {
+		File dirFile = new File(Constants.sportPho);
+		File smallFile = new File(Constants.sportPho_s);
+		if (!dirFile.exists()) {
+			dirFile.mkdir();
+		}
+		if (!smallFile.exists()) {
+			smallFile.mkdir();
+		}
+		Variables.sport_pho = getPhotoFileName();
+		Variables.hassportpho=1;
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Constants.sportPho+ Variables.sport_pho)));
+		bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+		bos.flush();
+		bos =new BufferedOutputStream(new FileOutputStream(new File(Constants.sportPho_s+ Variables.sport_pho)));
+		resize(bm).compress(Bitmap.CompressFormat.JPEG, 100, bos);
+		bos.flush();
+		bos.close();
+	}
+	
+	 private static Bitmap resize(Bitmap bitmap) {
+		  Matrix matrix = new Matrix();
+		  matrix.postScale(0.2f,0.2f); //长和宽放大缩小的比例
+		  Bitmap resizeBmp = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+		  return resizeBmp;
+		 }
 }

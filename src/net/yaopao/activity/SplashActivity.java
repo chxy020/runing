@@ -48,8 +48,9 @@ public class SplashActivity extends Activity {
 		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
 			Constants.endpoints=Constants.endpoints1;
 		}else{
-			Constants.endpoints+="/chSports";
+			Constants.endpoints+="chSports";
 		}
+		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		setContentView(R.layout.splash);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
@@ -166,6 +167,7 @@ public class SplashActivity extends Activity {
 			if (loginJson != null && !"".equals(loginJson)) {
 				JSONObject rt = JSON.parseObject(loginJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
+				Log.v("wypho", "rtCode="+rtCode);
 				switch (rtCode) {
 				case 0:
 					Variables.islogin = 1;
@@ -184,6 +186,9 @@ public class SplashActivity extends Activity {
 					}
 					DataTool.setUserInfo(loginJson);
 					Log.v("wyuser", "loginJson = " + loginJson);
+					break;
+				case -7:
+					Variables.islogin = 3;
 					break;
 				default:
 					break;

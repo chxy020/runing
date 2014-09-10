@@ -43,7 +43,7 @@ public class NetworkHandler extends Activity {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String endpoints = "http://182.92.97.144:8080/chSports/";
+//	public static String endpoints = "http://182.92.97.144:8080/chSports/";
 	private static final int REQUEST_TIMEOUT = 60 * 1000;// 设置请求超时一分钟
 	private static final int SO_TIMEOUT = 10 * 1000; // 设置等待数据超时时间10秒钟
 

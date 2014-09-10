@@ -1,10 +1,15 @@
 package net.yaopao.assist;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import net.yaopao.activity.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +66,9 @@ public class SportListAdapter extends BaseAdapter {
 					.findViewById(R.id.list_sport_mind);
 			ImageView wayV = (ImageView) convertView
 					.findViewById(R.id.list_sport_way);
+			ImageView phoV = (ImageView) convertView
+					.findViewById(R.id.list_sport_pho);
+			
 			TextView dateyV = (TextView) convertView
 					.findViewById(R.id.list_sport_date);
 //			TextView disyV = (TextView) convertView
@@ -82,6 +90,16 @@ public class SportListAdapter extends BaseAdapter {
 			}
 			if (listItems.get(position).get("way")!=null) {
 				wayV.setBackgroundResource((Integer) listItems.get(position).get("way"));
+			}
+			if (listItems.get(position).get("hasPho")!=null&&!"".equals(listItems.get(position).get("hasPho"))) {
+				Log.v("wypho", "position = "+position+" ,has="+listItems.get(position).get("hasPho")+"-- is="+(1==(Integer)listItems.get(position).get("hasPho")));
+				if (1==(Integer)listItems.get(position).get("hasPho")) {
+					String simgPath = Constants.sportPho_s +listItems.get(position).get("phoName");
+					Log.v("wypho", "simgPath = "+simgPath);
+					Bitmap pho = getImg(simgPath);
+					phoV.setImageBitmap(pho);
+					phoV.setVisibility(View.VISIBLE);
+				}
 			}
 			dateyV.setText((String) listItems.get(position).get("date"));
 //			disyV.setText((String) listItems.get(position).get("dis"));
@@ -154,4 +172,23 @@ public class SportListAdapter extends BaseAdapter {
 		}
 	}
 
+	public Bitmap getImg(String path) {
+		Bitmap bitmap = null;
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(path);
+			bitmap = BitmapFactory.decodeStream(fis);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			try {
+				fis.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
 }

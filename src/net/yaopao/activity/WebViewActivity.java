@@ -1,5 +1,6 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -113,9 +114,11 @@ public class WebViewActivity extends Activity {
 			//Log.e("","chxy ____url" + url);
 			if(-1 != url.indexOf("message_index.html")){
 				//消息首页
-				userInfo = "{\"uid\":\"" + "77" + "\"}";
+				userInfo = "{\"uid\":\"" + Variables.uid + "\"}";
+//				userInfo = "{\"uid\":\"77\"}";
 				playInfo = "{}";
-				deviceInfo = "{\"deviceid\":\"" + "tre211" + "\"}";
+//				deviceInfo = "{\"deviceid\":\"tre211\"}";
+				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
 				String param = "window.callbackInit('" + userInfo + "','"
 						+ playInfo + "'," + "'" + deviceInfo + "')";
 				jsCallbackMethod(param);

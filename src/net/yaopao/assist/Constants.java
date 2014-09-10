@@ -13,14 +13,12 @@ public class Constants {
 	public static final int RET_GALLERY = 102;
 	public static final int RET_CROP = 103;
 	public static final String IMAGE_UNSPECIFIED = "image/*";
-	public static final String avatarPath = Environment
-			.getExternalStorageDirectory().toString() + "/YaoPao/";
+	public static final String avatarPath = Environment.getExternalStorageDirectory().toString() + "/YaoPao/";
 	public static final String avatarName = "avatar.jpg";
-	public static final String tempPath = Environment
-			.getExternalStorageDirectory().toString();
+	public static final String tempPath = Environment.getExternalStorageDirectory().toString();
 	public static final String tempImage = "temp.jpg";
-	public static final String sportPho = Environment
-			.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/";
+	public static final String sportPho = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/";
+	public static final String sportPho_s = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/small/";
 
 	public static  String endpoints = "";// 线上服务地址
 	public static  String endpoints1 = "http://182.92.97.144:8080/chSports";// 当友盟参数获取不到的时候，使用这个参数

@@ -201,6 +201,10 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			} else if (sport.getRunway() == 5) {
 				map.put("way", R.drawable.way5_h);
 			}
+			map.put("hasPho", sport.sportpho);
+			if (!"".equals(sport.sport_pho_path)&&sport.sport_pho_path!=null) {
+				map.put("phoName", sport.sport_pho_path);
+			}
 			map.put("id", sport.getId());
 			Log.v("db", "db id =" + sport.getId());
 			int[] speed = YaoPao01App.cal(sport.getPspeed());
