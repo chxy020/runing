@@ -55,7 +55,7 @@
                 android:layout_height="@dimen/edit_img_size"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
-                android:background="@drawable/edit" />
+                android:background="@drawable/acount" />
 
             <EditText
                 android:id="@+id/reg_phoneNum"

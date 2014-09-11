@@ -344,7 +344,7 @@ public class SportTrackMap extends Activity{
 			LatLng latlon1 = new LatLng(min_lat, min_lon);
 			LatLng latlon2 = new LatLng(max_lat, max_lon);
 			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 			lastSportPoint= crrPoint;
 			}
 	}
@@ -370,7 +370,7 @@ public class SportTrackMap extends Activity{
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
+		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 		ponitsV.setText("+ " + points);
 		disV.setText(df.format(distance / 1000) + " km");
 		Date date = new Date(addtime);

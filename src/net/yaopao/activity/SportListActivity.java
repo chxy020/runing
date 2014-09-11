@@ -212,7 +212,8 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			int s2 = speed[1] % 10;
 			int s3 = speed[2] / 10;
 			int s4 = speed[2] % 10;
-			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
+//			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
+			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 			
 			//获取运动总时长chenxy add
 			int uTime = sport.getUtime();

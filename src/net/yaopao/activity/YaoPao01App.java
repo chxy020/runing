@@ -37,7 +37,7 @@ public class YaoPao01App extends Application {
 		db = new DBManager(this);
 		Log.v("wy", "app");
 		Variables.pid = getImeiCode();
-		Variables.ua = this.getOptVer() + ",a_2.2.5,a_2.2.5,a_2.2.5,a_2.2.5";
+		Variables.ua = this.getOptVer() + ",a_0.9.0";
 		Log.v("wy", "pid=" + Variables.pid + " ua=" + Variables.ua);
 		getPreference();
 		initGPS();
@@ -309,8 +309,8 @@ public class YaoPao01App extends Application {
 			if (Variables.distance > 50) {
 				Variables.points += 1;
 			}else{
-				//handler.obtainMessage(1).sendToTarget();
-				//return;
+				handler.obtainMessage(1).sendToTarget();
+				return;
 			}
 		} else if (Variables.distance / 1000 > 1) {
 			if (dis >= 500) {
@@ -320,8 +320,8 @@ public class YaoPao01App extends Application {
 			}
 		}
 		handler.obtainMessage(0).sendToTarget();
-		YaoPao01App.lts.writeFileToSD("完成时    运动 : " +Variables.distance+"米 "+Variables.utime+"秒", "uploadLocation");
-		YaoPao01App.lts.writeFileToSD("完成时    计算后积分 : " +Variables.points, "uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("完成时    运动 : " +Variables.distance+"米 "+Variables.utime+"秒", "uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("完成时    计算后积分 : " +Variables.points, "uploadLocation");
 		}
 	/**
 	 * 计算比赛跑步距离零头积分

@@ -5,12 +5,14 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -39,15 +41,15 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	private LinearLayout stateL;
 	private LinearLayout recording;
 	private LinearLayout matchL;
-	private ImageView d1v;
-	private ImageView d2v;
-	private ImageView d3v;
-	private ImageView d4v;
-	private ImageView d5v;
-	private ImageView d6v;
+//	private ImageView d1v;
+//	private ImageView d2v;
+//	private ImageView d3v;
+//	private ImageView d4v;
+//	private ImageView d5v;
+//	private ImageView d6v;
 	private Bitmap head;
 	private double distance;
-	private DataBean data;
+//	private DataBean data;
 	/** 设置 */
 	private TextView mMainSetting = null;
 	/** 系统消息 */
@@ -64,18 +66,6 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
-		//toutalCount = (TextView) this.findViewById(R.id.main_count);
-		//avgSpeed = (TextView) this.findViewById(R.id.main_speed);
-		//points = (TextView) this.findViewById(R.id.main_points);
-		d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
-		d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
-		d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
-		d4v = (ImageView) this.findViewById(R.id.main_milage_num4);
-		d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
-		d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
-		d1v.setVisibility(View.GONE);
-		d2v.setVisibility(View.GONE);
-		d3v.setVisibility(View.GONE);
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnClickListener(this);
 		recording.setOnClickListener(this);
@@ -91,6 +81,11 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		this.initView();
 		checkLogin();
 	}
+	
+	 public static int px2dip(Context context, int pxValue) {
+         final float scale = context.getResources().getDisplayMetrics().density;
+         return (int) (pxValue / scale + 0.5f);
+ }
 	//检查用户是否在其他设备上登录
 	private void checkLogin() {
 		if (Variables.islogin ==3) {
@@ -137,8 +132,8 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		ImageView s1V = (ImageView) findViewById(R.id.match_recoding_speed1);
-		ImageView	s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
-		ImageView	s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
+		ImageView s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
+		ImageView s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
 		ImageView s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
 		  
 		updateMiddleData(s1, s1V);
@@ -150,41 +145,41 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	//初始化积分
 	private void initPoints(DataBean data) {
 		int point = data.getPoints();
-		int d1 = (int) point / 100000;
-		int d2 = (int) (point % 100000) / 10000;
-		int d3 = (int) (point % 10000) / 1000;
-		int d4 = (int) (point % 1000) / 100;
-		int d5 = (int) (point % 100) / 10;
-		int d6 = (int) (point % 10);
+		int p1 = (int) point / 100000;
+		int p2 = (int) (point % 100000) / 10000;
+		int p3 = (int) (point % 10000) / 1000;
+		int p4 = (int) (point % 1000) / 100;
+		int p5 = (int) (point % 100) / 10;
+		int p6 = (int) (point % 10);
 		
-		d1v = (ImageView) this.findViewById(R.id.main_point_num1);
-		d2v = (ImageView) this.findViewById(R.id.main_point_num2);
-		d3v = (ImageView) this.findViewById(R.id.main_point_num3);
-		d4v = (ImageView) this.findViewById(R.id.main_point_num4);
-		d5v = (ImageView) this.findViewById(R.id.main_point_num5);
-		d6v = (ImageView) this.findViewById(R.id.main_point_num6);
+		ImageView p1v = (ImageView) this.findViewById(R.id.main_point_num1);
+		ImageView p2v = (ImageView) this.findViewById(R.id.main_point_num2);
+		ImageView p3v = (ImageView) this.findViewById(R.id.main_point_num3);
+		ImageView p4v = (ImageView) this.findViewById(R.id.main_point_num4);
+		ImageView p5v = (ImageView) this.findViewById(R.id.main_point_num5);
+		ImageView p6v = (ImageView) this.findViewById(R.id.main_point_num6);
 		
-		if (d1 > 0) {
-			d1v.setVisibility(View.VISIBLE);
+		if (p1 > 0) {
+			p1v.setVisibility(View.VISIBLE);
 		}
-		if (d2 > 0) {
-			d2v.setVisibility(View.VISIBLE);
+		if (p2 > 0) {
+			p2v.setVisibility(View.VISIBLE);
 		}
-		if (d3 > 0) {
-			d3v.setVisibility(View.VISIBLE);
+		if (p3 > 0) {
+			p3v.setVisibility(View.VISIBLE);
 		}
-		if (d4 > 0) {
-			d4v.setVisibility(View.VISIBLE);
+		if (p4 > 0) {
+			p4v.setVisibility(View.VISIBLE);
 		}
-		if (d5 > 0) {
-			d5v.setVisibility(View.VISIBLE);
+		if (p5 > 0) {
+			p5v.setVisibility(View.VISIBLE);
 		}
-		updateMiddleData(d1, d1v);
-		updateMiddleData(d2, d2v);
-		updateMiddleData(d3, d3v);
-		updateMiddleData(d4, d4v);
-		updateMiddleData(d5, d5v);
-		updateMiddleData(d6, d6v);
+		updateMiddleData(p1, p1v);
+		updateMiddleData(p2, p2v);
+		updateMiddleData(p3, p3v);
+		updateMiddleData(p4, p4v);
+		updateMiddleData(p5, p5v);
+		updateMiddleData(p6, p6v);
 		
 	}
 	@Override
@@ -199,11 +194,11 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		MobclickAgent.onPause(this);
 	}
 	private void initLayout() {
-		data = YaoPao01App.db.queryData();
+		DataBean data = YaoPao01App.db.queryData();
 		if (Variables.islogin == 1) {
 			JSONObject userInfo = DataTool.getUserInfo();
 			if (userInfo != null) {
-				if (!"".equals(userInfo.getString("nickname"))||userInfo.getString("nickname")!=null) {
+				if (!"".equals(userInfo.getString("nickname"))&&userInfo.getString("nickname")!=null) {
 					state.setText(userInfo.getString("nickname"));
 				} else {
 					state.setText(YaoPao01App.sharedPreferences.getString(
@@ -223,19 +218,23 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		} else {
 			state.setText("未登录");
 		}
-		initMileage();
+		initMileage(data);
 		initCountView(data);
 		initPspeed(data);
 		initPoints(data);
-		//toutalCount.setText(data.getCount()+""); 
-		//avgSpeed.setText(getSeed(data.getPspeed())); 
-		//points.setText(data.getPoints()+"");
-		
-
 	}
-	private void initMileage() {
+	private void initMileage(DataBean data) {
 		distance = data.getDistance();
 		//distance = 549254;
+		ImageView d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
+		ImageView d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
+		ImageView d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
+		ImageView d4v = (ImageView) this.findViewById(R.id.main_milage_num4);
+		ImageView d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
+		ImageView d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
+		d1v.setVisibility(View.GONE);
+		d2v.setVisibility(View.GONE);
+		d3v.setVisibility(View.GONE);
 		int d1 = (int) distance / 1000000;
 		int d2 = (int) (distance % 1000000) / 100000;
 		int d3 = (int) (distance % 100000) / 10000;
@@ -370,23 +369,25 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
 				if (Variables.gpsStatus==2) {
-//				if (Variables.gpsStatus==4) {
 					DialogTool dialog = new DialogTool(MainActivity.this,handler);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip2(d);
 				}else if (Variables.gpsStatus==0) {
-//				}else if (Variables.gpsStatus==5) {
 					DialogTool dialog = new DialogTool(MainActivity.this,null);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip1(d);
 				}else if(Variables.gpsStatus==1){
-//				}else {
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
 				}
+				//测试代码
+//					Intent mainIntent = new Intent(MainActivity.this,
+//							SportSetActivity.class);
+//					startActivity(mainIntent);
+				//测试代码
 				break;
 			}
 			break;

@@ -2,14 +2,14 @@
 
     <dimen name="font_size1">9dp</dimen>
     <dimen name="font_size2">18dp</dimen>
-    <dimen name="font_size3">20dp</dimen>
+    <dimen name="font_size3">17dp</dimen>
     <dimen name="font_size4">30dp</dimen>
     <dimen name="font_size5">40dp</dimen>
     <dimen name="font_size6">60dp</dimen>
     <dimen name="font_size7">15dp</dimen>
     <dimen name="font_size8">10dp</dimen>
     <dimen name="font_size9">12dp</dimen>
-    <dimen name="margin1">10dp</dimen>
+    <dimen name="margin1">6dp</dimen>
     <dimen name="margin2">20dp</dimen>
     <dimen name="margin3">40dp</dimen>
     <dimen name="margin4">80dp</dimen>
@@ -75,7 +75,7 @@
     
     <dimen name="sport_map_size">60dp</dimen>
     <dimen name="sport_map_margin">20dp</dimen>
-    <dimen name="sport_vertival_height">60dp</dimen>
+    <dimen name="sport_vertival_height">75dp</dimen>
     
     <dimen name="slider_num_height">50dp</dimen>
     <dimen name="slider_num_width">30dp</dimen>

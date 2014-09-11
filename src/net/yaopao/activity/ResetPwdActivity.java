@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
@@ -219,6 +220,11 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
 							Toast.LENGTH_LONG).show();
 					//发广播通知注册和登录页面关闭
+					Variables.uid = rt.getJSONObject("userinfo").getInteger(
+							"uid");
+					Variables.utype = rt.getJSONObject("userinfo").getInteger(
+							"utype");
+					DataTool.setUserInfo(resetJson);
 					Intent closeintent = new Intent(closeAction);
 					closeintent.putExtra("data", "close");
 					sendBroadcast(closeintent);
@@ -277,6 +283,9 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Toast.makeText(ResetPwdActivity.this, "验证码获取成功",
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -3) {
+					Toast.makeText(ResetPwdActivity.this, "手机号不存在，请重新输入",
 							Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(ResetPwdActivity.this, "验证码获取失败，请稍后重试",

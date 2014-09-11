@@ -229,12 +229,11 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			if (result) {
 				Log.v("wy", regJson);
 				JSONObject rt = JSON.parseObject(regJson);
-				int rtCode = 0;
 				int uid = 0;
-				rtCode = rt.getJSONObject("state").getInteger("code");
+				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
-					Variables.uid = rt.getInteger("uid");
-					Variables.utype = rt.getInteger("utype");
+					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
+					Variables.utype = rt.getJSONObject("userinfo").getInteger("utype");
 					Variables.islogin = 1;
 					DataTool.setUserInfo(regJson);
 					Log.v("wy", "save info =" + regJson);

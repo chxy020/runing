@@ -58,7 +58,7 @@ public class MapActivity extends Activity implements LocationSource,
 	static TextView sliderTextV;
 	private ImageView backV;
 	private ImageView locV;
-	private int isFollow = 0;
+	private int isFollow = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -358,7 +358,10 @@ public class MapActivity extends Activity implements LocationSource,
 							SportRecordActivity.gpsListenerHandler.obtainMessage(4).sendToTarget();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
-							
+							//发送广播关闭运动页面
+							Intent closeintent = new Intent(closeAction);
+							closeintent.putExtra("data", "close");
+							sendBroadcast(closeintent);
 						}else if(msg.what == 1){
 							//运动距离小于50米
 							Toast.makeText(MapActivity.this, "您运动距离也太短了吧！这次就不给您记录了，下次一定要加油", Toast.LENGTH_LONG).show();
@@ -370,13 +373,15 @@ public class MapActivity extends Activity implements LocationSource,
 								SportRecordActivity.points=null;
 							}
 							MapActivity.this.finish();
+							//发送广播关闭运动页面
+							Intent closeintent = new Intent(closeAction);
+							closeintent.putExtra("data", "close");
+							sendBroadcast(closeintent);
 						}
 						super.handleMessage(msg);
 					}
 				};
-				Intent closeintent = new Intent(closeAction);
-				closeintent.putExtra("data", "close");
-				sendBroadcast(closeintent);
+				
 				DialogTool.doneSport(MapActivity.this, sliderHandler);
 				break;
 			}

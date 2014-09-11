@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
 
 import com.alibaba.fastjson.JSONArray;
+import com.amap.api.a.am;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -292,7 +293,7 @@ public class SportListOneActivity extends Activity {
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
+		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 		ponitV.setText("+ " + ponit);
 		initDis(distance);
 		//disV.setText(df.format(distance / 1000) + " km");

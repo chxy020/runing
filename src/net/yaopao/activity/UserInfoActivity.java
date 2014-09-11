@@ -146,7 +146,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		if (Variables.islogin == 1) {
 			JSONObject user = DataTool.getUserInfo();
 			if (user != null) {
-				if (!"".equals(user.getString("nickname"))||user.getString("nickname")!=null) {
+				String nickname = user.getString("nickname");
+				Log.v("wyuser", "nickname = "+nickname+"--");
+				Log.v("wyuser", "is 1= "+!"".equals(nickname));
+				Log.v("wyuser", "is2 = "+(nickname!=null));
+				
+				if (!"".equals(user.getString("nickname"))&&user.getString("nickname")!=null) {
 					nicknameV.setText(user.getString("nickname"));
 				} else {
 					nicknameV.setText(DataTool.getPhone());
@@ -199,10 +204,15 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				nickname = nicknameV.getText().toString().trim();
+				realname = realnameV.getText().toString().trim();
 				if ("".equals(nickname) || nickname == null) {
 					Toast.makeText(UserInfoActivity.this, "昵称不能为空",
 							Toast.LENGTH_LONG).show();
-				} else {
+				}else if (!checkNikeName(nickname)) {
+					Toast.makeText(UserInfoActivity.this, "昵称不符合规范，应为4-30个字节，支持中英文、数字、下划线和减号", Toast.LENGTH_LONG).show() ;
+				}else if(!checkName(realname)){
+					Toast.makeText(UserInfoActivity.this, "真实姓名不符合规范，应为4-30个字节，支持中英文、数字、下划线和减号", Toast.LENGTH_LONG).show() ;
+				}else {
 					new saveAsyncTask().execute("");
 				}
 
@@ -552,5 +562,44 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			new upImgAsyncTask().execute("");
 		}
 	}
+	
+	public static boolean checkNikeName(String nikeName) {
+		if (nikeName == null || nikeName.length() == 0)
+			return false;
 
+		try {
+			byte[] b = nikeName.getBytes("UNICODE");
+			int i = 0;
+			int count = 0;
+			for (i = 2; i < b.length; i++) {
+				if (b[i] != 0 || (i % 2 == 0)) {
+					count++;
+				}
+			}
+			if (count < 4 || count > 30) {
+				return false;
+			}
+		} catch (Exception e) {
+		}
+		return true;
+	}
+	public static boolean checkName(String nikeName) {
+		if (nikeName == null ) return true;
+		if (nikeName.length()==0) return true;
+		try {
+			byte[] b = nikeName.getBytes("UNICODE");
+			int i = 0;
+			int count = 0;
+			for (i = 2; i < b.length; i++) {
+				if (b[i] != 0 || (i % 2 == 0)) {
+					count++;
+				}
+			}
+			if (count < 4 || count > 30) {
+				return false;
+			}
+		} catch (Exception e) {
+		}
+		return true;
+	}
 }
