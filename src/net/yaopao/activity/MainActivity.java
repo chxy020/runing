@@ -280,8 +280,10 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		this.setListener();
 	
 		//播放语音测试
-		PlayVoice.StartPlayVoice("100000,100001,100002,100003,100004",this);
+		PlayVoice.StartSportsVoice(this);
+		PlayVoice.StartPlayVoice("100000,110002,100001,100002,100003,100004",this);
 		PlayVoice.StartPlayVoice("120225,130201,131101",this);
+		PlayVoice.CompleteSportsVoice("0.39","59","47","12","4",this);
 	}
 
 	/**
