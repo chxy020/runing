@@ -369,25 +369,25 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 				break;
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
-				if (Variables.gpsStatus==2) {
-					DialogTool dialog = new DialogTool(MainActivity.this,handler);
-					WindowManager m = getWindowManager();
-					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-					dialog.alertGpsTip2(d);
-				}else if (Variables.gpsStatus==0) {
-					DialogTool dialog = new DialogTool(MainActivity.this,null);
-					WindowManager m = getWindowManager();
-					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-					dialog.alertGpsTip1(d);
-				}else if(Variables.gpsStatus==1){
-					Intent mainIntent = new Intent(MainActivity.this,
-							SportSetActivity.class);
-					startActivity(mainIntent);
-				}
-				//测试代码
+//				if (Variables.gpsStatus==2) {
+//					DialogTool dialog = new DialogTool(MainActivity.this,handler);
+//					WindowManager m = getWindowManager();
+//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+//					dialog.alertGpsTip2(d);
+//				}else if (Variables.gpsStatus==0) {
+//					DialogTool dialog = new DialogTool(MainActivity.this,null);
+//					WindowManager m = getWindowManager();
+//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+//					dialog.alertGpsTip1(d);
+//				}else if(Variables.gpsStatus==1){
 //					Intent mainIntent = new Intent(MainActivity.this,
 //							SportSetActivity.class);
 //					startActivity(mainIntent);
+//				}
+				//测试代码
+					Intent mainIntent = new Intent(MainActivity.this,
+							SportSetActivity.class);
+					startActivity(mainIntent);
 				//测试代码
 				break;
 			}
@@ -425,6 +425,8 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	
 		//播放语音测试
 //		PlayVoice.StartSportsVoice(this);
+//		PlayVoice.PauseSportsVoice(this);
+//		PlayVoice.ProceedSportsVoice(this);;
 //		PlayVoice.StartPlayVoice("100000,110002,100001,100002,100003,100004",this);
 //		PlayVoice.StartPlayVoice("120225,130201,131101",this);
 //		PlayVoice.CompleteSportsVoice("0.39","59","47","12","4",this);

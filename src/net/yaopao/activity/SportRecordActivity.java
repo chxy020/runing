@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
+import net.yaopao.voice.PlayVoice;
 import net.yaopao.widget.SliderRelativeLayout;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -79,10 +80,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public  int speedPerKm=0;
 	public  double disPerKm=0;
 	public  int timePerKm=0;
-	//private static long lastSportTime=0;//集合中最后一个运动点的时间
 	public  long sprortTime;
 	private  Timer timer = null;
-	 TimerTask task = null;
+	private TimerTask task = null;
 	public static Handler timerListenerHandler;
 	public static Handler gpsListenerHandler;
 	// 测试代码
@@ -99,8 +99,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
-//		Log.v("wysport","spre========================== Variables.utime="+Variables.utime);
-//		Log.v("wysport","spre========================== points="+points);
+		//PlayVoice.StartSportsVoice(this);
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		mapV = (ImageView) findViewById(R.id.sport_map);
@@ -115,17 +114,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		toptDis = (LinearLayout) findViewById(R.id.sport_dis);
 		recodingTimeTextV =(TextView) findViewById(R.id.sport_recoding_time_text);
 		recodingMileageTextV =(TextView) findViewById(R.id.sport_recoding_mileage_text);
-//		d1v = (ImageView) this.findViewById(R.id.match_recoding_dis1);
-//		d2v = (ImageView) this.findViewById(R.id.match_recoding_dis2);
-//		d3v = (ImageView) this.findViewById(R.id.match_recoding_dis3);
-//		d4v = (ImageView) this.findViewById(R.id.match_recoding_dis4);
-//		t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
-//		t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
-//		t3V = (ImageView) findViewById(R.id.match_recoding_time_m1);
-//		t4V = (ImageView) findViewById(R.id.match_recoding_time_m2);
-//		t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
-//		t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
-
 		s1V = (ImageView) findViewById(R.id.match_recoding_speed1);
 		s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
 		s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
@@ -357,6 +345,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				sliderTextV.setText("滑动暂停");
 				doneV.setVisibility(View.GONE);
 				resumeV.setVisibility(View.GONE);
+				Log.v("wyvoice", "运动继续");
+//				PlayVoice.ProceedSportsVoice(SportRecordActivity.this);
 				break;
 			}
 			break;
@@ -374,6 +364,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					sliderIconV.setVisibility(View.GONE);
 					sliderTextV.setVisibility(View.GONE);
 				}
+				Log.v("wyvoice", "运动暂停");
+//				PlayVoice.PauseSportsVoice(SportRecordActivity.this);
 			}
 		};
 	};
@@ -539,6 +531,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 //	};
 
 	public  void startTimer() {
+		
 //		timer.postDelayed(timerTask, 1000);
 		Variables.sportStatus = 0;
 		timer = new Timer();

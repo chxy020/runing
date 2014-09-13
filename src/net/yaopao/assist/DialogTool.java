@@ -1,8 +1,14 @@
 package net.yaopao.assist;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import net.yaopao.activity.R;
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
+import net.yaopao.voice.PlayVoice;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +20,7 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -70,6 +77,7 @@ public class DialogTool implements OnTouchListener {
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		confirm.setOnTouchListener(new OnTouchListener() {
+			@SuppressLint("NewApi")
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
 				int action = event.getAction();
@@ -88,6 +96,13 @@ public class DialogTool implements OnTouchListener {
 					}
 					//计算距离积分
 					YaoPao01App.calDisPoints(context,handler);
+				    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
+					df.setMaximumFractionDigits(2);
+					df.setRoundingMode(RoundingMode.DOWN);
+					int[] time = YaoPao01App.cal((int) (Variables.utime));
+					int[] speed = YaoPao01App.cal((int) (Variables.pspeed));
+					Log.v("wyvoice", "运动完成");
+					PlayVoice.CompleteSportsVoice(df.format((double)(Variables.distance/1000)), time[1]+"", time[2]+"", speed[1]+"", speed[2]+"", context);
 					break;
 				default:
 					break;
