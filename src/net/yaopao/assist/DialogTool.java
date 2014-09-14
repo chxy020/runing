@@ -3,6 +3,10 @@ package net.yaopao.assist;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> 45b4120eed5aff8804e0bafe920cabdd84f5234f
 
 import net.yaopao.activity.R;
 import net.yaopao.activity.SportRecordActivity;
@@ -39,7 +43,6 @@ public class DialogTool implements OnTouchListener {
 	TextView setV;
 	Context context;
 	Handler handler;
-
 	public DialogTool(Context context,Handler handler) {
 		this.context = context;
 		this.handler=handler;
@@ -96,6 +99,7 @@ public class DialogTool implements OnTouchListener {
 					}
 					//计算距离积分
 					YaoPao01App.calDisPoints(context,handler);
+<<<<<<< HEAD
 				    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
 					df.setMaximumFractionDigits(2);
 					df.setRoundingMode(RoundingMode.DOWN);
@@ -103,6 +107,9 @@ public class DialogTool implements OnTouchListener {
 					int[] speed = YaoPao01App.cal((int) (Variables.pspeed));
 					Log.v("wyvoice", "运动完成");
 					PlayVoice.CompleteSportsVoice(df.format((double)(Variables.distance/1000)), time[1]+"", time[2]+"", speed[1]+"", speed[2]+"", context);
+=======
+					
+>>>>>>> 45b4120eed5aff8804e0bafe920cabdd84f5234f
 					break;
 				default:
 					break;

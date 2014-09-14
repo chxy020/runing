@@ -27,6 +27,12 @@ public class GpsPoint {
 		this.lat = lat;
 		this.status = status;
 	}
+	public GpsPoint(double lon, double lat, int status,long time) {
+		this.lon = lon;
+		this.lat = lat;
+		this.status = status;
+		this.time = time;
+	}
 	public GpsPoint(double lon, double lat, int status,long time,double speed,float course,double altitude) {
 		this.lon = lon;
 		this.lat = lat;

@@ -7,6 +7,7 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
+import net.yaopao.voice.PlayVoice;
 import net.yaopao.widget.SliderRelativeLayout;
 import android.app.Activity;
 import android.content.Intent;
@@ -179,6 +180,7 @@ public class MapActivity extends Activity implements LocationSource,
 				resumeV.setVisibility(View.VISIBLE);
 				sliderIconV.setVisibility(View.GONE);
 				sliderTextV.setVisibility(View.GONE);
+				PlayVoice.PauseSportsVoice(MapActivity.this);
 			}
 		};
 	};
@@ -400,6 +402,7 @@ public class MapActivity extends Activity implements LocationSource,
 				sliderTextV.setText("滑动暂停");
 				doneV.setVisibility(View.GONE);
 				resumeV.setVisibility(View.GONE);
+				PlayVoice.ProceedSportsVoice(MapActivity.this);
 				break;
 			}
 			break;
