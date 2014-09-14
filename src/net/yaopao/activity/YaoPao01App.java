@@ -513,5 +513,94 @@ public class YaoPao01App extends Application {
 		
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
+	
+	// 获取5分钟的整数倍时数据id
+		public static String getPer5minCode() {
+			int[] times = YaoPao01App.cal(Variables.utime);
+			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			StringBuffer timeStr = new StringBuffer();
+			for (int i = 0; i < time.size(); i++) {
+				timeStr.append(time.get(i) + ",");
+			}
+			return timeStr.toString();
+		}
+		// 获取剩余时间数据id
+		public static String getLefTimeCode() {
+			int[] times = YaoPao01App.cal(Variables.runtarTime*60-Variables.utime);
+			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			StringBuffer timeStr = new StringBuffer();
+			for (int i = 0; i < time.size(); i++) {
+				timeStr.append(time.get(i) + ",");
+			}
+			return timeStr.toString();
+		}
+		// 获取超过目标时间数据id
+		public static String getOverTimeCode() {
+			int[] times = YaoPao01App.cal(Variables.utime-Variables.runtarTime*60);
+			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			StringBuffer timeStr = new StringBuffer();
+			for (int i = 0; i < time.size(); i++) {
+				timeStr.append(time.get(i) + ",");
+			}
+			return timeStr.toString();
+		}
+		// 获取目标时间数据id
+		public static String getGoalTimeCode() {
+			int[] times = YaoPao01App.cal(Variables.runtarTime*60);
+			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			StringBuffer timeStr = new StringBuffer();
+			for (int i = 0; i < time.size(); i++) {
+				timeStr.append(time.get(i) + ",");
+			}
+			return timeStr.toString();
+		}
+		/**
+		 * 时间运动目标,跑步至运动目标的一半时
+		 */
+		public static void playHalfTimeVoice() {
+			StringBuffer ids = new StringBuffer();
+			ids.append("120101,120223,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			Log.v("wyvoice", "时间运动目标,跑步至运动目标的一半时ids =" + ids);
 
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		/**
+		 * 时间运动目标,跑步至5分钟的整数倍时；2，距离目标小于等于10分钟时；
+		 */
+		public static void playLess10minVoice() {
+			StringBuffer ids = new StringBuffer();
+			ids.append("120102,120224,120222,").append(getLefTimeCode()).append("110041,120212,").append(getDisCode()).append("120213,").append(getPspeedCode());
+			Log.v("wyvoice", "时间运动目标，小于等于10分钟时上报ids =" + ids);
+
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		/**
+		 *  时间运动目标,达成目标
+		 */
+		public static void playToTimeGoalVoice() {
+			StringBuffer ids = new StringBuffer();
+			ids.append("120103,120226,").append(getGoalTimeCode()).append("120227,120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			Log.v("wyvoice", "时间运动目标,达成目标ids =" + ids);
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		/**
+		 *  时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时
+		 */
+		public static void playOverTimeGoalVoice() {
+			StringBuffer ids = new StringBuffer();
+			ids.append("120221,").append(getDisCode()).append("110041,").append("120225,").append(getOverDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
+			Log.v("wyvoice", "运动类型是距离,1，跑步至整公里数时；2，超过运动目标时ids =" + ids);
+			
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		
+		// 整公里上报
+		public static void playPer5minVoice() {
+			StringBuffer ids = new StringBuffer();
+			ids.append("120221,").append(getPerKmCode()).append("110041,120212,")
+					.append(getTimeCode()).append("120213,")
+					.append(getPspeedCode());
+			Log.v("wyvoice", "跑步至5分钟的整数倍时ids =" + ids);
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
 }

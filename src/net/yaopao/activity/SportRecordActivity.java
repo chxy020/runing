@@ -418,7 +418,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				if (last.status == point.status) {
 					last.time = point.time;
 					if (last.status==0) {
-						Variables.utime+=duringTime;
+//						Variables.utime+=duringTime; 
+						//测试代码
+						Variables.utime+=(duringTime+20); 
 						result = true;
 					}else{
 						result = false;
@@ -426,7 +428,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					
 				} else {
 					if(last.status == 0){
-						Variables.utime+=duringTime;
+//						Variables.utime+=duringTime;
+						//测试代码
+						Variables.utime+=(duringTime+20); 
 						Variables.distance += meter;
 					}
 					points.add(point);
@@ -435,13 +439,16 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 			} else {
 				if (point.status == 0) {
-					Variables.utime+=duringTime;
+//					Variables.utime+=duringTime;
+					//测试代码
+					Variables.utime+=(duringTime+20); 
 					Variables.distance += meter;
 				} 
 				points.add(point);
 				result = true;
 			}
 			//判断运动目标类类型，是否达到播放语音条件
+			Log.v("wyvoice", "目标="+Variables.runtar);
 			 if(Variables.runtar==1) {
 				if (Variables.distance>(Variables.runtarDis*500)&&Variables.distance<Variables.runtarDis*1000) {
 					//是否播放过超过一半的语音
@@ -456,6 +463,42 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 						YaoPao01App.playToGoalVoice();
 						isOverGoal=true;
 						toGoalPlayed=true;
+					}
+				}
+			}else if (Variables.runtar==2) {
+				
+				Log.v("wyvoice", "Variables.utime="+Variables.utime+" Variables.runtarTime*30="+Variables.runtarTime*30);
+				if (Variables.utime>(Variables.runtarTime*30)&&Variables.utime<Variables.runtarTime*60) {
+					//是否播放过超过一半的语音
+					if (!isHalf) {
+						//此处播放运动了一半
+						YaoPao01App.playHalfTimeVoice();
+						isHalf=true;
+						haflPlayed=true;
+					}
+				}else if(Variables.utime>Variables.runtarTime*60){
+					if (!isOverGoal) {
+						YaoPao01App.playToTimeGoalVoice();
+						isOverGoal=true;
+						toGoalPlayed=true;
+					}
+				}
+
+					if (haflPlayed) {
+						haflPlayed=false;
+					}else if (toGoalPlayed) {
+						toGoalPlayed=false;
+					}else{
+						//距离目标小于10分钟，未超过目标
+					if((Variables.runtarTime*60-Variables.utime)<600&&(Variables.runtarTime*60-Variables.utime)>0){
+						YaoPao01App.playLess10minVoice();
+					}else if(Variables.utime>Variables.runtarTime*60){
+						if (isOverGoal) {
+							YaoPao01App.playOverTimeGoalVoice();
+						}
+					}else{
+						YaoPao01App.playPerKmVoice();
+					}
 					}
 				}
 			}
@@ -475,10 +518,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					}else if (Variables.runtar==1) {
 						if (haflPlayed) {
 							haflPlayed=false;
-						}if (toGoalPlayed) {
+						}else if (toGoalPlayed) {
 							toGoalPlayed=false;
 						}else{
-						//距离目标小于2公里，未超过目标
+							//距离目标小于2公里，未超过目标
 						if((Variables.runtarDis*1000-Variables.distance)<2000&&(Variables.runtarDis*1000-Variables.distance)>0){
 							YaoPao01App.playLess2Voice();
 						}else if(Variables.distance>Variables.runtarDis*1000){
