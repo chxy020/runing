@@ -2,6 +2,7 @@ package net.yaopao.activity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -86,11 +87,14 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private  TimerTask task = null;
 	public static Handler timerListenerHandler;
 	public static Handler gpsListenerHandler;
+	 private boolean isHalf=false;//是否播放过超过目标的一半，true-已经播放过，false-没有播放过，
+	 private boolean haflPlayed=false;//本次是否播放的运动到一半距离true-是，false-否
+	 private boolean isOverGoal=false;//是否播放过达成目标，true-已经播放过，false-没有播放过，
+	 private boolean toGoalPlayed=false;///本次是否播放的完成目标true-是，false-否
 	// 测试代码
 	 public static double lon = 116.395823;
 	 public static double lat = 39.839016;
-	 private boolean isHalf=false;//是否播放过超过目标的一半，true-已经播放过，false-没有播放过，
-	 private boolean isOverGoal=false;//是否播放过达成目标，true-已经播放过，false-没有播放过，
+	
 	// 以上测试代码
 
 	@Override
@@ -102,8 +106,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
 		PlayVoice.StartSportsVoice(this);
-//		PlayVoice.PauseSportsVoice(this);
-//		PlayVoice.ProceedSportsVoice(SportRecordActivity.this);
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
 		mapV = (ImageView) findViewById(R.id.sport_map);
@@ -371,17 +373,21 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	};
 
 	public static GpsPoint getOnePoint() {
-		GpsPoint point = null;
-		if (YaoPao01App.loc != null) {
-			point = new GpsPoint();
-			point.lon = YaoPao01App.loc.getLongitude();
-			point.lat = YaoPao01App.loc.getLatitude();
-			point.time = YaoPao01App.loc.getTime();
-			point.altitude = YaoPao01App.loc.getAltitude();
-			point.course = YaoPao01App.loc.getBearing();
-			point.speed = YaoPao01App.loc.getSpeed();
-			point.status = Variables.sportStatus;
-		}
+//		GpsPoint point = null;
+//		if (YaoPao01App.loc != null) {
+//			point = new GpsPoint();
+//			point.lon = YaoPao01App.loc.getLongitude();
+//			point.lat = YaoPao01App.loc.getLatitude();
+//			point.time = YaoPao01App.loc.getTime();
+//			point.altitude = YaoPao01App.loc.getAltitude();
+//			point.course = YaoPao01App.loc.getBearing();
+//			point.speed = YaoPao01App.loc.getSpeed();
+//			point.status = Variables.sportStatus;
+//		}
+		//测试代码
+		 lat = lat + 0.0006;
+		 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,new Date().getTime());
+		//测试代码
 		return point;
 
 	}
@@ -435,21 +441,20 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				result = true;
 			}
 			//判断运动目标类类型，是否达到播放语音条件
-			//如果是自由运动
-			if (Variables.runtar==0) {
-				YaoPao01App.playPerKmVoice();
-			}else if(Variables.runtar==1) {
-				if (Variables.distance>(Variables.runtarDis*500)) {
+			 if(Variables.runtar==1) {
+				if (Variables.distance>(Variables.runtarDis*500)&&Variables.distance<Variables.runtarDis*1000) {
 					//是否播放过超过一半的语音
 					if (!isHalf) {
 						//此处播放运动了一半
 						YaoPao01App.playHalfDisVoice();
 						isHalf=true;
+						haflPlayed=true;
 					}
-				}else if(Variables.distance>Variables.runtarDis){
+				}else if(Variables.distance>Variables.runtarDis*1000){
 					if (!isOverGoal) {
-						YaoPao01App.playCompletVoice();
+						YaoPao01App.playToGoalVoice();
 						isOverGoal=true;
+						toGoalPlayed=true;
 					}
 				}
 			}
@@ -463,15 +468,25 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					Variables.points += YaoPao01App.calPspeedPoints(minute);
 					disPerKm = 0;
 					timePerKm = 0;
-				if (Variables.runtar==1) {
+					//如果是自由运动
+					if (Variables.runtar==0) {
+						YaoPao01App.playPerKmVoice();
+					}else if (Variables.runtar==1) {
+						if (haflPlayed) {
+							haflPlayed=false;
+						}if (toGoalPlayed) {
+							toGoalPlayed=false;
+						}else{
 						//距离目标小于2公里，未超过目标
 						if((Variables.runtarDis*1000-Variables.distance)<2000&&(Variables.runtarDis*1000-Variables.distance)>0){
 							YaoPao01App.playLess2Voice();
-						}else if(Variables.runtarDis*1000<Variables.distance){
-							//如果超过距离目标
-							YaoPao01App.playOverGoalVoice();
+						}else if(Variables.distance>Variables.runtarDis*1000){
+							if (isOverGoal) {
+								YaoPao01App.playOverGoalVoice();
+							}
 						}else{
 							YaoPao01App.playPerKmVoice();
+						}
 						}
 					}
 				}
@@ -486,33 +501,6 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	  Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
-			// 测试代码
-			 lat = lat + 0.001;
-			 double meter = 0;
-			 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
-			 if (points.size() == 0) {
-			 points.add(point);
-			 } else {
-			 meter = getDistanceFrom2ponit(points.get(points.size() - 1),
-			 point);
-			 points.add(point);
-			 }
-			 Variables.distance += meter;
-			 Variables.utime+=1;
-			 updateUI();
-			/*
-			 * Variables.distance += 55; if (Variables.runtar != 0) { if (status
-			 * < target) { if (Variables.runtar == 1) { status = (int)
-			 * (Variables.distance * 100); } else if (Variables.runtar == 2) {
-			 * status = Variables.utime; } // 发送消息到Handler Message m = new
-			 * Message(); m.what = 0x111; // 发送消息 procesHandler.sendMessage(m);
-			 * } }
-			 */
-			
-			// 以上测试代码
-
-			
-
 			if (pushOnePoint()) {
 				updateUI();
 				if (Variables.runtar != 0) {
@@ -534,33 +522,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		}
 
 	};
-
-	
-//	final static Handler timer = new Handler();
-//	static Runnable timerTask = new Runnable() {
-//		@Override
-//		public void run() {
-//			sprortTime+=1;
-//			int[] time = YaoPao01App.cal(sprortTime);
-//			int t1 = time[0] / 10;
-//			int t2 = time[0] % 10;
-//			int t3 = time[1] / 10;
-//			int t4 = time[1] % 10;
-//			int t5 = time[2] / 10;
-//			int t6 = time[2] % 10;
-//			update(t1, t1V);
-//			update(t2, t2V);
-//			update(t3, t3V);
-//			update(t4, t4V);
-//			update(t5, t5V);
-//			update(t6, t6V);
-//			timer.postDelayed(this, 1000);
-//		}
-//
-//	};
-
 	public  void startTimer() {
-//		timer.postDelayed(timerTask, 1000);
 		Variables.sportStatus = 0;
 		timer = new Timer();
 		 task = new TimerTask() {

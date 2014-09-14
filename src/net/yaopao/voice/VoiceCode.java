@@ -140,6 +140,9 @@ public class VoiceCode {
 		code.put(120223, "你已完成目标的一半");
 		code.put(120224, "你就快达成目标了");
 		code.put(120225, "超过你的目标");
+		code.put(120226, "你已达成了");
+			
+
 
 		code.put(130201, "你已偏离赛道");
 
