@@ -96,8 +96,7 @@ public class DialogTool implements OnTouchListener {
 					}
 					//计算距离积分
 					YaoPao01App.calDisPoints(context,handler);
-					//播放语音
-					YaoPao01App.playCompletVoice();
+					
 					break;
 				default:
 					break;

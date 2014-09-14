@@ -335,10 +335,8 @@ public class YaoPao01App extends Application {
 			}
 		}
 		handler.obtainMessage(0).sendToTarget();
-		// YaoPao01App.lts.writeFileToSD("完成时    运动 : "
-		// +Variables.distance+"米 "+Variables.utime+"秒", "uploadLocation");
-		// YaoPao01App.lts.writeFileToSD("完成时    计算后积分 : " +Variables.points,
-		// "uploadLocation");
+		//播放语音
+		YaoPao01App.playCompletVoice();
 	}
 
 	/**
