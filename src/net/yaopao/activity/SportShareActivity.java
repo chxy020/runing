@@ -11,6 +11,7 @@ import java.util.List;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
+import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,6 +19,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -29,9 +31,15 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
+
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.alibaba.fastjson.JSONArray;
 import com.amap.api.a.am;
@@ -46,7 +54,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportListOneActivity extends Activity {
+public class SportShareActivity extends Activity implements OnClickListener {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -54,7 +62,6 @@ public class SportListOneActivity extends Activity {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
-	private TextView shareV;
 	//private TextView disV;
 	private ImageView typeV;
 	private ImageView mindV;
@@ -87,13 +94,18 @@ public class SportListOneActivity extends Activity {
 	//private DecimalFormat df;
 	String title = "";
 	int recordId = 0;
-
+	
+	
+	/** 分享按钮 */
+	private Button mShareBtn = null;
+	
+	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sport_list_one);
+		setContentView(R.layout.activity_sport_share);
 		Intent intent = getIntent();
 		recordId = Integer.parseInt(intent.getStringExtra("id"));
 		oneSport = YaoPao01App.db.queryForOne(recordId);
@@ -108,7 +120,8 @@ public class SportListOneActivity extends Activity {
 //		df.setMaximumFractionDigits(2);
 //		df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
-
+		
+		initView();
 	}
 
 	private void initViewPager() {
@@ -138,7 +151,6 @@ public class SportListOneActivity extends Activity {
 		pspeedV = (TextView) findViewById(R.id.one_pspeed);
 		ponitV = (TextView) findViewById(R.id.one_ponit);
 		titleV = (TextView) findViewById(R.id.recording_one_title);
-		shareV = (TextView) findViewById(R.id.recording_one_share);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
 		//disV = (TextView) findViewById(R.id.one_dis);
@@ -157,20 +169,8 @@ public class SportListOneActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				 SportListOneActivity.this.finish();
+				 SportShareActivity.this.finish();
 				
-			}
-		});
-		
-		shareV.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent myIntent = new Intent();
-				//分享页面
-				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
-				myIntent.putExtra("id", recordId + "");
-				startActivity(myIntent);
 			}
 		});
 		initMap();
@@ -201,7 +201,7 @@ public class SportListOneActivity extends Activity {
 
 			@Override
 			public void onMapClick(LatLng arg0) {
-				Intent intent = new Intent(SportListOneActivity.this,
+				Intent intent = new Intent(SportShareActivity.this,
 						SportTrackMap.class);
 				intent.putExtra("id", recordId + "");
 				startActivity(intent);
@@ -612,5 +612,72 @@ public class SportListOneActivity extends Activity {
 			e.printStackTrace();
 		}
 		return bitmap;
+	}
+	
+	/*****chenxy add *******/
+	/**
+	 * 页面初始化
+	 * 
+	 * @author cxy
+	 * @date 2014-8-25
+	 */
+	private void initView() {
+		// 分享按钮
+		mShareBtn = (Button) findViewById(R.id.shareBtn);
+		// 注册事件
+		this.setListener();
+	}
+
+	/**
+	 * 注册事件
+	 * 
+	 * @author cxy
+	 * @date 2014-8-25
+	 */
+	private void setListener() {
+		// 注册分享事件
+		mShareBtn.setOnClickListener(this);
+	}
+	
+	private void showShare() {
+		ShareSDK.initSDK(this);
+		OnekeyShare oks = new OnekeyShare();
+		//关闭sso授权
+		oks.disableSSOWhenAuthorize();
+		
+		// 分享时Notification的图标和文字
+		oks.setNotification(R.drawable.icon, getString(R.string.app_name));
+		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+		oks.setTitle(getString(R.string.share));
+		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+		oks.setTitleUrl("http://sharesdk.cn");
+		// text是分享文本，所有平台都需要这个字段
+		oks.setText("我是分享文本");
+		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+		oks.setImagePath("/sdcard/test.jpg");
+		// url仅在微信（包括好友和朋友圈）中使用
+		oks.setUrl("http://sharesdk.cn");
+		// comment是我对这条分享的评论，仅在人人网和QQ空间使用
+		oks.setComment("我是测试评论文本");
+		// site是分享此内容的网站名称，仅在QQ空间使用
+		oks.setSite(getString(R.string.app_name));
+		// siteUrl是分享此内容的网站地址，仅在QQ空间使用
+		oks.setSiteUrl("http://sharesdk.cn");
+		
+		// 启动分享GUI
+		oks.show(this);
+	}
+	
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.shareBtn:
+				Log.e("","chxy _______");
+				showShare();
+			break;
+			default:
+			break;
+		}
+
 	}
 }

@@ -180,10 +180,16 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				reset();
+				//改成跳转到分享页面
+				/**/
 				myIntent = new Intent(SportSaveActivity.this,
 						SportListActivity.class);
 				startActivity(myIntent);
 				SportSaveActivity.this.finish();
+				
+				//分享页面
+				//myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
+				//startActivity(myIntent);
 				Log.v("wysport","save  Variables.utime="+Variables.utime);
 				break;
 			}

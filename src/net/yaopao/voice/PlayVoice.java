@@ -199,7 +199,7 @@ public class PlayVoice {
 			String file = "mp3/" + path + ".mp3";
 			// 设置需要播放的音乐文件的路径，只有设置了文件路径之后才能调用prepare
 			AssetFileDescriptor fileDescriptor = context.getAssets().openFd(file);
-			Log.e("","chxy _________file:" + file);
+			//Log.e("","chxy _________file:" + file);
 			mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),fileDescriptor.getStartOffset(),fileDescriptor.getLength());
 			//Log.e("","chxy________________mMediaPlayer2");
 			// 准备播放，只有调用了prepare之后才能调用start
