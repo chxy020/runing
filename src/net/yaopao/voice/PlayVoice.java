@@ -34,15 +34,18 @@ public class PlayVoice {
 				playVoiceData(path,mContext);
 			}
 			else{
-				//判断有没有新的记录
 				//先删除已播放完成的第一条
 				mVoiceList.remove(0);
 				int size = mVoiceList.size();
+				//Log.e("","chxy _________size:" + size);
+				//恢复控制变量
+				mIsPlay = false;
+				mVoiceIds = null;
+				mPlayCurrent = 0;
+				//判断有没有新的记录
 				if(size > 0){
-					mVoiceIds = null;
-					mPlayCurrent = 0;
+					//有新的语音记录
 					mHandler.removeMessages(PLAY_VOICE_HANDLER);
-					mIsPlay = false;
 					StartPlayVoice(null,mContext);
 				}
 			}
@@ -61,7 +64,7 @@ public class PlayVoice {
 	 */
 	public static void StartPlayVoice(String ids,Context context){
 		mContext = context;
-		
+		//Log.e("","chxy _________ids:" + ids);
 		if(null != ids){
 			//保存语音编码到队列
 			mVoiceList.add(ids);
@@ -75,8 +78,10 @@ public class PlayVoice {
 				//从头开始播放
 				//取第一条数据
 				String data = mVoiceList.get(0).toString();
+				//Log.e("","chxy _________data:" + data);
 				mVoiceIds = data.split("\\,");
 			}
+			//Log.e("","chxy _________mPlayCurrent:" + mPlayCurrent);
 			path = mVoiceIds[mPlayCurrent];
 			playVoiceData(path,context);
 		}
@@ -102,6 +107,7 @@ public class PlayVoice {
 	 * @date 2014-9-11
 	 */
 	public static void PauseSportsVoice(Context context){
+		//Log.e("","chxy _____PauseSportsVoice2");
 		StartPlayVoice("120202",context);
 	}
 	
@@ -193,6 +199,7 @@ public class PlayVoice {
 			String file = "mp3/" + path + ".mp3";
 			// 设置需要播放的音乐文件的路径，只有设置了文件路径之后才能调用prepare
 			AssetFileDescriptor fileDescriptor = context.getAssets().openFd(file);
+			Log.e("","chxy _________file:" + file);
 			mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),fileDescriptor.getStartOffset(),fileDescriptor.getLength());
 			//Log.e("","chxy________________mMediaPlayer2");
 			// 准备播放，只有调用了prepare之后才能调用start
