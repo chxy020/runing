@@ -1,21 +1,17 @@
 package net.yaopao.activity;
 
 import net.yaopao.assist.Variables;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
-import android.view.Gravity;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportTypeActivity extends Activity implements OnClickListener {
 	TextView backV;
@@ -79,7 +75,7 @@ public class SportTypeActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
-
+		MobclickAgent.onResume(this);
 		switch (Variables.runty) {
 		case 1:
 			walkImgV.setBackgroundResource(R.drawable.check);
@@ -103,7 +99,10 @@ public class SportTypeActivity extends Activity implements OnClickListener {
 
 		super.onResume();
 	}
-
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

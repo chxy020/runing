@@ -6,12 +6,14 @@ import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import net.yaopao.voice.PlayVoice;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -24,29 +26,31 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends Activity implements OnTouchListener,OnClickListener{
 	private TextView state;
 	private TextView desc;
-	private TextView toutalCount;
-	private TextView avgSpeed;
-	private TextView points;
+//	private TextView toutalCount;
+	//private TextView avgSpeed;
+	//private TextView points;
 	private ImageView start;
 	private ImageView headv;
 	private LinearLayout stateL;
 	private LinearLayout recording;
 	private LinearLayout matchL;
-	private ImageView d1v;
-	private ImageView d2v;
-	private ImageView d3v;
-	private ImageView d4v;
-	private ImageView d5v;
-	private ImageView d6v;
+//	private ImageView d1v;
+//	private ImageView d2v;
+//	private ImageView d3v;
+//	private ImageView d4v;
+//	private ImageView d5v;
+//	private ImageView d6v;
 	private Bitmap head;
 	private double distance;
-	private DataBean data;
+//	private DataBean data;
 	/** 设置 */
 	private TextView mMainSetting = null;
 	/** 系统消息 */
@@ -63,18 +67,6 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
-		toutalCount = (TextView) this.findViewById(R.id.main_count);
-		avgSpeed = (TextView) this.findViewById(R.id.main_speed);
-		points = (TextView) this.findViewById(R.id.main_points);
-		d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
-		d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
-		d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
-		d4v = (ImageView) this.findViewById(R.id.main_milage_num4);
-		d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
-		d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
-		d1v.setVisibility(View.GONE);
-		d2v.setVisibility(View.GONE);
-		d3v.setVisibility(View.GONE);
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnClickListener(this);
 		recording.setOnClickListener(this);
@@ -88,21 +80,126 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			dialog.alertGpsTip2(d);
 		}
 		this.initView();
+		checkLogin();
+	}
+	
+	 public static int px2dip(Context context, int pxValue) {
+         final float scale = context.getResources().getDisplayMetrics().density;
+         return (int) (pxValue / scale + 0.5f);
+ }
+	//检查用户是否在其他设备上登录
+	private void checkLogin() {
+		if (Variables.islogin ==3) {
+			Intent mainIntent = new Intent(MainActivity.this,
+					LoginActivity.class);
+			Toast.makeText(this, "此用户已在其他设备上登录，请重新登录", Toast.LENGTH_LONG).show();
+			startActivity(mainIntent);
+			return;
+		}
+	}
+	//初始化总次数
+	private void initCountView(DataBean data) {
+		ImageView c1v = (ImageView) findViewById(R.id.main_count_num1);
+		ImageView c2v = (ImageView) findViewById(R.id.main_count_num2);
+		ImageView c3v = (ImageView) findViewById(R.id.main_count_num3);
+		c1v.setVisibility(View.GONE);
+		c2v.setVisibility(View.GONE);
+		initCount(new ImageView[]{c1v,c2v,c3v},data);
+	}
+	private void initCount(ImageView[] views,DataBean data){
+		int count = data.getCount();
+		Log.v("wysport", " count="+count);
+		int c1 = count /100;
+		int c2 =  (count%100)/10;
+		int c3 =count%10;
+		if (c1 > 0) {
+			views[0].setVisibility(View.VISIBLE);
+			updateMiddleData(c1, views[0]);
+		}
+		if (c2 > 0) {
+			views[1].setVisibility(View.VISIBLE);
+			updateMiddleData(c2, views[1]);
+		}
+		updateMiddleData(c3, views[2]);
+	}
+	//初始化平均配速
+	private void initPspeed(DataBean data) {
+		
+		int[] speed = YaoPao01App.cal((int) (data.getPspeed()));
+//		int[] speed = YaoPao01App.cal((int) (200));
+		
+		int s1 = speed[1] / 10;
+		int s2 = speed[1] % 10;
+		int s3 = speed[2] / 10;
+		int s4 = speed[2] % 10;
+		ImageView s1V = (ImageView) findViewById(R.id.match_recoding_speed1);
+		ImageView s2V = (ImageView) findViewById(R.id.match_recoding_speed2);
+		ImageView s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
+		ImageView s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
+		  
+		updateMiddleData(s1, s1V);
+		updateMiddleData(s2, s2V);
+		updateMiddleData(s3, s3V);
+		updateMiddleData(s4, s4V);
 		
 	}
-
+	//初始化积分
+	private void initPoints(DataBean data) {
+		int point = data.getPoints();
+		int p1 = (int) point / 100000;
+		int p2 = (int) (point % 100000) / 10000;
+		int p3 = (int) (point % 10000) / 1000;
+		int p4 = (int) (point % 1000) / 100;
+		int p5 = (int) (point % 100) / 10;
+		int p6 = (int) (point % 10);
+		
+		ImageView p1v = (ImageView) this.findViewById(R.id.main_point_num1);
+		ImageView p2v = (ImageView) this.findViewById(R.id.main_point_num2);
+		ImageView p3v = (ImageView) this.findViewById(R.id.main_point_num3);
+		ImageView p4v = (ImageView) this.findViewById(R.id.main_point_num4);
+		ImageView p5v = (ImageView) this.findViewById(R.id.main_point_num5);
+		ImageView p6v = (ImageView) this.findViewById(R.id.main_point_num6);
+		
+		if (p1 > 0) {
+			p1v.setVisibility(View.VISIBLE);
+		}
+		if (p2 > 0) {
+			p2v.setVisibility(View.VISIBLE);
+		}
+		if (p3 > 0) {
+			p3v.setVisibility(View.VISIBLE);
+		}
+		if (p4 > 0) {
+			p4v.setVisibility(View.VISIBLE);
+		}
+		if (p5 > 0) {
+			p5v.setVisibility(View.VISIBLE);
+		}
+		updateMiddleData(p1, p1v);
+		updateMiddleData(p2, p2v);
+		updateMiddleData(p3, p3v);
+		updateMiddleData(p4, p4v);
+		updateMiddleData(p5, p5v);
+		updateMiddleData(p6, p6v);
+		
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
 		initLayout();
+		MobclickAgent.onResume(this);
 	}
 
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	private void initLayout() {
-		data = YaoPao01App.db.queryData();
+		DataBean data = YaoPao01App.db.queryData();
 		if (Variables.islogin == 1) {
 			JSONObject userInfo = DataTool.getUserInfo();
 			if (userInfo != null) {
-				if (!"".equals(userInfo.getString("nickname"))||userInfo.getString("nickname")!=null) {
+				if (!"".equals(userInfo.getString("nickname"))&&userInfo.getString("nickname")!=null) {
 					state.setText(userInfo.getString("nickname"));
 				} else {
 					state.setText(YaoPao01App.sharedPreferences.getString(
@@ -122,18 +219,23 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		} else {
 			state.setText("未登录");
 		}
-		initMileage();
-		
-		toutalCount.setText(data.getCount()+""); 
-		avgSpeed.setText(getSeed(data.getPspeed())); 
-		points.setText(data.getPoints()+"");
-		
-
+		initMileage(data);
+		initCountView(data);
+		initPspeed(data);
+		initPoints(data);
 	}
-
-	private void initMileage() {
+	private void initMileage(DataBean data) {
 		distance = data.getDistance();
 		//distance = 549254;
+		ImageView d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
+		ImageView d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
+		ImageView d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
+		ImageView d4v = (ImageView) this.findViewById(R.id.main_milage_num4);
+		ImageView d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
+		ImageView d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
+		d1v.setVisibility(View.GONE);
+		d2v.setVisibility(View.GONE);
+		d3v.setVisibility(View.GONE);
 		int d1 = (int) distance / 1000000;
 		int d2 = (int) (distance % 1000000) / 100000;
 		int d3 = (int) (distance % 100000) / 10000;
@@ -206,6 +308,46 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			break;
 		}
 	}
+	protected void updateMiddleData(int i, ImageView view) {
+		if (i > 9) {
+			i = i % 10;
+		}
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.w_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.w_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.w_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.w_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.w_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.w_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.w_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.w_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.w_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.w_9);
+			break;
+			
+		default:
+			break;
+		}
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -228,23 +370,25 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
 				if (Variables.gpsStatus==2) {
-//				if (Variables.gpsStatus==4) {
 					DialogTool dialog = new DialogTool(MainActivity.this,handler);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip2(d);
 				}else if (Variables.gpsStatus==0) {
-//				}else if (Variables.gpsStatus==5) {
 					DialogTool dialog = new DialogTool(MainActivity.this,null);
 					WindowManager m = getWindowManager();
 					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 					dialog.alertGpsTip1(d);
 				}else if(Variables.gpsStatus==1){
-//				}else {
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
 				}
+				//测试代码
+//					Intent mainIntent = new Intent(MainActivity.this,
+//							SportSetActivity.class);
+//					startActivity(mainIntent);
+				//测试代码
 				break;
 			}
 			break;
@@ -332,6 +476,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		case R.id.main_user_info:
 			Intent userIntent;
 			if (Variables.islogin == 1) {
+				Variables.toUserInfo=0;
 				userIntent = new Intent(MainActivity.this, UserInfoActivity.class);
 			} else {
 				userIntent = new Intent(MainActivity.this, RegisterActivity.class);
@@ -365,10 +510,17 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			startActivity(settingIntent);
 			break;
 		case R.id.main_message_layout:
-			Intent messageIntent = new Intent(MainActivity.this,
-					WebViewActivity.class);
-			messageIntent.putExtra("net.yaopao.activity.PageUrl",
-					"message_index.html");
+			Intent messageIntent=null;
+			if (Variables.islogin == 1) {
+				messageIntent= new Intent(MainActivity.this,
+						WebViewActivity.class);
+				messageIntent.putExtra("net.yaopao.activity.PageUrl",
+						"message_index.html");
+				
+			} else {
+				Toast.makeText(MainActivity.this, "您必须注册并登录，才会收到系统消息，所以现在没有系统消息哦", Toast.LENGTH_LONG).show();
+				messageIntent = new Intent(MainActivity.this, RegisterActivity.class);
+			}
 			startActivity(messageIntent);
 			break;
 		default:
@@ -376,5 +528,5 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		}
 
 	}
-	
+
 }

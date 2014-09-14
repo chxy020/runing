@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
+import android.view.Window;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -27,17 +28,14 @@ public class MatchScoreListActivity extends Activity implements OnTouchListener 
 		backV.setOnTouchListener(this);
 	}
 
-	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
-	/**
-	 * 方法必须重写
-	 */
-	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

@@ -92,7 +92,7 @@ public class DBManager {
 							Variables.runty, oneSport, Variables.runway,
 							Variables.stamp, statusIndex, Variables.temp,
 							Variables.utime, Variables.weather,Variables.points,
-							Variables.sportty,Variables.sportpho,Variables.sport_pho_path,
+							Variables.sportty,Variables.hassportpho,Variables.sport_pho,
 							new Date().getTime() });
 
 
@@ -249,6 +249,8 @@ public class DBManager {
 			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
 			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));
 			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
+			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
+			sport.setSportPhoPath(c.getString(c.getColumnIndex("sport_pho_path")));
 			sports.add(sport);
 		}
 		c.close();

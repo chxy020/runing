@@ -5,20 +5,17 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Paint;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -26,6 +23,10 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class RegisterActivity extends Activity implements OnTouchListener {
 	public TextView reg;
@@ -47,6 +48,8 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
+		registerReceiver(broadcastReceiver, filter);
 		initLayout();
 	}
 	
@@ -226,12 +229,11 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			if (result) {
 				Log.v("wy", regJson);
 				JSONObject rt = JSON.parseObject(regJson);
-				int rtCode = 0;
 				int uid = 0;
-				rtCode = rt.getJSONObject("state").getInteger("code");
+				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
-					Variables.uid = rt.getInteger("uid");
-					Variables.utype = rt.getInteger("utype");
+					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
+					Variables.utype = rt.getJSONObject("userinfo").getInteger("utype");
 					Variables.islogin = 1;
 					DataTool.setUserInfo(regJson);
 					Log.v("wy", "save info =" + regJson);
@@ -312,4 +314,23 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 			RegisterActivity.this.finish();
 		}
 	}
+	// 如果重置密码成功，关闭此页面
+		BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if ("close".equals(intent.getExtras().getString("data"))) {
+					RegisterActivity.this.finish();
+				}
+			}
+		};
+		public void onResume() {
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
 }

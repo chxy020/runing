@@ -13,8 +13,10 @@ public class Variables {
 
 	public static String ua;
 
-	public static int islogin;// 0-未登录，1-登录成功，2-正在登录
-
+	public static int islogin;// 0-未登录，1-登录成功，2-正在登录,3-用户在其他设别上登录
+	
+//	public static int userStatus;// 0-未登录，1-登录成功，2-正在登录
+	
 	public static int uid = 0;
 
 	public static int utype = 0;// 1-会员，0-未注册
@@ -71,8 +73,8 @@ public class Variables {
 	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
 	
 	public static int sportty=0;//跑步类型0-日常，1-比赛
-	public static int sportpho=0;//跑步是否拍照0-无，1-有
-	public static String sport_pho_path;//跑步拍照大图存放路径
+	public static int hassportpho=0;//跑步是否拍照0-无，1-有
+	public static String sport_pho;//跑步拍照图片的名字
 	
 	// 获取rid
 	public static String getRid() {

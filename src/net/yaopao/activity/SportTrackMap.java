@@ -18,10 +18,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,10 +35,11 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class SportTrackMap extends Activity implements OnTouchListener {
+public class SportTrackMap extends Activity{
 	private MapView mapView;
 	private AMap aMap;
 	private SportBean oneSport;
@@ -85,7 +85,15 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		dateV = (TextView) findViewById(R.id.full_date);
 		disV = (TextView) findViewById(R.id.full_dis);
 		typeV = (ImageView) findViewById(R.id.full_type);
-		backV.setOnTouchListener(this);
+//		backV.setOnTouchListener(this);
+		backV.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				SportTrackMap.this.finish();
+				
+			}
+		});
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
@@ -336,7 +344,7 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 			LatLng latlon1 = new LatLng(min_lat, min_lon);
 			LatLng latlon2 = new LatLng(max_lat, max_lon);
 			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 			lastSportPoint= crrPoint;
 			}
 	}
@@ -362,7 +370,7 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
+		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 		ponitsV.setText("+ " + points);
 		disV.setText(df.format(distance / 1000) + " km");
 		Date date = new Date(addtime);
@@ -400,12 +408,14 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
@@ -466,23 +476,23 @@ public class SportTrackMap extends Activity implements OnTouchListener {
 		return bitmap;
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
-		switch (view.getId()) {
-		case R.id.full_back:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				SportTrackMap.this.finish();
-				break;
-			}
-			break;
-
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onTouch(View view, MotionEvent event) {
+//		int action = event.getAction();
+//		switch (view.getId()) {
+//		case R.id.full_back:
+//			switch (action) {
+//			case MotionEvent.ACTION_DOWN:
+//				break;
+//			case MotionEvent.ACTION_UP:
+//				SportTrackMap.this.finish();
+//				break;
+//			}
+//			break;
+//
+//		}
+//		return true;
+//	}
 
 	/*
 	 * @Override public boolean onKeyDown(int keyCode, KeyEvent event) { if

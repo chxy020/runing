@@ -1,5 +1,7 @@
 package net.yaopao.activity;
 
+import com.umeng.analytics.MobclickAgent;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -76,4 +78,13 @@ public class ClauseActivity extends Activity {
 			}
 		}
 	};
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

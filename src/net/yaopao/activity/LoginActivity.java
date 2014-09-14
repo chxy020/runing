@@ -17,7 +17,10 @@ import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
@@ -35,6 +38,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class LoginActivity extends Activity implements OnTouchListener {
 	private TextView to_reset;
@@ -55,6 +59,8 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
+		registerReceiver(broadcastReceiver, filter);
 		initLayout();
 	}
 
@@ -257,5 +263,24 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		}
 		return null;
 	}
+	// 如果重置密码成功，关闭此页面
+			BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					if ("close".equals(intent.getExtras().getString("data"))) {
+						LoginActivity.this.finish();
+					}
+				}
+			};
+			
+			public void onResume() {
+				super.onResume();
+				MobclickAgent.onResume(this);
+			}
+
+			public void onPause() {
+				super.onPause();
+				MobclickAgent.onPause(this);
+			}
 }

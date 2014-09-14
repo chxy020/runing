@@ -6,7 +6,6 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +13,8 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportCountdownActivity extends Activity implements OnTouchListener {
 	private RelativeLayout time;
@@ -139,5 +139,14 @@ public class SportCountdownActivity extends Activity implements OnTouchListener 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 		}
 		return false;
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

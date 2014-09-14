@@ -1,14 +1,16 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class WebViewActivity extends Activity {
 	
@@ -17,7 +19,7 @@ public class WebViewActivity extends Activity {
 	private WebView mWebView = null;
 	private String mPageUrl = "";
 
-	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -112,13 +114,24 @@ public class WebViewActivity extends Activity {
 			//Log.e("","chxy ____url" + url);
 			if(-1 != url.indexOf("message_index.html")){
 				//消息首页
-				userInfo = "{\"uid\":\"" + "77" + "\"}";
+				userInfo = "{\"uid\":\"" + Variables.uid + "\"}";
+//				userInfo = "{\"uid\":\"77\"}";
 				playInfo = "{}";
-				deviceInfo = "{\"deviceid\":\"" + "tre211" + "\"}";
+//				deviceInfo = "{\"deviceid\":\"tre211\"}";
+				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
 				String param = "window.callbackInit('" + userInfo + "','"
 						+ playInfo + "'," + "'" + deviceInfo + "')";
 				jsCallbackMethod(param);
 			}
 		}
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

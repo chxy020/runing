@@ -35,7 +35,7 @@ public class SportBean {
 	private int points;//积分
 	public  int sportty;//跑步类型0-日常，1-比赛
 	public  int sportpho;//跑步是否拍照0-无，1-有
-	public  String sport_pho_path;//跑步拍照大图存放路径
+	public  String sport_pho_path;//跑步拍照图片名称
 
 	public int getId() {
 		return id;

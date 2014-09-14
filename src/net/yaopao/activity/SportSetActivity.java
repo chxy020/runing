@@ -8,14 +8,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportSetActivity extends Activity implements OnClickListener,
 		OnChangedListener {
@@ -109,9 +109,13 @@ public class SportSetActivity extends Activity implements OnClickListener,
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 		initLayout();
 	}
-
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	private void initLayout() {
 		// 检测开关状态
 		switch (Variables.switchTime) {

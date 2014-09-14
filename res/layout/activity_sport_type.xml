@@ -46,23 +46,25 @@
             android:layout_margin="@dimen/margin1"
             android:background="@drawable/runtype_walk" />
 
-        <TextView
-            android:id="@+id/type_step_select"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/type_step_select_icon"
-            android:layout_toRightOf="@id/type_step_icon"
-            android:gravity="center_vertical"
-            android:text="步行"
-            android:textSize="@dimen/font_size3" />
+      
 
         <ImageView
             android:id="@+id/type_step_select_icon"
             android:layout_width="@dimen/sport_set_icon_size"
             android:layout_height="@dimen/sport_set_icon_size"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/check"/>
+        
+          <TextView
+            android:id="@+id/type_step_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/type_step_select_icon"
+            android:layout_toRightOf="@id/type_step_icon"
+            android:gravity="center_vertical"
+            android:text="步行"
+            android:textSize="@dimen/font_size3" />
     </RelativeLayout>
    
     <RelativeLayout
@@ -93,7 +95,7 @@
             android:id="@+id/type_run_select_icon"
             android:layout_width="@dimen/sport_set_icon_size"
             android:layout_height="@dimen/sport_set_icon_size"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             />
     </RelativeLayout>

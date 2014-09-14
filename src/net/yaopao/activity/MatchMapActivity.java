@@ -24,10 +24,9 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.MyLocationStyle;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -145,6 +144,7 @@ public class MatchMapActivity extends Activity implements LocationSource,
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	/**
@@ -155,6 +155,7 @@ public class MatchMapActivity extends Activity implements LocationSource,
 		super.onPause();
 		mapView.onPause();
 		deactivate();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

@@ -145,9 +145,6 @@
             android:layout_height="@dimen/main_num_height"
             android:background="@drawable/r_km"
              />
-       
-	    
-	    
 	</LinearLayout>
        
     </RelativeLayout>
@@ -156,23 +153,42 @@
         android:id="@+id/main_detail_data"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_height"
-        android:layout_below="@id/main_total_milage_layout" >
+        android:layout_below="@id/main_total_milage_layout" 
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="@dimen/main_middle_width2"
             android:layout_height="match_parent"
             android:background="@color/gray_dark"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/main_count"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/main_middle_height"
-                android:gravity="center"
-                android:text="0"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size3"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/main_mnum_margin"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/main_count_num1"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/main_count_num2"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/main_count_num3"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -193,9 +209,10 @@
             android:layout_width="@dimen/main_middle_width1"
             android:layout_height="match_parent"
             android:background="@color/gray_dark"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:gravity="center_horizontal">
 
-            <TextView
+          <!--   <TextView
                 android:id="@+id/main_speed"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
@@ -203,7 +220,51 @@
                 android:text="0&apos; 00&apos;&apos;/km"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size3"
-                android:textStyle="bold" />
+                android:textStyle="bold" /> -->
+                 <LinearLayout
+                android:id="@+id/sport_recoding_speed"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_middle_height"
+                android:layout_marginTop="@dimen/main_mnum_margin"
+                android:gravity="center"
+                 >
+
+                <ImageView
+                    android:id="@+id/match_recoding_speed1"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" />
+
+                <ImageView
+                    android:id="@+id/match_recoding_speed2"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" />
+
+                <ImageView
+                    android:id="@+id/match_recoding_speed_d1"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_min" />
+
+                <ImageView
+                    android:id="@+id/match_recoding_speed3"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" />
+
+                <ImageView
+                    android:id="@+id/match_recoding_speed4"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" />
+
+                <ImageView
+                    android:id="@+id/match_recoding_speed_d2"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_sec" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -223,17 +284,56 @@
             android:layout_width="@dimen/main_middle_width2"
             android:layout_height="match_parent"
             android:background="@color/gray_dark"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:gravity="center">
 
-            <TextView
-                 android:id="@+id/main_points "
-                android:layout_width="match_parent"
+              <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/main_middle_height"
-                android:gravity="center"
-                android:text="1000"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size3"
-                android:textStyle="bold" />
+                android:gravity="center" 
+                  android:layout_marginTop="@dimen/main_mnum_margin">
+
+                <ImageView
+                    android:id="@+id/main_point_num1"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/main_point_num2"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0"
+                      android:visibility="gone"
+                    
+                    />
+                <ImageView
+                    android:id="@+id/main_point_num3"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" 
+                      android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/main_point_num4"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" 
+                      android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/main_point_num5"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0" 
+                      android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/main_point_num6"
+                    android:layout_width="@dimen/main_mnum_width"
+                    android:layout_height="@dimen/main_mnum_height"
+                    android:background="@drawable/w_0"
+                       />
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"

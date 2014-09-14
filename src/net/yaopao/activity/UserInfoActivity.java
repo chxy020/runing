@@ -2,32 +2,23 @@ package net.yaopao.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
-import net.yaopao.activity.R;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -39,6 +30,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
 
 public class UserInfoActivity extends Activity implements OnTouchListener {
 	public TextView save;
@@ -136,8 +131,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	protected void onResume() {
 		super.onResume();
 		initLayout();
+		MobclickAgent.onResume(this);
 	}
-
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 	private void initLayout() {
 		if (Variables.toUserInfo==0) {
 			back.setVisibility(View.GONE);
@@ -147,7 +146,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		if (Variables.islogin == 1) {
 			JSONObject user = DataTool.getUserInfo();
 			if (user != null) {
-				if (!"".equals(user.getString("nickname"))||user.getString("nickname")!=null) {
+				String nickname = user.getString("nickname");
+				Log.v("wyuser", "nickname = "+nickname+"--");
+				Log.v("wyuser", "is 1= "+!"".equals(nickname));
+				Log.v("wyuser", "is2 = "+(nickname!=null));
+				
+				if (!"".equals(user.getString("nickname"))&&user.getString("nickname")!=null) {
 					nicknameV.setText(user.getString("nickname"));
 				} else {
 					nicknameV.setText(DataTool.getPhone());
@@ -200,10 +204,15 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				nickname = nicknameV.getText().toString().trim();
+				realname = realnameV.getText().toString().trim();
 				if ("".equals(nickname) || nickname == null) {
 					Toast.makeText(UserInfoActivity.this, "昵称不能为空",
 							Toast.LENGTH_LONG).show();
-				} else {
+				}else if (!checkNikeName(nickname)) {
+					Toast.makeText(UserInfoActivity.this, "昵称不符合规范，应为4-30个字节，支持中英文、数字、下划线和减号", Toast.LENGTH_LONG).show() ;
+				}else if(!checkName(realname)){
+					Toast.makeText(UserInfoActivity.this, "真实姓名不符合规范，应为4-30个字节，支持中英文、数字、下划线和减号", Toast.LENGTH_LONG).show() ;
+				}else {
 					new saveAsyncTask().execute("");
 				}
 
@@ -259,6 +268,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundResource(R.color.red);
+				UserInfoActivity.this.finish();
 				break;
 			}
 			break;
@@ -552,5 +562,44 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			new upImgAsyncTask().execute("");
 		}
 	}
+	
+	public static boolean checkNikeName(String nikeName) {
+		if (nikeName == null || nikeName.length() == 0)
+			return false;
 
+		try {
+			byte[] b = nikeName.getBytes("UNICODE");
+			int i = 0;
+			int count = 0;
+			for (i = 2; i < b.length; i++) {
+				if (b[i] != 0 || (i % 2 == 0)) {
+					count++;
+				}
+			}
+			if (count < 4 || count > 30) {
+				return false;
+			}
+		} catch (Exception e) {
+		}
+		return true;
+	}
+	public static boolean checkName(String nikeName) {
+		if (nikeName == null ) return true;
+		if (nikeName.length()==0) return true;
+		try {
+			byte[] b = nikeName.getBytes("UNICODE");
+			int i = 0;
+			int count = 0;
+			for (i = 2; i < b.length; i++) {
+				if (b[i] != 0 || (i % 2 == 0)) {
+					count++;
+				}
+			}
+			if (count < 4 || count > 30) {
+				return false;
+			}
+		} catch (Exception e) {
+		}
+		return true;
+	}
 }

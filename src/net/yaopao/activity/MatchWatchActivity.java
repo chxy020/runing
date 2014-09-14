@@ -16,6 +16,7 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -81,6 +82,7 @@ public class MatchWatchActivity extends Activity implements OnTouchListener,
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	/**
@@ -90,6 +92,7 @@ public class MatchWatchActivity extends Activity implements OnTouchListener,
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

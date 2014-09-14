@@ -1,8 +1,5 @@
 package net.yaopao.activity;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,13 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.yaopao.view.XListView;
-import net.yaopao.view.XListView.IXListViewListener;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.SportListAdapter;
-import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import net.yaopao.bean.SportBean;
+import net.yaopao.view.XListView;
+import net.yaopao.view.XListView.IXListViewListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,18 +22,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class SportListActivity extends Activity implements OnClickListener,IXListViewListener {
 	public TextView backV;
@@ -47,7 +41,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
-	private DecimalFormat df;
+	//private DecimalFormat df;
 	/** 数据列表 */
 	private XListView mListView;
 	private Handler mHandler;
@@ -71,9 +65,9 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
-		df = (DecimalFormat) NumberFormat.getInstance();
-		df.setMaximumFractionDigits(2);
-		df.setRoundingMode(RoundingMode.DOWN);
+//		df = (DecimalFormat) NumberFormat.getInstance();
+//		df.setMaximumFractionDigits(2);
+//		df.setRoundingMode(RoundingMode.DOWN);
 		backV = (TextView) this.findViewById(R.id.recording_list_back);
 		backV.setOnClickListener(this);
 		
@@ -183,7 +177,7 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			map.put("date", sdf1.format(date) + "月" + sdf2.format(date) + "日 "
 					+ YaoPao01App.getWeekOfDate(date) + " " + sdf3.format(date));
 
-			map.put("dis", df.format((sport.getDistance() / 1000)) + "km");
+			map.put("dis",sport.getDistance());
 			if (sport.getMind() == 1) {
 				map.put("mind", R.drawable.mood1_h);
 			} else if (sport.getMind() == 2) {
@@ -207,6 +201,10 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			} else if (sport.getRunway() == 5) {
 				map.put("way", R.drawable.way5_h);
 			}
+			map.put("hasPho", sport.sportpho);
+			if (!"".equals(sport.sport_pho_path)&&sport.sport_pho_path!=null) {
+				map.put("phoName", sport.sport_pho_path);
+			}
 			map.put("id", sport.getId());
 			Log.v("db", "db id =" + sport.getId());
 			int[] speed = YaoPao01App.cal(sport.getPspeed());
@@ -214,7 +212,8 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 			int s2 = speed[1] % 10;
 			int s3 = speed[2] / 10;
 			int s4 = speed[2] % 10;
-			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
+//			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/公里");
+			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 			
 			//获取运动总时长chenxy add
 			int uTime = sport.getUtime();
@@ -630,5 +629,14 @@ public class SportListActivity extends Activity implements OnClickListener,IXLis
 		default:
 			break;
 		}
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

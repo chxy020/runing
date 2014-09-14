@@ -4,19 +4,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
-import net.yaopao.assist.DialogTool;
+import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -25,7 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
+
 public class ResetPwdActivity extends Activity implements OnTouchListener {
+	public static final String closeAction = "resetpwd_close.action";
 	public TextView reset;
 	public TextView goBack;
 	public TextView getCodeV;
@@ -219,10 +219,19 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 					Variables.islogin = 1;
 					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
 							Toast.LENGTH_LONG).show();
-					Intent myIntent = new Intent();
-					myIntent = new Intent(ResetPwdActivity.this,
-							MainActivity.class);
-					startActivity(myIntent);
+					//发广播通知注册和登录页面关闭
+					Variables.uid = rt.getJSONObject("userinfo").getInteger(
+							"uid");
+					Variables.utype = rt.getJSONObject("userinfo").getInteger(
+							"utype");
+					DataTool.setUserInfo(resetJson);
+					Intent closeintent = new Intent(closeAction);
+					closeintent.putExtra("data", "close");
+					sendBroadcast(closeintent);
+//					Intent myIntent = new Intent();
+//					myIntent = new Intent(ResetPwdActivity.this,
+//							MainActivity.class);
+//					startActivity(myIntent);
 					ResetPwdActivity.this.finish();
 					break;
 				case -2:
@@ -275,6 +284,9 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 				if (rtCode == 0) {
 					Toast.makeText(ResetPwdActivity.this, "验证码获取成功",
 							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -3) {
+					Toast.makeText(ResetPwdActivity.this, "手机号不存在，请重新输入",
+							Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(ResetPwdActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
@@ -284,5 +296,14 @@ public class ResetPwdActivity extends Activity implements OnTouchListener {
 						Toast.LENGTH_LONG).show();
 			}
 		}
+	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

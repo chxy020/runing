@@ -5,31 +5,33 @@
 	android:orientation="vertical" >
 	
 	<!-- title栏 -->
-	<LinearLayout
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/red_bg"
+		android:background="@color/red"
 		android:orientation="horizontal" >
 		<Button
 			android:id="@+id/setting_back_btn"
-			android:layout_width="75dp"
-			android:layout_height="45dp"
+			android:layout_width="@dimen/common_height"
+			android:layout_height="@dimen/common_height"
 			android:gravity="center"
-			android:background="@drawable/back_btn"
+			 android:background="@drawable/btn_click_red"
 			android:text="@string/back_text"
 			android:textColor="@color/white"
-			android:textSize="18sp"/>
+			
+			/>
 
 		<TextView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="75dp"
+			android:layout_height="@dimen/common_height"
 			android:gravity="center"
 			android:text="@string/setting_about"
 			android:textColor="@color/white"
-			android:textSize="22sp" />
+			android:textSize="@dimen/font_size2"
+			
+			 />
 
-	</LinearLayout>
+	</RelativeLayout>
 	
 	<WebView
 		android:id="@+id/webview_about"

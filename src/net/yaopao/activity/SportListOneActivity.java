@@ -1,13 +1,14 @@
 package net.yaopao.activity;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.yaopao.assist.Constants;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.bean.SportBean;
@@ -15,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,15 +25,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
 import com.alibaba.fastjson.JSONArray;
+import com.amap.api.a.am;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -41,8 +44,9 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
-public class SportListOneActivity extends Activity implements OnTouchListener {
+public class SportListOneActivity extends Activity {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -50,10 +54,14 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
-	private TextView disV;
+	//private TextView disV;
 	private ImageView typeV;
 	private ImageView mindV;
 	private ImageView wayV;
+	private ImageView d1v;
+	private ImageView d2v;
+	private ImageView d3v;
+	private ImageView d4v;
 	/** 消息内容 */
 	private ViewPager mPager = null;
 	/** Tab页面列表 */
@@ -75,7 +83,7 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
 	private SimpleDateFormat sdf4;
-	private DecimalFormat df;
+	//private DecimalFormat df;
 	String title = "";
 	int recordId = 0;
 
@@ -85,6 +93,9 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_list_one);
+		Intent intent = getIntent();
+		recordId = Integer.parseInt(intent.getStringExtra("id"));
+		oneSport = YaoPao01App.db.queryForOne(recordId);
 		initViewPager();
 		mapView = (MapView) mapLayout.findViewById(R.id.one_map);
 		mapView.onCreate(savedInstanceState);
@@ -92,9 +103,9 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
 		sdf4 = new SimpleDateFormat("yyyy");
-		df = (DecimalFormat) NumberFormat.getInstance();
-		df.setMaximumFractionDigits(2);
-		df.setRoundingMode(RoundingMode.DOWN);
+//		df = (DecimalFormat) NumberFormat.getInstance();
+//		df.setMaximumFractionDigits(2);
+//		df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
 
 	}
@@ -106,6 +117,12 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		this.mInflater = this.getLayoutInflater();
 		mapLayout = mInflater.inflate(R.layout.sport_one_slider_map, null);
 		phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
+		if (oneSport.getSportpho()==1) {
+			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
+			phoV.setScaleType(ScaleType.CENTER_CROP);
+			phoV.setImageBitmap(getImg(Constants.sportPho_s +oneSport.getSportPhoPath()));
+		}
+		
 		this.mListViews.add(mapLayout);
 		this.mListViews.add(phoLayout);
 		this.mMessageAdapter = new MessagePagerAdapter(mListViews);
@@ -122,21 +139,35 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		titleV = (TextView) findViewById(R.id.recording_one_title);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
-		disV = (TextView) findViewById(R.id.one_dis);
+		//disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
 		mindV = (ImageView) findViewById(R.id.one_mind);
 		wayV = (ImageView) findViewById(R.id.one_way);
 		backV = (TextView) findViewById(R.id.recording_one_back);
-		backV.setOnTouchListener(this);
+		
+		 d1v = (ImageView) findViewById(R.id.list_sport_num1);
+		 d2v = (ImageView) findViewById(R.id.list_sport_num2);
+		 d3v = (ImageView) findViewById(R.id.list_sport_dec1);
+		 d4v = (ImageView) findViewById(R.id.list_sport_dec2);
+		
+//		backV.setOnTouchListener(this);
+		backV.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				 SportListOneActivity.this.finish();
+				
+			}
+		});
 		initMap();
 	}
 
 	private void initMap() {
 
 		lonLatEncryption = new LonLatEncryption();
-		Intent intent = getIntent();
-		recordId = Integer.parseInt(intent.getStringExtra("id"));
-		oneSport = YaoPao01App.db.queryForOne(recordId);
+//		Intent intent = getIntent();
+//		recordId = Integer.parseInt(intent.getStringExtra("id"));
+//		oneSport = YaoPao01App.db.queryForOne(recordId);
 		initSportData(oneSport.getDistance(), oneSport.getRunty(),
 				oneSport.getMind(), oneSport.getRunway(),
 				oneSport.getRemarks(), oneSport.getUtime(),
@@ -262,9 +293,10 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" + "/km");
+		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 		ponitV.setText("+ " + ponit);
-		disV.setText(df.format(distance / 1000) + " km");
+		initDis(distance);
+		//disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
 		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
@@ -278,7 +310,61 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 
 	}
+	private void initDis(double distance) {
+		int d1 = (int) (distance % 100000) / 10000;
+		int d2 = (int) (distance % 10000) / 1000;
+		int d3 = (int) (distance % 1000) / 100;
+		int d4 = (int) (distance % 100) / 10;
+		if (d1 > 0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
+		update(d1, d1v);
+		update(d2, d2v);
+		update(d3, d3v);
+		update(d4, d4v);
+		
+	}
+	protected void update(int i, ImageView view) {
+		if (i > 9) {
+			i = i % 10;
+		}
+		switch (i) {
+		case 0:
+			view.setBackgroundResource(R.drawable.r_0);
+			break;
+		case 1:
+			view.setBackgroundResource(R.drawable.r_1);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.r_2);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.r_3);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.r_4);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.r_5);
+			break;
+		case 6:
+			view.setBackgroundResource(R.drawable.r_6);
+			break;
+		case 7:
+			view.setBackgroundResource(R.drawable.r_7);
+			break;
+		case 8:
+			view.setBackgroundResource(R.drawable.r_8);
+			break;
+		case 9:
+			view.setBackgroundResource(R.drawable.r_9);
+			break;
 
+		default:
+			break;
+		}
+	}
+	
 	private void initMind(int mind) {
 		switch (mind) {
 		case 1:
@@ -345,27 +431,29 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		}
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		int action = event.getAction();
-		switch (view.getId()) {
-		case R.id.recording_one_back:
-			SportListOneActivity.this.finish();
-			break;
-		}
-		return true;
-	}
+//	@Override
+//	public boolean onTouch(View view, MotionEvent event) {
+//		int action = event.getAction();
+//		switch (view.getId()) {
+//		case R.id.recording_one_back:
+//			SportListOneActivity.this.finish();
+//			break;
+//		}
+//		return true;
+//	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
+		MobclickAgent.onPause(this);
 		// deactivate();
 	}
 
@@ -491,5 +579,24 @@ public class SportListOneActivity extends Activity implements OnTouchListener {
 		Bitmap bitmap = view.getDrawingCache();
 		return bitmap;
 	}
-
+	
+	public Bitmap getImg(String path) {
+		Bitmap bitmap = null;
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(path);
+			bitmap = BitmapFactory.decodeStream(fis);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			try {
+				fis.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
 }

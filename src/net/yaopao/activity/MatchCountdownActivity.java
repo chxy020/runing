@@ -3,16 +3,15 @@ package net.yaopao.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.yaopao.assist.Variables;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.umeng.analytics.MobclickAgent;
 
 public class MatchCountdownActivity extends Activity {
 	private ImageView time1;
@@ -122,4 +121,13 @@ public class MatchCountdownActivity extends Activity {
 	 * 
 	 * }
 	 */
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

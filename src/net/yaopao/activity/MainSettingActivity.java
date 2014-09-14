@@ -1,5 +1,7 @@
 package net.yaopao.activity;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.content.Intent;
@@ -83,6 +85,7 @@ public class MainSettingActivity extends Activity {
 					startActivity(userInfoIntent);
 				}
 				else{
+					Toast.makeText(MainSettingActivity.this, "请先登录", Toast.LENGTH_LONG).show();
 					Intent registerIntent = new Intent(MainSettingActivity.this,RegisterActivity.class);
 					startActivity(registerIntent);
 				}
@@ -104,4 +107,13 @@ public class MainSettingActivity extends Activity {
 			}
 		}
 	};
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
 }

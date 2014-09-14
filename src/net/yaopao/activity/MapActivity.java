@@ -19,14 +19,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.a.am;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
@@ -38,8 +37,8 @@ import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.PolylineOptions;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  */
@@ -59,7 +58,7 @@ public class MapActivity extends Activity implements LocationSource,
 	static TextView sliderTextV;
 	private ImageView backV;
 	private ImageView locV;
-	private int isFollow = 0;
+	private int isFollow = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +81,6 @@ public class MapActivity extends Activity implements LocationSource,
 		doneV.setOnTouchListener(this);
 		backV.setOnTouchListener(this);
 		locV.setOnTouchListener(this);
-		// if (Variables.sportStatus == 0) {
-		// sliderTextV.setText("滑动暂停");
-		// } else {
-		// sliderTextV.setText("滑动恢复");
-		// }
 		slider.setMainHandler(slipHandler);
 		init();
 		startTimer();
@@ -104,6 +98,7 @@ public class MapActivity extends Activity implements LocationSource,
 				@Override
 				public void onCameraChange(CameraPosition arg0) {
 					isFollow = 0;
+					Log.v("wymap", "移动地图，isfollow="+isFollow);
 				}
 			});
 		}
@@ -191,6 +186,7 @@ public class MapActivity extends Activity implements LocationSource,
 	@Override
 	protected void onResume() {
 		super.onResume();
+		MobclickAgent.onResume(this);
 		mapView.onResume();
 		if (Variables.sportStatus == 0) {
 			sliderIconV.setVisibility(View.VISIBLE);
@@ -209,6 +205,7 @@ public class MapActivity extends Activity implements LocationSource,
 	@Override
 	protected void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 		mapView.onPause();
 		stopTimer();
 		deactivate();
@@ -286,9 +283,9 @@ public class MapActivity extends Activity implements LocationSource,
 		if (mListener != null && aLocation != null) {
 			mListener.onLocationChanged(aLocation);
 			if (isFollow == 1) {
-				aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-						aLocation.getLatitude(), aLocation.getLongitude()), 16));
+				aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aLocation.getLatitude(), aLocation.getLongitude())));
 			}
+			Log.v("wymap", "位置变化，isfollow="+isFollow);
 		}
 	}
 
@@ -324,9 +321,10 @@ public class MapActivity extends Activity implements LocationSource,
 				Location myloc = aMap.getMyLocation();
 				if (myloc != null) {
 					isFollow = 1;
-					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-							new LatLng(myloc.getLatitude(), myloc
-									.getLongitude()), 16));
+					aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(myloc.getLatitude(), myloc.getLongitude())));
+//					aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//							new LatLng(myloc.getLatitude(), myloc
+//									.getLongitude()), 16));
 				}
 
 				break;
@@ -360,7 +358,10 @@ public class MapActivity extends Activity implements LocationSource,
 							SportRecordActivity.gpsListenerHandler.obtainMessage(4).sendToTarget();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
-							
+							//发送广播关闭运动页面
+							Intent closeintent = new Intent(closeAction);
+							closeintent.putExtra("data", "close");
+							sendBroadcast(closeintent);
 						}else if(msg.what == 1){
 							//运动距离小于50米
 							Toast.makeText(MapActivity.this, "您运动距离也太短了吧！这次就不给您记录了，下次一定要加油", Toast.LENGTH_LONG).show();
@@ -372,13 +373,15 @@ public class MapActivity extends Activity implements LocationSource,
 								SportRecordActivity.points=null;
 							}
 							MapActivity.this.finish();
+							//发送广播关闭运动页面
+							Intent closeintent = new Intent(closeAction);
+							closeintent.putExtra("data", "close");
+							sendBroadcast(closeintent);
 						}
 						super.handleMessage(msg);
 					}
 				};
-				Intent closeintent = new Intent(closeAction);
-				closeintent.putExtra("data", "close");
-				sendBroadcast(closeintent);
+				
 				DialogTool.doneSport(MapActivity.this, sliderHandler);
 				break;
 			}
