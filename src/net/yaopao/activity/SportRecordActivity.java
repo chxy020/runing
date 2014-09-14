@@ -87,9 +87,10 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	public static Handler timerListenerHandler;
 	public static Handler gpsListenerHandler;
 	// 测试代码
-//	 public static double lon = 116.395823;
-//	 public static double lat = 39.839016;
-
+	 public static double lon = 116.395823;
+	 public static double lat = 39.839016;
+	 private boolean isHalf=false;//是否播放过超过目标的一半，true-已经播放过，false-没有播放过，
+	 private boolean isOverGoal=false;//是否播放过达成目标，true-已经播放过，false-没有播放过，
 	// 以上测试代码
 
 	@Override
@@ -353,7 +354,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}
-
+//运动暂停
 	Handler slipHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
@@ -363,6 +364,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					resumeV.setVisibility(View.VISIBLE);
 					sliderIconV.setVisibility(View.GONE);
 					sliderTextV.setVisibility(View.GONE);
+					PlayVoice.PauseSportsVoice(SportRecordActivity.this);
 				}
 			}
 		};
@@ -432,6 +434,26 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				points.add(point);
 				result = true;
 			}
+			//判断运动目标类类型，是否达到播放语音条件
+			//如果是自由运动
+			if (Variables.runtar==0) {
+				YaoPao01App.playPerKmVoice();
+			}else if(Variables.runtar==1) {
+				if (Variables.distance>(Variables.runtarDis*500)) {
+					//是否播放过超过一半的语音
+					if (!isHalf) {
+						//此处播放运动了一半
+						YaoPao01App.playHalfDisVoice();
+						isHalf=true;
+					}
+				}else if(Variables.distance>Variables.runtarDis){
+					if (!isOverGoal) {
+						YaoPao01App.playCompletVoice();
+						isOverGoal=true;
+					}
+				}
+			}
+			
 			if(point.status == 0){
 				//算积分
 				disPerKm += meter;
@@ -439,10 +461,19 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				if (disPerKm > 1000) {
 					int minute = timePerKm / 60;
 					Variables.points += YaoPao01App.calPspeedPoints(minute);
-					YaoPao01App.lts.writeFileToSD("re 满一公里算积分 : " +YaoPao01App.calPspeedPoints(minute), "uploadLocation");
-					YaoPao01App.lts.writeFileToSD("re 累计积分 : " +Variables.points, "uploadLocation");
 					disPerKm = 0;
 					timePerKm = 0;
+				if (Variables.runtar==1) {
+						//距离目标小于2公里，未超过目标
+						if((Variables.runtarDis*1000-Variables.distance)<2000&&(Variables.runtarDis*1000-Variables.distance)>0){
+							YaoPao01App.playLess2Voice();
+						}else if(Variables.runtarDis*1000<Variables.distance){
+							//如果超过距离目标
+							YaoPao01App.playOverGoalVoice();
+						}else{
+							YaoPao01App.playPerKmVoice();
+						}
+					}
 				}
 			}
 			 
@@ -456,19 +487,19 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		@Override
 		public void run() {
 			// 测试代码
-//			 lat = lat + 0.001;
-//			 double meter = 0;
-//			 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
-//			 if (points.size() == 0) {
-//			 points.add(point);
-//			 } else {
-//			 meter = getDistanceFrom2ponit(points.get(points.size() - 1),
-//			 point);
-//			 points.add(point);
-//			 }
-//			 Variables.distance += meter;
-//			 Variables.utime+=1;
-//			 updateUI();
+			 lat = lat + 0.001;
+			 double meter = 0;
+			 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus);
+			 if (points.size() == 0) {
+			 points.add(point);
+			 } else {
+			 meter = getDistanceFrom2ponit(points.get(points.size() - 1),
+			 point);
+			 points.add(point);
+			 }
+			 Variables.distance += meter;
+			 Variables.utime+=1;
+			 updateUI();
 			/*
 			 * Variables.distance += 55; if (Variables.runtar != 0) { if (status
 			 * < target) { if (Variables.runtar == 1) { status = (int)
@@ -571,7 +602,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	         timer = null;  
 		}
 		Variables.sportStatus = 1;
-		PlayVoice.PauseSportsVoice(this);
+		
 	}
 
 	public  void startRecordGps() {

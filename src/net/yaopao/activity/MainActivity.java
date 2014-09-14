@@ -34,23 +34,13 @@ import com.umeng.analytics.MobclickAgent;
 public class MainActivity extends Activity implements OnTouchListener,OnClickListener{
 	private TextView state;
 	private TextView desc;
-//	private TextView toutalCount;
-	//private TextView avgSpeed;
-	//private TextView points;
 	private ImageView start;
 	private ImageView headv;
 	private LinearLayout stateL;
 	private LinearLayout recording;
 	private LinearLayout matchL;
-//	private ImageView d1v;
-//	private ImageView d2v;
-//	private ImageView d3v;
-//	private ImageView d4v;
-//	private ImageView d5v;
-//	private ImageView d6v;
 	private Bitmap head;
 	private double distance;
-//	private DataBean data;
 	/** 设置 */
 	private TextView mMainSetting = null;
 	/** 系统消息 */
@@ -71,7 +61,6 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		stateL.setOnClickListener(this);
 		recording.setOnClickListener(this);
 		matchL.setOnClickListener(this);
-		
 		start.setOnTouchListener(this);
 		if (Variables.gpsStatus==2) {
 			DialogTool dialog = new DialogTool(MainActivity.this,handler);
