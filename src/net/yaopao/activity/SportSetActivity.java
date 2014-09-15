@@ -69,8 +69,10 @@ public class SportSetActivity extends Activity implements OnClickListener,
 			public void OnChanged(boolean CheckState) {
 				if (CheckState) {
 					Variables.switchVoice = 0;
+					Log.v("wyvoice","Variables.switchVoice 0="+Variables.switchVoice);
 				} else {
 					Variables.switchVoice = 1;
+					Log.v("wyvoice","Variables.switchVoice 1="+Variables.switchVoice);
 				}
 
 			}

@@ -343,7 +343,9 @@ public class YaoPao01App extends Application {
 		}
 		handler.obtainMessage(0).sendToTarget();
 		//播放语音
+		if (Variables.switchVoice == 0) {
 		YaoPao01App.playCompletVoice();
+		}
 	}
 
 	/**
@@ -569,7 +571,7 @@ public class YaoPao01App extends Application {
 			//真棒！你已完成目标的一半，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120101,120223,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标,跑步至运动目标的一半时ids =" + ids);
-
+			lts.writeFileToSD("时间运动目标,跑步至运动目标的一半时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		/**
@@ -580,7 +582,7 @@ public class YaoPao01App extends Application {
 			//加油！你就快达成目标了，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120102,120224,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标，小于等于10分钟时上报ids =" + ids);
-
+			lts.writeFileToSD("时间运动目标，小于等于10分钟时上报ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		/**
@@ -591,6 +593,7 @@ public class YaoPao01App extends Application {
 			//恭喜你！你已达成了XX分钟的目标，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120103,120226,").append(getGoalTimeCode()).append("120227,120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标,达成目标ids =" + ids);
+			lts.writeFileToSD("时间运动目标,达成目标ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		/**
@@ -600,7 +603,8 @@ public class YaoPao01App extends Application {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，超过你的目标XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
-			Log.v("wyvoice", "运动类型是距离,1，跑步至整公里数时；2，超过运动目标时ids =" + ids);
+			Log.v("wyvoice", "时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时ids =" + ids);
+			lts.writeFileToSD("时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		
@@ -612,6 +616,7 @@ public class YaoPao01App extends Application {
 			//你已完成XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120221,").append(getTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "跑步至5分钟的整数倍时ids =" + ids);
+			lts.writeFileToSD("跑步至5分钟的整数倍时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		
