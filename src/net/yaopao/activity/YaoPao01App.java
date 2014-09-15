@@ -38,6 +38,13 @@ public class YaoPao01App extends Application {
 	public static DBManager db;
 	public static DecimalFormat df;
 	public static VoiceUtil voice;
+	//请打开GPS功能。
+	public static String openGps ="110101";
+	//GPS信号较弱。
+	public static String weekGps ="110102";
+	//请启用数据流量。
+	public static String openNetwork ="110112";
+	//
 
 	@SuppressLint("NewApi")
 	@Override
@@ -559,6 +566,7 @@ public class YaoPao01App extends Application {
 		 */
 		public static void playHalfTimeVoice() {
 			StringBuffer ids = new StringBuffer();
+			//真棒！你已完成目标的一半，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120101,120223,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标,跑步至运动目标的一半时ids =" + ids);
 
@@ -569,7 +577,8 @@ public class YaoPao01App extends Application {
 		 */
 		public static void playLess10minVoice() {
 			StringBuffer ids = new StringBuffer();
-			ids.append("120102,120224,120222,").append(getLefTimeCode()).append("110041,120212,").append(getDisCode()).append("120213,").append(getPspeedCode());
+			//加油！你就快达成目标了，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
+			ids.append("120102,120224,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标，小于等于10分钟时上报ids =" + ids);
 
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -579,6 +588,7 @@ public class YaoPao01App extends Application {
 		 */
 		public static void playToTimeGoalVoice() {
 			StringBuffer ids = new StringBuffer();
+			//恭喜你！你已达成了XX分钟的目标，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120103,120226,").append(getGoalTimeCode()).append("120227,120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标,达成目标ids =" + ids);
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -588,19 +598,30 @@ public class YaoPao01App extends Application {
 		 */
 		public static void playOverTimeGoalVoice() {
 			StringBuffer ids = new StringBuffer();
-			ids.append("120221,").append(getDisCode()).append("110041,").append("120225,").append(getOverDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
+			//你已完成XX分钟，超过你的目标XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
+			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "运动类型是距离,1，跑步至整公里数时；2，超过运动目标时ids =" + ids);
-			
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		
-		// 整公里上报
+		/**
+		 * 跑步至5分钟的整数倍时；
+		 */
 		public static void playPer5minVoice() {
 			StringBuffer ids = new StringBuffer();
-			ids.append("120221,").append(getPerKmCode()).append("110041,120212,")
-					.append(getTimeCode()).append("120213,")
-					.append(getPspeedCode());
+			//你已完成XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
+			ids.append("120221,").append(getTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "跑步至5分钟的整数倍时ids =" + ids);
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		
+		public static void palyOpenGps(){
+			PlayVoice.StartPlayVoice(openGps, instance);
+		}
+		public static void palyWeekGps(){
+			PlayVoice.StartPlayVoice(weekGps, instance);
+		}
+		public static void palyOpenNetwork(){
+			PlayVoice.StartPlayVoice(openNetwork, instance);
 		}
 }

@@ -67,6 +67,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 			WindowManager m = getWindowManager();
 			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 			dialog.alertGpsTip2(d);
+			YaoPao01App.palyOpenGps();
 		}
 		this.initView();
 		checkLogin();
@@ -363,11 +364,13 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 //					WindowManager m = getWindowManager();
 //					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 //					dialog.alertGpsTip2(d);
+//					YaoPao01App.palyOpenGps();
 //				}else if (Variables.gpsStatus==0) {
 //					DialogTool dialog = new DialogTool(MainActivity.this,null);
 //					WindowManager m = getWindowManager();
 //					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 //					dialog.alertGpsTip1(d);
+//					YaoPao01App.palyWeekGps();
 //				}else if(Variables.gpsStatus==1){
 //					Intent mainIntent = new Intent(MainActivity.this,
 //							SportSetActivity.class);
