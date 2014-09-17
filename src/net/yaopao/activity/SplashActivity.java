@@ -18,6 +18,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import net.yaopao.bean.SportParaBean;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -44,7 +45,7 @@ public class SplashActivity extends Activity {
 		MobclickAgent.updateOnlineConfig( this );
 		
 		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
-		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
+		Log.v("wyuser", "在线参数="+Constants.endpoints);
 		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
 			Constants.endpoints=Constants.endpoints1;
 		}else{
@@ -74,6 +75,7 @@ public class SplashActivity extends Activity {
 		} else {
 			//Toast.makeText(this, "请检查网络", Toast.LENGTH_LONG).show();
 		}
+		initSportParam();
 	}
 
 	@Override
@@ -249,5 +251,29 @@ public class SplashActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+	/**
+	 * 初始化运动参数
+	 * 
+	 */
+	private void initSportParam() {
+		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
+		if (param.getTargetdis()!=0) {
+			Variables.runtarDis=param.getTargetdis();
+		}
+		if (param.getTargettime()!=0) {
+			Variables.runtarTime=param.getTargettime();
+		}
+		if (param.getTypeIndex()!=0) {
+			Variables.runty=param.getTypeIndex();
+		}
+		Variables.switchTime=param.getCountDown();
+		Variables.switchVoice=param.getVioce();
+		Variables.runtar =param.getTargetIndex();
+		Log.v("wysport", " runtarDis ="+param.getTargetdis());
+		Log.v("wysport", " runtarTime ="+param.getTargettime());
+		Log.v("wysport", " runty ="+param.getTypeIndex());
+		Log.v("wysport", " runtar ="+param.getTargetIndex());
+		
 	}
 }

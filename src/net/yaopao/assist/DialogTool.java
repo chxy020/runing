@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -78,8 +79,18 @@ public class DialogTool implements OnTouchListener {
 					dialog.dismiss();
 					//抛掉最后暂停的点
 					if (SportRecordActivity.points.size()>0) {
-						for (int i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
+						Log.v("wysports", "SportRecordActivity.points.size() = "+SportRecordActivity.points.size());
+						int i = 0;
+						try{
+						for (i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; ) {
+							i--;
+							if (i<0) {
+								break;
+							}
 							SportRecordActivity.points.remove(i);
+						}
+						}catch(Exception e){
+							Log.v("wysports", "i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0));
 						}
 					}
 					//计算距离积分
