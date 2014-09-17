@@ -180,6 +180,9 @@ public class MapActivity extends Activity implements LocationSource,
 				resumeV.setVisibility(View.VISIBLE);
 				sliderIconV.setVisibility(View.GONE);
 				sliderTextV.setVisibility(View.GONE);
+				if (Variables.switchVoice == 0) {
+				PlayVoice.PauseSportsVoice(MapActivity.this);
+				}
 			}
 		};
 	};
@@ -401,7 +404,9 @@ public class MapActivity extends Activity implements LocationSource,
 				sliderTextV.setText("滑动暂停");
 				doneV.setVisibility(View.GONE);
 				resumeV.setVisibility(View.GONE);
-				PlayVoice.PauseSportsVoice(MapActivity.this);
+				if (Variables.switchVoice == 0) {
+				PlayVoice.ProceedSportsVoice(MapActivity.this);
+				}
 				break;
 			}
 			break;
