@@ -25,6 +25,7 @@ PageManager.prototype = {
 	//页码
 	page:1,
 	init:function(){
+		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -65,7 +66,6 @@ PageManager.prototype = {
 		}
 	},
 	pageMove:function(evt){
-		evt.preventDefault();
 		this.moved = true;
 	},
 	
@@ -84,8 +84,8 @@ PageManager.prototype = {
 		//this.userStatus = this.countUserStatus();
 		//this.playStatus = this.countPlayStatus();
 		//this.initLoadHtml();
-
-		//请求比赛状态
+		this.page = 1;
+		//请求消息数据
 		this.getMessageList();
 	},
 	btnDown:function(evt){
@@ -180,7 +180,7 @@ PageManager.prototype = {
 		
 		var reqUrl = this.bulidSendUrl("/match/announcementlist.htm",options);
 		console.log(reqUrl);
-		
+		this.httpTip.show();
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
@@ -201,6 +201,7 @@ PageManager.prototype = {
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
+				this.httpTip.hide();
 			}
 		});
 	},
@@ -238,14 +239,21 @@ PageManager.prototype = {
 				
 				ul.push(li.join(''));
 			}
-			$("#messageList").append(ul.join(''));
+			if(this.page == 1){
+				$("#messageList").html(ul.join(''));
+			}
+			else{
+				$("#messageList").append(ul.join(''));
+			}
 			//this.initiScroll();
 
 			//注销消息事件
 			$("#messageList > li").rebind("touchstart",this.btnDown,this);
 			$("#messageList > li").rebind("touchend",this.messageItemUp,this);
 
-			$("#pageBtn").show();
+			if(data.length == 30){
+				$("#pageBtn").show();
+			}
 		}
 	},
 
@@ -293,7 +301,8 @@ PageManager.prototype = {
 	 * options请求参数
 	*/
 	bulidSendUrl:function(server,options){
-		var url = Base.ServerUrl + server;
+		var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+		var url = serverUrl + server;
 
 		var data = {};
 		/*
@@ -323,17 +332,12 @@ PageManager.prototype = {
 	*/
 	closeTipBtnUp:function(evt){
 		if(evt != null){
-			evt.preventDefault();
 			var ele = evt.currentTarget;
 			$(ele).removeClass("curr");
 			if(!this.moved){
-				$("#servertip").hide();
-				this.isTipShow = false;
 			}
 		}
 		else{
-			$("#servertip").hide();
-			this.isTipShow = false;
 		}
 	},
 	
@@ -341,22 +345,9 @@ PageManager.prototype = {
 	 * 重试
 	*/
 	retryBtnUp:function(evt){
-		evt.preventDefault();
 		var ele = evt.currentTarget;
 		$(ele).removeClass("curr");
 		if(!this.moved){
-			$("#servertip").hide();
-			this.isTipShow = false;
-			this.getPoiDetail();
-			/*
-			if(this.retrytype == "getPoiDetail"){
-				this.getPoiDetail();
-				this.$shareBox.hide();
-				$(this.meetBtn).hide();
-			}else if(this.retrytype == "getAibangServerData"){
-				this.getAibangServerData();
-			}
-			*/
 		}
 	},
 	
@@ -366,10 +357,6 @@ PageManager.prototype = {
 	closeHttpTip:function(){
 		this.httpTip.hide();
 		this.pageHide();
-		//如果是没有POI基础数据弹出的loading,返回到前一页
-		if(this.isBack){
-			frame.pageBack();
-		}
 	}
 };
 

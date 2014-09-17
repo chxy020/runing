@@ -84,13 +84,13 @@ PageManager.prototype = {
 		options.annid = annid;
 		
 		var reqUrl = this.bulidSendUrl("/match/announcementview.htm",options);
-		console.log(reqUrl);
+		//console.log(reqUrl);
 		
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					this.changeMessageHtml(data);
@@ -125,7 +125,8 @@ PageManager.prototype = {
 	 * options请求参数
 	*/
 	bulidSendUrl:function(server,options){
-		var url = Base.ServerUrl + server;
+		var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+		var url = serverUrl + server;
 
 		var data = {};
 		/*

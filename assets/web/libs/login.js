@@ -9,7 +9,7 @@
 
 (function(window){
 	//初始化页面函数
-	window.callbackInit = function(userinfo,playinfo,deviceinfo){
+	window.callbackInit = function(userinfo,playinfo,deviceinfo,serverurl){
 		var obj = {};
 		if(userinfo != ""){
 			userinfo = Base.str2Json(userinfo);
@@ -26,7 +26,8 @@
 		var dataStr = Base.json2Str(obj);
 		//保存数据到本地
 		Base.offlineStore.set("_localuserinfo",dataStr);
-		
+		//保存请求地址到本地
+		Base.offlineStore.set("local_server_url",serverurl,true);
 		//调用页面初始化方法
 		initPage();
 	};
@@ -59,8 +60,8 @@
 $(function(){
 	//测试数据
 	var userinfo = {};
-	userinfo.uid = "132";
-	userinfo.bid = "";
+	userinfo.uid = "657";
+	userinfo.bid = "11";
 	userinfo.gid = "8";
 	userinfo.username = "";
 	userinfo.nikename = "没啥意思a";
@@ -70,8 +71,8 @@ $(function(){
 	var playinfo = {};
 	playinfo.mid = 1;
 	var deviceinfo = {};
-	deviceinfo.deviceid = "tre211";
+	deviceinfo.deviceid = "92382894-C984-4177-B317-2FD1B6669916";
 	deviceinfo.platform = "android";
-	window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo));
+	window.callbackInit(Base.json2Str(userinfo),Base.json2Str(playinfo),Base.json2Str(deviceinfo),"http://182.92.97.144:8080/");
 });
 */

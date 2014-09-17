@@ -27,6 +27,7 @@ PageManager.prototype = {
 	//队员数据
 	memberData:null,
 	init: function(){
+		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -109,13 +110,14 @@ PageManager.prototype = {
 		options["X-PID"] = "tre211";
 		
 		var reqUrl = this.bulidSendUrl("/match/deletegroup.htm",options);
-		console.log(reqUrl);
+		//console.log(reqUrl);
 		
+		this.httpTip.show();
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				console.log(data);
+				//console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					//需要跳转到首页
@@ -129,6 +131,7 @@ PageManager.prototype = {
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
+				this.httpTip.hide();
 			}
 		});
 	},
@@ -139,7 +142,8 @@ PageManager.prototype = {
 	 * options请求参数
 	*/
 	bulidSendUrl:function(server,options){
-		var url = Base.ServerUrl + server;
+		var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
+		var url = serverUrl + server;
 
 		var data = {};
 		/*
@@ -169,17 +173,12 @@ PageManager.prototype = {
 	*/
 	closeTipBtnUp:function(evt){
 		if(evt != null){
-			evt.preventDefault();
 			var ele = evt.currentTarget;
 			$(ele).removeClass("curr");
 			if(!this.moved){
-				$("#servertip").hide();
-				this.isTipShow = false;
 			}
 		}
 		else{
-			$("#servertip").hide();
-			this.isTipShow = false;
 		}
 	},
 	
@@ -187,12 +186,9 @@ PageManager.prototype = {
 	 * 重试
 	*/
 	retryBtnUp:function(evt){
-		evt.preventDefault();
 		var ele = evt.currentTarget;
 		$(ele).removeClass("curr");
 		if(!this.moved){
-			$("#servertip").hide();
-			this.isTipShow = false;
 		}
 	},
 	
@@ -202,10 +198,6 @@ PageManager.prototype = {
 	closeHttpTip:function(){
 		this.httpTip.hide();
 		this.pageHide();
-		//如果是没有POI基础数据弹出的loading,返回到前一页
-		if(this.isBack){
-			frame.pageBack();
-		}
 	}
 };
 
