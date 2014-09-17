@@ -29,7 +29,6 @@ PageManager.prototype = {
 	//用户数据
 	localUserInfo:{},
 	init: function(){
-		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -137,14 +136,14 @@ PageManager.prototype = {
 		options.pagesize = 30;
 
 		var reqUrl = this.bulidSendUrl("/match/querygroupry.htm",options);
-		//console.log(reqUrl);
+		console.log(reqUrl);
 		
-		this.httpTip.show();
+		
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				//console.log(data);
+				console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					this.memberData = data;
@@ -154,7 +153,6 @@ PageManager.prototype = {
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
-				this.httpTip.hide();
 			}
 		});
 		/**/
@@ -205,7 +203,7 @@ PageManager.prototype = {
 	*/
 	initLoadHtml:function(){
 		var status = Base.offlineStore.get("playstatus",true) - 0;
-		//console.log(status)
+		console.log(status)
 		switch(status){
 			case 1:
 				//组队阶段
@@ -230,8 +228,7 @@ PageManager.prototype = {
 	 * options请求参数
 	*/
 	bulidSendUrl:function(server,options){
-		var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
-		var url = serverUrl + server;
+		var url = Base.ServerUrl + server;
 
 		var data = {};
 		/*
@@ -261,12 +258,17 @@ PageManager.prototype = {
 	*/
 	closeTipBtnUp:function(evt){
 		if(evt != null){
+			evt.preventDefault();
 			var ele = evt.currentTarget;
 			$(ele).removeClass("curr");
 			if(!this.moved){
+				$("#servertip").hide();
+				this.isTipShow = false;
 			}
 		}
 		else{
+			$("#servertip").hide();
+			this.isTipShow = false;
 		}
 	},
 	
@@ -278,6 +280,8 @@ PageManager.prototype = {
 		var ele = evt.currentTarget;
 		$(ele).removeClass("curr");
 		if(!this.moved){
+			$("#servertip").hide();
+			this.isTipShow = false;
 		}
 	},
 	
@@ -287,6 +291,10 @@ PageManager.prototype = {
 	closeHttpTip:function(){
 		this.httpTip.hide();
 		this.pageHide();
+		//如果是没有POI基础数据弹出的loading,返回到前一页
+		if(this.isBack){
+			frame.pageBack();
+		}
 	}
 };
 

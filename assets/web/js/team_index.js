@@ -32,10 +32,7 @@ PageManager.prototype = {
 	playStatus:0,
 	//用户数据
 	localUserInfo:{},
-	//比赛明细数据
-	playData:{},
 	init: function(){
-		this.httpTip = new HttpTip({scope:this});
 		$(window).onbind("load",this.pageLoad,this);
 		$(window).onbind("touchmove",this.pageMove,this);
 		this.bindEvent();
@@ -81,7 +78,12 @@ PageManager.prototype = {
 	*/
 	initPageManager:function(){
 		this.localUserInfo = Base.getLocalDataInfo();
-		
+
+		//更新比赛状态/用户状态初始化页面
+		this.userStatus = this.countUserStatus();
+		this.playStatus = this.countPlayStatus();
+		this.initLoadHtml();
+
 		//请求比赛状态
 		this.getCompetitionStatus();
 	},
@@ -198,29 +200,21 @@ PageManager.prototype = {
 		//客户端唯一标识
 		options["X-PID"] = "tre211";
 		var reqUrl = this.bulidSendUrl("/match/querymatchinfo.htm",options);
-		//console.log(reqUrl);
-		this.httpTip.show();
+		console.log(reqUrl);
+		
 		$.ajaxJSONP({
 			url:reqUrl,
 			context:this,
 			success:function(data){
-				//console.log(data);
+				console.log(data);
 				var state = data.state.code - 0;
 				if(state === 0){
 					this.changeSlideImage(data);
-					//保存数据
-					this.playData = data;
-					
-					//更新比赛状态/用户状态初始化页面
-					this.userStatus = this.countUserStatus();
-					this.playStatus = this.countPlayStatus(data);
-					this.initLoadHtml();
 				}
 				else{
 					var msg = data.state.desc + "(" + state + ")";
 					Base.alert(msg);
 				}
-				this.httpTip.hide();
 			}
 		});
 		/**/
@@ -241,7 +235,6 @@ PageManager.prototype = {
 		var us = this.userStatus;
 		//比赛状态
 		var ps = this.playStatus;
-		//console.log(us,ps);
 
 		var local = this.localUserInfo;
 		var user = local.userinfo || {};
@@ -263,7 +256,7 @@ PageManager.prototype = {
 		}
 		
 		//隐藏文字提示
-		if((us == 2 || us == 3) && (ps == 3 || ps == 0)){
+		if((us == 2 || us == 3) && ps == 3){
 			//未组队或者已组队,并且比赛状态再比赛前1小时
 			//这时候需要隐藏文字提示
 			playStatus.hide();
@@ -339,30 +332,6 @@ PageManager.prototype = {
 			html.push('</li>');
 			teamList.removeClass("login-btn");
 		}
-		else if((us == 1) && ps == 0){
-			//显示我要报名
-			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
-			html.push('<p>');
-			html.push('<span>' + nikeName + '</span>');
-			//html.push('<span>' + groupName + '</span>');
-			html.push('</p>');
-			html.push('</li>');
-			html.push('<li id="_signBtn" data="setup">我要报名</li>');
-			teamList.addClass("login-btn");
-		}
-		else if(us == 0 && ps == 0){
-			//显示我要注册/登录
-			html.push('<li>');
-			html.push('<div class="head-img"><img src="images/default-head-img.jpg" alt="" width="36" height="36"></div>');
-			html.push('<p>');
-			html.push('<span>未登录</span>');
-			//html.push('<span>' + groupName + '</span>');
-			html.push('</p>');
-			html.push('</li>');
-			html.push('<li id="_loginBtn" data="setup">注册/登录</li>');
-			teamList.addClass("login-btn");
-		}
 
 		if(html.length > 0){
 			teamList.html(html.join(''));
@@ -399,106 +368,26 @@ PageManager.prototype = {
 			html.push('</div>');
 			return html.join('');
 		}
-		
-		if(html.length > 0){
-			$("#viewport").show();
-			$("#scroller").html(html.join(''));
-			this.initiScroll();
-			//保存url
-			// this.mapOldUrl["cityMap" + code] = imgUrl;
-			//获取图片dom
-			var img = $("#scroller > div > img");
-			var imgUrl = [img1,img2,img3];
-			for(var i = 0,len = img.length; i < len; i++){
-				//加载图片
-				Base.imageLoaded($(img[i]),imgUrl[i]);
-			}
+
+		$("#scroller").html(html.join(''));
+		this.initiScroll();
+		//保存url
+		// this.mapOldUrl["cityMap" + code] = imgUrl;
+		//获取图片dom
+		var img = $("#scroller > div > img");
+		var imgUrl = [img1,img2,img3];
+		for(var i = 0,len = img.length; i < len; i++){
+			//加载图片
+			Base.imageLoaded($(img[i]),imgUrl[i]);
 		}
-		else{
-			//隐藏广告图片
-			$("#viewport").hide();
-		}
-		
 	},
 
 	/*
 	 * 计算比较倒计时和进行时
 	*/
 	countPlayTime:function(){
-		//var time = "距比赛还有：<span>18</span><s>天</s><span>52</span><s>时</s><span>25</span><s>分</s><span>42</span><s>秒</s>";
-		var time = "";
-		var obj = this.playData;
-		var now = new Date();
-		var startTime = obj.starttime;
-		//startTime = "2014-09-30 8:0:0";
-		var sDate = this.formatDate(startTime);
-		//判断是倒计时 还是 正计时
-		//1比赛开始 2未开始3 比赛结束
-		var matchstate = obj.matchstate - 0;
-		//matchstate = 2;
-
-		if(matchstate == 1){
-			//正计时
-			if(sDate != null){
-				var ms = now - sDate;
-				time = this.formatMs(ms);
-				time = "比赛已经开始：" + time;
-			}
-		}
-		else if(matchstate == 2){
-			//倒计时
-			if(sDate != null){
-				var ms = sDate - now;
-				time = this.formatMs(ms);
-				time = "距比赛还有：" + time;
-			}
-		}
+		var time = "距比赛还有：<span>18</span><s>天</s><span>52</span><s>时</s><span>25</span><s>分</s><span>42</span><s>秒</s>";
 		return time;
-	},
-
-	formatDate:function(str){
-		var date = null;
-		var s1 = str.split(" ");
-		if(s1.length == 2){
-			var arr1 = s1[0].split("-");
-			var arr2 = s1[1].split(":");
-
-			if(arr1.length == 3 && arr2.length == 3){
-				date = new Date(arr1[0],arr1[1] - 1,arr1[2],arr2[0],arr2[1],arr2[2]);
-				return date;
-			}
-		}
-		return date;
-	},
-
-	formatMs:function(ms){
-		//debugger
-		var time = ms / 1000;
-		if (time <= 60) {
-			return "<span>" + time + "</span><s>秒</s>";
-		} else if (time > 60 && time < 3600) {
-			//秒
-			var second = parseInt(time % 60);
-			//分钟
-			var minute = parseInt((ms % 3600) / 60);
-			return "<span>" + minute + "</span><s>分</s>" + "<span>" + second + "</span><s>秒</s>";
-		} else if (time >= 3600 && time < 86400) {
-			//秒
-			var second = parseInt(time % 60);
-			//分钟
-			var minute = parseInt((time % 3600) / 60);
-			var hour = parseInt(time / 3600);
-			return "<span>" + hour + "</span><s>时</s><span>" + minute + "</span><s>分</s>" + "<span>" + second + "</span><s>秒</s>";
-		} else {
-			//秒
-			var second = parseInt(time % 60);
-			//分钟
-			var minute = parseInt((ms % 3600) / 60);
-			//小时
-			var temp_hour = parseInt((time % 86400) / 3600);
-			var day = parseInt(time / 86400);
-			return "<span>" + day + "</span><s>天</s><span>" + temp_hour + "</span><s>时</s><span>" + minute + "</span><s>分</s><span>" + second + "</span><s>秒</s>";
-		}
 	},
 
 	/*
@@ -516,84 +405,15 @@ PageManager.prototype = {
 	 * 计算用户当前状态
 	*/
 	countUserStatus:function(){
-		var status;
-		var local = this.localUserInfo;
-		var user = local.userinfo || {};
-		var uid = user.uid || "0";
-		//报名ID
-		var bid = user.bid || "0";
-		//组ID
-		var gid = user.gid || "0";
-		if(uid == "0"){
-			//如果uid等于"0",就标识未注册状态
-			status = 0;
-		}
-		else if(bid == "0"){
-			//如果bid=="0",就标识未报名
-			status = 1;
-		}
-		else if(gid == "0"){
-			//如果gid=="0",就标识未组队
-			status = 2;
-		}
-		else{
-			status = 3;
-		}
-		return status;
+
+		return 3;
 	},
 
 	/*
 	 * 计算比赛当前状态
 	*/
-	countPlayStatus:function(obj){
-		//console.log(obj);
-		var status;
-
-		var local = this.localUserInfo;
-		var user = local.userinfo || {};
-		//组ID
-		var gid = user.gid || "0";
-
-		//报名状态1可以报名 2报名未开始  3 报名过期
-		var signstate = obj.signstate - 0 || 1;
-		//组队状态1 允许组队 0不允许
-		var groupstate = obj.groupstate - 0 || 0;
-		//比赛状态1比赛开始 2未开始3 比赛结束
-		var matchstate = obj.matchstate - 0 || 2;
-		if(signstate == 2){
-			//报名未开始,页面不显示操作按钮
-			status = -1;
-		}
-		else if(signstate == 1){
-			//报名阶段
-			status = 0;
-		}
-
-		if(groupstate == 1){
-			if(gid == "0"){
-				//如果没有组ID,那么应该就是组队阶段
-				//组队阶段
-				status = 1;
-			}
-			else{
-				//可以组队,又有组ID了,应该就是设置第一棒的状态
-				status = 2;
-			}
-		}
-		else{
-			//不允许组队,应该就进入赛前1小时阶段了
-			status = 3;
-		}
-
-		if(matchstate == 1){
-			//比赛开始
-			status = 4;
-		}
-		else if(matchstate == 3){
-			//比赛结束
-			status = 5;
-		}
-		return status;
+	countPlayStatus:function(){
+		return 2;
 	},
 
 	/**
@@ -602,8 +422,7 @@ PageManager.prototype = {
 	 * options请求参数
 	*/
 	bulidSendUrl:function(server,options){
-		var serverUrl = Base.offlineStore.get("local_server_url",true) + "chSports";
-		var url = serverUrl + server;
+		var url = Base.ServerUrl + server;
 
 		var data = {};
 		/*
@@ -627,17 +446,27 @@ PageManager.prototype = {
 		return reqUrl;
 	},
 
+
+
+
+
+
 	/**
 	 * 关闭提示框
 	*/
 	closeTipBtnUp:function(evt){
 		if(evt != null){
+			evt.preventDefault();
 			var ele = evt.currentTarget;
 			$(ele).removeClass("curr");
 			if(!this.moved){
+				$("#servertip").hide();
+				this.isTipShow = false;
 			}
 		}
 		else{
+			$("#servertip").hide();
+			this.isTipShow = false;
 		}
 	},
 	
@@ -645,9 +474,13 @@ PageManager.prototype = {
 	 * 重试
 	*/
 	retryBtnUp:function(evt){
+		evt.preventDefault();
 		var ele = evt.currentTarget;
 		$(ele).removeClass("curr");
 		if(!this.moved){
+			$("#servertip").hide();
+			this.isTipShow = false;
+			this.getPoiDetail();
 		}
 	},
 	
@@ -657,6 +490,10 @@ PageManager.prototype = {
 	closeHttpTip:function(){
 		this.httpTip.hide();
 		this.pageHide();
+		//如果是没有POI基础数据弹出的loading,返回到前一页
+		if(this.isBack){
+			frame.pageBack();
+		}
 	}
 };
 
