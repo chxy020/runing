@@ -122,6 +122,10 @@
          <activity
             android:name="net.yaopao.activity.HelperActivity"
             android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.ServiceActivity"
+            android:screenOrientation="portrait" />
           <receiver android:name="net.yaopao.listener.NetworkStateReceiver">  
             <intent-filter>  
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  

@@ -476,7 +476,14 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 					}
 				}).show();
 	}
-
+	private void goGetPhotoFromCamera() {
+	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	intent.putExtra(
+			MediaStore.EXTRA_OUTPUT,
+			Uri.fromFile(new File(Constants.tempPath+ "/"+Constants.tempImage)));
+	startActivityForResult(intent, Constants.RET_CAMERA);
+}
+//
 	public void startPhotoZoom(Uri uri) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, Constants.IMAGE_UNSPECIFIED);
@@ -490,10 +497,9 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		intent.putExtra("return-data", true);
 		intent.putExtra("outputFormat", "JPEG");
 		intent.putExtra("noFaceDetection", true);
-		// intent.putExtra("output", Uri.parse(imagePath1));
 		startActivityForResult(intent, Constants.RET_CROP);
 	}
-
+//
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
@@ -520,15 +526,6 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	private void goGetPhotoFromCamera() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(
-				MediaStore.EXTRA_OUTPUT,
-				Uri.fromFile(new File(Constants.tempPath
-						+ "/"+Constants.tempImage)));
-		startActivityForResult(intent, Constants.RET_CAMERA);
 	}
 
 	private void goGetPhotoFromGallery() {

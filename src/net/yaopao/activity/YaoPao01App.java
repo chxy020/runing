@@ -456,6 +456,7 @@ public class YaoPao01App extends Application {
 				.append(getTimeCode()).append("120213,")
 				.append(getPspeedCode());
 		Log.v("wyvoice", "整公里上报ids =" + ids);
+		lts.writeFileToSD("整公里上报ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 
@@ -476,8 +477,8 @@ public class YaoPao01App extends Application {
 		ids.append("120204,120211,").append(disStr).append("110041,120212,")
 				.append(getTimeCode()).append("120213,")
 				.append(getPspeedCode());
-		Log.v("wyvoice", "整公里上报ids =" + ids);
 		Log.v("wyvoice", "运动完成上报ids =" + ids);
+		lts.writeFileToSD("运动完成上报ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 
@@ -488,8 +489,8 @@ public class YaoPao01App extends Application {
 		StringBuffer ids = new StringBuffer();
 		// ids+="120204,120211,"+disStr+"110041,120212,"+timeStr+"120213,"+speedStr;
 		ids.append("120101,120223,120222,").append(getLeftDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
-		Log.v("wyvoice", "距离运动目标,跑步至运动目标的一半时ids =" + ids);
-
+		Log.v("wyvoice", " 距离运动目标,跑步至运动目标的一半时ids =" + ids);
+		lts.writeFileToSD("距离运动目标,跑步至运动目标的一半时ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 	/**
@@ -499,7 +500,7 @@ public class YaoPao01App extends Application {
 		StringBuffer ids = new StringBuffer();
 		ids.append("120102,120224,120222,").append(getLeftDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
 		Log.v("wyvoice", "运动目标为距离，小于两公里上报ids =" + ids);
-
+		lts.writeFileToSD("运动目标为距离，小于两公里上报ids=" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 	/**
@@ -510,6 +511,7 @@ public class YaoPao01App extends Application {
 		//ids.append("120103,120224,120222,").append(getLeftDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
 		ids.append("120103,120226,").append(getTarDisCode()).append("110041,120227,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
 		Log.v("wyvoice", "运动类型是距离,达成目标ids =" + ids);
+		lts.writeFileToSD("运动类型是距离,达成目标ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 	/**
@@ -519,7 +521,7 @@ public class YaoPao01App extends Application {
 		StringBuffer ids = new StringBuffer();
 		ids.append("120221,").append(getDisCode()).append("110041,").append("120225,").append(getOverDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
 		Log.v("wyvoice", "运动类型是距离,1，跑步至整公里数时；2，超过运动目标时ids =" + ids);
-		
+		lts.writeFileToSD("运动类型是距离,1，跑步至整公里数时；2，超过运动目标时ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 	
@@ -628,5 +630,10 @@ public class YaoPao01App extends Application {
 		}
 		public static void palyOpenNetwork(){
 			PlayVoice.StartPlayVoice(openNetwork, instance);
+		}
+		public static void isPlayVoice(){
+			if (Variables.switchVoice==1) {
+				
+			}
 		}
 }

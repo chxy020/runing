@@ -1,9 +1,5 @@
 package net.yaopao.activity;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,7 +8,6 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
-import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
@@ -21,18 +16,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +38,8 @@ public class LoginActivity extends Activity implements OnTouchListener {
 	private TextView to_reset;
 	private TextView login;
 	private TextView goBack;
-
+	private TextView serviceV;
+	private ImageView serviceSelectV;
 	private EditText phoneNumV;
 	private EditText pwdV;
 
@@ -53,7 +48,7 @@ public class LoginActivity extends Activity implements OnTouchListener {
 	private String loginJson;
 	private LoadingDialog dialog;
 	private int loginStatus;
-
+	private boolean service=false;//是否同意服务条款
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -71,12 +66,16 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		to_reset.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.login_phoneNum);
 		pwdV = (EditText) this.findViewById(R.id.login_pwd);
+		serviceV = (TextView) this.findViewById(R.id.term_of_service);
+		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		serviceSelectV = (ImageView) this.findViewById(R.id.term_of_service_select);
 		dialog = new LoadingDialog(this);
 		// dialog.setCanceledOnTouchOutside(false);
 		goBack.setOnTouchListener(this);
 		to_reset.setOnTouchListener(this);
 		login.setOnTouchListener(this);
-
+		serviceV.setOnTouchListener(this);
+		serviceSelectV.setOnTouchListener(this);
 	}
 
 	@Override
@@ -114,10 +113,40 @@ public class LoginActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				login.setBackgroundResource(R.color.blue_dark);
-				if (verifyParam()) {
-					dialog.show();
-					new loginAsyncTask().execute("");
+				if (service) {
+					if (verifyParam()) {
+						dialog.show();
+						new loginAsyncTask().execute("");
+					}
+					}else{
+						Toast.makeText(LoginActivity.this, "您需要同意要跑服务条款才能进行后续操作",Toast.LENGTH_LONG).show();
+					}
+				
+				break;
+			}
+			break;
+		case R.id.term_of_service_select:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				if (service) {
+					serviceSelectV.setBackgroundResource(R.drawable.service_uncheck);
+					service=false;
+				}else {
+					serviceSelectV.setBackgroundResource(R.drawable.service_checked);
+					service=true;
 				}
+				break;
+			}
+			break;
+		case R.id.term_of_service:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				Intent intent = new Intent(LoginActivity.this,ServiceActivity.class);
+				startActivity(intent);
 				break;
 			}
 			break;
@@ -201,12 +230,12 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
 					// 下载头像
-					Variables.headUrl  = Constants.endpoints
+					Variables.headUrl  = Constants.endpoints_img
 							+ rt.getJSONObject("userinfo").getString("imgpath");
 					try {
 						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
 					} catch (Exception e) {
-						Log.v("wyuser", "eeeeee="+e.toString());
+						Log.v("wyuser", "下载头像异常="+e.toString());
 						e.printStackTrace();
 					}
 					DataTool.setUserInfo(loginJson);

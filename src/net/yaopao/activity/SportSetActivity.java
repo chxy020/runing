@@ -82,30 +82,30 @@ public class SportSetActivity extends Activity implements OnClickListener,
 		targetL.setOnClickListener(this);
 		typeL.setOnClickListener(this);
 		startV.setOnClickListener(this);
-		initSportParam();
+//		initSportParam();
 	}
 
 
-	private void initSportParam() {
-		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
-		if (param.getTargetdis()!=0) {
-			Variables.runtarDis=param.getTargetdis();
-		}
-		if (param.getTargettime()!=0) {
-			Variables.runtarTime=param.getTargettime();
-		}
-		if (param.getTypeIndex()!=0) {
-			Variables.runty=param.getTypeIndex();
-		}
-		Variables.switchTime=param.getCountDown();
-		Variables.switchVoice=param.getVioce();
-		Variables.runtar =param.getTargetIndex();
-		Log.v("wysport", " runtarDis ="+param.getTargetdis());
-		Log.v("wysport", " runtarTime ="+param.getTargettime());
-		Log.v("wysport", " runty ="+param.getTypeIndex());
-		Log.v("wysport", " runtar ="+param.getTargetIndex());
-		
-	}
+//	private void initSportParam() {
+//		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
+//		if (param.getTargetdis()!=0) {
+//			Variables.runtarDis=param.getTargetdis();
+//		}
+//		if (param.getTargettime()!=0) {
+//			Variables.runtarTime=param.getTargettime();
+//		}
+//		if (param.getTypeIndex()!=0) {
+//			Variables.runty=param.getTypeIndex();
+//		}
+//		Variables.switchTime=param.getCountDown();
+//		Variables.switchVoice=param.getVioce();
+//		Variables.runtar =param.getTargetIndex();
+//		Log.v("wysport", " runtarDis ="+param.getTargetdis());
+//		Log.v("wysport", " runtarTime ="+param.getTargettime());
+//		Log.v("wysport", " runty ="+param.getTypeIndex());
+//		Log.v("wysport", " runtar ="+param.getTargetIndex());
+//		
+//	}
 
 
 	@Override

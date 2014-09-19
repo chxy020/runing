@@ -152,8 +152,32 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
             android:gravity="center"
-            android:text="已经注册过众辉跑步？点这里 登录"
+            android:text="已经注册过众辉跑步？点这里登录"
             android:textColor="@color/text" />
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/to_login"
+      >
+        <TextView
+            android:id="@+id/term_of_service"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_height"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="我已同意要跑服务条款"
+            android:textColor="@color/text" />
+        <ImageView
+            android:id="@+id/term_of_service_select"
+            android:layout_marginRight="@dimen/margin5"
+            android:padding="@dimen/margin5"
+            android:layout_width="@dimen/small_height"
+            android:layout_height="@dimen/small_height"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/term_of_service"
+            android:background="@drawable/service_uncheck"
+            />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

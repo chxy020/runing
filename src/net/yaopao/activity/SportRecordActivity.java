@@ -412,6 +412,9 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		GpsPoint last = null;
 		GpsPoint point = getOnePoint();
 		if (point != null) {
+			if (points==null) {
+				return false;
+			}
 			if (points.size() == 0) {
 				points.add(point);
 				last = point;
@@ -510,7 +513,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				timePerKm += duringTime;
 				timePer5min += duringTime;
 				// 运动整公里处理
-				if (disPerKm > 1000) {
+				if (disPerKm >= 1000) {
 					int minute = timePerKm / 60;
 					Variables.points += YaoPao01App.calPspeedPoints(minute);
 					disPerKm = 0;
