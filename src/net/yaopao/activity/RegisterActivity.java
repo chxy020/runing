@@ -186,8 +186,12 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				reg.setBackgroundResource(R.color.blue_dark);
+				if (service) {
 				if (verifyParam()) {
 					new regAsyncTask().execute("");
+				}
+				}else{
+					Toast.makeText(RegisterActivity.this, "您需要同意要跑服务条款才能进行后续操作",Toast.LENGTH_LONG).show();
 				}
 				break;
 			}

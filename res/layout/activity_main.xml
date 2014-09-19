@@ -51,6 +51,7 @@
             android:background="@drawable/avatar_default" />
 
         <LinearLayout
+            android:id="@+id/main_user_info_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin2"

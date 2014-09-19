@@ -170,6 +170,7 @@
         <ImageView
             android:id="@+id/term_of_service_select"
             android:layout_marginRight="@dimen/margin5"
+            android:padding="@dimen/margin5"
             android:layout_width="@dimen/small_height"
             android:layout_height="@dimen/small_height"
             android:layout_centerVertical="true"
