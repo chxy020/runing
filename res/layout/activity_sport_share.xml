@@ -1,298 +1,295 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:id="@+id/recording_one_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/common_height"
-        android:background="@color/red" >
+	<RelativeLayout
+		android:id="@+id/recording_one_top_bar"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/common_height"
+		android:background="@color/red" >
 
-        <TextView
-            android:id="@+id/recording_one_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size2" />
+		<TextView
+			android:id="@+id/recording_one_title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true"
+			android:gravity="center"
+			android:text="告诉朋友"
+			android:textColor="@color/white"
+			android:textSize="@dimen/font_size2" />
 
-        <TextView
-            android:id="@+id/recording_one_back"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:text="返回"
-            android:background="@drawable/btn_click_red"
-            android:textColor="@color/white" />
+		<TextView
+			android:id="@+id/recording_one_back"
+			android:layout_width="@dimen/common_height"
+			android:layout_height="@dimen/common_height"
+			android:layout_alignParentLeft="true"
+			android:gravity="center"
+			android:text="返回"
+			android:background="@drawable/btn_click_red"
+			android:textColor="@color/white" />
 
-       <!--  <TextView
-            android:id="@+id/recording_one_share"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="分享"
-            android:textColor="@color/white" /> -->
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/one_map_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/one_map_height"
-        android:layout_below="@id/recording_one_top_bar" >
-
-        <!-- <com.amap.api.maps2d.MapView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/one_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" /> -->
-		<include
-		    android:id="@+id/sport_one_slider"
-		    android:layout_alignParentLeft="true"
-		    android:layout_alignParentTop="true"
-		    layout="@layout/sport_one_slider_layout" />
-        <ImageView
-            android:id="@+id/one_type"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_margin="@dimen/margin1"
-            />
-<!-- 
-        <TextView
-            android:id="@+id/one_dis"
-            android:layout_width="@dimen/recording_List_main_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:text="0.0 km"
-            android:textSize="@dimen/font_size3"
-            android:textStyle="bold" /> -->
-        
-        	<RelativeLayout
-		    android:id="@+id/one_dis"
-            android:layout_width="@dimen/recording_List_main_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_alignParentBottom="true"
-			android:orientation="horizontal" >
-			<!-- 把textview换成多个imageview -->
+	</RelativeLayout>
+	
+	<RelativeLayout
+		android:id="@+id/share_layout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/recording_one_top_bar"
+		android:layout_margin="20dp"
+		android:background="@drawable/border" >
+		
+		<RelativeLayout
+			android:id="@+id/one_map_layout"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/one_map_height"
+			android:layout_below="@id/recording_one_top_bar" >
+	
+			<ImageView
+				android:id="@+id/avatarImg"
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_marginTop="10dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginBottom="10dp"
+				android:background="@drawable/avatar_default" />
+	
+			<TextView
+				android:id="@+id/sportText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:layout_marginLeft="10dp"
+				android:layout_toRightOf="@id/avatarImg"
+				android:layout_alignTop="@id/avatarImg"
+				android:textSize="20dp"
+				android:text="我刚刚骑行了2.4公里" />
+	
+			<include
+				android:id="@+id/sport_one_slider"
+				layout="@layout/sport_one_slider_layout" />
+			
+			<ImageView
+				android:id="@+id/one_type"
+				android:layout_width="@dimen/common_height"
+				android:layout_height="@dimen/common_height"
+				android:layout_below="@id/avatarImg"
+				android:layout_margin="@dimen/margin1" />
+			
+			<RelativeLayout
+				android:id="@+id/one_dis"
+				android:layout_width="@dimen/recording_List_main_height"
+				android:layout_height="@dimen/common_height"
+				android:layout_alignParentBottom="true"
+				android:orientation="horizontal" >
 				
-				 <LinearLayout
-		            android:id="@+id/list_sport_distance"
-		            android:layout_width="wrap_content"
-		            android:layout_height="match_parent"
-		            android:layout_marginLeft="@dimen/margin1"
-		            android:gravity="center">
-		            <ImageView
-		                android:id="@+id/list_sport_num1"
-		                android:layout_width="@dimen/list_num_width"
-		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0"
-		                android:visibility="gone"
-		                 />
-		
-		            <ImageView
-		                android:id="@+id/list_sport_num2"
-		                android:layout_width="@dimen/list_num_width"
-		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0" />
-		
-		            <ImageView
-		                android:id="@+id/list_sport_dot"
-		                android:layout_width="@dimen/list_dot_width"
-		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_dot" />
-		
-		            <ImageView
-		                android:id="@+id/list_sport_dec1"
-		                android:layout_width="@dimen/list_num_width"
-		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0" />
-		
-		            <ImageView
-		                android:id="@+id/list_sport_dec2"
-		                android:layout_width="@dimen/list_num_width"
-		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0" />
-		       	 </LinearLayout> 
-		       	 
-				<ImageView
-	                android:id="@+id/list_sport_km"
-	                android:layout_toRightOf="@id/list_sport_distance"
-	                android:layout_width="@dimen/list_km_width"
-	                android:layout_height="@dimen/list_num_height"
-	                android:background="@drawable/r_km" 
-	                android:layout_centerInParent="true"/>
+					<!-- 把textview换成多个imageview -->
+					<LinearLayout
+						android:id="@+id/list_sport_distance"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:layout_marginLeft="@dimen/margin1"
+						android:gravity="center">
+						
+						<ImageView
+							android:id="@+id/list_sport_num1"
+							android:layout_width="@dimen/list_num_width"
+							android:layout_height="@dimen/list_num_height"
+							android:background="@drawable/r_0"
+							android:visibility="gone" />
+			
+						<ImageView
+							android:id="@+id/list_sport_num2"
+							android:layout_width="@dimen/list_num_width"
+							android:layout_height="@dimen/list_num_height"
+							android:background="@drawable/r_0" />
+			
+						<ImageView
+							android:id="@+id/list_sport_dot"
+							android:layout_width="@dimen/list_dot_width"
+							android:layout_height="@dimen/list_num_height"
+							android:background="@drawable/r_dot" />
+			
+						<ImageView
+							android:id="@+id/list_sport_dec1"
+							android:layout_width="@dimen/list_num_width"
+							android:layout_height="@dimen/list_num_height"
+							android:background="@drawable/r_0" />
+			
+						<ImageView
+							android:id="@+id/list_sport_dec2"
+							android:layout_width="@dimen/list_num_width"
+							android:layout_height="@dimen/list_num_height"
+							android:background="@drawable/r_0" />
+					</LinearLayout>
+			
+					<ImageView
+						android:id="@+id/list_sport_km"
+						android:layout_toRightOf="@id/list_sport_distance"
+						android:layout_width="@dimen/list_km_width"
+						android:layout_height="@dimen/list_num_height"
+						android:background="@drawable/r_km" 
+						android:layout_centerInParent="true" />
+				</RelativeLayout>
+	
+			<TextView
+				android:id="@+id/one_date"
+				android:layout_width="@dimen/one_date_width"
+				android:layout_height="@dimen/small_height"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentRight="true"
+				android:gravity="center"
+				android:text="0年0月0日 周一  0:0"
+				android:textSize="@dimen/font_size1"
+				android:textStyle="bold" />
 		</RelativeLayout>
-
-        <TextView
-            android:id="@+id/one_date"
-            android:layout_width="@dimen/one_date_width"
-            android:layout_height="@dimen/small_height"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="0年0月0日 周一  0:0"
-            android:textSize="@dimen/font_size1"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/one_middle"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/common_height"
-        android:layout_below="@id/one_map_layout" >
-
-        <LinearLayout
-            android:layout_width="@dimen/main_middle_width2"
-            android:layout_height="match_parent"
-            android:background="@color/gray_dark"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/one_time"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/main_middle_height"
-                android:gravity="center"
-                android:text="00:00:00"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size2"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/gray_dark"
-                android:gravity="center"
-                android:text="时间"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/white" />
-
-        <LinearLayout
-            android:layout_width="@dimen/main_middle_width1"
-            android:layout_height="match_parent"
-            android:background="@color/gray_dark"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/one_pspeed"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/main_middle_height"
-                android:gravity="center"
-                android:text="0&apos; 00&apos;&apos; /km"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size2"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="平均配速"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/white" />
-
-        <LinearLayout
-            android:layout_width="@dimen/main_middle_width2"
-            android:layout_height="match_parent"
-            android:background="@color/gray_dark"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/one_ponit"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/main_middle_height"
-                android:gravity="center"
-                android:text="+0"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size2"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="积分"
-                android:textColor="@color/white" />
-        </LinearLayout>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/one_middle"
-        android:background="@color/black" >
-    </View>
-
-    <RelativeLayout
-        android:id="@+id/one_desc_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/sport_set_height"
-        android:layout_below="@id/one_middle" >
-        <ImageView
-            android:id="@+id/one_way"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_marginTop="@dimen/margin1"
-            android:layout_marginRight="@dimen/margin1"
-            android:layout_alignParentRight="true"
-            />
-          <ImageView
-            android:id="@+id/one_mind"
-            android:layout_toLeftOf="@id/one_way"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_margin="@dimen/margin1"
-            />
-             <ImageView
-            android:id="@+id/one_desc_icon"
-            android:layout_width="@dimen/small_height"
-            android:layout_height="@dimen/small_height"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin1"
-            android:background="@drawable/edit" 
-            />
-          <TextView
-            android:id="@+id/one_desc"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/one_mind"
-            android:layout_toRightOf="@id/one_desc_icon"
-            android:gravity="center_vertical"
-            />
-         
-          
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/one_desc_layout"
-        android:background="@color/black" >
-    </View>
-
-    <Button
-        android:id="@+id/shareBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/one_desc_layout"
-        android:text="分享" />
-
+	
+		<LinearLayout
+			android:id="@+id/one_middle"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/common_height"
+			android:layout_below="@id/one_map_layout" >
+	
+			<LinearLayout
+				android:layout_width="@dimen/main_middle_width2"
+				android:layout_height="match_parent"
+				android:background="@color/gray_dark"
+				android:orientation="vertical" >
+	
+				<TextView
+					android:id="@+id/one_time"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/main_middle_height"
+					android:gravity="center"
+					android:text="00:00:00"
+					android:textColor="@color/white"
+					android:textSize="@dimen/font_size2"
+					android:textStyle="bold" />
+	
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="@color/gray_dark"
+					android:gravity="center"
+					android:text="时间"
+					android:textColor="@color/white" />
+			</LinearLayout>
+	
+			<View
+				android:layout_width="1dp"
+				android:layout_height="match_parent"
+				android:layout_gravity="center_horizontal"
+				android:background="@color/white" />
+	
+			<LinearLayout
+				android:layout_width="@dimen/main_middle_width1"
+				android:layout_height="match_parent"
+				android:background="@color/gray_dark"
+				android:orientation="vertical" >
+	
+				<TextView
+					android:id="@+id/one_pspeed"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/main_middle_height"
+					android:gravity="center"
+					android:text="0&apos; 00&apos;&apos; /km"
+					android:textColor="@color/white"
+					android:textSize="@dimen/font_size2"
+					android:textStyle="bold" />
+	
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:gravity="center"
+					android:text="平均配速"
+					android:textColor="@color/white" />
+			</LinearLayout>
+	
+			<View
+				android:layout_width="1dp"
+				android:layout_height="match_parent"
+				android:layout_gravity="center_horizontal"
+				android:background="@color/white" />
+	
+			<LinearLayout
+				android:layout_width="@dimen/main_middle_width2"
+				android:layout_height="match_parent"
+				android:background="@color/gray_dark"
+				android:orientation="vertical" >
+	
+				<TextView
+					android:id="@+id/one_ponit"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/main_middle_height"
+					android:gravity="center"
+					android:text="+0"
+					android:textColor="@color/white"
+					android:textSize="@dimen/font_size2"
+					android:textStyle="bold" />
+	
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:gravity="center"
+					android:text="积分"
+					android:textColor="@color/white" />
+			</LinearLayout>
+		</LinearLayout>
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:layout_below="@id/one_middle"
+			android:background="@color/black" >
+		</View>
+	
+		<RelativeLayout
+			android:id="@+id/one_desc_layout"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/sport_set_height"
+			android:layout_below="@id/one_middle" >
+			<ImageView
+				android:id="@+id/one_way"
+				android:layout_width="@dimen/common_height"
+				android:layout_height="@dimen/common_height"
+				android:layout_marginTop="@dimen/margin1"
+				android:layout_marginRight="@dimen/margin1"
+				android:layout_alignParentRight="true" />
+			<ImageView
+				android:id="@+id/one_mind"
+				android:layout_toLeftOf="@id/one_way"
+				android:layout_width="@dimen/common_height"
+				android:layout_height="@dimen/common_height"
+				android:layout_margin="@dimen/margin1" />
+			<ImageView
+				android:id="@+id/one_desc_icon"
+				android:layout_width="@dimen/small_height"
+				android:layout_height="@dimen/small_height"
+				android:layout_centerVertical="true"
+				android:layout_margin="@dimen/margin1"
+				android:background="@drawable/edit" />
+			<TextView
+				android:id="@+id/one_desc"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_toLeftOf="@id/one_mind"
+				android:layout_toRightOf="@id/one_desc_icon"
+				android:gravity="center_vertical" />
+		</RelativeLayout>
+	
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:layout_below="@id/one_desc_layout"
+			android:background="@color/black" >
+		</View>
+	
+		<Button
+			android:id="@+id/shareBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/one_desc_layout"
+			android:text="分享" />
+	</RelativeLayout>
 </RelativeLayout>

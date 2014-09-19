@@ -34,12 +34,16 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 
+import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 
 import com.alibaba.fastjson.JSONArray;
 import com.amap.api.a.am;
@@ -321,8 +325,8 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		initMind(mind);
 		initWay(runway);
 //		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
-		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
-
+//		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
+		titleV.setText("告诉朋友");
 	}
 	private void initDis(double distance) {
 		int d1 = (int) (distance % 100000) / 10000;
@@ -668,15 +672,104 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		oks.show(this);
 	}
 	
+	private void showShare(boolean silent, String platform, boolean captureView) {
+		final OnekeyShare oks = new OnekeyShare();
+		oks.setNotification(R.drawable.icon,this.getString(R.string.app_name));
+		oks.setAddress("12345678901");
+		oks.setTitle("title");
+		oks.setTitleUrl("http://sharesdk.cn");
+		oks.setText("text");
+//		if (MainActivity.TEST_TEXT != null && MainActivity.TEST_TEXT.containsKey(0)) {
+//			oks.setText(MainActivity.TEST_TEXT.get(0));
+//		} else {
+//			oks.setText(getContext().getString(R.string.share_content));
+//		}
+		if (captureView) {
+			oks.setViewToShare((RelativeLayout)this.findViewById(R.id.share_layout));
+		} else {
+			//oks.setImagePath(MainActivity.TEST_IMAGE);
+			//oks.setImageUrl(MainActivity.TEST_IMAGE_URL);
+		}
+		oks.setUrl("http://www.sharesdk.cn");
+		//oks.setFilePath(MainActivity.TEST_IMAGE);
+		//oks.setComment(getContext().getString(R.string.share));
+		//oks.setSite(getContext().getString(R.string.app_name));
+		oks.setSiteUrl("http://sharesdk.cn");
+		oks.setVenueName("ShareSDK");
+		oks.setVenueDescription("This is a beautiful place!");
+		oks.setLatitude(23.056081f);
+		oks.setLongitude(113.385708f);
+		oks.setSilent(silent);
+		if (platform != null) {
+			oks.setPlatform(platform);
+		}
+
+		// 令编辑页面显示为Dialog模式
+		oks.setDialogMode();
+
+		// 在自动授权时可以禁用SSO方式
+		oks.disableSSOWhenAuthorize();
+
+		// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
+//		oks.setCallback(new OneKeyShareCallback());
+		oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
+
+		// 去除注释，演示在九宫格设置自定义的图标
+//		Bitmap logo = BitmapFactory.decodeResource(menu.getResources(), R.drawable.ic_launcher);
+//		String label = menu.getResources().getString(R.string.app_name);
+//		OnClickListener listener = new OnClickListener() {
+//			public void onClick(View v) {
+//				String text = "Customer Logo -- ShareSDK " + ShareSDK.getSDKVersionName();
+//				Toast.makeText(menu.getContext(), text, Toast.LENGTH_SHORT).show();
+//				oks.finish();
+//			}
+//		};
+//		oks.setCustomerLogo(logo, label, listener);
+
+		// 去除注释，则快捷分享九宫格中将隐藏新浪微博和腾讯微博
+//		oks.addHiddenPlatform(SinaWeibo.NAME);
+//		oks.addHiddenPlatform(TencentWeibo.NAME);
+
+		// 为EditPage设置一个背景的View
+	//	oks.setEditPageBackground((RelativeLayout)this.findViewById(R.id.share_layout));
+
+		oks.show(this);
+	}
+	
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.shareBtn:
 				Log.e("","chxy _______");
-				showShare();
+				//showShare();
+				// 直接分享
+				showShare(true, null, false);
 			break;
 			default:
 			break;
+		}
+
+	}
+	
+	/**
+	 * 快捷分享项目现在添加为不同的平台添加不同分享内容的方法。
+	 *本类用于演示如何区别Twitter的分享内容和其他平台分享内容。
+	 *本类会在{@link DemoPage#showShare(boolean, String)}方法
+	 *中被调用。
+	 */
+	public class ShareContentCustomizeDemo implements ShareContentCustomizeCallback {
+
+		public void onShare(Platform platform, ShareParams paramsToShare) {
+			int id = ShareSDK.platformNameToId(platform.getName());
+//			if (MainActivity.TEST_TEXT != null && MainActivity.TEST_TEXT.containsKey(id)) {
+//				String text = MainActivity.TEST_TEXT.get(id);
+//				paramsToShare.setText(text);
+//			} else if ("Twitter".equals(platform.getName())) {
+//				// 改写twitter分享内容中的text字段，否则会超长，
+//				// 因为twitter会将图片地址当作文本的一部分去计算长度
+//				String text = platform.getContext().getString(R.string.share_content_short);
+//				paramsToShare.setText(text);
+//			}
 		}
 
 	}
