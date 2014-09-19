@@ -1,6 +1,7 @@
 package net.yaopao.activity;
 
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -374,13 +375,16 @@ public class SportTrackMap extends Activity{
 		ponitsV.setText("+ " + points);
 		disV.setText(df.format(distance / 1000) + " km");
 		Date date = new Date(addtime);
-		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
-				+ sdf2.format(date) + "日 " + YaoPao01App.getWeekOfDate(date)
-				+ " " + sdf3.format(date));
+		dateV.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+//		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
+//				+ sdf2.format(date) + "日 " + YaoPao01App.getWeekOfDate(date)
+//				+ " " + sdf3.format(date));
 
 		initType(runty);
 //		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
-		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
+//		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
+		String [] s =  DateFormat.getDateInstance().format(date).split("-");
+		titleV.setText(s[1] + "月" + s[2] + "日" + title);
 
 	}
 

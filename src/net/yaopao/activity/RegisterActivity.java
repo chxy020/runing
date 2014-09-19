@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,9 @@ import com.umeng.analytics.MobclickAgent;
 public class RegisterActivity extends Activity implements OnTouchListener {
 	public TextView reg;
 	public TextView getCodeV;
+	public TextView serviceV;
+	public ImageView serviceSelectV;
+	
 	public EditText phoneNumV;
 	public EditText pwdV;
 	public EditText codeV;
@@ -42,6 +46,7 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 	public String codeStr;
 	public String regJson;
 	public String verifyCodeJson;
+	public boolean service=false;//是否同意服务条款
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +67,18 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 		phoneNumV = (EditText) this.findViewById(R.id.reg_phoneNum);
 		pwdV = (EditText) this.findViewById(R.id.reg_pwd);
 		codeV = (EditText) this.findViewById(R.id.reg_veri_code);
+		serviceV = (TextView) this.findViewById(R.id.term_of_service);
+		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		serviceSelectV = (ImageView) this.findViewById(R.id.term_of_service_select);
 
 		getCodeV.setOnTouchListener(this);
 		goBack.setOnTouchListener(this);
 		toLogin.setOnTouchListener(this);
 		reg.setOnTouchListener(this);
+		serviceV.setOnTouchListener(this);
+		serviceSelectV.setOnTouchListener(this);
 
-	}
+	}  
 
 	private boolean verifyParam() {
 		if (!verifyPhone()) {
@@ -197,6 +207,31 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				break;
 			}
 			break;
+		case R.id.term_of_service_select:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				if (service) {
+					serviceSelectV.setBackgroundResource(R.drawable.service_uncheck);
+					service=false;
+				}else {
+					serviceSelectV.setBackgroundResource(R.drawable.service_checked);
+					service=true;
+				}
+				break;
+			}
+			break;
+		case R.id.term_of_service:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				Intent intent = new Intent(RegisterActivity.this,ServiceActivity.class);
+				startActivity(intent);
+				break;
+			}
+			break;
 		}
 		return true;
 	}
@@ -291,7 +326,7 @@ public class RegisterActivity extends Activity implements OnTouchListener {
 				JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
-					Toast.makeText(RegisterActivity.this, "验证码获取成功",
+					Toast.makeText(RegisterActivity.this, "验证码已发送，请查收短信",
 							Toast.LENGTH_LONG).show();
 				}else if(rtCode == -1){
 					Toast.makeText(RegisterActivity.this, "手机号码已经注册过，请直接登录",

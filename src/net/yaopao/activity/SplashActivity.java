@@ -48,6 +48,7 @@ public class SplashActivity extends Activity {
 		Log.v("wyuser", "在线参数="+Constants.endpoints);
 		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
 			Constants.endpoints=Constants.endpoints1;
+			Constants.endpoints_img=Constants.endpoints2;
 		}else{
 			Constants.endpoints+="chSports";
 		}
@@ -178,7 +179,7 @@ public class SplashActivity extends Activity {
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
 					// 下载头像
-					Variables.headUrl = Constants.endpoints
+					Variables.headUrl = Constants.endpoints_img
 							+ rt.getJSONObject("userinfo").getString("imgpath");
 					if (Variables.headUrl != null
 							&& !"".equals(Variables.headUrl)) {

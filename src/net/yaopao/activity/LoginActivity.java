@@ -201,12 +201,12 @@ public class LoginActivity extends Activity implements OnTouchListener {
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
 					// 下载头像
-					Variables.headUrl  = Constants.endpoints
+					Variables.headUrl  = Constants.endpoints_img
 							+ rt.getJSONObject("userinfo").getString("imgpath");
 					try {
 						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
 					} catch (Exception e) {
-						Log.v("wyuser", "eeeeee="+e.toString());
+						Log.v("wyuser", "下载头像异常="+e.toString());
 						e.printStackTrace();
 					}
 					DataTool.setUserInfo(loginJson);

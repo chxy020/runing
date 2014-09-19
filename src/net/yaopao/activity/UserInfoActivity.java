@@ -458,7 +458,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		}
 	}
 
-	/*private void showSetPhotoDialog() {
+	private void showSetPhotoDialog() {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
 		new AlertDialog.Builder(this).setTitle("选取来自").
@@ -558,8 +558,8 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			imageByte = stream.toByteArray();
 			new upImgAsyncTask().execute("");
 		}
-	}*/
-//	
+	}
+	
 	public static boolean checkNikeName(String nikeName) {
 		if (nikeName == null || nikeName.length() == 0)
 			return false;
