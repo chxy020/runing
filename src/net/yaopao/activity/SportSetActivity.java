@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportSetActivity extends Activity implements OnClickListener,
+public class SportSetActivity extends BaseActivity implements OnClickListener,
 		OnChangedListener {
 	TextView backV;
 	TextView targetV;

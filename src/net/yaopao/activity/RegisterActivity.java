@@ -29,7 +29,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class RegisterActivity extends Activity implements OnTouchListener {
+public class RegisterActivity extends BaseActivity implements OnTouchListener {
 	public TextView reg;
 	public TextView getCodeV;
 	public TextView serviceV;

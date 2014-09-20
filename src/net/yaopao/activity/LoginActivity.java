@@ -34,7 +34,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class LoginActivity extends Activity implements OnTouchListener {
+public class LoginActivity extends BaseActivity implements OnTouchListener {
 	private TextView to_reset;
 	private TextView login;
 	private TextView goBack;

@@ -46,7 +46,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportListOneActivity extends Activity {
+public class SportListOneActivity extends BaseActivity {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -120,7 +120,7 @@ public class SportListOneActivity extends Activity {
 		if (oneSport.getSportpho()==1) {
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
-			phoV.setImageBitmap(getImg(Constants.sportPho_s +oneSport.getSportPhoPath()));
+			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
 		}
 		
 		this.mListViews.add(mapLayout);

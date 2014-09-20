@@ -2,6 +2,7 @@ package net.yaopao.activity;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +33,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportSaveActivity extends Activity implements OnTouchListener {
+public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	public TextView deleV;
 	public TextView saveV;
 	public TextView titleV;
@@ -56,12 +58,15 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 	private String title;
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
+	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
+	private Uri imageUri;//to store the big bitmap
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_save);
 		initLayout();
+		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
 	}
 
 	private void initLayout() {
@@ -544,10 +549,11 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		// outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 640);
 		intent.putExtra("outputY", 640);
-		intent.putExtra("return-data", true);
-		intent.putExtra("outputFormat", "JPEG");
+		intent.putExtra("return-data", false);
+		intent.putExtra("scale", true);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 		intent.putExtra("noFaceDetection", true);
-		// intent.putExtra("output", Uri.parse(imagePath1));
 		startActivityForResult(intent, Constants.RET_CROP);
 	}
 
@@ -556,21 +562,12 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 		switch (requestCode) {
 		case Constants.RET_CAMERA:
 			if (resultCode == Activity.RESULT_OK) {
-				File picture = new File(tempPath);
-				startPhotoZoom(Uri.fromFile(picture));
-			}
-			break;
-		case Constants.RET_GALLERY:
-			if (resultCode == Activity.RESULT_OK) {
-				if (data != null) {
-					Log.v("zc", "data");
-				}
-				startPhotoZoom(data.getData());
+				startPhotoZoom(imageUri);
 			}
 			break;
 		case Constants.RET_CROP:
 			if (resultCode == Activity.RESULT_OK) {
-				doneGetPhotoFromCamera(data);
+				doneGetPhotoFromCamera();
 			}
 			break;
 		}
@@ -580,26 +577,30 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 
 	private void goGetPhotoFromCamera() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		intent.putExtra(
-				MediaStore.EXTRA_OUTPUT,
-				Uri.fromFile(new File(tempPath)));
+		intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
 		startActivityForResult(intent, Constants.RET_CAMERA);
 	}
 
 	private void goGetPhotoFromGallery() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
 		intent.setType("image/*");
-		startActivityForResult(Intent.createChooser(intent, "选择图片"),
-				Constants.RET_GALLERY);
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 640);
+		intent.putExtra("outputY", 640);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", false);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", false); // no face detection
+		startActivityForResult(intent, Constants.RET_CROP);
 	}
 
-	private void doneGetPhotoFromCamera(Intent data) {
-		Bundle extras = data.getExtras();
-		if (extras != null) {
-			mPhotoBmp = extras.getParcelable("data");
-			
+	private void doneGetPhotoFromCamera() {
+		if(imageUri != null){
+			mPhotoBmp = decodeUriAsBitmap(imageUri);
 			phoV.setImageBitmap(mPhotoBmp);
-			
 			phoButton.setVisibility(View.GONE);
 			try {
 				saveFile(mPhotoBmp);
@@ -607,6 +608,17 @@ public class SportSaveActivity extends Activity implements OnTouchListener {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private Bitmap decodeUriAsBitmap(Uri uri){
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return bitmap;
 	}
 	public void saveFile(Bitmap bm) throws IOException {
 		File dirFile = new File(Constants.sportPho);

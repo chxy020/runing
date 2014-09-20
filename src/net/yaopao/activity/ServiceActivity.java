@@ -13,7 +13,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class ServiceActivity extends Activity {
+public class ServiceActivity extends BaseActivity {
 
 	/** 返回按钮 */
 	private Button backBtn = null;

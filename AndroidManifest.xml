@@ -99,7 +99,6 @@
          <activity
             android:name="net.yaopao.activity.HelperActivity"
             android:screenOrientation="portrait" />
-            android:screenOrientation="portrait" />
          <activity
             android:name="net.yaopao.activity.ServiceActivity"
             android:screenOrientation="portrait" />
@@ -116,6 +115,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="net.yaopao.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+ 		 <activity
+            android:name="net.yaopao.activity.MatchWebActivity"
             android:screenOrientation="portrait" />
         <service
     		android:name="com.umeng.update.net.DownloadingService"

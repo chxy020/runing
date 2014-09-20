@@ -1,7 +1,7 @@
 package net.yaopao.activity;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.io.FileNotFoundException;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
@@ -10,20 +10,22 @@ import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
-import net.yaopao.voice.PlayVoice;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.util.DisplayMetrics;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -42,7 +44,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class MainActivity extends Activity implements OnTouchListener,OnClickListener{
+public class MainActivity extends BaseActivity implements OnTouchListener,OnClickListener{
 	private TextView state;
 	private TextView desc;
 	private ImageView start;
@@ -59,7 +61,8 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	private LinearLayout mMessageLayout = null;
 	private LoadingDialog dialog;
 	
-	
+	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
+	private Uri imageUri;//to store the big bitmap
 	public String upImgJson = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,8 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		this.initView();
 		checkLogin();
 		dialog = new LoadingDialog(this);
+		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
+		 
 	}
 	
 	 public static int px2dip(Context context, int pxValue) {
@@ -100,10 +105,14 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	//检查用户是否在其他设备上登录
 	private void checkLogin() {
 		if (Variables.islogin ==3) {
-			Intent mainIntent = new Intent(MainActivity.this,
-					LoginActivity.class);
-			Toast.makeText(this, "此用户已在其他设备上登录，请重新登录", Toast.LENGTH_LONG).show();
-			startActivity(mainIntent);
+//			Intent mainIntent = new Intent(MainActivity.this,
+//					LoginActivity.class);
+//			Toast.makeText(this, "此用户已在其他设备上登录，请重新登录", Toast.LENGTH_LONG).show();
+//			startActivity(mainIntent);
+				DialogTool dialog = new DialogTool(MainActivity.this,null);
+				WindowManager m = getWindowManager();
+				Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+				dialog.alertLoginOnOther(d);
 			return;
 		}
 	}
@@ -519,10 +528,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 				// Intent mainIntent = new Intent(MainActivity.this,
 				// MatchWatchActivity.class);
 				// MainActivity.this.startActivity(mainIntent);
-			 Intent intent= new Intent();        
-			    intent.setAction("android.intent.action.VIEW");    
-			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
-			    intent.setData(content_url);  
+			 Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);        
 			    startActivity(intent);
 			break;
 		case R.id.main_setting:
@@ -553,10 +559,9 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	private void showSetPhotoDialog() {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
-		new AlertDialog.Builder(this).setTitle("选取来自").
-		// setIcon (R.drawable.icon).
-				setItems(item_type, new DialogInterface.OnClickListener() {
+		new AlertDialog.Builder(this).setTitle("选取来自").setItems(item_type, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
+						Log.v("wycam", "which = "+which);
 						switch (which) {
 						case 0:
 							goGetPhotoFromCamera();
@@ -570,9 +575,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	}
 	private void goGetPhotoFromCamera() {
 	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	intent.putExtra(
-			MediaStore.EXTRA_OUTPUT,
-			Uri.fromFile(new File(Constants.tempPath+ "/"+Constants.tempImage)));
+	intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
 	startActivityForResult(intent, Constants.RET_CAMERA);
 }
 //
@@ -586,8 +589,10 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		// outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 640);
 		intent.putExtra("outputY", 640);
-		intent.putExtra("return-data", true);
-		intent.putExtra("outputFormat", "JPEG");
+		intent.putExtra("return-data", false);
+		intent.putExtra("scale", true);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 		intent.putExtra("noFaceDetection", true);
 		startActivityForResult(intent, Constants.RET_CROP);
 	}
@@ -597,22 +602,12 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		switch (requestCode) {
 		case Constants.RET_CAMERA:
 			if (resultCode == Activity.RESULT_OK) {
-				File picture = new File(Constants.tempPath
-						+ "/"+ Constants.tempImage);
-				startPhotoZoom(Uri.fromFile(picture));
-			}
-			break;
-		case Constants.RET_GALLERY:
-			if (resultCode == Activity.RESULT_OK) {
-				if (data != null) {
-					Log.v("zc", "data");
-				}
-				startPhotoZoom(data.getData());
+				startPhotoZoom(imageUri);
 			}
 			break;
 		case Constants.RET_CROP:
 			if (resultCode == Activity.RESULT_OK) {
-				doneGetPhotoFromCamera(data);
+				doneGetPhotoFromCamera();
 			}
 			break;
 		}
@@ -621,35 +616,43 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 	}
 
 	private void goGetPhotoFromGallery() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
 		intent.setType("image/*");
-		startActivityForResult(Intent.createChooser(intent, "选择图片"),
-				Constants.RET_GALLERY);
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 640);
+		intent.putExtra("outputY", 640);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", false);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", false); // no face detection
+		startActivityForResult(intent, Constants.RET_CROP);
 	}
 
-	private void doneGetPhotoFromCamera(Intent data) {
-		Bundle extras = data.getExtras();
-		if (extras != null) {
-			Variables.avatar = extras.getParcelable("data");
-//			if (Variables.avatar == null) {
-//				return;
-//			}
-//			mPhotoBmp = bmp;
-//			FileOutputStream output = null;
-//			try {
-//				output = new FileOutputStream(new File(Constants.avatarPath
-//						+ Constants.avatarName));
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			ByteArrayOutputStream bos = new ByteArrayOutputStream();//初始化一个流对象
-//			Variables.avatar.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩 到
+	private void doneGetPhotoFromCamera() {
+		if(imageUri != null){
+			Variables.avatar = decodeUriAsBitmap(imageUri);
+		}
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			Variables.avatar.compress(Bitmap.CompressFormat.PNG, 100, stream);
 			imageByte = stream.toByteArray();
-			new upImgAsyncTask().execute("");
+			try {
+				new upImgAsyncTask().execute("");
+			} catch (Exception e) {
+			}
+			
+	}
+		private Bitmap decodeUriAsBitmap(Uri uri){
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
 		}
+		return bitmap;
 	}
 	private class upImgAsyncTask extends AsyncTask<String, Void, Boolean> {
 		//
@@ -660,7 +663,7 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 		@Override
 		protected Boolean doInBackground(String... params) {
 			upImgJson = NetworkHandler.upImg(1, "", imageByte);
-			Log.v("wyuser", upImgJson);
+			Log.v("wyuser", "imageByte="+imageByte.length);
 			if (upImgJson != null && !"".equals(upImgJson)) {
 				return true;
 			} else {
@@ -677,6 +680,11 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 					if (rt.getJSONObject("state").getInteger("code") == 0) {
 						if (Variables.avatar!=null) {
 							headv.setImageBitmap(Variables.avatar);
+						}else if(rt.getJSONObject("state").getInteger("code") == -7){
+							DialogTool dialog = new DialogTool(MainActivity.this,null);
+							WindowManager m = getWindowManager();
+							Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+							dialog.alertLoginOnOther(d);
 						} else {
 							Toast.makeText(MainActivity.this, "更新头像失败",
 									Toast.LENGTH_LONG).show();

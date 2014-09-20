@@ -136,6 +136,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/small_height"
                 android:gravity="center_vertical"
+                android:text="打开数据网络和WLAN，可以"
+                android:textSize="@dimen/font_size2" />
+                
+            </LinearLayout>
+            <LinearLayout
+            android:id="@+id/l6"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/l5" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"/>
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
+                android:text="辅助GPS进行定位；"
+                android:textSize="@dimen/font_size2" />
+                
+            </LinearLayout>
+            
+            <LinearLayout
+            android:id="@+id/l7"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_height"
+            android:layout_below="@id/l6" >
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin2"
+                android:background="@drawable/dot_b" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_height"
+                android:gravity="center_vertical"
                 android:text="实在不行......重启您的手机吧。"
                 android:textSize="@dimen/font_size2" />
         </LinearLayout>

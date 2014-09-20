@@ -16,7 +16,10 @@ import net.yaopao.voice.VoiceUtil;
 import android.R.id;
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,7 +28,9 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
@@ -44,6 +49,7 @@ public class YaoPao01App extends Application {
 	public static String weekGps ="110102";
 	//请启用数据流量。
 	public static String openNetwork ="110112";
+	public LocationListener locationlisten;
 	//
 
 	@SuppressLint("NewApi")
@@ -62,12 +68,15 @@ public class YaoPao01App extends Application {
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
 		voice = new VoiceUtil();
+		//注册广播  
+//        registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
 	};
 
 	private void initGPS() {
 		Log.v("wy", "initGPS");
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		LocationListener locationlisten = new LocationListener() {
+		locationlisten = new LocationListener() {
 
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
@@ -156,8 +165,7 @@ public class YaoPao01App extends Application {
 		// 注册监听器 locationListener
 		// 第 2 、 3个参数可以控制接收GPS消息的频度以节省电力。第 2个参数为毫秒， 表示调用 listener的周期，第 3个参数为米
 		// ,表示位置移动指定距离后就调用 listener
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				1000, 0, locationlisten);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000, 0, locationlisten);
 
 	}
 
@@ -636,4 +644,25 @@ public class YaoPao01App extends Application {
 				
 			}
 		}
+		
+	    private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {  
+	           
+	        @Override  
+	        public void onReceive(Context context, Intent intent) {  
+	        	if ("unregister".equals(intent.getExtras().getString("data"))) {
+	        		  if (Variables.sportStatus!=0) {
+							if(locationManager!=null){
+								locationManager.removeUpdates(locationlisten);
+								locationlisten=null;
+								locationManager=null;
+							}
+						}
+	        		
+				}else if("register".equals(intent.getExtras().getString("data"))){
+					 if (Variables.sportStatus!=0) {
+							initGPS();
+						}
+				}
+	        }  
+	    };  
 }

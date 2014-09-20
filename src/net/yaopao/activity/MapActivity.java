@@ -43,7 +43,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MapActivity extends Activity implements LocationSource,
+public class MapActivity extends BaseActivity implements LocationSource,
 		AMapLocationListener, OnTouchListener {
 	public static final String closeAction = "close.action";
 	private MapView mapView;

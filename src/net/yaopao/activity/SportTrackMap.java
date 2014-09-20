@@ -40,7 +40,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class SportTrackMap extends Activity{
+public class SportTrackMap extends BaseActivity{
 	private MapView mapView;
 	private AMap aMap;
 	private SportBean oneSport;

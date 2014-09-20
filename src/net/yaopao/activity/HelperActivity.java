@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 /**
  */
-public class HelperActivity extends Activity implements OnTouchListener {
+public class HelperActivity extends BaseActivity implements OnTouchListener {
 	private TextView backV;
 
 	@Override

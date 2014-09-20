@@ -24,7 +24,7 @@ import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.umeng.analytics.MobclickAgent;
 
-public class MatchRunActivity extends Activity implements OnTouchListener {
+public class MatchRunActivity extends BaseActivity implements OnTouchListener {
 	private ImageView mapV;
 	private ImageView teamV;
 	private ImageView batonV;

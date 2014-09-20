@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class MainSettingActivity extends Activity {
+public class MainSettingActivity extends BaseActivity {
 
 	/** 返回按钮 */
 	private Button mSettingBackBtn = null;

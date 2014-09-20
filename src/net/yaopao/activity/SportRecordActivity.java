@@ -38,7 +38,7 @@ import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportRecordActivity extends Activity implements OnTouchListener {
+public class SportRecordActivity extends BaseActivity implements OnTouchListener {
 	public static List<GpsPoint> points;
 
 	private TextView sliderTextV;
@@ -158,7 +158,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		startRecordGps();
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
 		registerReceiver(broadcastReceiver, filter);
-
+		  
 		timerListenerHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				// 1-开始，2-停止
@@ -737,7 +737,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			//Toast.makeText(SportRecordActivity.this, "", duration)
 		}
 		return false;
 	}
