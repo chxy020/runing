@@ -24,7 +24,8 @@ public class Variables {
 	public static int network = 0;// 0-网络不可用，1-网络可用
 
 	public static int gpsStatus = 0;// 0-gps不可用，1-gps可用，2-未开启
-
+	public static int gpsListener = 0;// 0-gps未监听，1-gps已监听
+	public static boolean isActive = true;// 应用是否在前台
 	// public static long lon = 0;// 当前经度
 
 	// public static long lat = 0;// 当前纬度

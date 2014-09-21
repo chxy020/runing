@@ -13,7 +13,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchRelayActivity extends Activity implements OnTouchListener {
+public class MatchRelayActivity extends BaseActivity implements OnTouchListener {
 	private ImageView backV;
 
 	@Override

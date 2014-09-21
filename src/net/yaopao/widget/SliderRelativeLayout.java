@@ -136,20 +136,18 @@ public class SliderRelativeLayout extends RelativeLayout {
 
 		if (isSucess) {
 			resetViewState();
-			virbate(); // ��һ��
-			// �������ǵ���Activity����
+			virbate(); 			
 			mainHandler.obtainMessage(0).sendToTarget();
 
-		} else {// û�гɹ�������һ�����㷨ʹ�����
-				// ÿ��20ms , ����Ϊ0.6dip/ms , ʹ��ǰ��ͼƬ������һ�ξ��룬ֱ�����������
-			mLastMoveX = x; // ��¼�����ɿ�ʱ����ǰ�����λ�á�
+		} else {
+			mLastMoveX = x; 
 			int distance = x - tv_slider_icon.getRight();
-			// ֻ���ƶ����㹻����Ż���
+			
 			Log.e(TAG, "handleActionUpEvent : mLastMoveX -->" + mLastMoveX
 					+ " distance -->" + distance);
 			if (distance >= 0)
 				mHandler.postDelayed(BackDragImgTask, BACK_DURATION);
-			else { // ��ԭ��ʼ����
+			else { 
 				resetViewState();
 			}
 		}

@@ -13,26 +13,26 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class AboutActivity extends BaseActivity {
+public class ServiceActivity extends BaseActivity {
 
 	/** 返回按钮 */
-	private Button mSettingBackBtn = null;
+	private Button backBtn = null;
 	/** 服务条款WebView */
-	private WebView mWebViewAbout = null;
+	private WebView mWebViewService = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
+		setContentView(R.layout.activity_service);
 
-		mWebViewAbout = (WebView) this.findViewById(R.id.webview_about);
-		WebSettings wSet = mWebViewAbout.getSettings();
+		mWebViewService = (WebView) this.findViewById(R.id.webview_service);
+		WebSettings wSet = mWebViewService.getSettings();
 		wSet.setJavaScriptEnabled(true);
 
 		// asset目录
-		mWebViewAbout.loadUrl("file:///android_asset/web/setup_about.html");
+		mWebViewService.loadUrl("file:///android_asset/web/term_of_service.html");
 		// sd卡
 		// wView.loadUrl("content://com.android.htmlfileprovider/sdcard/index.html");
 		// wView.loadUrl("http://wap.baidu.com");
@@ -47,8 +47,8 @@ public class AboutActivity extends BaseActivity {
 	 * @date 2014-8-25
 	 */
 	private void initLoad() {
-		this.mSettingBackBtn = (Button) this
-				.findViewById(R.id.setting_back_btn);
+		this.backBtn = (Button) this
+				.findViewById(R.id.service_back_btn);
 		// 注册事件
 		this.setListener();
 	}
@@ -61,7 +61,7 @@ public class AboutActivity extends BaseActivity {
 	 */
 	private void setListener() {
 		// 注册设置事件
-		this.mSettingBackBtn.setOnClickListener(mOnClickListener);
+		this.backBtn.setOnClickListener(mOnClickListener);
 	}
 
 	/**
@@ -71,9 +71,9 @@ public class AboutActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.setting_back_btn:
+			case R.id.service_back_btn:
 				// 返回
-				AboutActivity.this.finish();
+				ServiceActivity.this.finish();
 				break;
 			}
 		}

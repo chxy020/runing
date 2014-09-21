@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportListActivity extends Activity implements OnClickListener,IXListViewListener {
+public class SportListActivity extends BaseActivity implements OnClickListener,IXListViewListener {
 	public TextView backV;
 
 	private ListView listView;

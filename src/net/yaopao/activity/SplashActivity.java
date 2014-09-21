@@ -18,6 +18,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import net.yaopao.bean.SportParaBean;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,7 +36,7 @@ import android.widget.Toast;
 /**
  * 显示起始画面
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -44,13 +45,17 @@ public class SplashActivity extends Activity {
 		MobclickAgent.updateOnlineConfig( this );
 		
 		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
-		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
+		Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
+		Log.v("wyuser", "在线参数1="+Constants.endpoints);
+		Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
 		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
 			Constants.endpoints=Constants.endpoints1;
+			Constants.endpoints_img=Constants.endpoints2;
 		}else{
 			Constants.endpoints+="chSports";
 		}
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
+		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
 		setContentView(R.layout.splash);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
@@ -62,7 +67,7 @@ public class SplashActivity extends Activity {
 		}, Constants.SPLASH_DISPLAY_LENGHT);
 		// 利用开头动画这几秒时间可以初始化变量和自动登录
 		Variables.uid = YaoPao01App.sharedPreferences.getInt("uid", 0);
-		// Log.v("wy", "uid"+Variables.uid+"");
+		
 		if (NetworkHandler.isNetworkAvailable(this)) {
 			Variables.network = 1;
 			if (Variables.uid != 0) {
@@ -74,6 +79,8 @@ public class SplashActivity extends Activity {
 		} else {
 			//Toast.makeText(this, "请检查网络", Toast.LENGTH_LONG).show();
 		}
+		 Log.v("wynet", "Variables.network0000="+Variables.network);
+		initSportParam();
 	}
 
 	@Override
@@ -176,10 +183,9 @@ public class SplashActivity extends Activity {
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
 					// 下载头像
-					Variables.headUrl = Constants.endpoints
-							+ rt.getJSONObject("userinfo").getString("imgpath");
-					if (Variables.headUrl != null
-							&& !"".equals(Variables.headUrl)) {
+					Variables.headUrl = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
+					Log.v("wyuser", "头像======="+Variables.headUrl);
+					if (Variables.headUrl != null	&& !"".equals(Variables.headUrl)) {
 						// Looper.prepare();
 						messageHandler.obtainMessage(0).sendToTarget();
 						// Looper.loop();
@@ -249,5 +255,29 @@ public class SplashActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+	/**
+	 * 初始化运动参数
+	 * 
+	 */
+	private void initSportParam() {
+		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
+		if (param.getTargetdis()!=0) {
+			Variables.runtarDis=param.getTargetdis();
+		}
+		if (param.getTargettime()!=0) {
+			Variables.runtarTime=param.getTargettime();
+		}
+		if (param.getTypeIndex()!=0) {
+			Variables.runty=param.getTypeIndex();
+		}
+		Variables.switchTime=param.getCountDown();
+		Variables.switchVoice=param.getVioce();
+		Variables.runtar =param.getTargetIndex();
+		Log.v("wysport", " runtarDis ="+param.getTargetdis());
+		Log.v("wysport", " runtarTime ="+param.getTargettime());
+		Log.v("wysport", " runty ="+param.getTypeIndex());
+		Log.v("wysport", " runtar ="+param.getTargetIndex());
+		
 	}
 }

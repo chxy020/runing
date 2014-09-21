@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends BaseActivity {
 	
 
 	/** webview */

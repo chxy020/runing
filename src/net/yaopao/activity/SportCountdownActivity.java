@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportCountdownActivity extends Activity implements OnTouchListener {
+public class SportCountdownActivity extends BaseActivity implements OnTouchListener {
 	private RelativeLayout time;
 	private ImageView time1;
 	private ImageView time2;

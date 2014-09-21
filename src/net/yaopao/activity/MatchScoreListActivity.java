@@ -12,7 +12,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchScoreListActivity extends Activity implements OnTouchListener {
+public class MatchScoreListActivity extends BaseActivity implements OnTouchListener {
 	private TextView backV;
 
 	@Override

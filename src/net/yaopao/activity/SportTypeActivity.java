@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportTypeActivity extends Activity implements OnClickListener {
+public class SportTypeActivity extends BaseActivity implements OnClickListener {
 	TextView backV;
 	RelativeLayout walkV;
 	RelativeLayout runV;

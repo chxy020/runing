@@ -1,26 +1,17 @@
 package net.yaopao.assist;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.List;
-
 import net.yaopao.activity.R;
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
-import net.yaopao.voice.PlayVoice;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -29,8 +20,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 public class DialogTool implements OnTouchListener {
@@ -90,14 +79,22 @@ public class DialogTool implements OnTouchListener {
 					dialog.dismiss();
 					//抛掉最后暂停的点
 					if (SportRecordActivity.points.size()>0) {
-						for (int i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
+						Log.v("wysports", "SportRecordActivity.points.size() = "+SportRecordActivity.points.size());
+						int i = 0;
+						try{
+						for (i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; ) {
+							i--;
+							if (i<0) {
+								break;
+							}
 							SportRecordActivity.points.remove(i);
+						}
+						}catch(Exception e){
+							Log.v("wysports", "i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0));
 						}
 					}
 					//计算距离积分
 					YaoPao01App.calDisPoints(context,handler);
-					//播放语音
-					YaoPao01App.playCompletVoice();
 					break;
 				default:
 					break;
@@ -184,6 +181,31 @@ public class DialogTool implements OnTouchListener {
 		setV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+		cancelV.setOnTouchListener(this);
+		setV.setOnTouchListener(this);
+		openV.setOnTouchListener(this);
+	}
+	// 在其他设备登陆
+	@SuppressWarnings("deprecation")
+	public void alertLoginOnOther(Display d) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View dialogView = inflater.inflate(R.layout.tip_dialog2, null);
+		dialog = new Dialog(context, R.style.mydialog);
+		dialog.setContentView(dialogView);
+		openV = (TextView) dialogView.findViewById(R.id.howto_open);
+		cancelV = (TextView) dialogView.findViewById(R.id.tip2_cancle);
+		setV = (TextView) dialogView.findViewById(R.id.tip2_set);
+		Window dialogWindow = dialog.getWindow();
+		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.8);
+		dialogWindow.setAttributes(p);
+		cancelV.getLayoutParams().width = p.width / 2;
+		setV.getLayoutParams().width = p.width / 2;
+		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		cancelV.setOnTouchListener(this);

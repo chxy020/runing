@@ -11,7 +11,7 @@
 //
 ///**
 // */
-//public class MatchRelayWaitActivity extends Activity implements OnTouchListener {
+//public class MatchRelayWaitActivity extends BaseActivity implements OnTouchListener {
 //	private ImageView backV;
 //	@Override
 //	protected void onCreate(Bundle savedInstanceState) {

@@ -122,6 +122,9 @@
          <activity
             android:name="net.yaopao.activity.HelperActivity"
             android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.ServiceActivity"
+            android:screenOrientation="portrait" />
           <receiver android:name="net.yaopao.listener.NetworkStateReceiver">  
             <intent-filter>  
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
@@ -135,6 +138,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="net.yaopao.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+ 		 <activity
+            android:name="net.yaopao.activity.MatchWebActivity"
             android:screenOrientation="portrait" />
         <service
     		android:name="com.umeng.update.net.DownloadingService"

@@ -30,7 +30,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchMapActivity extends Activity implements LocationSource,
+public class MatchMapActivity extends BaseActivity implements LocationSource,
 		AMapLocationListener, OnTouchListener {
 
 	private AMap aMap;

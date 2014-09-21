@@ -3,6 +3,7 @@ package net.yaopao.activity;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,11 +31,10 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
-import com.amap.api.a.am;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -46,7 +46,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportListOneActivity extends Activity {
+public class SportListOneActivity extends BaseActivity {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -121,7 +121,7 @@ public class SportListOneActivity extends Activity {
 		if (oneSport.getSportpho()==1) {
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
-			phoV.setImageBitmap(getImg(Constants.sportPho_s +oneSport.getSportPhoPath()));
+			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
 		}
 		
 		this.mListViews.add(mapLayout);
@@ -313,15 +313,16 @@ public class SportListOneActivity extends Activity {
 		//disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
-		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
-				+ sdf2.format(date) + "日 " + YaoPao01App.getWeekOfDate(date)
-				+ " " + sdf3.format(date));
+		dateV.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+//		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
+//				+ sdf2.format(date) + "日 " + YaoPao01App.getWeekOfDate(date)
+//				+ " " + sdf3.format(date));
 
 		initType(runty);
 		initMind(mind);
 		initWay(runway);
-//		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
-		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
+		String [] s =  DateFormat.getDateInstance().format(date).split("-");
+		titleV.setText(s[1] + "月" + s[2] + "日" + title);
 
 	}
 	private void initDis(double distance) {
