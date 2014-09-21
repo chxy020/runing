@@ -1,5 +1,6 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Constants;
 import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -120,7 +121,9 @@ public class WebViewActivity extends BaseActivity {
 //				deviceInfo = "{\"deviceid\":\"tre211\"}";
 				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
 				String param = "window.callbackInit('" + userInfo + "','"
-						+ playInfo + "'," + "'" + deviceInfo + "')";
+						+ playInfo + "'," + "'" + deviceInfo +
+						"','" + Constants.endpoints3 + "')";
+
 				jsCallbackMethod(param);
 			}
 		}

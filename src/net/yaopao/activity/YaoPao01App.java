@@ -61,7 +61,7 @@ public class YaoPao01App extends Application {
 		db = new DBManager(this);
 		Log.v("wy", "app");
 		Variables.pid = getImeiCode();
-		Variables.ua = this.getOptVer() + ",a_0.9.0";
+		Variables.ua = this.getOptVer() + ",a_0.9.1";
 		Log.v("wy", "pid=" + Variables.pid + " ua=" + Variables.ua);
 		getPreference();
 		initGPS();

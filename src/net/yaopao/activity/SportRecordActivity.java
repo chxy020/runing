@@ -12,7 +12,6 @@ import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
 import net.yaopao.voice.PlayVoice;
 import net.yaopao.widget.SliderRelativeLayout;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -93,8 +92,8 @@ public class SportRecordActivity extends BaseActivity implements
 	private boolean isOverGoal = false;// 是否播放过达成目标，true-已经播放过，false-没有播放过，
 	private boolean toGoalPlayed = false;// /本次是否播放的完成目标true-是，false-否
 	// 测试代码
-	public static double lon = 116.395823;
-	public static double lat = 39.839016;
+//	public static double lon = 116.395823;
+//	public static double lat = 39.839016;
 
 	// 以上测试代码
 
@@ -387,21 +386,21 @@ public class SportRecordActivity extends BaseActivity implements
 	};
 
 	public static GpsPoint getOnePoint() {
-//		 GpsPoint point = null;
-//		 if (YaoPao01App.loc != null) {
-//		 point = new GpsPoint();
-//		 point.lon = YaoPao01App.loc.getLongitude();
-//		 point.lat = YaoPao01App.loc.getLatitude();
-//		 point.time = YaoPao01App.loc.getTime();
-//		 point.altitude = YaoPao01App.loc.getAltitude();
-//		 point.course = YaoPao01App.loc.getBearing();
-//		 point.speed = YaoPao01App.loc.getSpeed();
-//		 point.status = Variables.sportStatus;
-//		 }
+		 GpsPoint point = null;
+		 if (YaoPao01App.loc != null) {
+		 point = new GpsPoint();
+		 point.lon = YaoPao01App.loc.getLongitude();
+		 point.lat = YaoPao01App.loc.getLatitude();
+		 point.time = YaoPao01App.loc.getTime();
+		 point.altitude = YaoPao01App.loc.getAltitude();
+		 point.course = YaoPao01App.loc.getBearing();
+		 point.speed = YaoPao01App.loc.getSpeed();
+		 point.status = Variables.sportStatus;
+		 }
 		// 测试代码
-		lat = lat + 0.0015;
-		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
-				new Date().getTime());
+//		lat = lat + 0.0015;
+//		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
+//				new Date().getTime());
 		// 测试代码
 		return point;
 
@@ -433,9 +432,9 @@ public class SportRecordActivity extends BaseActivity implements
 				if (last.status == point.status) {
 					last.time = point.time;
 					if (last.status == 0) {
-//						Variables.utime += duringTime;
+						Variables.utime += duringTime;
 						// 测试代码
-						 Variables.utime += (duringTime + 10);
+//						 Variables.utime += (duringTime + 10);
 						result = true;
 					} else {
 						result = false;
@@ -443,9 +442,9 @@ public class SportRecordActivity extends BaseActivity implements
 
 				} else {
 					if (last.status == 0) {
-//						Variables.utime += duringTime;
+						Variables.utime += duringTime;
 						// 测试代码
-						 Variables.utime += (duringTime + 10);
+//						 Variables.utime += (duringTime + 10);
 						Variables.distance += meter;
 					}
 					points.add(point);
@@ -454,9 +453,9 @@ public class SportRecordActivity extends BaseActivity implements
 
 			} else {
 				if (point.status == 0) {
-//					Variables.utime += duringTime;
+					Variables.utime += duringTime;
 					// 测试代码
-					 Variables.utime += (duringTime + 10);
+//					 Variables.utime += (duringTime + 10);
 					Variables.distance += meter;
 				}
 				points.add(point);
@@ -551,7 +550,7 @@ public class SportRecordActivity extends BaseActivity implements
 						// 运动5分钟整数倍时处理
 						Log.v("wyvoice", "Variables.utime=" + Variables.utime
 								+ "秒  timePer5min=" + timePer5min + "秒");
-						if (timePer5min >= 120) {
+						if (timePer5min >= 300) {
 							timePer5min = 0;
 
 							if (haflPlayed) {
