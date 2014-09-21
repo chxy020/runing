@@ -24,7 +24,22 @@ public class Variables {
 	public static int network = 0;// 0-网络不可用，1-网络可用
 
 	public static int gpsStatus = 0;// 0-gps不可用，1-gps可用，2-未开启
-
+	
+	//报名ID
+	public static String bid = "";
+	//组队ID
+	public static String gid = "";
+	//昵称
+	public static String nikeName = "";
+	//组名
+	public static String groupName = "";
+	//是否领队,"1"/"0"
+	public static String isLeader = "0";
+	//是否第一棒,"1"/"0"
+	public static String isBaton = "0";
+	//比赛ID
+	public static int mid = 1;
+	
 	// public static long lon = 0;// 当前经度
 
 	// public static long lat = 0;// 当前纬度

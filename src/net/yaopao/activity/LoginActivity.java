@@ -214,16 +214,38 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		protected Boolean doInBackground(String... params) {
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
-			loginJson = NetworkHandler.httpPost(Constants.endpoints
+			loginJson = NetworkHandler.httpPost(Constants.endpoints1
 					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
 					+ pwdStr);
+			Log.v("wyuser", "rel:=" + Constants.endpoints
+					+ Constants.login);
 			Log.v("wyuser", "loginJson=" + loginJson);
+			Log.e("", "chxy loginJson=" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
 
 				JSONObject rt = JSON.parseObject(loginJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				switch (rtCode) {
 				case 0:
+					//保存其他登录数据chenxy add
+					//报名ID
+//					public static String bid = "";
+//					//组队ID
+//					public static String gid = "";
+//					//昵称
+//					public static String nikeName = "";
+//					//组名
+//					public static String groupName = "";
+//					//是否领队,"1"/"0"
+//					public static String isLeader = "0";
+//					//是否第一棒,"1"/"0"
+//					public static String isBaton = "0";
+//					//比赛ID
+//					public static int mid = 1;
+//					Variables
+					//是否报名
+					//Variables.bid = rt.getJSONObject("userinfo").getInteger("issign").toString();
+					//Variables.gid = rt.getJSONObject("userinfo").getInteger("issign").toString();
 					Variables.islogin = 1;
 					Variables.uid = rt.getJSONObject("userinfo").getInteger(
 							"uid");

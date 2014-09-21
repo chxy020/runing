@@ -22,7 +22,8 @@ public class Constants {
 
 	public static  String endpoints = "";// 线上服务地址
 	public static  String endpoints_img = "";// 图片下载地址
-	public static  String endpoints1 = "http://appservice.yaopao.net/chSports";// 当友盟参数获取不到的时候，使用这个参数
+	//public static  String endpoints1 = "http://appservice.yaopao.net/chSports";// 当友盟参数获取不到的时候，使用这个参数
+	public static  String endpoints1 = "http://182.92.97.144:8080/chSports";// 当友盟参数获取不到的时候，使用这个参数
 	public static  String endpoints2 = "http://image.yaopao.net";// 图片下载地址，当友盟参数获取不到的时候，使用这个参数
 	
 

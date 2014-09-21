@@ -47,10 +47,11 @@ public class SplashActivity extends Activity {
 		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
 		Log.v("wyuser", "在线参数="+Constants.endpoints);
 		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
-			Constants.endpoints=Constants.endpoints1;
+			//Constants.endpoints=Constants.endpoints1;
 			Constants.endpoints_img=Constants.endpoints2;
 		}else{
-			Constants.endpoints+="chSports";
+			//连接测试服务器 先注释
+			//Constants.endpoints+="chSports";
 		}
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		setContentView(R.layout.splash);

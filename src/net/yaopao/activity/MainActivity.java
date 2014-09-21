@@ -519,11 +519,27 @@ public class MainActivity extends Activity implements OnTouchListener,OnClickLis
 				// Intent mainIntent = new Intent(MainActivity.this,
 				// MatchWatchActivity.class);
 				// MainActivity.this.startActivity(mainIntent);
+			/*
 			 Intent intent= new Intent();        
 			    intent.setAction("android.intent.action.VIEW");    
 			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
 			    intent.setData(content_url);  
 			    startActivity(intent);
+			*/
+			Intent teamIntent = null;
+			teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
+			teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
+			/*
+			if (Variables.islogin == 1) {
+				teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
+				teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
+				
+			} else {
+				Toast.makeText(MainActivity.this, "您必须注册并登录，才会收到系统消息，所以现在没有系统消息哦", Toast.LENGTH_LONG).show();
+				teamIntent = new Intent(MainActivity.this, RegisterActivity.class);
+			}
+			*/
+			startActivity(teamIntent);
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,

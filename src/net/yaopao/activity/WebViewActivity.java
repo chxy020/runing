@@ -1,15 +1,18 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Constants;
 import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 public class WebViewActivity extends Activity {
@@ -49,7 +52,7 @@ public class WebViewActivity extends Activity {
 		mWebView.addJavascriptInterface(new Object(){
 			//回到前一页
 			public void gotoPrePage(){
-				//Log.e("","chxy _______prepage");
+				Log.e("","chxy _______prepage");
 				WebViewActivity.this.finish();
 			}
 		}, "JSAndroidBridge");
@@ -58,7 +61,9 @@ public class WebViewActivity extends Activity {
 		if (mPageUrl.equals("message_index.html")) {
 			mWebView.loadUrl("file:///android_asset/web/" + mPageUrl);
 		}
-
+		else if(mPageUrl.equals("team_index.html")){
+			mWebView.loadUrl("file:///android_asset/web/" + mPageUrl);
+		}
 		// 初始化
 		this.initLoad();
 	}
@@ -111,6 +116,7 @@ public class WebViewActivity extends Activity {
 			String userInfo = "";
 			String playInfo = "";
 			String deviceInfo = "";
+			String serverUrl = "http://182.92.97.144:8080/";
 			//Log.e("","chxy ____url" + url);
 			if(-1 != url.indexOf("message_index.html")){
 				//消息首页
@@ -120,7 +126,39 @@ public class WebViewActivity extends Activity {
 //				deviceInfo = "{\"deviceid\":\"tre211\"}";
 				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
 				String param = "window.callbackInit('" + userInfo + "','"
-						+ playInfo + "'," + "'" + deviceInfo + "')";
+						+ playInfo + "'," + "'" + deviceInfo + "','" + serverUrl + "')";
+				jsCallbackMethod(param);
+			}
+			else if(-1 != url.indexOf("team_index.html")){
+				//消息首页
+				JSONObject user = new JSONObject();
+				//未注册给空串""
+				user.put("uid", "");
+				//未报名给空串""
+				user.put("bid", "");
+				//未组队给空串""
+				user.put("gid", "");
+				user.put("username","");
+				user.put("nickname","13122233305");
+				user.put("groupname","CCC");
+				user.put("userphoto","/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg");
+				user.put("isleader","1");
+				user.put("isbaton","0");
+				JSONObject play = new JSONObject();
+				play.put("mid","1");
+				play.put("stime","");
+				play.put("etime","");
+				JSONObject device = new JSONObject();
+				device.put("deviceid",Variables.pid);
+				device.put("platform","android");
+				userInfo = user.toJSONString();
+				playInfo = play.toJSONString();
+				deviceInfo = device.toJSONString();
+				
+				String param = "window.callbackInit('" + userInfo + "','"
+						+ playInfo + "'," + "'" + deviceInfo + "','" + serverUrl + "')";
+				
+				//Log.e("","chxy_____________" + param);
 				jsCallbackMethod(param);
 			}
 		}
