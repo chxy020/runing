@@ -28,7 +28,7 @@ public class LogtoSD {
 			}
 			Writer out = null;
 			out = new FileWriter(file, true);
-			out.write("\r\n" + getTime() + "    " + XYString + "\r\n");
+			//out.write("\r\n" + getTime() + "    " + XYString + "\r\n");
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,5 +40,4 @@ public class LogtoSD {
 		String datetime = tempDate.format(new java.util.Date());
 		return datetime;
 	}
-
 }

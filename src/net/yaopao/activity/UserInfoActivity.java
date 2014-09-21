@@ -411,10 +411,10 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 					UserInfoActivity.this.finish();
 					break;
 					case -7:
-							DialogTool dialog = new DialogTool(UserInfoActivity.this,null);
-							WindowManager m = getWindowManager();
-							Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-							dialog.alertLoginOnOther(d);
+							Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
+							Variables.islogin=3;
+							UserInfoActivity.this.finish();
+							startActivity(intent);
 							break;
 				default:
 					Toast.makeText(UserInfoActivity.this, "保存失败，请稍后重试",
@@ -463,10 +463,10 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 						// mPhotoBmp.recycle();
 						// mPhotoBmp=null;
 					} else if(rt.getJSONObject("state").getInteger("code") == -7){
-						DialogTool dialog = new DialogTool(UserInfoActivity.this,null);
-						WindowManager m = getWindowManager();
-						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-						dialog.alertLoginOnOther(d);
+						Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
+						Variables.islogin=3;
+						UserInfoActivity.this.finish();
+						startActivity(intent);
 					}else {
 						Toast.makeText(UserInfoActivity.this, "更新头像失败",
 								Toast.LENGTH_LONG).show();

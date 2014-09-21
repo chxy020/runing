@@ -332,7 +332,7 @@ public final class R {
     public static final class id {
         public static final int LinearLayout=0x7f0b016c;
         public static final int about_layout=0x7f0b003c;
-        public static final int action_settings=0x7f0b01cd;
+        public static final int action_settings=0x7f0b01cc;
         public static final int alert_cancle=0x7f0b016b;
         public static final int alert_confirm=0x7f0b0169;
         public static final int alert_title=0x7f0b0167;
@@ -352,15 +352,13 @@ public final class R {
         public static final int getup_arrow=0x7f0b018b;
         public static final int getup_finish_ico=0x7f0b018a;
         public static final int head_arrow=0x7f0b015d;
-        public static final int howto_open=0x7f0b01b2;
+        public static final int howto_open=0x7f0b01b0;
         public static final int imageView1=0x7f0b018c;
         public static final int l1=0x7f0b00ee;
         public static final int l2=0x7f0b00f0;
         public static final int l3=0x7f0b00f2;
         public static final int l4=0x7f0b00f4;
         public static final int l5=0x7f0b01ad;
-        public static final int l6=0x7f0b01ae;
-        public static final int l7=0x7f0b01af;
         public static final int line_under_recoding_mileage=0x7f0b006b;
         public static final int line_under_recoding_process_text=0x7f0b007c;
         public static final int line_under_recoding_speed_text=0x7f0b0077;
@@ -690,7 +688,7 @@ public final class R {
         public static final int term_of_service_select=0x7f0b0014;
         public static final int text1=0x7f0b01ab;
         public static final int text2=0x7f0b01ac;
-        public static final int text3=0x7f0b01b1;
+        public static final int text3=0x7f0b01af;
         public static final int time_d1=0x7f0b0191;
         public static final int time_d2=0x7f0b0194;
         public static final int time_h1=0x7f0b018d;
@@ -701,9 +699,10 @@ public final class R {
         public static final int time_m2=0x7f0b0193;
         public static final int time_s1=0x7f0b0195;
         public static final int time_s2=0x7f0b0196;
-        public static final int tip2_cancle=0x7f0b01b3;
-        public static final int tip2_set=0x7f0b01b4;
-        public static final int tip_cancle=0x7f0b01b0;
+        public static final int tip2_cancle=0x7f0b01b1;
+        public static final int tip2_set=0x7f0b01b2;
+        public static final int tip3_cancel=0x7f0b01b3;
+        public static final int tip_cancle=0x7f0b01ae;
         public static final int title_bar=0x7f0b0007;
         public static final int to_login=0x7f0b00bd;
         public static final int to_reset=0x7f0b0012;
@@ -721,21 +720,21 @@ public final class R {
         public static final int type_title=0x7f0b014c;
         public static final int type_top_bar=0x7f0b014b;
         public static final int type_walk=0x7f0b014e;
-        public static final int umeng_common_icon_view=0x7f0b01b5;
-        public static final int umeng_common_notification=0x7f0b01b9;
-        public static final int umeng_common_notification_controller=0x7f0b01b6;
-        public static final int umeng_common_progress_bar=0x7f0b01bc;
-        public static final int umeng_common_progress_text=0x7f0b01bb;
-        public static final int umeng_common_rich_notification_cancel=0x7f0b01b8;
-        public static final int umeng_common_rich_notification_continue=0x7f0b01b7;
-        public static final int umeng_common_title=0x7f0b01ba;
-        public static final int umeng_update_content=0x7f0b01bf;
-        public static final int umeng_update_id_cancel=0x7f0b01c2;
-        public static final int umeng_update_id_check=0x7f0b01c0;
-        public static final int umeng_update_id_close=0x7f0b01be;
-        public static final int umeng_update_id_ignore=0x7f0b01c3;
-        public static final int umeng_update_id_ok=0x7f0b01c1;
-        public static final int umeng_update_wifi_indicator=0x7f0b01bd;
+        public static final int umeng_common_icon_view=0x7f0b01b4;
+        public static final int umeng_common_notification=0x7f0b01b8;
+        public static final int umeng_common_notification_controller=0x7f0b01b5;
+        public static final int umeng_common_progress_bar=0x7f0b01bb;
+        public static final int umeng_common_progress_text=0x7f0b01ba;
+        public static final int umeng_common_rich_notification_cancel=0x7f0b01b7;
+        public static final int umeng_common_rich_notification_continue=0x7f0b01b6;
+        public static final int umeng_common_title=0x7f0b01b9;
+        public static final int umeng_update_content=0x7f0b01be;
+        public static final int umeng_update_id_cancel=0x7f0b01c1;
+        public static final int umeng_update_id_check=0x7f0b01bf;
+        public static final int umeng_update_id_close=0x7f0b01bd;
+        public static final int umeng_update_id_ignore=0x7f0b01c2;
+        public static final int umeng_update_id_ok=0x7f0b01c0;
+        public static final int umeng_update_wifi_indicator=0x7f0b01bc;
         public static final int under_confirm=0x7f0b016a;
         public static final int under_target_type_distance=0x7f0b0149;
         public static final int under_target_type_free=0x7f0b0148;
@@ -783,15 +782,15 @@ public final class R {
         public static final int webview_clause=0x7f0b0002;
         public static final int webview_service=0x7f0b00c8;
         public static final int wv1=0x7f0b000a;
-        public static final int xlistview_footer_content=0x7f0b01c4;
-        public static final int xlistview_footer_hint_textview=0x7f0b01c6;
-        public static final int xlistview_footer_progressbar=0x7f0b01c5;
-        public static final int xlistview_header_arrow=0x7f0b01cb;
-        public static final int xlistview_header_content=0x7f0b01c7;
-        public static final int xlistview_header_hint_textview=0x7f0b01c9;
-        public static final int xlistview_header_progressbar=0x7f0b01cc;
-        public static final int xlistview_header_text=0x7f0b01c8;
-        public static final int xlistview_header_time=0x7f0b01ca;
+        public static final int xlistview_footer_content=0x7f0b01c3;
+        public static final int xlistview_footer_hint_textview=0x7f0b01c5;
+        public static final int xlistview_footer_progressbar=0x7f0b01c4;
+        public static final int xlistview_header_arrow=0x7f0b01ca;
+        public static final int xlistview_header_content=0x7f0b01c6;
+        public static final int xlistview_header_hint_textview=0x7f0b01c8;
+        public static final int xlistview_header_progressbar=0x7f0b01cb;
+        public static final int xlistview_header_text=0x7f0b01c7;
+        public static final int xlistview_header_time=0x7f0b01c9;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -849,10 +848,11 @@ public final class R {
         public static final int sport_recording_adapter=0x7f030034;
         public static final int tip_dialog1=0x7f030035;
         public static final int tip_dialog2=0x7f030036;
-        public static final int umeng_common_download_notification=0x7f030037;
-        public static final int umeng_update_dialog=0x7f030038;
-        public static final int xlistview_footer=0x7f030039;
-        public static final int xlistview_header=0x7f03003a;
+        public static final int tip_dialog3=0x7f030037;
+        public static final int umeng_common_download_notification=0x7f030038;
+        public static final int umeng_update_dialog=0x7f030039;
+        public static final int xlistview_footer=0x7f03003a;
+        public static final int xlistview_header=0x7f03003b;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;

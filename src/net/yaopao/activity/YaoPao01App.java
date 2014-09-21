@@ -49,6 +49,7 @@ public class YaoPao01App extends Application {
 	public static String weekGps ="110102";
 	//请启用数据流量。
 	public static String openNetwork ="110112";
+	
 	public LocationListener locationlisten;
 	//
 

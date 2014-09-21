@@ -137,7 +137,7 @@ public class DialogTool implements OnTouchListener {
 		Window dialogWindow = dialog.getWindow();
 		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
 		p.height = (int) (d.getHeight() * 0.9); //
-		p.width = (int) (d.getWidth() * 0.8); //
+		p.width = (int) (d.getWidth() * 0.7); //
 		dialogWindow.setAttributes(p);
 
 		dialog.show();
@@ -175,10 +175,10 @@ public class DialogTool implements OnTouchListener {
 		Window dialogWindow = dialog.getWindow();
 		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
 		p.height = (int) (d.getHeight() * 0.9);
-		p.width = (int) (d.getWidth() * 0.8);
+		p.width = (int) (d.getWidth() * 0.7);
 		dialogWindow.setAttributes(p);
 		cancelV.getLayoutParams().width = p.width / 2;
-		setV.getLayoutParams().width = p.width / 2;
+//		setV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
 		dialog.setCanceledOnTouchOutside(false);
@@ -191,26 +191,37 @@ public class DialogTool implements OnTouchListener {
 	@SuppressWarnings("deprecation")
 	public void alertLoginOnOther(Display d) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		View dialogView = inflater.inflate(R.layout.tip_dialog2, null);
+		View dialogView = inflater.inflate(R.layout.tip_dialog3, null);
 		dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
-		openV = (TextView) dialogView.findViewById(R.id.howto_open);
-		cancelV = (TextView) dialogView.findViewById(R.id.tip2_cancle);
-		setV = (TextView) dialogView.findViewById(R.id.tip2_set);
+		cancelV = (TextView) dialogView.findViewById(R.id.tip3_cancel);
 		Window dialogWindow = dialog.getWindow();
 		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
 		p.height = (int) (d.getHeight() * 0.9);
-		p.width = (int) (d.getWidth() * 0.8);
+		p.width = (int) (d.getWidth() * 0.7);
 		dialogWindow.setAttributes(p);
-		cancelV.getLayoutParams().width = p.width / 2;
-		setV.getLayoutParams().width = p.width / 2;
-		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
-		cancelV.setOnTouchListener(this);
-		setV.setOnTouchListener(this);
-		openV.setOnTouchListener(this);
+		cancelV.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+				int action = event.getAction();
+				switch (action) {
+				case MotionEvent.ACTION_DOWN:
+					cancelV.setBackgroundResource(R.color.blue_h);
+					break;
+				case MotionEvent.ACTION_UP:
+					cancelV.setBackgroundResource(R.color.blue_dark);
+					dialog.dismiss();
+					// handker.obtainMessage(1).sendToTarget();
+					break;
+				default:
+					break;
+				}
+				return true;
+			}
+		});
 	}
 
 	@Override
