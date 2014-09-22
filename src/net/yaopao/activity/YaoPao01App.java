@@ -3,6 +3,7 @@ package net.yaopao.activity;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -377,10 +378,14 @@ public class YaoPao01App extends Application {
 		}
 	}
 
-	// 获取剩余公里数据id
+	// ====================================获取剩余公里数据id,当目标是奇数的时候，要播放0.5公里的部分
 	public static String getLeftDisCode() {
 		// 获取公里语音代码
-		double leftDis =Double.parseDouble(df.format((double)((Variables.runtarDis*1000-Variables.distance)/1000)));
+		//double leftDis =Double.parseDouble(df.format(Math.round(((Variables.runtarDis*1000-Variables.distance)/1000))));
+		double leftDis =Math.round((Variables.runtarDis*1000-Variables.distance)/1000);
+		if (Variables.runtarDis%2!=0) {
+			leftDis+=0.5;
+		}
 		List<Integer> dis = voice.voiceOfDouble(leftDis);
 		String disStr = "";
 		for (int i = 0; i < dis.size(); i++) {
@@ -391,7 +396,8 @@ public class YaoPao01App extends Application {
 	// 获取超过目标公里数据id
 	public static String getOverDisCode() {
 		// 获取公里语音代码
-		double leftDis =Double.parseDouble(df.format((double)((Variables.distance-Variables.runtarDis*1000)/1000)));
+		//double leftDis =Double.parseDouble(df.format((double)((Variables.distance-Variables.runtarDis*1000)/1000)));
+		double leftDis =(int)(Variables.distance-Variables.runtarDis*1000)/1000;
 		List<Integer> dis = voice.voiceOfDouble(leftDis);
 		String disStr = "";
 		for (int i = 0; i < dis.size(); i++) {
@@ -400,11 +406,15 @@ public class YaoPao01App extends Application {
 		return disStr;
 	}
 	
-	// 获取完成公里数据id
+	// ====================================获取完成公里数据id，如果运动目标是时间，播放小数部分，如果目标是距离，只播放整数部分
 	public static String getDisCode() {
 		// 获取公里语音代码
-				List<Integer> dis = voice.voiceOfDouble(Double.parseDouble(df
-						.format((double) (Variables.distance / 1000))));
+		double leftDis =Double.parseDouble(df.format((double) (Variables.distance / 1000)));
+				if (Variables.runtar!=2) {
+					 leftDis =(int)(Variables.distance/1000);
+				}
+//				List<Integer> dis = voice.voiceOfDouble(Double.parseDouble(df.format((double) (Variables.distance / 1000))));
+				List<Integer> dis = voice.voiceOfDouble(leftDis);
 				String disStr = "";
 				for (int i = 0; i < dis.size(); i++) {
 					disStr += dis.get(i) + ",";
@@ -422,10 +432,10 @@ public class YaoPao01App extends Application {
 		}
 		return disStr;
 	}
-	// 获取整公里数据id
+	//==================================== 获取整公里数据id
 	public static String getPerKmCode() {
 		// 获取公里语音代码
-		List<Integer> dis = voice.voiceOfDouble(Variables.distance / 1000);
+		List<Integer> dis = voice.voiceOfDouble((int)(Variables.distance / 1000));
 		String disStr = "";
 		for (int i = 0; i < dis.size(); i++) {
 			disStr += dis.get(i) + ",";
@@ -537,7 +547,13 @@ public class YaoPao01App extends Application {
 	// 获取5分钟的整数倍时数据id
 		public static String getPer5minCode() {
 			int[] times = YaoPao01App.cal(Variables.utime);
-			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			List<Integer> time =new ArrayList<Integer>();
+			if (times[2]==0) {
+				time = voice.voiceOfTime(times[0],times[1]);
+			}else {
+				 time = voice.voiceOfTime(times[0],times[1],times[2]);
+			}
+//			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
 			StringBuffer timeStr = new StringBuffer();
 			for (int i = 0; i < time.size(); i++) {
 				timeStr.append(time.get(i) + ",");
@@ -545,9 +561,21 @@ public class YaoPao01App extends Application {
 			return timeStr.toString();
 		}
 		// 获取剩余时间数据id
-		public static String getLefTimeCode() {
-			int[] times = YaoPao01App.cal(Variables.runtarTime*60-Variables.utime);
-			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+		public static String getLefTimeCode(boolean ishalf) {
+			int[] times =null;
+			if (ishalf) {
+				 times = YaoPao01App.cal(Variables.runtarTime*60/2);
+			}else {
+				 times = YaoPao01App.cal(Variables.runtarTime*60-Variables.utime);
+			}
+		
+			List<Integer> time =new ArrayList<Integer>();
+			if (times[2]==0) {
+				time = voice.voiceOfTime(times[0],times[1]);
+			}else {
+				 time = voice.voiceOfTime(times[0],times[1],times[2]);
+			}
+//			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
 			StringBuffer timeStr = new StringBuffer();
 			for (int i = 0; i < time.size(); i++) {
 				timeStr.append(time.get(i) + ",");
@@ -557,7 +585,13 @@ public class YaoPao01App extends Application {
 		// 获取超过目标时间数据id
 		public static String getOverTimeCode() {
 			int[] times = YaoPao01App.cal(Variables.utime-Variables.runtarTime*60);
-			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			List<Integer> time =new ArrayList<Integer>();
+			if (times[2]==0) {
+				time = voice.voiceOfTime(times[0],times[1]);
+			}else {
+				 time = voice.voiceOfTime(times[0],times[1],times[2]);
+			}
+//			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
 			StringBuffer timeStr = new StringBuffer();
 			for (int i = 0; i < time.size(); i++) {
 				timeStr.append(time.get(i) + ",");
@@ -567,7 +601,13 @@ public class YaoPao01App extends Application {
 		// 获取目标时间数据id
 		public static String getGoalTimeCode() {
 			int[] times = YaoPao01App.cal(Variables.runtarTime*60);
-			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
+			List<Integer> time =new ArrayList<Integer>();
+			if (times[2]==0) {
+				time = voice.voiceOfTime(times[0],times[1]);
+			}else {
+				 time = voice.voiceOfTime(times[0],times[1],times[2]);
+			}
+//			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
 			StringBuffer timeStr = new StringBuffer();
 			for (int i = 0; i < time.size(); i++) {
 				timeStr.append(time.get(i) + ",");
@@ -580,7 +620,7 @@ public class YaoPao01App extends Application {
 		public static void playHalfTimeVoice() {
 			StringBuffer ids = new StringBuffer();
 			//真棒！你已完成目标的一半，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120101,120223,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120101,120223,120222,").append(getLefTimeCode(true)).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标,跑步至运动目标的一半时ids =" + ids);
 			lts.writeFileToSD("时间运动目标,跑步至运动目标的一半时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -591,7 +631,7 @@ public class YaoPao01App extends Application {
 		public static void playLess10minVoice() {
 			StringBuffer ids = new StringBuffer();
 			//加油！你就快达成目标了，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120102,120224,120222,").append(getLefTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120102,120224,120222,").append(getLefTimeCode(false)).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标，小于等于10分钟时上报ids =" + ids);
 			lts.writeFileToSD("时间运动目标，小于等于10分钟时上报ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);

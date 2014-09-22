@@ -398,7 +398,7 @@ public class SportRecordActivity extends BaseActivity implements
 		 point.status = Variables.sportStatus;
 		 }
 		// 测试代码
-//		lat = lat + 0.0015;
+//		lat = lat + 0.0016;
 //		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
 //				new Date().getTime());
 		// 测试代码
@@ -511,7 +511,8 @@ public class SportRecordActivity extends BaseActivity implements
 				// 算积分
 				disPerKm += meter;
 				timePerKm += duringTime;
-				timePer5min += duringTime;
+//				timePer5min += duringTime;
+				timePer5min += (duringTime+10);
 				// 运动整公里处理
 				if (disPerKm >= 1000) {
 					int minute = timePerKm / 60;
@@ -550,7 +551,7 @@ public class SportRecordActivity extends BaseActivity implements
 						// 运动5分钟整数倍时处理
 						Log.v("wyvoice", "Variables.utime=" + Variables.utime
 								+ "秒  timePer5min=" + timePer5min + "秒");
-						if (timePer5min >= 300) {
+						if (timePer5min >= 180) {
 							timePer5min = 0;
 
 							if (haflPlayed) {

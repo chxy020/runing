@@ -563,7 +563,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 	private void showSetPhotoDialog() {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
-		new AlertDialog.Builder(this).setTitle("选取来自").setItems(item_type, new DialogInterface.OnClickListener() {
+		new AlertDialog.Builder(this).setTitle("选取来自").setIcon(R.drawable.icon_s).setItems(item_type, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						Log.v("wycam", "which = "+which);
 						switch (which) {

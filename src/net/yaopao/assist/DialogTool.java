@@ -35,7 +35,7 @@ public class DialogTool implements OnTouchListener {
 	}
 
 	public static void quit(Context context) {
-		new AlertDialog.Builder(context).setTitle(R.string.app_name)
+		new AlertDialog.Builder(context).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
 				.setMessage("确认退出？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {

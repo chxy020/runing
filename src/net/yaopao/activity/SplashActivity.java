@@ -54,6 +54,10 @@ public class SplashActivity extends BaseActivity {
 		}else{
 			Constants.endpoints+="chSports";
 		}
+		//测试代码
+//		Constants.endpoints=Constants.endpoints1;
+//		Constants.endpoints_img=Constants.endpoints2;
+		//测试代码
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
 		setContentView(R.layout.splash);
