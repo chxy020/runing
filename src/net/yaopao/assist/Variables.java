@@ -29,16 +29,22 @@ public class Variables {
 	public static String bid = "";
 	//组队ID
 	public static String gid = "";
+	//用户名称
+	public static String userName = "";
 	//昵称
 	public static String nikeName = "";
 	//组名
 	public static String groupName = "";
+	//头像URL
+	public static String photoUrl = "";
 	//是否领队,"1"/"0"
 	public static String isLeader = "0";
 	//是否第一棒,"1"/"0"
 	public static String isBaton = "0";
 	//比赛ID
 	public static int mid = 1;
+	//比赛状态1比赛开始 2未开始3 比赛结束
+	public static String matchState = "2";
 	
 	public static int gpsListener = 0;// 0-gps未监听，1-gps已监听
 	public static boolean isActive = true;// 应用是否在前台

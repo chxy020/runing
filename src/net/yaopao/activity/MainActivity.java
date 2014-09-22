@@ -540,9 +540,29 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 			 Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
 			    startActivity(intent);
 			*/
+			
+			//24小时比赛跳转页面判定,chenxy add
+			//先判断比赛是否开始了,没开始都进web页面,
+			//如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
 			Intent teamIntent = null;
-			teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
-			teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
+			
+			String matchState = Variables.matchState;
+			if("2" == matchState){
+				//比赛未开始
+				teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
+				teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
+			}
+			else{
+				//比赛开始了/结束了
+				if (Variables.islogin == 1) {
+					//登录了,跳转本地比赛页面,需要王雨添加逻辑
+					
+				} else {
+					//未登录,跳转到web页面
+					teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
+					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
+				}
+			}
 			/*
 			if (Variables.islogin == 1) {
 				teamIntent = new Intent(MainActivity.this,WebViewActivity.class);

@@ -116,14 +116,11 @@ public class WebViewActivity extends BaseActivity {
 			String userInfo = "";
 			String playInfo = "";
 			String deviceInfo = "";
-			String serverUrl = "http://182.92.97.144:8080/";
 			//Log.e("","chxy ____url" + url);
 			if(-1 != url.indexOf("message_index.html")){
 				//消息首页
 				userInfo = "{\"uid\":\"" + Variables.uid + "\"}";
-//				userInfo = "{\"uid\":\"77\"}";
 				playInfo = "{}";
-//				deviceInfo = "{\"deviceid\":\"tre211\"}";
 				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
 				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
 				jsCallbackMethod(param);
@@ -132,19 +129,19 @@ public class WebViewActivity extends BaseActivity {
 				//消息首页
 				JSONObject user = new JSONObject();
 				//未注册给空串""
-				user.put("uid", "");
+				user.put("uid", Variables.uid);
 				//未报名给空串""
-				user.put("bid", "");
+				user.put("bid", Variables.bid);
 				//未组队给空串""
-				user.put("gid", "");
+				user.put("gid", Variables.gid);
 				user.put("username","");
-				user.put("nickname","13122233305");
-				user.put("groupname","CCC");
-				user.put("userphoto","/image/20140916/120_EBFA23903D7E11E4A6869FF80F14043D.jpg");
-				user.put("isleader","1");
-				user.put("isbaton","0");
+				user.put("nickname",Variables.nikeName);
+				user.put("groupname",Variables.groupName);
+				user.put("userphoto",Variables.photoUrl);
+				user.put("isleader",Variables.isLeader);
+				user.put("isbaton",Variables.isBaton);
 				JSONObject play = new JSONObject();
-				play.put("mid","1");
+				play.put("mid",Variables.mid);
 				play.put("stime","");
 				play.put("etime","");
 				JSONObject device = new JSONObject();
@@ -155,7 +152,7 @@ public class WebViewActivity extends BaseActivity {
 				deviceInfo = device.toJSONString();
 				
 				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
-				//Log.e("","chxy_____________" + param);
+				Log.e("","chxy_____________" + param);
 				jsCallbackMethod(param);
 			}
 		}

@@ -236,25 +236,10 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				switch (rtCode) {
 				case 0:
-					//保存其他登录数据chenxy add
-					//报名ID
-//					public static String bid = "";
-//					//组队ID
-//					public static String gid = "";
-//					//昵称
-//					public static String nikeName = "";
-//					//组名
-//					public static String groupName = "";
-//					//是否领队,"1"/"0"
-//					public static String isLeader = "0";
-//					//是否第一棒,"1"/"0"
-//					public static String isBaton = "0";
-//					//比赛ID
-//					public static int mid = 1;
-//					Variables
-					//是否报名
-					//Variables.bid = rt.getJSONObject("userinfo").getInteger("issign").toString();
-					//Variables.gid = rt.getJSONObject("userinfo").getInteger("issign").toString();
+					//登录成功之后保存跳转web页面需要的参数 chenxy add
+					saveLoginStatus(rt);
+					//chenxy end
+					
 					Variables.islogin = 1;
 					Variables.uid = rt.getJSONObject("userinfo").getInteger(
 							"uid");
@@ -324,23 +309,55 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		return null;
 	}
 	// 如果重置密码成功，关闭此页面
-			BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
-				@Override
-				public void onReceive(Context context, Intent intent) {
-					if ("close".equals(intent.getExtras().getString("data"))) {
-						LoginActivity.this.finish();
-					}
-				}
-			};
-			
-			public void onResume() {
-				super.onResume();
-				MobclickAgent.onResume(this);
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if ("close".equals(intent.getExtras().getString("data"))) {
+				LoginActivity.this.finish();
 			}
+		}
+	};
+	
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
 
-			public void onPause() {
-				super.onPause();
-				MobclickAgent.onPause(this);
-			}
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+	}
+	
+	
+	/****************** chenxy add ****************/
+	private void saveLoginStatus(JSONObject rt){
+		//保存其他登录数据chenxy add
+		/*
+		{"announcement":{"isann":"0"},"integral":{"integral":"300"},
+		"match":{"gid":1,"groupname":"AAA","isbaton":"1","isgroup":"1",
+		"isleader":"1","ismatch":"1","issign":"1","mid":1},
+		"state":{"code":0,"desc":"请求成功"},
+		"userinfo":{"gender":"F","imgpath":"","nickname":"13122233303",
+			"phone":"13122233303","uid":3,"utype":1}}
+		*/
+		//是否报名
+		Variables.bid = rt.getJSONObject("match").getString("issign");
+		//组ID
+		Variables.gid = rt.getJSONObject("match").getInteger("gid").toString();
+		//用户名称
+		//Variables.userName = rt.getJSONObject("userinfo").getString("username");
+		//昵称
+		Variables.nikeName = rt.getJSONObject("userinfo").getString("nickname");
+		//头像URL
+		Variables.photoUrl = rt.getJSONObject("userinfo").getString("imgpath");
+		//组名
+		Variables.groupName = rt.getJSONObject("match").getString("groupname");
+		//是否领队,"1"/"0"
+		Variables.isLeader = rt.getJSONObject("match").getString("isleader");
+		//是否第一棒,"1"/"0"
+		Variables.isBaton = rt.getJSONObject("match").getString("isbaton");
+		//比赛状态
+		Variables.matchState = rt.getJSONObject("match").getString("ismatch");
+	}
 }
