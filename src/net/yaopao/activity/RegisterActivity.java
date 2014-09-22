@@ -46,7 +46,7 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 	public String codeStr;
 	public String regJson;
 	public String verifyCodeJson;
-	public boolean service=false;//是否同意服务条款
+	public boolean service=true;//是否同意服务条款
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +191,7 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 					new regAsyncTask().execute("");
 				}
 				}else{
-					Toast.makeText(RegisterActivity.this, "您需要同意要跑服务条款才能进行后续操作",Toast.LENGTH_LONG).show();
+					Toast.makeText(RegisterActivity.this, "您需要同意要跑服务协议才能进行后续操作",Toast.LENGTH_LONG).show();
 				}
 				break;
 			}

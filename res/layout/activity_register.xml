@@ -165,7 +165,7 @@
             android:layout_height="@dimen/common_height"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="我已同意要跑服务条款"
+            android:text="我已同意要跑服务协议"
             android:textColor="@color/text" />
         <ImageView
             android:id="@+id/term_of_service_select"
@@ -175,7 +175,7 @@
             android:layout_height="@dimen/small_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/term_of_service"
-            android:background="@drawable/service_uncheck"
+            android:background="@drawable/service_checked"
             />
         </RelativeLayout>
     </LinearLayout>

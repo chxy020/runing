@@ -20,6 +20,6 @@
 	<!-- 设置页面 -->
 	<string name="setting_title">设置</string>
 	<string name="setting_personal">个人信息</string>
-	<string name="setting_clause">服务条款</string>
+	<string name="setting_clause">服务协议</string>
 	<string name="setting_about">关于</string>
 </resources>
