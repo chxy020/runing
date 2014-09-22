@@ -46,7 +46,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportListOneActivity extends Activity {
+public class SportListOneActivity extends BaseActivity {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -54,7 +54,7 @@ public class SportListOneActivity extends Activity {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
-	private TextView shareV;
+//	private TextView shareV;
 	//private TextView disV;
 	private ImageView typeV;
 	private ImageView mindV;
@@ -121,7 +121,7 @@ public class SportListOneActivity extends Activity {
 		if (oneSport.getSportpho()==1) {
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
-			phoV.setImageBitmap(getImg(Constants.sportPho_s +oneSport.getSportPhoPath()));
+			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
 		}
 		
 		this.mListViews.add(mapLayout);
@@ -138,7 +138,7 @@ public class SportListOneActivity extends Activity {
 		pspeedV = (TextView) findViewById(R.id.one_pspeed);
 		ponitV = (TextView) findViewById(R.id.one_ponit);
 		titleV = (TextView) findViewById(R.id.recording_one_title);
-		shareV = (TextView) findViewById(R.id.recording_one_share);
+//		shareV = (TextView) findViewById(R.id.recording_one_share);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
 		//disV = (TextView) findViewById(R.id.one_dis);
@@ -162,17 +162,17 @@ public class SportListOneActivity extends Activity {
 			}
 		});
 		
-		shareV.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent myIntent = new Intent();
-				//分享页面
-				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
-				myIntent.putExtra("id", recordId + "");
-				startActivity(myIntent);
-			}
-		});
+//		shareV.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				Intent myIntent = new Intent();
+//				//分享页面
+//				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
+//				myIntent.putExtra("id", recordId + "");
+//				startActivity(myIntent);
+//			}
+//		});
 		initMap();
 	}
 

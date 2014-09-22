@@ -12,7 +12,6 @@ import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
 import net.yaopao.voice.PlayVoice;
 import net.yaopao.widget.SliderRelativeLayout;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +37,8 @@ import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportRecordActivity extends Activity implements OnTouchListener {
+public class SportRecordActivity extends BaseActivity implements
+		OnTouchListener {
 	public static List<GpsPoint> points;
 
 	private TextView sliderTextV;
@@ -92,8 +92,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	private boolean isOverGoal = false;// 是否播放过达成目标，true-已经播放过，false-没有播放过，
 	private boolean toGoalPlayed = false;// /本次是否播放的完成目标true-是，false-否
 	// 测试代码
-	public static double lon = 116.395823;
-	public static double lat = 39.839016;
+//	public static double lon = 116.395823;
+//	public static double lat = 39.839016;
 
 	// 以上测试代码
 
@@ -106,7 +106,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_recording);
 		if (Variables.switchVoice == 0) {
-		PlayVoice.StartSportsVoice(this);
+			PlayVoice.StartSportsVoice(this);
 		}
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
@@ -356,7 +356,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				doneV.setVisibility(View.GONE);
 				resumeV.setVisibility(View.GONE);
 				if (Variables.switchVoice == 0) {
-				PlayVoice.ProceedSportsVoice(SportRecordActivity.this);
+					PlayVoice.ProceedSportsVoice(SportRecordActivity.this);
 				}
 				break;
 			}
@@ -376,7 +376,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					sliderIconV.setVisibility(View.GONE);
 					sliderTextV.setVisibility(View.GONE);
 					if (Variables.switchVoice == 0) {
-					PlayVoice.PauseSportsVoice(SportRecordActivity.this);
+						PlayVoice.PauseSportsVoice(SportRecordActivity.this);
 					}
 				}
 				Log.v("wyvoice", "运动暂停");
@@ -386,21 +386,21 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 	};
 
 	public static GpsPoint getOnePoint() {
-		// GpsPoint point = null;
-		// if (YaoPao01App.loc != null) {
-		// point = new GpsPoint();
-		// point.lon = YaoPao01App.loc.getLongitude();
-		// point.lat = YaoPao01App.loc.getLatitude();
-		// point.time = YaoPao01App.loc.getTime();
-		// point.altitude = YaoPao01App.loc.getAltitude();
-		// point.course = YaoPao01App.loc.getBearing();
-		// point.speed = YaoPao01App.loc.getSpeed();
-		// point.status = Variables.sportStatus;
-		// }
+		 GpsPoint point = null;
+		 if (YaoPao01App.loc != null) {
+		 point = new GpsPoint();
+		 point.lon = YaoPao01App.loc.getLongitude();
+		 point.lat = YaoPao01App.loc.getLatitude();
+		 point.time = YaoPao01App.loc.getTime();
+		 point.altitude = YaoPao01App.loc.getAltitude();
+		 point.course = YaoPao01App.loc.getBearing();
+		 point.speed = YaoPao01App.loc.getSpeed();
+		 point.status = Variables.sportStatus;
+		 }
 		// 测试代码
-		lat = lat + 0.0006;
-		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
-				new Date().getTime());
+//		lat = lat + 0.0015;
+//		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
+//				new Date().getTime());
 		// 测试代码
 		return point;
 
@@ -412,7 +412,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 		GpsPoint last = null;
 		GpsPoint point = getOnePoint();
 		if (point != null) {
-			if (points==null) {
+			if (points == null) {
 				return false;
 			}
 			if (points.size() == 0) {
@@ -434,7 +434,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					if (last.status == 0) {
 						Variables.utime += duringTime;
 						// 测试代码
-						// Variables.utime += (duringTime + 10);
+//						 Variables.utime += (duringTime + 10);
 						result = true;
 					} else {
 						result = false;
@@ -444,7 +444,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 					if (last.status == 0) {
 						Variables.utime += duringTime;
 						// 测试代码
-						// Variables.utime += (duringTime + 10);
+//						 Variables.utime += (duringTime + 10);
 						Variables.distance += meter;
 					}
 					points.add(point);
@@ -455,7 +455,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 				if (point.status == 0) {
 					Variables.utime += duringTime;
 					// 测试代码
-					// Variables.utime += (duringTime + 10);
+//					 Variables.utime += (duringTime + 10);
 					Variables.distance += meter;
 				}
 				points.add(point);
@@ -550,7 +550,7 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 						// 运动5分钟整数倍时处理
 						Log.v("wyvoice", "Variables.utime=" + Variables.utime
 								+ "秒  timePer5min=" + timePer5min + "秒");
-						if (timePer5min >= 60) {
+						if (timePer5min >= 300) {
 							timePer5min = 0;
 
 							if (haflPlayed) {
@@ -737,7 +737,8 @@ public class SportRecordActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
 		}
 		return false;
 	}

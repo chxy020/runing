@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 /**
  */
-public class BlankActivity extends Activity implements OnTouchListener {
+public class BlankActivity extends BaseActivity implements OnTouchListener {
 	private TextView backV;
 
 	@Override

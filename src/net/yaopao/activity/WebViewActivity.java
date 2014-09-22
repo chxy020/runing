@@ -15,7 +15,7 @@ import android.webkit.WebViewClient;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends BaseActivity {
 	
 
 	/** webview */
@@ -125,8 +125,7 @@ public class WebViewActivity extends Activity {
 				playInfo = "{}";
 //				deviceInfo = "{\"deviceid\":\"tre211\"}";
 				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
-				String param = "window.callbackInit('" + userInfo + "','"
-						+ playInfo + "'," + "'" + deviceInfo + "','" + serverUrl + "')";
+				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
 				jsCallbackMethod(param);
 			}
 			else if(-1 != url.indexOf("team_index.html")){
@@ -155,9 +154,7 @@ public class WebViewActivity extends Activity {
 				playInfo = play.toJSONString();
 				deviceInfo = device.toJSONString();
 				
-				String param = "window.callbackInit('" + userInfo + "','"
-						+ playInfo + "'," + "'" + deviceInfo + "','" + serverUrl + "')";
-				
+				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
 				//Log.e("","chxy_____________" + param);
 				jsCallbackMethod(param);
 			}

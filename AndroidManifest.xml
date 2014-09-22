@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.yaopao.activity"
-    android:versionCode="1"
-    android:versionName="0.9.0" >
+    android:versionCode="2"
+    android:versionName="0.9.1" >
 
    <!--  <uses-sdk
         android:minSdkVersion="8"
@@ -122,7 +122,6 @@
          <activity
             android:name="net.yaopao.activity.HelperActivity"
             android:screenOrientation="portrait" />
-            android:screenOrientation="portrait" />
          <activity
             android:name="net.yaopao.activity.ServiceActivity"
             android:screenOrientation="portrait" />
@@ -139,6 +138,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="net.yaopao.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+ 		 <activity
+            android:name="net.yaopao.activity.MatchWebActivity"
             android:screenOrientation="portrait" />
         <service
     		android:name="com.umeng.update.net.DownloadingService"

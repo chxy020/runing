@@ -40,6 +40,8 @@ public class Variables {
 	//比赛ID
 	public static int mid = 1;
 	
+	public static int gpsListener = 0;// 0-gps未监听，1-gps已监听
+	public static boolean isActive = true;// 应用是否在前台
 	// public static long lon = 0;// 当前经度
 
 	// public static long lat = 0;// 当前纬度

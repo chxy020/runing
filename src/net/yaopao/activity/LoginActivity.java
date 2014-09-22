@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
@@ -21,8 +22,10 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
@@ -34,7 +37,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class LoginActivity extends Activity implements OnTouchListener {
+public class LoginActivity extends BaseActivity implements OnTouchListener {
 	private TextView to_reset;
 	private TextView login;
 	private TextView goBack;
@@ -56,6 +59,12 @@ public class LoginActivity extends Activity implements OnTouchListener {
 		setContentView(R.layout.activity_login);
 		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
 		registerReceiver(broadcastReceiver, filter);
+		if (Variables.islogin==3) {
+			DialogTool dialog = new DialogTool(this,null);
+			WindowManager m = getWindowManager();
+			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			dialog.alertLoginOnOther(d);
+		}
 		initLayout();
 	}
 

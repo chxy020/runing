@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class MatchCountdownActivity extends Activity {
+public class MatchCountdownActivity extends BaseActivity {
 	private ImageView time1;
 	private ImageView time2;
 	private ImageView time3;

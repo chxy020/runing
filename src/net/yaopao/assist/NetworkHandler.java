@@ -1,35 +1,22 @@
 package net.yaopao.assist;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-
-import net.yaopao.activity.RegisterActivity;
-import net.yaopao.activity.UserInfoActivity;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * @author zc 网络请求类，各个函数对应服务器各个接口
@@ -69,8 +56,7 @@ public class NetworkHandler extends Activity {
 			httpRequest.addHeader("User-Agent", Variables.ua);
 			HttpClient httpclient = getHttpClient();
 			HttpResponse httpResponse = httpclient.execute(httpRequest);
-			Log.v("wy", "status:"
-					+ httpResponse.getStatusLine().getStatusCode());
+			Log.v("wyuser", "status:"+ httpResponse.getStatusLine().getStatusCode());
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				rtStr = EntityUtils.toString(httpResponse.getEntity());
 			} else {
@@ -84,14 +70,15 @@ public class NetworkHandler extends Activity {
 
 	// 通用上传图片的方法
 	public static String upImg(int type, String remarks, byte[] imageByte) {
+		Log.v("wyuser", "Variables.network===========" + Variables.network);
 		if (Variables.network == 0) {
 			return null;
 		}
+		
 		String rtStr = "";
 		try {
 
-			HttpPost httpRequest = new HttpPost(Constants.endpoints
-					+ Constants.upImg + "?type=" + type + "&uid="
+			HttpPost httpRequest = new HttpPost(Constants.endpoints	+ Constants.upImg + "?type=" + type + "&uid="
 					+ Variables.uid + "&rid=" + Variables.getRid()
 					+ "&remarks=" + remarks);
 			httpRequest.addHeader("Accept", "text/json");
@@ -101,7 +88,7 @@ public class NetworkHandler extends Activity {
 			if (imageByte != null) {
 				mpEntity.addPart("avatar", new ByteArrayBody(imageByte, ""));
 			}
-			Log.v("wy", "上传图片--size=" + imageByte);
+			Log.v("wyuser", "上传图片--size=" + imageByte);
 			httpRequest.setEntity(mpEntity);
 			HttpClient httpclient = getHttpClient();
 
@@ -109,7 +96,7 @@ public class NetworkHandler extends Activity {
 			Log.v("wy", "上传图片--=" + Constants.endpoints + Constants.upImg
 					+ "?type=" + type + "&uid=" + Variables.uid + "&rid="
 					+ Variables.getRid() + "&remarks=" + remarks);
-			Log.v("wy", "上传图片--status="
+			Log.v("wyuser", "上传图片--status="
 					+ httpResponse.getStatusLine().getStatusCode());
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				rtStr = EntityUtils.toString(httpResponse.getEntity());

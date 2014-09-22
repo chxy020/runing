@@ -41,6 +41,7 @@
                 android:id="@+id/text2"
                 android:layout_width="match_parent"
                  android:layout_marginLeft="@dimen/margin2"
+                 android:layout_marginRight="@dimen/margin2"
                 android:layout_height="@dimen/small_height"
                 android:gravity="center_vertical"
                 android:text="要跑通过GPS来精确记录运动轨"
@@ -50,6 +51,7 @@
                 android:id="@+id/text3"
                 android:layout_width="match_parent"
                  android:layout_marginLeft="@dimen/margin2"
+                 android:layout_marginRight="@dimen/margin2"
                 android:layout_height="@dimen/small_height"
                 android:gravity="center_vertical"
                 android:text="迹，或计算比赛成绩"
@@ -68,7 +70,7 @@
 
         <TextView
             android:id="@+id/tip2_cancle"
-            android:layout_width="@dimen/width_half"
+            android:layout_width="@dimen/margin1"
             android:layout_height="@dimen/common_height"
             android:layout_below="@id/l1"
             android:layout_marginTop="@dimen/margin11"
@@ -80,7 +82,7 @@
 
         <TextView
             android:id="@+id/tip2_set"
-            android:layout_width="@dimen/width_half"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
             android:layout_below="@id/l1"
             android:layout_marginTop="@dimen/margin11"

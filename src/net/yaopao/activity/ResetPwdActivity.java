@@ -24,7 +24,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class ResetPwdActivity extends Activity implements OnTouchListener {
+public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 	public static final String closeAction = "resetpwd_close.action";
 	public TextView reset;
 	public TextView goBack;

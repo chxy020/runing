@@ -2,9 +2,11 @@ package net.yaopao.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
@@ -13,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,9 +23,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
@@ -35,7 +40,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
-public class UserInfoActivity extends Activity implements OnTouchListener {
+public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 	public TextView save;
 	public TextView back;
 	public TextView femaleV;
@@ -61,9 +66,11 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	public String realname = "";
 	public String nickname = "";
 	public String saveJson = "";
-	public String upImgJson = "";
 	public byte[] imageByte;
 	private LoadingDialog dialog;
+	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
+	private Uri imageUri;//to store the big bitmap
+	public String upImgJson = "";
 	
 	/** 生日数据 */
 	private String birthDayData = "";
@@ -125,6 +132,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		//保存体重
 		weigthData = user.getString("weight");
 		weigthData = weigthData == null ? "70kg" : weigthData;
+		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
 	}
 
 	@Override
@@ -136,6 +144,11 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+	@Override
+	protected void onDestroy() {
+		Log.v("wynet", "user onDestroy");
+		super.onDestroy();
 	}
 	private void initLayout() {
 		if (Variables.toUserInfo==0) {
@@ -386,6 +399,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 				Log.v("wy", saveJson);
 				JSONObject rt = JSON.parseObject(saveJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
+				Log.v("wyuser", "userinfo="+rtCode);
 				switch (rtCode) {
 				case 0:
 					Toast.makeText(UserInfoActivity.this, "修改成功",
@@ -396,6 +410,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 					Log.v("wyuser", "存之后 =" + DataTool.getUserInfo());
 					UserInfoActivity.this.finish();
 					break;
+					case -7:
+							Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
+							Variables.islogin=3;
+							UserInfoActivity.this.finish();
+							startActivity(intent);
+							break;
 				default:
 					Toast.makeText(UserInfoActivity.this, "保存失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
@@ -432,6 +452,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 			if (result) {
 				JSONObject rt = JSON.parseObject(upImgJson);
 				if (rt != null && !"".equals(upImgJson)) {
+					Log.v("wyuser", "upimg ="+rt.getJSONObject("state").getInteger("code"));
 					if (rt.getJSONObject("state").getInteger("code") == 0) {
 						if (Variables.avatar!=null) {
 							headv.setImageBitmap(Variables.avatar);
@@ -441,7 +462,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 						}
 						// mPhotoBmp.recycle();
 						// mPhotoBmp=null;
-					} else {
+					} else if(rt.getJSONObject("state").getInteger("code") == -7){
+						Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
+						Variables.islogin=3;
+						UserInfoActivity.this.finish();
+						startActivity(intent);
+					}else {
 						Toast.makeText(UserInfoActivity.this, "更新头像失败",
 								Toast.LENGTH_LONG).show();
 					}
@@ -461,10 +487,9 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	private void showSetPhotoDialog() {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };
 
-		new AlertDialog.Builder(this).setTitle("选取来自").
-		// setIcon (R.drawable.icon).
-				setItems(item_type, new DialogInterface.OnClickListener() {
+		new AlertDialog.Builder(this).setTitle("选取来自").setItems(item_type, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
+						Log.v("wycam", "which = "+which);
 						switch (which) {
 						case 0:
 							goGetPhotoFromCamera();
@@ -478,9 +503,7 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	}
 	private void goGetPhotoFromCamera() {
 	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	intent.putExtra(
-			MediaStore.EXTRA_OUTPUT,
-			Uri.fromFile(new File(Constants.tempPath+ "/"+Constants.tempImage)));
+	intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
 	startActivityForResult(intent, Constants.RET_CAMERA);
 }
 //
@@ -494,10 +517,15 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		// outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 640);
 		intent.putExtra("outputY", 640);
-		intent.putExtra("return-data", true);
-		intent.putExtra("outputFormat", "JPEG");
+		intent.putExtra("return-data", false);
+		intent.putExtra("scale", true);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 		intent.putExtra("noFaceDetection", true);
 		startActivityForResult(intent, Constants.RET_CROP);
+		
+	
+		
 	}
 //
 	@Override
@@ -505,22 +533,12 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 		switch (requestCode) {
 		case Constants.RET_CAMERA:
 			if (resultCode == Activity.RESULT_OK) {
-				File picture = new File(Constants.tempPath
-						+ "/"+ Constants.tempImage);
-				startPhotoZoom(Uri.fromFile(picture));
-			}
-			break;
-		case Constants.RET_GALLERY:
-			if (resultCode == Activity.RESULT_OK) {
-				if (data != null) {
-					Log.v("zc", "data");
-				}
-				startPhotoZoom(data.getData());
+				startPhotoZoom(imageUri);
 			}
 			break;
 		case Constants.RET_CROP:
 			if (resultCode == Activity.RESULT_OK) {
-				doneGetPhotoFromCamera(data);
+				doneGetPhotoFromCamera();
 			}
 			break;
 		}
@@ -529,37 +547,44 @@ public class UserInfoActivity extends Activity implements OnTouchListener {
 	}
 
 	private void goGetPhotoFromGallery() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
 		intent.setType("image/*");
-		startActivityForResult(Intent.createChooser(intent, "选择图片"),
-				Constants.RET_GALLERY);
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 640);
+		intent.putExtra("outputY", 640);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", false);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", false); // no face detection
+		startActivityForResult(intent, Constants.RET_CROP);
 	}
 
-	private void doneGetPhotoFromCamera(Intent data) {
-		Bundle extras = data.getExtras();
-		if (extras != null) {
-			Variables.avatar = extras.getParcelable("data");
-//			if (Variables.avatar == null) {
-//				return;
-//			}
-//			mPhotoBmp = bmp;
-//			FileOutputStream output = null;
-//			try {
-//				output = new FileOutputStream(new File(Constants.avatarPath
-//						+ Constants.avatarName));
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			ByteArrayOutputStream bos = new ByteArrayOutputStream();//初始化一个流对象
-//			Variables.avatar.compress(CompressFormat.JPEG, 100, output);// 把bitmap100%高质量压缩 到
+	private void doneGetPhotoFromCamera() {
+		if(imageUri != null){
+			Variables.avatar = decodeUriAsBitmap(imageUri);
+		}
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			Variables.avatar.compress(Bitmap.CompressFormat.PNG, 100, stream);
 			imageByte = stream.toByteArray();
-			new upImgAsyncTask().execute("");
-		}
+			try {
+				new upImgAsyncTask().execute("");
+			} catch (Exception e) {
+			}
+			
 	}
-	
+		private Bitmap decodeUriAsBitmap(Uri uri){
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return bitmap;
+	}	
 	public static boolean checkNikeName(String nikeName) {
 		if (nikeName == null || nikeName.length() == 0)
 			return false;

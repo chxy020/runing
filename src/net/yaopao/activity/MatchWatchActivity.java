@@ -20,7 +20,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchWatchActivity extends Activity implements OnTouchListener,
+public class MatchWatchActivity extends BaseActivity implements OnTouchListener,
 		OnMapClickListener {
 	private MapView mapView;
 	private AMap aMap;
