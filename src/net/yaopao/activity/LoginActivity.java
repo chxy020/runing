@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 	private String loginJson;
 	private LoadingDialog dialog;
 	private int loginStatus;
-	private boolean service=false;//是否同意服务条款
+	private boolean service=true;//是否同意服务条款
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -128,7 +128,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 						new loginAsyncTask().execute("");
 					}
 					}else{
-						Toast.makeText(LoginActivity.this, "您需要同意要跑服务条款才能进行后续操作",Toast.LENGTH_LONG).show();
+						Toast.makeText(LoginActivity.this, "您需要同意要跑服务协议才能进行后续操作",Toast.LENGTH_LONG).show();
 					}
 				
 				break;

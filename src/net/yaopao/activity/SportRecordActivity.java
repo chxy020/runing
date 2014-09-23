@@ -85,6 +85,10 @@ public class SportRecordActivity extends BaseActivity implements
 	public long sprortTime;
 	private Timer timer = null;
 	private TimerTask task = null;
+	
+	private Timer gpsTimer = null;
+	private TimerTask gpsTask = null;
+	
 	public static Handler timerListenerHandler;
 	public static Handler gpsListenerHandler;
 	private boolean isHalf = false;// 是否播放过超过目标的一半，true-已经播放过，false-没有播放过，
@@ -398,7 +402,7 @@ public class SportRecordActivity extends BaseActivity implements
 		 point.status = Variables.sportStatus;
 		 }
 		// 测试代码
-//		lat = lat + 0.0015;
+//		lat = lat + 0.0016;
 //		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
 //				new Date().getTime());
 		// 测试代码
@@ -511,6 +515,7 @@ public class SportRecordActivity extends BaseActivity implements
 				// 算积分
 				disPerKm += meter;
 				timePerKm += duringTime;
+//				timePer5min += duringTime;
 				timePer5min += duringTime;
 				// 运动整公里处理
 				if (disPerKm >= 1000) {
@@ -580,31 +585,7 @@ public class SportRecordActivity extends BaseActivity implements
 		return result;
 	}
 
-	Handler handler = new Handler();
-	Runnable runnable = new Runnable() {
-		@Override
-		public void run() {
-			if (pushOnePoint()) {
-				updateUI();
-				if (Variables.runtar != 0) {
-					if (status < target) {
-						if (Variables.runtar == 1) {
-							status = (int) (Variables.distance);
-						} else if (Variables.runtar == 2) {
-							status = Variables.utime;
-						}
-						// 发送消息到Handler
-						Message m = new Message();
-						m.what = 0x111;
-						// 发送消息
-						procesHandler.sendMessage(m);
-					}
-				}
-			}
-			handler.postDelayed(this, 3000);
-		}
 
-	};
 
 	public void startTimer() {
 		Variables.sportStatus = 0;
@@ -651,14 +632,84 @@ public class SportRecordActivity extends BaseActivity implements
 
 	}
 
+//	Handler handler = new Handler();
+//	Runnable runnable = new Runnable() {
+//		@Override
+//		public void run() {
+//			if (pushOnePoint()) {
+//				updateUI();
+//				if (Variables.runtar != 0) {
+//					if (status < target) {
+//						if (Variables.runtar == 1) {
+//							status = (int) (Variables.distance);
+//						} else if (Variables.runtar == 2) {
+//							status = Variables.utime;
+//						}
+//						// 发送消息到Handler
+//						Message m = new Message();
+//						m.what = 0x111;
+//						// 发送消息
+//						procesHandler.sendMessage(m);
+//					}
+//				}
+//			}
+//			handler.postDelayed(this, 3000);
+//		}
+//
+//	};
+	
 	public void startRecordGps() {
-		handler.postDelayed(runnable, 1000);
+		gpsTimer = new Timer();
+		gpsTask = new TimerTask() {
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() { // UI thread
+					@Override
+					public void run() {
+						if (pushOnePoint()) {
+							updateUI();
+							if (Variables.runtar != 0) {
+								if (status < target) {
+									if (Variables.runtar == 1) {
+										status = (int) (Variables.distance);
+									} else if (Variables.runtar == 2) {
+										status = Variables.utime;
+									}
+									// 发送消息到Handler
+									Message m = new Message();
+									m.what = 0x111;
+									// 发送消息
+									procesHandler.sendMessage(m);
+								}
+							}
+						}
+					}
+				});
+			}
+		};
+		gpsTimer.schedule(gpsTask, 0, 3000);
 	}
 
 	//
 	public void stopRecordGps() {
-		handler.removeCallbacks(runnable);
+		if (gpsTask != null) {
+			gpsTask.cancel();
+			gpsTask = null;
+		}
+		if (gpsTimer != null) {
+			gpsTimer.cancel(); // Cancel timer
+			gpsTimer.purge();
+			gpsTimer = null;
+		}
 	}
+//	public void startRecordGps() {
+//		handler.postDelayed(runnable, 1000);
+//	}
+//	
+//	//
+//	public void stopRecordGps() {
+//		handler.removeCallbacks(runnable);
+//	}
 
 	private static double getDistanceFrom2ponit(GpsPoint before, GpsPoint now) {
 		return AMapUtils.calculateLineDistance(new LatLng(now.lat, now.lon),
@@ -680,8 +731,7 @@ public class SportRecordActivity extends BaseActivity implements
 		update(d3, d3v);
 		update(d4, d4v);
 
-		int[] speed = YaoPao01App
-				.cal((int) ((1000 / Variables.distance) * Variables.utime));
+		int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) * Variables.utime));
 		Variables.pspeed = (int) ((1000 / Variables.distance) * Variables.utime);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;

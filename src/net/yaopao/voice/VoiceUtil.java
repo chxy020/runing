@@ -225,6 +225,80 @@ public class VoiceUtil {
 	}
 
 	/**
+	 * 生成时间的语音播放序列
+	 * 
+	 * @author shawndong
+	 * @version 1.0 2014/9/10
+	 * @param hour
+	 *            小时
+	 * @param minute
+	 *            分钟
+	 * @return 语音播放的序列，需要播放的音频文件的编码列表（也就是文件名称）
+	 */
+	public ArrayList<Integer> voiceOfTime(int hour, int minute) {
+		if (hour < 0)
+			hour = 0;
+		if (minute < 0)
+			minute = 0;
+
+		int mm = minute % 60;
+		int hh = hour + minute / 60;
+		int day = hh / 24;
+		int week = day / 7;
+		hh = hh % 24;
+		day = day % 7;
+
+		ArrayList<Integer> r = new ArrayList<Integer>();
+		ArrayList<Integer> temp;
+
+		// 星期
+		if (week > 0) {
+			temp = voiceOf5Digit(week, true, false);
+			for (int i : temp) {
+				r.add(i);
+			}
+			r.add(110028);
+		}
+		// 天
+		if (day > 0) {
+			temp = voiceOf2Digit(day, true, false);
+			for (int i : temp) {
+				r.add(i);
+			}
+			r.add(110026);
+		}
+		// 小时
+		if (hh > 0) {
+			if (week > 0 && day == 0)
+				r.add(100000);
+			temp = voiceOf2Digit(hh, true, false);
+			for (int i : temp) {
+				r.add(i);
+			}
+			r.add(110025);
+		}
+		// 分
+		if (mm > 0) {
+			if (week == 0 && day == 0 && hh == 0) {
+				temp = voiceOf2Digit(mm, true, false);
+			} else {
+				temp = voiceOf2Digit(mm, true, true);
+			}
+			for (int i : temp) {
+				r.add(i);
+			}
+			r.add(110024);
+		} else {
+			if (week == 0 && day == 0 && hh == 0) {
+				r.add(100000);
+				r.add(110024);
+			}
+		}
+
+		return r;
+	}
+
+	/**
 	 * 生成Double的语音播放序列
 	 * 
 	 * @author shawndong
@@ -263,9 +337,11 @@ public class VoiceUtil {
 				for (int i : temp) {
 					r.add(i);
 				}
-				temp = voiceOf2Digit(decimal % 10, false, false);
-				for (int i : temp) {
-					r.add(i);
+				if (decimal % 10 != 0) {
+					temp = voiceOf2Digit(decimal % 10, false, false);
+					for (int i : temp) {
+						r.add(i);
+					}
 				}
 			}
 		}
@@ -303,7 +379,7 @@ public class VoiceUtil {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 60; j += 5) {
+			for (int j = 0; j < 60; j += 3) {
 				vl = main.voiceOfTime(170, i, j);
 				System.out.println(main.getText(vl));
 			}
@@ -323,6 +399,11 @@ public class VoiceUtil {
 		System.out.println(2000 + "\t" + main.getText(vl));
 		vl = main.voiceOfDouble(20000);
 		System.out.println(20000 + "\t" + main.getText(vl));
+
+		for (int i = 0; i < 240; i++) {
+			vl = main.voiceOfTime(0, i);
+			System.out.println(main.getText(vl));
+		}
 
 	}
 
