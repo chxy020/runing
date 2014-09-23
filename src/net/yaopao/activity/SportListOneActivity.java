@@ -3,7 +3,10 @@ package net.yaopao.activity;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -176,6 +179,7 @@ public class SportListOneActivity extends BaseActivity {
 		initMap();
 	}
 
+	@SuppressLint("NewApi")
 	private void initMap() {
 
 		lonLatEncryption = new LonLatEncryption();
@@ -213,7 +217,7 @@ public class SportListOneActivity extends BaseActivity {
 		//从增量还原成全量
 				GpsPoint befor = null;
 				GpsPoint curr = null;
-				YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
+				//YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
 				for (int i = 0; i < pointsArray.size(); i++) {
 					if (i==0) {
 						befor=pointsArray.get(0);
@@ -226,7 +230,19 @@ public class SportListOneActivity extends BaseActivity {
 					curr.setTime(curr.time+befor.time);
 					pointsArray.set(i, curr);
 				}
-		YaoPao01App.lts.writeFileToSD("track 全量数组: " +pointsArray, "uploadLocation");
+		//YaoPao01App.lts.writeFileToSD("track 全量数组: " +pointsArray, "uploadLocation");
+		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+		df.setMaximumFractionDigits(6);
+		df.setRoundingMode(RoundingMode.DOWN);
+		
+		String gpsStr = df.format(pointsArray.get(0).lon) + " "
+				+ df.format(pointsArray.get(0).lat);
+		for (int i = 1; i < pointsArray.size(); i++) {
+			gpsStr += "," + df.format(pointsArray.get(i).lon) + " "
+					+ df.format(pointsArray.get(i).lat);
+		}
+		
+		YaoPao01App.lts.writeFileToSD("格式化全量数组: " +gpsStr, "uploadLocation");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));

@@ -129,7 +129,7 @@ public class SportTrackMap extends BaseActivity{
 		//从增强还原成全量
 		GpsPoint befor = null;
 		GpsPoint curr = null;
-		YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
 		for (int i = 0; i < pointsArray.size(); i++) {
 			if (i==0) {
 				befor=pointsArray.get(0);
@@ -142,7 +142,7 @@ public class SportTrackMap extends BaseActivity{
 			curr.setTime(curr.time+befor.time);
 			pointsArray.set(i, curr);
 		}
-		YaoPao01App.lts.writeFileToSD("track 转换后的数组: " +pointsArray, "uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("track 转换后的数组: " +pointsArray, "uploadLocation");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));

@@ -96,8 +96,8 @@ public class SportRecordActivity extends BaseActivity implements
 	private boolean isOverGoal = false;// 是否播放过达成目标，true-已经播放过，false-没有播放过，
 	private boolean toGoalPlayed = false;// /本次是否播放的完成目标true-是，false-否
 	// 测试代码
-	public static double lon = 116.395823;
-	public static double lat = 39.839016;
+//	public static double lon = 116.395823;
+//	public static double lat = 39.839016;
 
 	// 以上测试代码
 
@@ -390,21 +390,21 @@ public class SportRecordActivity extends BaseActivity implements
 	};
 
 	public static GpsPoint getOnePoint() {
-//		 GpsPoint point = null;
-//		 if (YaoPao01App.loc != null) {
-//		 point = new GpsPoint();
-//		 point.lon = YaoPao01App.loc.getLongitude();
-//		 point.lat = YaoPao01App.loc.getLatitude();
-//		 point.time = YaoPao01App.loc.getTime();
-//		 point.altitude = YaoPao01App.loc.getAltitude();
-//		 point.course = YaoPao01App.loc.getBearing();
-//		 point.speed = YaoPao01App.loc.getSpeed();
-//		 point.status = Variables.sportStatus;
-//		 }
+		 GpsPoint point = null;
+		 if (YaoPao01App.loc != null) {
+		 point = new GpsPoint();
+		 point.lon = YaoPao01App.loc.getLongitude();
+		 point.lat = YaoPao01App.loc.getLatitude();
+		 point.time = YaoPao01App.loc.getTime();
+		 point.altitude = YaoPao01App.loc.getAltitude();
+		 point.course = YaoPao01App.loc.getBearing();
+		 point.speed = YaoPao01App.loc.getSpeed();
+		 point.status = Variables.sportStatus;
+		 }
 		// 测试代码
-		lat = lat + 0.0016;
-		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
-				new Date().getTime());
+//		lat = lat + 0.0016;
+//		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
+//				new Date().getTime());
 		// 测试代码
 		return point;
 
@@ -426,8 +426,8 @@ public class SportRecordActivity extends BaseActivity implements
 				result = false;
 			}
 			last = points.get(points.size() - 1);
-			Toast.makeText(SportRecordActivity.this, "新增运动记录点: point=" +point+" status="+point.status+" 运动状态 :"+Variables.sportStatus, 2).show();
-			YaoPao01App.lts.writeFileToSD("新增运动记录点: point=" +point+" status="+point.status, "uploadLocation");
+			//Toast.makeText(SportRecordActivity.this, "新增运动记录点: point=" +point+" status="+point.status+" 运动状态 :"+Variables.sportStatus, 2).show();
+			//YaoPao01App.lts.writeFileToSD("新增运动记录点: point=" +point+" status="+point.status, "uploadLocation");
 			long currentTime = point.getTime();
 			long beforeTime = last.getTime();
 			int duringTime = (int) ((currentTime - beforeTime) / 1000);

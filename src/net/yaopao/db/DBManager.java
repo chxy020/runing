@@ -47,7 +47,7 @@ public class DBManager {
 	@SuppressLint("NewApi")
 	public void saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
-		YaoPao01App.lts.writeFileToSD("db 还算之前数组: " +SportRecordActivity.points, "uploadLocation");
+		//YaoPao01App.lts.writeFileToSD("db 还算之前数组: " +SportRecordActivity.points, "uploadLocation");
 		GpsPoint befor =null;
 		for (int i = 0; i < SportRecordActivity.points.size(); i++) {
 			if (i==0) {
@@ -63,7 +63,7 @@ public class DBManager {
 			SportRecordActivity.points.set(i, curr);
 			
 		}
-		YaoPao01App.lts.writeFileToSD("db 还算之后数组: " +SportRecordActivity.points, "uploadLocation");
+		//YaoPao01App.lts.writeFileToSD("db 还算之后数组: " +SportRecordActivity.points, "uploadLocation");
 		Log.d("wysport", "DBManager SportRecordActivity.points="+SportRecordActivity.points);
 		String oneSport = JSON.toJSONString(SportRecordActivity.points, true);
 		String statusIndex = "";

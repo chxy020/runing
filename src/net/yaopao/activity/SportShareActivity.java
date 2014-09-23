@@ -213,7 +213,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		//从增强还原成全量
 				GpsPoint befor = null;
 				GpsPoint curr = null;
-				YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
+//				YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
 				for (int i = 0; i < pointsArray.size(); i++) {
 					if (i==0) {
 						befor=pointsArray.get(0);
