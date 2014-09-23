@@ -80,16 +80,19 @@ public class DialogTool implements OnTouchListener {
 					//抛掉最后暂停的点
 					if (SportRecordActivity.points.size()>0) {
 						Log.v("wysports", "SportRecordActivity.points.size() = "+SportRecordActivity.points.size());
+						YaoPao01App.lts.writeFileToSD("没有抛点之前的运动记录点: " +SportRecordActivity.points+"size="+SportRecordActivity.points.size(), "uploadLocation");
 						int i = 0;
 						try{
-						for (i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; ) {
-							i--;
+						for (i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
+							
+							YaoPao01App.lts.writeFileToSD("运动完成抛点: " +i+" status="+SportRecordActivity.points.get(i).status, "uploadLocation");
 							if (i<0) {
 								break;
 							}
 							SportRecordActivity.points.remove(i);
 						}
 						}catch(Exception e){
+							YaoPao01App.lts.writeFileToSD("最后抛点异常:i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0), "uploadLocation");
 							Log.v("wysports", "i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0));
 						}
 					}
