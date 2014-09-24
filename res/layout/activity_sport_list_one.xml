@@ -29,15 +29,15 @@
             android:text="返回"
             android:background="@drawable/btn_click_red"
             android:textColor="@color/white" />
-
-        <!--  <TextView
+		<!--   -->
+        <TextView
             android:id="@+id/recording_one_share"
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="分享"
-            android:textColor="@color/white" /> -->
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout

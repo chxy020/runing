@@ -37,7 +37,9 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/recording_one_top_bar"
-		android:layout_margin="20dp"
+		android:layout_marginTop="20dp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
 		android:background="@drawable/border" >
 		
 		<RelativeLayout
@@ -276,20 +278,22 @@
 				android:layout_toRightOf="@id/one_desc_icon"
 				android:gravity="center_vertical" />
 		</RelativeLayout>
-	
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1px"
-			android:layout_below="@id/one_desc_layout"
-			android:background="@color/black" >
-		</View>
-	
-		<Button
-			android:id="@+id/shareBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/one_desc_layout"
-			android:text="分享" />
 	</RelativeLayout>
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:layout_below="@id/one_desc_layout"
+		android:background="@color/black"
+		android:visibility="gone" >
+	</View>
+
+	<Button
+		android:id="@+id/shareBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="17dp"
+		android:layout_marginRight="17dp"
+		android:layout_below="@+id/share_layout"
+		android:text="分享" />
+	
 </RelativeLayout>

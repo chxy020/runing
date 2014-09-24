@@ -66,6 +66,8 @@ public class SportShareActivity extends Activity implements OnClickListener {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
+	/** 运动标题 */
+	private TextView mSportText;
 	//private TextView disV;
 	private ImageView typeV;
 	private ImageView mindV;
@@ -157,16 +159,17 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		titleV = (TextView) findViewById(R.id.recording_one_title);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
+		mSportText = (TextView)findViewById(R.id.sportText);
 		//disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
 		mindV = (ImageView) findViewById(R.id.one_mind);
 		wayV = (ImageView) findViewById(R.id.one_way);
 		backV = (TextView) findViewById(R.id.recording_one_back);
 		
-		 d1v = (ImageView) findViewById(R.id.list_sport_num1);
-		 d2v = (ImageView) findViewById(R.id.list_sport_num2);
-		 d3v = (ImageView) findViewById(R.id.list_sport_dec1);
-		 d4v = (ImageView) findViewById(R.id.list_sport_dec2);
+		d1v = (ImageView) findViewById(R.id.list_sport_num1);
+		d2v = (ImageView) findViewById(R.id.list_sport_num2);
+		d3v = (ImageView) findViewById(R.id.list_sport_dec1);
+		d4v = (ImageView) findViewById(R.id.list_sport_dec2);
 		
 //		backV.setOnTouchListener(this);
 		backV.setOnClickListener(new OnClickListener() {
@@ -643,6 +646,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		mShareBtn.setOnClickListener(this);
 	}
 	
+	/*
 	private void showShare() {
 		ShareSDK.initSDK(this);
 		OnekeyShare oks = new OnekeyShare();
@@ -671,35 +675,55 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		// 启动分享GUI
 		oks.show(this);
 	}
+	*/
 	
 	private void showShare(boolean silent, String platform, boolean captureView) {
 		final OnekeyShare oks = new OnekeyShare();
+		// 分享时Notification的图标和文字
 		oks.setNotification(R.drawable.icon,this.getString(R.string.app_name));
-		oks.setAddress("12345678901");
-		oks.setTitle("title");
-		oks.setTitleUrl("http://sharesdk.cn");
-		oks.setText("text");
+		// address是接收人地址，仅在信息和邮件使用,传电话号码或者邮箱地址吧
+		//oks.setAddress("12345678901");
+		
+		String title = mSportText.getText().toString();
+		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+		oks.setTitle(title);
+		
+		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+		//oks.setTitleUrl("http://sharesdk.cn");
+		// url仅在微信（包括好友和朋友圈）中使用
+		//oks.setUrl("http://www.sharesdk.cn");
+		// site是分享此内容的网站名称，仅在QQ空间使用
+		//oks.setSiteUrl("http://sharesdk.cn");
+		
+		// text是分享文本，所有平台都需要这个字段
+		oks.setText("分享内容");
+		
+		if(captureView){
+			//截屏view
+			oks.setViewToShare((RelativeLayout)this.findViewById(R.id.share_layout));
+		}
+		else {
+			//oks.setImagePath(MainActivity.TEST_IMAGE);
+			//oks.setImageUrl(MainActivity.TEST_IMAGE_URL);
+		}
+		
 //		if (MainActivity.TEST_TEXT != null && MainActivity.TEST_TEXT.containsKey(0)) {
 //			oks.setText(MainActivity.TEST_TEXT.get(0));
 //		} else {
 //			oks.setText(getContext().getString(R.string.share_content));
 //		}
-		if (captureView) {
-			oks.setViewToShare((RelativeLayout)this.findViewById(R.id.share_layout));
-		} else {
-			//oks.setImagePath(MainActivity.TEST_IMAGE);
-			//oks.setImageUrl(MainActivity.TEST_IMAGE_URL);
-		}
-		oks.setUrl("http://www.sharesdk.cn");
+		
+		
 		//oks.setFilePath(MainActivity.TEST_IMAGE);
 		//oks.setComment(getContext().getString(R.string.share));
 		//oks.setSite(getContext().getString(R.string.app_name));
-		oks.setSiteUrl("http://sharesdk.cn");
-		oks.setVenueName("ShareSDK");
-		oks.setVenueDescription("This is a beautiful place!");
-		oks.setLatitude(23.056081f);
-		oks.setLongitude(113.385708f);
+		
+		//oks.setVenueName("ShareSDK");
+		//oks.setVenueDescription("This is a beautiful place!");
+		//oks.setLatitude(23.056081f);
+		//oks.setLongitude(113.385708f);
 		oks.setSilent(silent);
+		
 		if (platform != null) {
 			oks.setPlatform(platform);
 		}
@@ -712,7 +736,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 
 		// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
 //		oks.setCallback(new OneKeyShareCallback());
-		oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
+//		oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
 
 		// 去除注释，演示在九宫格设置自定义的图标
 //		Bitmap logo = BitmapFactory.decodeResource(menu.getResources(), R.drawable.ic_launcher);
@@ -740,10 +764,9 @@ public class SportShareActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.shareBtn:
-				Log.e("","chxy _______");
 				//showShare();
 				// 直接分享
-				showShare(true, null, false);
+				showShare(true, null, true);
 			break;
 			default:
 			break;
