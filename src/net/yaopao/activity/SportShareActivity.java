@@ -679,6 +679,8 @@ public class SportShareActivity extends Activity implements OnClickListener {
 	
 	private void showShare(boolean silent, String platform, boolean captureView) {
 		final OnekeyShare oks = new OnekeyShare();
+		
+		
 		// 分享时Notification的图标和文字
 		oks.setNotification(R.drawable.icon,this.getString(R.string.app_name));
 		// address是接收人地址，仅在信息和邮件使用,传电话号码或者邮箱地址吧
@@ -687,14 +689,6 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		String title = mSportText.getText().toString();
 		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
 		oks.setTitle(title);
-		
-		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-		//oks.setTitleUrl("http://sharesdk.cn");
-		// url仅在微信（包括好友和朋友圈）中使用
-		//oks.setUrl("http://www.sharesdk.cn");
-		// site是分享此内容的网站名称，仅在QQ空间使用
-		//oks.setSiteUrl("http://sharesdk.cn");
-		
 		// text是分享文本，所有平台都需要这个字段
 		oks.setText("分享内容");
 		
@@ -705,7 +699,20 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		else {
 			//oks.setImagePath(MainActivity.TEST_IMAGE);
 			//oks.setImageUrl(MainActivity.TEST_IMAGE_URL);
+			//oks.setImageUrl("/res/drawable/icon.png");
 		}
+		
+		//是否直接分享
+		oks.setSilent(silent);
+		
+		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+		//oks.setTitleUrl("http://sharesdk.cn");
+		
+		// url仅在微信（包括好友和朋友圈）中使用
+		//oks.setUrl("http://www.sharesdk.cn");
+		// site是分享此内容的网站名称，仅在QQ空间使用
+		//oks.setSiteUrl("http://sharesdk.cn");
+		//setImageUrl("http://99touxiang.com/public/upload/nvsheng/125/27-011820_433.jpg")
 		
 //		if (MainActivity.TEST_TEXT != null && MainActivity.TEST_TEXT.containsKey(0)) {
 //			oks.setText(MainActivity.TEST_TEXT.get(0));
@@ -722,11 +729,11 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		//oks.setVenueDescription("This is a beautiful place!");
 		//oks.setLatitude(23.056081f);
 		//oks.setLongitude(113.385708f);
-		oks.setSilent(silent);
 		
-		if (platform != null) {
-			oks.setPlatform(platform);
-		}
+		
+//		if (platform != null) {
+//			oks.setPlatform(platform);
+//		}
 
 		// 令编辑页面显示为Dialog模式
 		oks.setDialogMode();
@@ -736,7 +743,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 
 		// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
 //		oks.setCallback(new OneKeyShareCallback());
-//		oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
+		oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
 
 		// 去除注释，演示在九宫格设置自定义的图标
 //		Bitmap logo = BitmapFactory.decodeResource(menu.getResources(), R.drawable.ic_launcher);
@@ -784,6 +791,25 @@ public class SportShareActivity extends Activity implements OnClickListener {
 
 		public void onShare(Platform platform, ShareParams paramsToShare) {
 			int id = ShareSDK.platformNameToId(platform.getName());
+//			09-24 21:45:50.679: E/(31660): chxy________________24
+//			09-24 21:45:56.859: E/(31660): chxy________________19
+//			09-24 21:46:13.869: E/(31660): chxy________________22
+//			09-24 21:46:20.159: E/(31660): chxy________________23
+//			09-24 21:46:24.059: E/(31660): chxy________________6
+//			09-24 21:46:32.179: E/(31660): chxy________________1
+			switch(id){
+				case 24:
+					//QQ分享必须设置这个
+					//titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+					paramsToShare.setTitleUrl("http://www.yaopao.net");
+				break;
+				case 22:
+				case 23:
+					//微信分享
+					//paramsToShare.setImageUrl("/res/drawable/icon.png");
+				break;
+			}
+			Log.e("","chxy________________" + id);
 //			if (MainActivity.TEST_TEXT != null && MainActivity.TEST_TEXT.containsKey(id)) {
 //				String text = MainActivity.TEST_TEXT.get(id);
 //				paramsToShare.setText(text);
