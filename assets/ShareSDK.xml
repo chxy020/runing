@@ -49,7 +49,7 @@
 		SortId="2"
 		AppId="wxf1f5d09f974c50b7"
 		AppKey="9c4e1805bb1575e45d56beec93ccb803"
-		BypassApproval="false"
+		BypassApproval="true"
 		Enable="true" />
 	
 	<WechatMoments
@@ -57,7 +57,7 @@
 		SortId="3"
 		AppId="wxf1f5d09f974c50b7"
 		AppKey="9c4e1805bb1575e45d56beec93ccb803"
-		BypassApproval="false"
+		BypassApproval="true"
 		Enable="true" />
 	
 	<!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->

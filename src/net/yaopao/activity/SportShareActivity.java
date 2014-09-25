@@ -646,37 +646,6 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		mShareBtn.setOnClickListener(this);
 	}
 	
-	/*
-	private void showShare() {
-		ShareSDK.initSDK(this);
-		OnekeyShare oks = new OnekeyShare();
-		//关闭sso授权
-		oks.disableSSOWhenAuthorize();
-		
-		// 分享时Notification的图标和文字
-		oks.setNotification(R.drawable.icon, getString(R.string.app_name));
-		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-		oks.setTitle(getString(R.string.share));
-		// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-		oks.setTitleUrl("http://sharesdk.cn");
-		// text是分享文本，所有平台都需要这个字段
-		oks.setText("我是分享文本");
-		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-		oks.setImagePath("/sdcard/test.jpg");
-		// url仅在微信（包括好友和朋友圈）中使用
-		oks.setUrl("http://sharesdk.cn");
-		// comment是我对这条分享的评论，仅在人人网和QQ空间使用
-		oks.setComment("我是测试评论文本");
-		// site是分享此内容的网站名称，仅在QQ空间使用
-		oks.setSite(getString(R.string.app_name));
-		// siteUrl是分享此内容的网站地址，仅在QQ空间使用
-		oks.setSiteUrl("http://sharesdk.cn");
-		
-		// 启动分享GUI
-		oks.show(this);
-	}
-	*/
-	
 	private void showShare(boolean silent, String platform, boolean captureView) {
 		final OnekeyShare oks = new OnekeyShare();
 		
@@ -791,12 +760,6 @@ public class SportShareActivity extends Activity implements OnClickListener {
 
 		public void onShare(Platform platform, ShareParams paramsToShare) {
 			int id = ShareSDK.platformNameToId(platform.getName());
-//			09-24 21:45:50.679: E/(31660): chxy________________24
-//			09-24 21:45:56.859: E/(31660): chxy________________19
-//			09-24 21:46:13.869: E/(31660): chxy________________22
-//			09-24 21:46:20.159: E/(31660): chxy________________23
-//			09-24 21:46:24.059: E/(31660): chxy________________6
-//			09-24 21:46:32.179: E/(31660): chxy________________1
 			switch(id){
 				case 24:
 					//QQ分享必须设置这个
@@ -806,10 +769,10 @@ public class SportShareActivity extends Activity implements OnClickListener {
 				case 22:
 				case 23:
 					//微信分享
-					//paramsToShare.setImageUrl("/res/drawable/icon.png");
+					paramsToShare.setImageUrl("/res/drawable/icon.png");
+					paramsToShare.setUrl("http://www.yaopao.net");
 				break;
 			}
-			Log.e("","chxy________________" + id);
 //			if (MainActivity.TEST_TEXT != null && MainActivity.TEST_TEXT.containsKey(id)) {
 //				String text = MainActivity.TEST_TEXT.get(id);
 //				paramsToShare.setText(text);
