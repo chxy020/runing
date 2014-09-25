@@ -327,10 +327,32 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		initType(runty);
 		initMind(mind);
 		initWay(runway);
+		
+		//改变分享title
+		initTitle(distance,runty);
+		
 //		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
 //		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 		titleV.setText("告诉朋友");
 	}
+	
+	/**
+	 * 修改分享title
+	 * @param distance
+	 * @param type
+	 * @author cxy
+	 * @date 2014-9-25
+	 */
+	private void initTitle(double distance,int type){
+		double km = distance / 1000;
+		//保留两位小数
+		km = (double)(Math.round(km*100)/100.0);
+		
+		String[] typeText = {"","步行了","跑步了","骑行了"};
+		String text = "我刚刚" + typeText[type] + km + "公里";
+		mSportText.setText(text);
+	}
+	
 	private void initDis(double distance) {
 		int d1 = (int) (distance % 100000) / 10000;
 		int d2 = (int) (distance % 10000) / 1000;
