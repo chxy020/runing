@@ -60,6 +60,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	private SimpleDateFormat sdf2;
 	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
 	private Uri imageUri;//to store the big bitmap
+	private int lastId=-1;//获取保存数据的id,-1是无返回或插入错误
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -181,7 +182,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 			case MotionEvent.ACTION_UP:
 				saveV.setBackgroundResource(R.color.red);
 				Variables.remarks=descV.getText().toString();
-				YaoPao01App.db.saveOneSport();
+				lastId =YaoPao01App.db.saveOneSport();
+				Log.v("wysport", "lastId = "+lastId);
 				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				reset();
@@ -342,152 +344,6 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 		}
 		return true;
 	}
-
-//	private void goGetPhotoFromCamera() {
-//		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//		intent.putExtra(MediaStore.EXTRA_OUTPUT,
-//				Uri.fromFile(new File(sportPho)));
-//		startActivityForResult(intent, Constants.RET_CAMERA);
-//	}
-//
-//	private void goGetPhotoFromGallery() {
-//		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//		intent.setType("image/*");
-//		Log.v("wydb", "1==");
-//		startActivityForResult(Intent.createChooser(intent, "选择图片"),
-//				Constants.RET_GALLERY);
-//	}
-//
-//	private void doneGetPhotoFromCamera(Intent data) {
-//		Bundle extras = data.getExtras();
-//		if (extras != null) {
-//
-//			mPhotoBmp = extras.getParcelable("data");
-//			Log.v("wydb", "mPhotoBmp2==" + mPhotoBmp);
-//			if (mPhotoBmp == null) {
-//				return;
-//			}
-//			phoV.setImageBitmap(mPhotoBmp);
-//			phoButton.setVisibility(View.GONE);
-//			Log.v("wysave", "mPhotoBmp11="+mPhotoBmp);
-//		}
-//	}
-//
-//	private void doneGetPhotoFromGallery(Intent data) {
-//		if (data == null) {
-//			return;
-//		}
-//		Uri originalUri = data.getData();
-//		String imagePath = getAbsoluteImagePath(originalUri);
-//
-//		BitmapFactory.Options opts = new BitmapFactory.Options();
-//		opts.inPurgeable = true;
-//		opts.inInputShareable = true;
-//		opts.inDither = false;
-//		opts.inJustDecodeBounds = false;
-//		opts.outWidth = 160;
-//		opts.outHeight = 160;
-//		opts.inPreferredConfig = Bitmap.Config.RGB_565;
-//
-//		mPhotoBmp = BitmapFactory.decodeFile(imagePath, opts);
-//		Log.v("wydb", "mPhotoBmp1==" + mPhotoBmp);
-//		if (mPhotoBmp == null) {
-//			return;
-//		}
-//		phoV.setImageBitmap(mPhotoBmp);
-//		phoButton.setVisibility(View.GONE);
-//	}
-//
-//	private String getAbsoluteImagePath(Uri uri) {
-//		// can post image
-//		String[] proj = { MediaStore.Images.Media.DATA };
-//		Cursor cursor = managedQuery(uri, proj, // Which columns to return
-//				null, // WHERE clause; which rows to return (all rows)
-//				null, // WHERE clause selection arguments (none)
-//				null); // Order-by clause (ascending by name)
-//
-//		int column_index = cursor
-//				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//		cursor.moveToFirst();
-//
-//		return cursor.getString(column_index);
-//	}
-//
-//	public void startPhotoZoom(Uri uri) {
-//		Intent intent = new Intent("com.android.camera.action.CROP");
-//		intent.setDataAndType(uri, Constants.IMAGE_UNSPECIFIED);
-//		intent.putExtra("crop", "true");
-//		// aspectX aspectY 是宽高的比例
-//		intent.putExtra("aspectX", 1);
-//		intent.putExtra("aspectY", 1);
-//		// outputX outputY 是裁剪图片宽高
-//		intent.putExtra("outputX", 640);
-//		intent.putExtra("outputY", 640);
-//		intent.putExtra("return-data", true);
-//		intent.putExtra("outputFormat", "JPEG");
-//		intent.putExtra("noFaceDetection", true);
-//		// intent.putExtra("output", Uri.parse(imagePath1));
-//		startActivityForResult(intent, Constants.RET_CROP);
-//	}
-//
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		switch (requestCode) {
-//		case Constants.RET_CAMERA:
-//			Log.v("wydb", "4==" + resultCode);
-//			if (resultCode == Activity.RESULT_OK) {
-//				File picture = new File(sportPho);
-//				// startPhotoZoom(Uri.fromFile(picture));
-//			}
-//			break;
-//		case Constants.RET_GALLERY:
-//			Log.v("wydb", "2==" + resultCode);
-//			if (resultCode == Activity.RESULT_OK) {
-//				if (data != null) {
-//					Log.v("wydb", "3==");
-//				}
-//				startPhotoZoom(data.getData());
-//			}
-//			break;
-//		case Constants.RET_CROP:
-//			if (resultCode == Activity.RESULT_OK) {
-//				doneGetPhotoFromCamera(data);
-//			}
-//			break;
-//		}
-//
-//		super.onActivityResult(requestCode, resultCode, data);
-//	}
-//	public void saveFile(Bitmap bm) throws IOException {
-//		File dirFile = new File(Constants.avatarPath);
-//		if (!dirFile.exists()) {
-//			dirFile.mkdir();
-//		}
-//		BufferedOutputStream bos = new BufferedOutputStream(
-//				new FileOutputStream(new File(Constants.avatarPath
-//						+ Constants.avatarName)));
-//		bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//		bos.flush();
-//		bos.close();
-//	}
-//	private void showSetPhotoDialog() {
-//		final String[] item_type = new String[] { "相机", "相册", "取消" };
-//
-//		new AlertDialog.Builder(this).setTitle("选取来自")
-//				.setItems(item_type, new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int which) {
-//						switch (which) {
-//						case 0:
-//							goGetPhotoFromCamera();
-//							break;
-//						case 1:
-//							goGetPhotoFromGallery();
-//							break;
-//						}
-//					}
-//				}).show();
-//
-//	}
 
 	private String getPhotoFileName() {
 		Date date = new Date(System.currentTimeMillis());

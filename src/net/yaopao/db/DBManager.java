@@ -45,7 +45,7 @@ public class DBManager {
 	 * @param sports
 	 */
 	@SuppressLint("NewApi")
-	public void saveOneSport() {
+	public int saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
 		//YaoPao01App.lts.writeFileToSD("db 还算之前数组: " +SportRecordActivity.points, "uploadLocation");
 		GpsPoint befor =null;
@@ -101,6 +101,12 @@ public class DBManager {
 			// 使用占位符有效区分了这种情况
 			db.setTransactionSuccessful(); // 设置事务成功完成
 			Log.v("wydb", "insert success");
+			Cursor cursor = db.rawQuery("select last_insert_rowid() from "+ DatabaseHelper.SPORTDATA_TABLE, null);
+			int strid=-1;
+			if (cursor.moveToFirst()){
+				strid = cursor.getInt(0);
+			}
+			return strid;
 		} finally {
 			db.endTransaction(); // 结束事务
 		}
