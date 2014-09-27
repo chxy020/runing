@@ -689,7 +689,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
 		oks.setTitle(title);
 		// text是分享文本，所有平台都需要这个字段
-		oks.setText("分享内容");
+		oks.setText("");
 		
 		if(captureView){
 			//截屏view
