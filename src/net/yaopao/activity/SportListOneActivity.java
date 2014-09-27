@@ -317,8 +317,7 @@ public class SportListOneActivity extends BaseActivity {
 		Log.v("wysport", "utime =" + utime);
 
 		timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" + t6);
-		Log.v("wysport", "time =" + t1 + "" + t2 + ":" + t3 + "" + t4 + ":"
-				+ t5 + "" + t6);
+		Log.v("wysport", "time =" + t1 + "" + t2 + ":" + t3 + "" + t4 + ":"	+ t5 + "" + t6);
 		int[] speed = YaoPao01App.cal(pspeed);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
@@ -327,19 +326,16 @@ public class SportListOneActivity extends BaseActivity {
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 		ponitV.setText("+ " + ponit);
 		initDis(distance);
-		//disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
 		dateV.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
-//		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"
-//				+ sdf2.format(date) + "日 " + YaoPao01App.getWeekOfDate(date)
-//				+ " " + sdf3.format(date));
-
 		initType(runty);
 		initMind(mind);
 		initWay(runway);
-		String [] s =  DateFormat.getDateInstance().format(date).split("-");
-		titleV.setText(s[1] + "月" + s[2] + "日" + title);
+
+		SimpleDateFormat df = new SimpleDateFormat("M月d日");
+		
+		titleV.setText(df.format(date) + title);
 
 	}
 	private void initDis(double distance) {

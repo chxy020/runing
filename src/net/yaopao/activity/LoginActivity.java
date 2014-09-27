@@ -246,10 +246,11 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
 					// 下载头像
-					Variables.headUrl  = Constants.endpoints_img
-							+ rt.getJSONObject("userinfo").getString("imgpath");
+					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
 					try {
-						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
+							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+						}
 					} catch (Exception e) {
 						Log.v("wyuser", "下载头像异常="+e.toString());
 						e.printStackTrace();

@@ -158,8 +158,9 @@ public class SportRecordActivity extends BaseActivity implements
 		initRunLayout();
 		points = new ArrayList<GpsPoint>();
 		slider.setMainHandler(slipHandler);
-		startTimer();
+		
 		startRecordGps();
+		startTimer();
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
 		registerReceiver(broadcastReceiver, filter);
 
@@ -273,7 +274,7 @@ public class SportRecordActivity extends BaseActivity implements
 			sliderIconV.setVisibility(View.GONE);
 			sliderTextV.setVisibility(View.GONE);
 		}
-		Log.v("wysport", "spre r sprortTime=" + sprortTime);
+		
 		super.onResume();
 	}
 
@@ -516,7 +517,6 @@ public class SportRecordActivity extends BaseActivity implements
 				// 算积分
 				disPerKm += meter;
 				timePerKm += duringTime;
-//				timePer5min += duringTime;
 				timePer5min += duringTime;
 				// 运动整公里处理
 				if (disPerKm >= 1000) {
@@ -554,9 +554,8 @@ public class SportRecordActivity extends BaseActivity implements
 				if (Variables.switchVoice == 0) {
 					if (Variables.runtar == 2) {
 						// 运动5分钟整数倍时处理
-						Log.v("wyvoice", "Variables.utime=" + Variables.utime
-								+ "秒  timePer5min=" + timePer5min + "秒");
-						if (timePer5min >= 300) {
+						Log.v("wyvoice", "spre r sprortTime=" + sprortTime+" Variables.utime=" + Variables.utime + "秒  timePer5min=" + timePer5min + "秒");
+						if (timePer5min >= 60) {
 							timePer5min = 0;
 
 							if (haflPlayed) {
@@ -688,7 +687,7 @@ public class SportRecordActivity extends BaseActivity implements
 				});
 			}
 		};
-		gpsTimer.schedule(gpsTask, 0, 3000);
+		gpsTimer.schedule(gpsTask, 0, 1000);
 	}
 
 	//
