@@ -426,8 +426,8 @@ public class SportRecordActivity extends BaseActivity implements
 				result = false;
 			}
 			last = points.get(points.size() - 1);
-			Toast.makeText(SportRecordActivity.this, "新增运动记录点: point=" +point+" status="+point.status+" 运动状态 :"+Variables.sportStatus, 2).show();
-			YaoPao01App.lts.writeFileToSD("新增运动记录点: point=" +point+" status="+point.status, "uploadLocation");
+			//Toast.makeText(SportRecordActivity.this, "新增运动记录点: point=" +point+" status="+point.status+" 运动状态 :"+Variables.sportStatus, 2).show();
+			//YaoPao01App.lts.writeFileToSD("新增运动记录点: point=" +point+" status="+point.status, "uploadLocation");
 			long currentTime = point.getTime();
 			long beforeTime = last.getTime();
 			int duringTime = (int) ((currentTime - beforeTime) / 1000);

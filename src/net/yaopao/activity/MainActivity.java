@@ -408,7 +408,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 //				if (Variables.switchVoice == 0) {
 //					YaoPao01App.palyWeekGps();
 //				}
-					
+//					
 //				}else if(Variables.gpsStatus==1){
 //					Intent mainIntent = new Intent(MainActivity.this,
 //							SportSetActivity.class);

@@ -333,8 +333,8 @@ public class YaoPao01App extends Application {
 	 * @return
 	 */
 	public static void calDisPoints(Context context, Handler handler) {
-		YaoPao01App.lts.writeFileToSD("完成时  计算前 累计积分 : " + Variables.points,
-				"uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("完成时  计算前 累计积分 : " + Variables.points,
+//				"uploadLocation");
 		double dis = Variables.distance % 1000;
 
 		if (Variables.distance / 1000 < 1) {
