@@ -196,7 +196,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				*/
 				//分享页面
 				myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
-				myIntent.putExtra("id", 2 + "");
+				myIntent.putExtra("id", lastId + "");
 				startActivity(myIntent);
 				//end
 				
