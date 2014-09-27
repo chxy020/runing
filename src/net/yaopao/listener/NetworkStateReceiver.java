@@ -100,8 +100,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 					break;
 				}
 			} else {
-				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
+//						Toast.LENGTH_LONG).show();
 			}
 		}
 
@@ -127,8 +127,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 						.decodeStream(getImageStream(Variables.headUrl));
 				saveFile();
 			} catch (Exception e) {
-				Toast.makeText(YaoPao01App.getAppContext(), "无法链接网络！",
-						Toast.LENGTH_SHORT).show();
+//				Toast.makeText(YaoPao01App.getAppContext(), "无法链接网络！",Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
 

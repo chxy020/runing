@@ -454,6 +454,18 @@ public class YaoPao01App extends Application {
 		}
 		return timeStr;
 	}
+	
+	// 获取用时数据的id
+		public static String getTimePer5Code() {
+			// 获取用时语音代码
+			int[] times = YaoPao01App.cal((int) (Variables.utime));
+			List<Integer> time = voice.voiceOfTime(times[0], times[1]);
+			String timeStr = "";
+			for (int i = 0; i < time.size(); i++) {
+				timeStr += time.get(i) + ",";
+			}
+			return timeStr;
+		}
 
 	// 获取配速数据的id
 	public static String getPspeedCode() {
@@ -570,11 +582,11 @@ public class YaoPao01App extends Application {
 			}
 		
 			List<Integer> time =new ArrayList<Integer>();
-			if (times[2]==0) {
+//			if (times[2]==0) {
 				time = voice.voiceOfTime(times[0],times[1]);
-			}else {
-				 time = voice.voiceOfTime(times[0],times[1],times[2]);
-			}
+//			}else {
+//				 time = voice.voiceOfTime(times[0],times[1],times[2]);
+//			}
 //			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
 			StringBuffer timeStr = new StringBuffer();
 			for (int i = 0; i < time.size(); i++) {
@@ -602,11 +614,11 @@ public class YaoPao01App extends Application {
 		public static String getGoalTimeCode() {
 			int[] times = YaoPao01App.cal(Variables.runtarTime*60);
 			List<Integer> time =new ArrayList<Integer>();
-			if (times[2]==0) {
+//			if (times[2]==0) {
 				time = voice.voiceOfTime(times[0],times[1]);
-			}else {
-				 time = voice.voiceOfTime(times[0],times[1],times[2]);
-			}
+//			}else {
+//				 time = voice.voiceOfTime(times[0],times[1],times[2]);
+//			}
 //			List<Integer> time = voice.voiceOfTime(times[0],times[1],times[2]);
 			StringBuffer timeStr = new StringBuffer();
 			for (int i = 0; i < time.size(); i++) {
@@ -653,7 +665,8 @@ public class YaoPao01App extends Application {
 		public static void playOverTimeGoalVoice() {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，超过你的目标XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+//			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120221,").append(getTimePer5Code()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时ids =" + ids);
 			lts.writeFileToSD("时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -665,7 +678,7 @@ public class YaoPao01App extends Application {
 		public static void playPer5minVoice() {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120221,").append(getTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120221,").append(getTimePer5Code()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
 			Log.v("wyvoice", "跑步至5分钟的整数倍时ids =" + ids);
 			lts.writeFileToSD("跑步至5分钟的整数倍时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
