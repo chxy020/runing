@@ -199,7 +199,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				myIntent.putExtra("id", lastId + "");
 				startActivity(myIntent);
 				//end
-				
+				SportSaveActivity.this.finish();
 				Log.v("wysport","save  Variables.utime="+Variables.utime);
 				break;
 			}

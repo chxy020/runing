@@ -343,8 +343,12 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		*/
 		//是否报名
 		Variables.bid = rt.getJSONObject("match").getString("issign");
-		//组ID
-		Variables.gid = rt.getJSONObject("match").getInteger("gid").toString();
+		
+		Variables.gid = "";
+		if(null != rt.getJSONObject("match").getInteger("gid")){
+			//组ID
+			Variables.gid = rt.getJSONObject("match").getInteger("gid").toString();
+		}
 		//用户名称
 		//Variables.userName = rt.getJSONObject("userinfo").getString("username");
 		//昵称
