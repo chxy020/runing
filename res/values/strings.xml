@@ -22,4 +22,7 @@
 	<string name="setting_personal">个人信息</string>
 	<string name="setting_clause">服务协议</string>
 	<string name="setting_about">关于</string>
+	
+	<!-- 第三方web页面 -->
+	<string name="thirdweb_title">2014要跑24小时接力赛</string>
 </resources>

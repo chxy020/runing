@@ -55,6 +55,13 @@ public class WebViewActivity extends BaseActivity {
 				Log.e("","chxy _______prepage");
 				WebViewActivity.this.finish();
 			}
+			//显示第三方web页面
+			public void showThirdWeb(String url){
+				Intent intent = new Intent(WebViewActivity.this,ThirdWebActivity.class);
+				intent.putExtra("net.yaopao.activity.ThirdUrl",url);
+				startActivity(intent);
+				Log.e("","chxy _______showThirdWeb" + url);
+			}
 		}, "JSAndroidBridge");
 
 		// 加载web页面
