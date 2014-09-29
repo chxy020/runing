@@ -103,7 +103,8 @@ public class Variables {
 	public static int timePlayed=0;//已经播报的时间,单位秒，
 	public static double distancePlayed=0;//已经播报的距离,单位米，
 	
-	public static int intervalTime=60;//语音播报间隔时间，单位秒
+	public static int intervalTime=60;//语音播报间隔时间，单位秒 ，1分
+//	public static int intervalTime=300;//语音播报间隔时间，单位秒，5分
 	
 	
 	// 获取rid
