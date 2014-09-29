@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -74,6 +75,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		to_reset = (TextView) this.findViewById(R.id.to_reset);
 		to_reset.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.login_phoneNum);
+		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.login_pwd);
 		serviceV = (TextView) this.findViewById(R.id.term_of_service);
 		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);

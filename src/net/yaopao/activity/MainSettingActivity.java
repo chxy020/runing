@@ -85,7 +85,7 @@ public class MainSettingActivity extends BaseActivity {
 					startActivity(userInfoIntent);
 				}
 				else{
-					Toast.makeText(MainSettingActivity.this, "请先登录", Toast.LENGTH_LONG).show();
+					Toast.makeText(MainSettingActivity.this, "您还没有注册并登录要跑，请您先注册并登录", Toast.LENGTH_LONG).show();
 					Intent registerIntent = new Intent(MainSettingActivity.this,RegisterActivity.class);
 					startActivity(registerIntent);
 				}

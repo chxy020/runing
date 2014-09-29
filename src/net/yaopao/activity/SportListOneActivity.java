@@ -241,7 +241,7 @@ public class SportListOneActivity extends BaseActivity {
 					+ df.format(pointsArray.get(i).lat);
 		}
 		
-		YaoPao01App.lts.writeFileToSD("运动记录: " +gpsStr, "gps");
+//		YaoPao01App.lts.writeFileToSD("运动记录: " +gpsStr, "gps");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));

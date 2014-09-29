@@ -37,7 +37,10 @@ public class SelectHeight extends PopupWindow implements OnClickListener {
 		super(context);
 		mContext = context;
 		//this.height = "185";
-		this.curH = Integer.parseInt(heightData.substring(0,heightData.length() - 2)) - 100;
+		if (heightData!=null&&!"".equals(heightData)) {
+			this.curH = Integer.parseInt(heightData.substring(0,heightData.length() - 2)) - 100;
+		}
+		
 		
 		LayoutInflater inflater = LayoutInflater.from(context);
 

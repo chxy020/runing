@@ -239,8 +239,8 @@ public class SplashActivity extends BaseActivity {
 					break;
 				}*/
 			} else {
-				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
+//						Toast.LENGTH_LONG).show();
 			}
 		}
 

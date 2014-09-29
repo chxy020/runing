@@ -74,7 +74,8 @@ public class Variables {
 	public static int runtarDis = 5;// 目标距离,千米
 	public static int runtarTime = 30;// 目标时间，分钟
 
-	public static int runty=1;// 步行：1，跑步：2，自行车骑行：3
+//	public static int runty=1;// 步行：1，跑步：2，自行车骑行：3
+	public static int runty=2;// 步行：1，跑步：2，自行车骑行：3， 默认跑步
 	public static int mind; // 心情
 	public static int runway;// 跑道
 	public static int aheart;// 平均心率
@@ -103,8 +104,8 @@ public class Variables {
 	public static int timePlayed=0;//已经播报的时间,单位秒，
 	public static double distancePlayed=0;//已经播报的距离,单位米，
 	
-	public static int intervalTime=60;//语音播报间隔时间，单位秒 ，1分
-//	public static int intervalTime=300;//语音播报间隔时间，单位秒，5分
+//	public static int intervalTime=60;//语音播报间隔时间，单位秒 ，1分
+	public static int intervalTime=300;//语音播报间隔时间，单位秒，5分
 	
 	
 	// 获取rid

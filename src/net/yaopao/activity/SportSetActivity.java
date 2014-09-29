@@ -143,11 +143,11 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 			tarIconV.setBackgroundResource(R.drawable.target_free);
 			break;
 		case 1:
-			targetV.setText("距离");
+			targetV.setText(Variables.runtarDis+"km");
 			tarIconV.setBackgroundResource(R.drawable.target_dis);
 			break;
 		case 2:
-			targetV.setText("计时");
+			targetV.setText(getGoalTimeStr(Variables.runtarTime));
 			tarIconV.setBackgroundResource(R.drawable.target_time);
 			break;
 
@@ -178,7 +178,21 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 			break;
 		}
 	}
-
+private String getGoalTimeStr(int time){
+	int h = (int) (time / 60);
+	int m = (int) (time % 60);
+	StringBuffer sb = new StringBuffer();
+	if(h>0){
+		sb.append(h+":");
+	}
+	if (m<10) {
+		sb.append("0"+m+":00");
+	}else {
+		sb.append(m+":00");
+	}
+	return sb.toString();
+	
+}
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

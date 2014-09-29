@@ -104,8 +104,8 @@ public class SportRecordActivity extends BaseActivity implements
 	private boolean isPer5m = false;//本次是否是整5分钟
 	
 	// 测试代码
-	public static double lon = 116.395823;
-	public static double lat = 39.839016;
+//	public static double lon = 116.395823;
+//	public static double lat = 39.839016;
 	
 	// 以上测试代码
 	
@@ -407,23 +407,23 @@ public class SportRecordActivity extends BaseActivity implements
 	};
 
 	public static GpsPoint getOnePoint() {
-//		 GpsPoint point = null;
-//		 if (YaoPao01App.loc != null) {
-//		 point = new GpsPoint();
-//		 point.lon = YaoPao01App.loc.getLongitude();
-//		 point.lat = YaoPao01App.loc.getLatitude();
-//		 point.time = YaoPao01App.loc.getTime();
-//		 point.altitude = YaoPao01App.loc.getAltitude();
-//		 point.course = YaoPao01App.loc.getBearing();
-//		 point.speed = YaoPao01App.loc.getSpeed();
-//		 point.status = Variables.sportStatus;
-//		 }
+		 GpsPoint point = null;
+		 if (YaoPao01App.loc != null) {
+		 point = new GpsPoint();
+		 point.lon = YaoPao01App.loc.getLongitude();
+		 point.lat = YaoPao01App.loc.getLatitude();
+		 point.time = YaoPao01App.loc.getTime();
+		 point.altitude = YaoPao01App.loc.getAltitude();
+		 point.course = YaoPao01App.loc.getBearing();
+		 point.speed = YaoPao01App.loc.getSpeed();
+		 point.status = Variables.sportStatus;
+		 }
 		// 测试代码
-		Random random1 = new Random();
-		lat = lat +  random1.nextFloat()/1000;
-		lon = lon +  random1.nextFloat()/1000;
-		Log.v("wysport", "lat ="+ random1.nextFloat()/1000+" lon="+ random1.nextFloat()/1000);
-		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,new Date().getTime());
+//		Random random1 = new Random();
+//		lat = lat +  random1.nextFloat()/1000;
+//		lon = lon +  random1.nextFloat()/1000;
+//		Log.v("wysport", "lat ="+ random1.nextFloat()/1000+" lon="+ random1.nextFloat()/1000);
+//		GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,new Date().getTime());
 		// 测试代码
 		return point;
 
@@ -456,10 +456,6 @@ public class SportRecordActivity extends BaseActivity implements
 				if (last.status == point.status) {
 					last.time = point.time;
 					if (last.status == 0) {
-//						Variables.utime += duringTime;
-						
-						// 测试代码
-//						 Variables.utime += (duringTime + 10);
 						result = true;
 					} else {
 						result = false;
@@ -467,12 +463,7 @@ public class SportRecordActivity extends BaseActivity implements
 
 				} else {
 					if (last.status == 0) {
-//						Variables.utime += duringTime;
-						// 测试代码
-//						 Variables.utime += (duringTime + 10);
 						Variables.distance += meter;
-//						Log.v("wyvoice", "0000 distance=" + Variables.distance+"  disPerKm=" +   disPerKm +"米  meter="+meter+"米"); 
-//						YaoPao01App.lts.writeFileToSD("0000wyvoice:distance=" + Variables.distance+"  disPerKm=" +  disPerKm +"米 meter="+meter+"米", "uploadLocation");
 					}
 					points.add(point);
 					result = false;
@@ -480,13 +471,7 @@ public class SportRecordActivity extends BaseActivity implements
 
 			} else {
 				if (point.status == 0) {
-//					Variables.utime += duringTime;
-					
-					// 测试代码
-//					 Variables.utime += (duringTime + 10);
 					Variables.distance += meter;
-//					Log.v("wyvoice", "1111 distance=" + Variables.distance+"  disPerKm=" +   disPerKm +"米  meter="+meter+"米"); 
-//					YaoPao01App.lts.writeFileToSD("1111 dwyvoice:distance=" + Variables.distance+"  disPerKm=" +  disPerKm +"米 meter="+meter+"米", "uploadLocation");
 				}
 				points.add(point);
 				result = true;
@@ -697,65 +682,9 @@ public class SportRecordActivity extends BaseActivity implements
 							}
 						}
 						
-						
-						
 					}
 				}
 			}
-			
-			
-		/*	
-			
-
-			
-			
-
-				if (Variables.switchVoice == 0) {
-					if (Variables.runtar == 2) {
-						// 运动5分钟整数倍时处理
-						Log.v("wyvoice", " time=" + Variables.utime/1000 + "秒    timePlayed=" + Variables.timePlayed + "秒 pertime="+(Variables.utime- Variables.timePlayed*1000));
-//						YaoPao01App.lts.writeFileToSD("wyvoice: time=" + Variables.utime + "毫秒    timePlayed=" + Variables.timePlayed + "秒 pertime="+(Variables.utime- Variables.timePlayed*1000), "uploadLocation");
-//						if (timePer5min >= 60000) {
-//							timePer5min = 0;
-						if (Variables.utime- Variables.timePlayed*1000>= Variables.intervalTime*1000) {
-							Variables.timePlayed+=Variables.intervalTime;
-							if (haflPlayed) {
-								
-								if (Variables.runtarTime%2!=0) {
-									// 距离目标小于10分钟，未超过目标
-									if ((Variables.runtarTime * 60 - Variables.utime/1000) < 600
-											&& (Variables.runtarTime * 60 - Variables.utime/1000) > 0) {
-										YaoPao01App.playLess10minVoice();
-									} else if (Variables.utime/1000 > Variables.runtarTime * 60) {
-										if (isOverGoal) {
-											YaoPao01App.playOverTimeGoalVoice();
-										}
-									} else {
-										YaoPao01App.playPer5minVoice();
-									}
-								}
-								haflPlayed = false;
-							} else if (toGoalPlayed) {
-								toGoalPlayed = false;
-							} else {
-								// 距离目标小于10分钟，未超过目标
-								if ((Variables.runtarTime * 60 - Variables.utime/1000) < 600
-										&& (Variables.runtarTime * 60 - Variables.utime/1000) > 0) {
-									YaoPao01App.playLess10minVoice();
-								} else if (Variables.utime/1000 > Variables.runtarTime * 60) {
-									if (isOverGoal) {
-										YaoPao01App.playOverTimeGoalVoice();
-									}
-								} else {
-									YaoPao01App.playPer5minVoice();
-								}
-							}
-						}
-					}
-				}
-
-			}*/
-
 		}
 		return result;
 	}

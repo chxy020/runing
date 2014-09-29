@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,10 +53,12 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 		goBack = (TextView) this.findViewById(R.id.reset_goback);
 		reset = (TextView) this.findViewById(R.id.reset_go);
 		phoneNumV = (EditText) this.findViewById(R.id.reset_phoneNum);
+		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.reset_pwd);
 		getCodeV = (TextView) this.findViewById(R.id.reset_get_code);
+		
 		codeV = (EditText) this.findViewById(R.id.reset_veri_code);
-
+		codeV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		goBack.setOnTouchListener(this);
 		reset.setOnTouchListener(this);
 		getCodeV.setOnTouchListener(this);

@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,8 +66,10 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		reg = (TextView) this.findViewById(R.id.reg_go);
 		toLogin.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.reg_phoneNum);
+		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.reg_pwd);
 		codeV = (EditText) this.findViewById(R.id.reg_veri_code);
+		codeV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		serviceV = (TextView) this.findViewById(R.id.term_of_service);
 		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		serviceSelectV = (ImageView) this.findViewById(R.id.term_of_service_select);
