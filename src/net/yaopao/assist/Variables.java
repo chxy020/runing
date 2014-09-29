@@ -81,7 +81,7 @@ public class Variables {
 	public static int mheart;// 最高心率
 	public static int weather;// 天气代码
 	public static int temp;// 温度
-	public static int utime;// 所用时间 秒数
+	public static long utime;// 所用时间 毫秒数
 	public static int heat;// 热量 卡路里
 	public static int imageCount;
 	public static int stamp;
@@ -96,8 +96,15 @@ public class Variables {
 	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
 	
 	public static int sportty=0;//跑步类型0-日常，1-比赛
+	
 	public static int hassportpho=0;//跑步是否拍照0-无，1-有
 	public static String sport_pho;//跑步拍照图片的名字
+	
+	public static int timePlayed=0;//已经播报的时间,单位秒，
+	public static double distancePlayed=0;//已经播报的距离,单位米，
+	
+	public static int intervalTime=60;//语音播报间隔时间，单位秒
+	
 	
 	// 获取rid
 	public static String getRid() {

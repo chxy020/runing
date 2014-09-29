@@ -6,8 +6,8 @@
 	
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="80dp"
-		android:layout_marginTop="10dp"
+    android:layout_height="@dimen/slider_num_l_height"
+        android:layout_marginTop="@dimen/margin1"
 		android:gravity="center_horizontal"
 		android:orientation="horizontal">
 		

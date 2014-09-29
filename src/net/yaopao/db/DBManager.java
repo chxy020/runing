@@ -70,7 +70,8 @@ public class DBManager {
 	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
-		Variables.hspeed =df.format((Variables.distance/Variables.utime)*3.6);
+//		Variables.hspeed =df.format((Variables.distance/Variables.utime)*3.6);
+		Variables.hspeed =df.format((Variables.distance/(Variables.utime/1000))*3.6);
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
 		try {

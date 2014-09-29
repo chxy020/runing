@@ -228,7 +228,7 @@ public class SportTrackMap extends BaseActivity{
 			int runway, String remarks, int utime, int pspeed, int points,
 			long addtime) {
 
-		int[] time = YaoPao01App.cal(utime);
+		int[] time = YaoPao01App.cal(utime/1000);
 		int t1 = time[0] / 10;
 		int t2 = time[0] % 10;
 		int t3 = time[1] / 10;
