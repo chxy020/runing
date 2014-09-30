@@ -228,9 +228,8 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 			loginJson = NetworkHandler.httpPost(Constants.endpoints1
 					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
 					+ pwdStr);
-			Log.v("wyuser", "rel:=" + Constants.endpoints
-					+ Constants.login);
-			Log.v("wyuser", "loginJson=" + loginJson);
+			Log.v("wyuser", "登录请求参数==" + Constants.endpoints	+ Constants.login+" phone=" + phoneNumStr + "&passwd="+ pwdStr);
+			Log.v("wyuser", "登录请求返回loginJson=" + loginJson);
 			Log.e("", "chxy loginJson=" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
 

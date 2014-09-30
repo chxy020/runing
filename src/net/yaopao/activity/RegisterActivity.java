@@ -330,7 +330,11 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				JSONObject rt = JSON.parseObject(verifyCodeJson);
+				
+				/*
+				 * 0.9.1代码
+				 * 
+				 * JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Toast.makeText(RegisterActivity.this, "验证码已发送，请查收短信",
@@ -340,6 +344,37 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 							Toast.LENGTH_LONG).show();
 				}
 				else {
+					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
+							Toast.LENGTH_LONG).show();
+				}*/
+				
+				Log.v("wy", verifyCodeJson);
+				JSONObject rt=null;
+				int rtCode =-999;
+				String desc ="";
+				try {
+					 rt = JSON.parseObject(verifyCodeJson);
+					 rtCode = rt.getJSONObject("state").getInteger("code");
+					 desc= rt.getJSONObject("state").getString("desc");
+					 
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				if (rtCode == 0) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -3) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				}else if (rtCode == -13) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -14) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else {
+					Log.v("wyuser", "重置密码验证码获取返回=="+rt);
 					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}

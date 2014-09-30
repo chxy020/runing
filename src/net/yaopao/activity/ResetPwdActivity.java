@@ -1,5 +1,8 @@
 package net.yaopao.activity;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +12,7 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -227,6 +231,17 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 							"uid");
 					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 							"utype");
+					// 下载头像
+					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
+					try {
+						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
+							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+						}
+					} catch (Exception e) {
+						Log.v("wyuser", "下载头像异常="+e.toString());
+						e.printStackTrace();
+					}
+					
 					DataTool.setUserInfo(resetJson);
 					Intent closeintent = new Intent(closeAction);
 					closeintent.putExtra("data", "close");
@@ -251,6 +266,7 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 						Toast.LENGTH_LONG).show();
 			}
 		}
+
 	}
 
 	private class verifyCodAsyncTask extends AsyncTask<String, Void, Boolean> {
@@ -281,7 +297,10 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				Log.v("wy", verifyCodeJson);
+				/*
+				 * 0.9.1 代码
+				 * 
+				 * Log.v("wy", verifyCodeJson);
 				JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
@@ -291,6 +310,37 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 					Toast.makeText(ResetPwdActivity.this, "手机号不存在，请重新输入",
 							Toast.LENGTH_LONG).show();
 				} else {
+					Log.v("wyuser", "重置密码验证码获取返回=="+rt);
+					Toast.makeText(ResetPwdActivity.this, "验证码获取失败，请稍后重试",
+							Toast.LENGTH_LONG).show();
+				}*/
+				
+				JSONObject rt=null;
+				int rtCode =-999;
+				String desc ="";
+				try {
+					 rt = JSON.parseObject(verifyCodeJson);
+					 rtCode = rt.getJSONObject("state").getInteger("code");
+					 desc= rt.getJSONObject("state").getString("desc");
+					 
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				if (rtCode == 0) {
+					Toast.makeText(ResetPwdActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -3) {
+					Toast.makeText(ResetPwdActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				}else if (rtCode == -13) {
+					Toast.makeText(ResetPwdActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -14) {
+					Toast.makeText(ResetPwdActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else {
+					Log.v("wyuser", "重置密码验证码获取返回=="+rt);
 					Toast.makeText(ResetPwdActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}
@@ -308,5 +358,23 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+	/**
+	 * Get image from newwork
+	 * 
+	 * @param path
+	 *            The path of image
+	 * @return InputStream
+	 * @throws Exception
+	 */
+	public InputStream getImageStream(String path) throws Exception {
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5 * 1000);
+		conn.setRequestMethod("GET");
+		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			return conn.getInputStream();
+		}
+		return null;
 	}
 }

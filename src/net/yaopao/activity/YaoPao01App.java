@@ -575,57 +575,6 @@ public class YaoPao01App extends Application {
 	 * 距离运动目标,跑步至运动目标的一半时
 	 */
 	public static void playHalfDisVoice() {
-//		long utime = Variables.utime;
-//		String pspeedStr = "";
-//		StringBuffer ids = new StringBuffer();
-//		if (Variables.runtarDis>2) {
-//			if(Variables.distance<3000){
-//				if (Variables.distance<2000) {
-//					Log.v("wyvoice", "Variables.distance = " + Variables.distance);
-//					Log.v("wyvoice", "Variables.utime = " + Variables.utime);
-//					Log.v("wyvoice", "Math.round(utime/1000.0) = " + Math.round(utime/1000.0));
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里 Variables.distance = " + Variables.distance, "uploadLocation");
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里 Variables.utime = " + Variables.utime, "uploadLocation");
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里Math.round(utime/1000.0) = " + Math.round(utime/1000.0), "uploadLocation");
-//					int[] speeds = YaoPao01App.cal(Math.round(utime/1000.0));
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里time=" + Variables.utime + "毫秒    utime/1000=" + Variables.timePlayed + "秒 pertime="+(Variables.utime- Variables.timePlayed*1000), "uploadLocation");
-//					List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
-//				
-//					for (int i = 0; i < speed.size(); i++) {
-//						pspeedStr += speed.get(i) + ",";
-//					}
-//					int[] times = YaoPao01App.cal(Math.round(utime/1000.0));
-//					List<Integer> time = voice.voiceOfTime(times[0], times[1], times[2]);
-//					String timeStr = "";
-//					for (int i = 0; i < time.size(); i++) {
-//						timeStr += time.get(i) + ",";
-//					}
-//					ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(timeStr).append("120213,").append(pspeedStr);
-//				}else{
-//					Log.v("wyvoice", "Variables.distance = " + Variables.distance);
-//					Log.v("wyvoice", "Variables.utime = " + Variables.utime);
-//					Log.v("wyvoice", "Math.round(utime/2000.0) = " + Math.round(utime/2000.0));
-//					int[] speeds = YaoPao01App.cal(Math.round(utime/2000.0));
-//					List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
-//					for (int i = 0; i < speed.size(); i++) {
-//						pspeedStr += speed.get(i) + ",";
-//					}
-//					int[] times = YaoPao01App.cal(Math.round(utime/1000.0));
-//					List<Integer> time = voice.voiceOfTime(times[0], times[1], times[2]);
-//					String timeStr = "";
-//					for (int i = 0; i < time.size(); i++) {
-//						timeStr += time.get(i) + ",";
-//					}
-//					ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(timeStr).append("120213,").append(pspeedStr);
-//				}
-//			}else {
-//				ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
-//			}
-//		}else{
-//			ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
-//		}
-		
-		
 		
 		StringBuffer ids = new StringBuffer();
 		ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
@@ -637,58 +586,6 @@ public class YaoPao01App extends Application {
 	 * 运动类型是距离,距离目标小于2公里
 	 */
 	public static void playLess2Voice() {
-//		long utime = Variables.utime;
-//		String pspeedStr = "";
-//		StringBuffer ids = new StringBuffer();
-//		if (Variables.runtarDis>2) {
-//			if(Variables.distance<3000){
-//				if (Variables.distance<2000) {
-//					Log.v("wyvoice", "Variables.distance = " + Variables.distance);
-//					Log.v("wyvoice", "Variables.utime = " + Variables.utime);
-//					Log.v("wyvoice", "Math.round(utime/1000.0) = " + Math.round(utime/1000.0));
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里 Variables.distance = " + Variables.distance, "uploadLocation");
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里 Variables.utime = " + Variables.utime, "uploadLocation");
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里Math.round(utime/1000.0) = " + Math.round(utime/1000.0), "uploadLocation");
-//					int[] speeds = YaoPao01App.cal(Math.round(utime/1000.0));
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里time=" + Variables.utime + "毫秒    utime/1000=" + Variables.timePlayed + "秒 pertime="+(Variables.utime- Variables.timePlayed*1000), "uploadLocation");
-//					List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
-//				
-//					for (int i = 0; i < speed.size(); i++) {
-//						pspeedStr += speed.get(i) + ",";
-//					}
-//					int[] times = YaoPao01App.cal(Math.round(utime/1000.0));
-//					List<Integer> time = voice.voiceOfTime(times[0], times[1], times[2]);
-//					String timeStr = "";
-//					for (int i = 0; i < time.size(); i++) {
-//						timeStr += time.get(i) + ",";
-//					}
-//					ids.append("120102,120224,120222,").append(getLeftDisCode(false)).append("110041,120212,").append(timeStr).append("120213,").append(pspeedStr);
-//				}else{
-//					Log.v("wyvoice", "Variables.distance = " + Variables.distance);
-//					Log.v("wyvoice", "Variables.utime = " + Variables.utime);
-//					Log.v("wyvoice", "Math.round(utime/2000.0) = " + Math.round(utime/2000.0));
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里 Variables.distance = " + Variables.distance, "uploadLocation");
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里 Variables.utime = " + Variables.utime, "uploadLocation");
-////					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里Math.round(utime/2000.0) = " + Math.round(utime/2000.0), "uploadLocation");
-//					int[] speeds = YaoPao01App.cal(Math.round(utime/2000.0));
-//					List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
-//					for (int i = 0; i < speed.size(); i++) {
-//						pspeedStr += speed.get(i) + ",";
-//					}
-//					int[] times = YaoPao01App.cal(Math.round(utime/1000.0));
-//					List<Integer> time = voice.voiceOfTime(times[0], times[1], times[2]);
-//					String timeStr = "";
-//					for (int i = 0; i < time.size(); i++) {
-//						timeStr += time.get(i) + ",";
-//					}
-//					ids.append("120102,120224,120222,").append(getLeftDisCode(false)).append("110041,120212,").append(timeStr).append("120213,").append(pspeedStr);
-//				}
-//			}else {
-//				ids.append("120102,120224,120222,").append(getLeftDisCode(false)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
-//			}
-//		}else{
-//			ids.append("120102,120224,120222,").append(getLeftDisCode(false)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
-//		}
 		
 		
 		StringBuffer ids = new StringBuffer();

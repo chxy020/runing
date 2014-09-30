@@ -119,15 +119,18 @@ public class SportListOneActivity extends BaseActivity {
 		this.mListViews = new ArrayList<View>();
 		this.mInflater = this.getLayoutInflater();
 		mapLayout = mInflater.inflate(R.layout.sport_one_slider_map, null);
-		phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
+		
 		if (oneSport.getSportpho()==1) {
+			phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
 			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
 		}
 		
 		this.mListViews.add(mapLayout);
-		this.mListViews.add(phoLayout);
+		if (phoLayout!=null) {
+			this.mListViews.add(phoLayout);
+		}
 		this.mMessageAdapter = new MessagePagerAdapter(mListViews);
 		this.mPager.setAdapter(this.mMessageAdapter);
 		this.mPager.setOnPageChangeListener(new MessageOnPageChangeListener());
@@ -612,7 +615,13 @@ public class SportListOneActivity extends BaseActivity {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(path);
-			bitmap = BitmapFactory.decodeStream(fis);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 2;
+			//options.inPreferredConfig = Bitmap.Config.RGB_565;
+			options.inPurgeable = true;
+			options.inInputShareable = true;
+			//bitmap = BitmapFactory.decodeStream(fis);
+			bitmap = BitmapFactory.decodeStream(fis,null,options);
 			fis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
