@@ -54,6 +54,7 @@ public class NetworkHandler extends Activity {
 			httpRequest.addHeader("Accept", "text/json");
 			httpRequest.addHeader("X-PID", Variables.pid);
 			httpRequest.addHeader("User-Agent", Variables.ua);
+			Log.v("wyuser","url="+url+ " X-PID="+Variables.pid+" User-Agent="+Variables.ua);
 			HttpClient httpclient = getHttpClient();
 			HttpResponse httpResponse = httpclient.execute(httpRequest);
 			Log.v("wyuser", "status:"+ httpResponse.getStatusLine().getStatusCode());

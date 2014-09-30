@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,6 +18,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -53,6 +55,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	public ImageView phoV;
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
+	private Bitmap mPhotoBackground;
 //	private String sportPho;
 	private String tempPath;
 	private String title;
@@ -98,6 +101,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 		way4V = (ImageView) this.findViewById(R.id.recording_save_way4);
 		way5V = (ImageView) this.findViewById(R.id.recording_save_way5);
 		phoV = (ImageView) this.findViewById(R.id.recording_save_pho);
+		initPhobackgroundImg();
+		phoV.setImageBitmap(mPhotoBackground);
 		phoV.setScaleType(ScaleType.CENTER_CROP);
 		phoButton = (ImageView) this.findViewById(R.id.recording_save_pho_icon);
 		deleV.setOnTouchListener(this);
@@ -117,7 +122,32 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 		phoButton.setOnTouchListener(this);
 
 	}
-
+	private void initPhobackgroundImg() {
+		InputStream is= null;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inSampleSize = 2;
+		options.inPreferredConfig =Bitmap.Config.RGB_565;     
+		options.inPurgeable = true;    
+		options.inInputShareable = true; 
+		try {
+			is = this.getResources().openRawResource(R.drawable.photo_bg);  
+			mPhotoBackground = BitmapFactory.decodeStream(is,null,options);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				if (is!=null) {
+					is.close();
+					is=null;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		 
+		
+	}
 	private void initType() {
 		switch (Variables.runty) {
 		case 1:
@@ -188,19 +218,17 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				reset();
 				//改成跳转到分享页面 chenxy add
-				/*
 				myIntent = new Intent(SportSaveActivity.this,
 						SportListActivity.class);
 				startActivity(myIntent);
 				SportSaveActivity.this.finish();
-				*/
 				//分享页面
-				myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
-				myIntent.putExtra("id", lastId + "");
-				startActivity(myIntent);
-				//end
-				SportSaveActivity.this.finish();
-				Log.v("wysport","save  Variables.utime="+Variables.utime);
+//				myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
+//				myIntent.putExtra("id", lastId + "");
+//				startActivity(myIntent);
+//				//end
+//				SportSaveActivity.this.finish();
+//				Log.v("wysport","save  Variables.utime="+Variables.utime);
 				break;
 			}
 			break;
@@ -383,7 +411,42 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		releaseBitmap();
+		System.gc();
+	}	
+	private void releaseBitmap() {
+		try {
+			releaseViewBitmap(phoV);
+			
+			if (mPhotoBackground!=null) {
+				mPhotoBackground.recycle();
+				mPhotoBackground=null;
+			}
+			if (mPhotoBmp!=null) {
+				mPhotoBmp.recycle();
+				mPhotoBmp=null;
+			}
+		} catch (Exception e) {
+			
+		}
+		
+	}
+	private void releaseViewBitmap(ImageView view) {
+		// 把历史的ImageView 图片对象（image_)释放
+		if (view == null) {
+			return;
+		}
+		BitmapDrawable bitmapDrawable = (BitmapDrawable) view.getBackground();
+		if (bitmapDrawable != null) {
+			Bitmap hisBitmap = bitmapDrawable.getBitmap();
+			if (hisBitmap.isRecycled() == false) {
+				hisBitmap.recycle();
+			}
+		}
+	}
 	//拍照
 	private void showSetPhotoDialog() {
 		final String[] item_type = new String[] { "相机", "相册", "取消" };

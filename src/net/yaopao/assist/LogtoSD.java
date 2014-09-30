@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class LogtoSD {
 
-	public final String PIC_PATH = "/mnt/sdcard/zcrrr/";
+	public final String PIC_PATH = "/mnt/sdcard/gpsdata/";
 
 	public void writeFileToSD(String XYString, String filename) {
 		String sdStatus = Environment.getExternalStorageState();
@@ -28,7 +28,7 @@ public class LogtoSD {
 			}
 			Writer out = null;
 			out = new FileWriter(file, true);
-			out.write("\r\n" + getTime() + "    " + XYString + "\r\n");
+			//out.write("\r\n" + getTime() + "    " + XYString + "\r\n");
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();

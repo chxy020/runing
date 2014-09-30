@@ -3,7 +3,7 @@
     <dimen name="font_size1">9dp</dimen>
     <dimen name="font_size2">18dp</dimen>
     <dimen name="font_size3">17dp</dimen>
-    <dimen name="font_size4">30dp</dimen>
+    <dimen name="font_size4">28dp</dimen>
     <dimen name="font_size5">40dp</dimen>
     <dimen name="font_size6">60dp</dimen>
     <dimen name="font_size7">15dp</dimen>
@@ -79,6 +79,7 @@
     
     <dimen name="slider_num_height">50dp</dimen>
     <dimen name="slider_num_width">30dp</dimen>
+    <dimen name="slider_num_l_height">70dp</dimen>
     
     <dimen name="list_num_height">24dp</dimen>
     <dimen name="list_num_width">15dp</dimen>

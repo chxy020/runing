@@ -216,7 +216,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 			
 			//获取运动总时长chenxy add
-			int uTime = sport.getUtime();
+			int uTime = sport.getUtime()/1000;
 			//数据都是空的,先放个测试数据
 			//uTime = 21230;
 			//Log.e("","chxy_____utime" + uTime);
@@ -555,7 +555,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	
 	private void initTime(ImageView[] views){
 		DataBean data = YaoPao01App.db.queryData();
-		long total = data.getTotalTime();
+		long total = data.getTotalTime()/1000;
 		int[] time = YaoPao01App.cal(total);
 		int t1 = time[0] / 1000;
 		int t2 =(time[0] % 1000)/100;

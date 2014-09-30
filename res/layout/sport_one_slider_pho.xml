@@ -12,7 +12,6 @@
             android:id="@+id/one_pho_v"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/photo_bg"
             />
     </LinearLayout>
 

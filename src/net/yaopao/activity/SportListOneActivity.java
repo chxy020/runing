@@ -57,8 +57,7 @@ public class SportListOneActivity extends BaseActivity {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
-	private TextView shareV;
-	//private TextView disV;
+	//private TextView shareV;
 	private ImageView typeV;
 	private ImageView mindV;
 	private ImageView wayV;
@@ -120,15 +119,18 @@ public class SportListOneActivity extends BaseActivity {
 		this.mListViews = new ArrayList<View>();
 		this.mInflater = this.getLayoutInflater();
 		mapLayout = mInflater.inflate(R.layout.sport_one_slider_map, null);
-		phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
+		
 		if (oneSport.getSportpho()==1) {
+			phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
 			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
 		}
 		
 		this.mListViews.add(mapLayout);
-		this.mListViews.add(phoLayout);
+		if (phoLayout!=null) {
+			this.mListViews.add(phoLayout);
+		}
 		this.mMessageAdapter = new MessagePagerAdapter(mListViews);
 		this.mPager.setAdapter(this.mMessageAdapter);
 		this.mPager.setOnPageChangeListener(new MessageOnPageChangeListener());
@@ -141,7 +143,7 @@ public class SportListOneActivity extends BaseActivity {
 		pspeedV = (TextView) findViewById(R.id.one_pspeed);
 		ponitV = (TextView) findViewById(R.id.one_ponit);
 		titleV = (TextView) findViewById(R.id.recording_one_title);
-		shareV = (TextView) findViewById(R.id.recording_one_share);
+//		shareV = (TextView) findViewById(R.id.recording_one_share);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
 		//disV = (TextView) findViewById(R.id.one_dis);
@@ -165,17 +167,17 @@ public class SportListOneActivity extends BaseActivity {
 			}
 		});
 		
-		shareV.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent myIntent = new Intent();
-				//分享页面
-				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
-				myIntent.putExtra("id", recordId + "");
-				startActivity(myIntent);
-			}
-		});
+//		shareV.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				Intent myIntent = new Intent();
+//				//分享页面
+//				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
+//				myIntent.putExtra("id", recordId + "");
+//				startActivity(myIntent);
+//			}
+//		});
 		initMap();
 	}
 
@@ -242,7 +244,7 @@ public class SportListOneActivity extends BaseActivity {
 					+ df.format(pointsArray.get(i).lat);
 		}
 		
-		YaoPao01App.lts.writeFileToSD("格式化全量数组: " +gpsStr, "uploadLocation");
+//		YaoPao01App.lts.writeFileToSD("运动记录: " +gpsStr, "gps");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
@@ -307,7 +309,7 @@ public class SportListOneActivity extends BaseActivity {
 			int runway, String remarks, int utime, int pspeed, int ponit,
 			long addtime) {
 
-		int[] time = YaoPao01App.cal(utime);
+		int[] time = YaoPao01App.cal(utime/1000);
 		int t1 = time[0] / 10;
 		int t2 = time[0] % 10;
 		int t3 = time[1] / 10;
@@ -613,7 +615,13 @@ public class SportListOneActivity extends BaseActivity {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(path);
-			bitmap = BitmapFactory.decodeStream(fis);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 2;
+			//options.inPreferredConfig = Bitmap.Config.RGB_565;
+			options.inPurgeable = true;
+			options.inInputShareable = true;
+			//bitmap = BitmapFactory.decodeStream(fis);
+			bitmap = BitmapFactory.decodeStream(fis,null,options);
 			fis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

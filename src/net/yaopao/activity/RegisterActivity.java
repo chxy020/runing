@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,8 +66,10 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		reg = (TextView) this.findViewById(R.id.reg_go);
 		toLogin.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.reg_phoneNum);
+		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.reg_pwd);
 		codeV = (EditText) this.findViewById(R.id.reg_veri_code);
+		codeV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		serviceV = (TextView) this.findViewById(R.id.term_of_service);
 		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		serviceSelectV = (ImageView) this.findViewById(R.id.term_of_service_select);
@@ -327,7 +330,11 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				JSONObject rt = JSON.parseObject(verifyCodeJson);
+				
+				/*
+				 * 0.9.1代码
+				 * 
+				 * JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Toast.makeText(RegisterActivity.this, "验证码已发送，请查收短信",
@@ -337,6 +344,37 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 							Toast.LENGTH_LONG).show();
 				}
 				else {
+					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
+							Toast.LENGTH_LONG).show();
+				}*/
+				
+				Log.v("wy", verifyCodeJson);
+				JSONObject rt=null;
+				int rtCode =-999;
+				String desc ="";
+				try {
+					 rt = JSON.parseObject(verifyCodeJson);
+					 rtCode = rt.getJSONObject("state").getInteger("code");
+					 desc= rt.getJSONObject("state").getString("desc");
+					 
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				if (rtCode == 0) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -3) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				}else if (rtCode == -13) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else if (rtCode == -14) {
+					Toast.makeText(RegisterActivity.this, desc,
+							Toast.LENGTH_LONG).show();
+				} else {
+					Log.v("wyuser", "重置密码验证码获取返回=="+rt);
 					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}

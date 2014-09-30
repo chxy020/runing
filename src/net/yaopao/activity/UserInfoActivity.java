@@ -125,13 +125,13 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 		//保存生日
 		JSONObject user = DataTool.getUserInfo();
 		birthDayData = user.getString("birthday");
-		birthDayData = birthDayData == null ? "1985-7-15" : birthDayData;
+		birthDayData = birthDayData == null ||"".equals(birthDayData)? "1985-7-15" : birthDayData;
 		//保存身高
 		heightData = user.getString("height");
-		heightData = heightData == null ? "170cm" : heightData;
+		heightData = heightData == null||"".equals(heightData) ? "170cm" : heightData;
 		//保存体重
 		weigthData = user.getString("weight");
-		weigthData = weigthData == null ? "70kg" : weigthData;
+		weigthData = weigthData == null||"".equals(weigthData) ? "70kg" : weigthData;
 		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
 	}
 

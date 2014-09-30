@@ -46,7 +46,7 @@
 			android:id="@+id/one_map_layout"
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/one_map_height"
-			android:layout_below="@id/recording_one_top_bar" >
+			>
 	
 			<ImageView
 				android:id="@+id/avatarImg"
@@ -279,13 +279,13 @@
 				android:gravity="center_vertical" />
 		</RelativeLayout>
 	</RelativeLayout>
-	<View
+	<!-- <View
 		android:layout_width="match_parent"
 		android:layout_height="1px"
 		android:layout_below="@id/one_desc_layout"
 		android:background="@color/black"
 		android:visibility="gone" >
-	</View>
+	</View> -->
 
 	<Button
 		android:id="@+id/shareBtn"

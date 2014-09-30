@@ -44,19 +44,19 @@ public class SplashActivity extends BaseActivity {
 		UmengUpdateAgent.update(this);
 		MobclickAgent.updateOnlineConfig( this );
 		
-//		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
-//		Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
-//		Log.v("wyuser", "在线参数1="+Constants.endpoints);
-//		Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
-//		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
-//			Constants.endpoints=Constants.endpoints1;
-//			Constants.endpoints_img=Constants.endpoints2;
-//		}else{
-//			Constants.endpoints+="chSports";
-//		}
+		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
+		Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
+		Log.v("wyuser", "在线参数1="+Constants.endpoints);
+		Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
+		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
+			Constants.endpoints=Constants.endpoints1;
+			Constants.endpoints_img=Constants.endpoints2;
+		}else{
+			Constants.endpoints+="chSports";
+		}
 		//测试代码
-		Constants.endpoints=Constants.endpoints1;
-		Constants.endpoints_img=Constants.endpoints2;
+//		Constants.endpoints=Constants.endpoints1;
+//		Constants.endpoints_img=Constants.endpoints2;
 		//测试代码
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
@@ -239,8 +239,8 @@ public class SplashActivity extends BaseActivity {
 					break;
 				}*/
 			} else {
-				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
+//						Toast.LENGTH_LONG).show();
 			}
 		}
 

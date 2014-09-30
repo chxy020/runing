@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -74,6 +75,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		to_reset = (TextView) this.findViewById(R.id.to_reset);
 		to_reset.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.login_phoneNum);
+		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.login_pwd);
 		serviceV = (TextView) this.findViewById(R.id.term_of_service);
 		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -226,9 +228,8 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 			loginJson = NetworkHandler.httpPost(Constants.endpoints1
 					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
 					+ pwdStr);
-			Log.v("wyuser", "rel:=" + Constants.endpoints
-					+ Constants.login);
-			Log.v("wyuser", "loginJson=" + loginJson);
+			Log.v("wyuser", "登录请求参数==" + Constants.endpoints	+ Constants.login+" phone=" + phoneNumStr + "&passwd="+ pwdStr);
+			Log.v("wyuser", "登录请求返回loginJson=" + loginJson);
 			Log.e("", "chxy loginJson=" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
 

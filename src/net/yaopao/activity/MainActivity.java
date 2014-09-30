@@ -392,32 +392,32 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 				break;
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
-//				if (Variables.gpsStatus==2) {
-//					DialogTool dialog = new DialogTool(MainActivity.this,handler);
-//					WindowManager m = getWindowManager();
-//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-//					dialog.alertGpsTip2(d);
-//				if (Variables.switchVoice == 0) {
-//					YaoPao01App.palyOpenGps();
-//				}
-//				}else if (Variables.gpsStatus==0) {
-//					DialogTool dialog = new DialogTool(MainActivity.this,null);
-//					WindowManager m = getWindowManager();
-//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-//					dialog.alertGpsTip1(d);
-//				if (Variables.switchVoice == 0) {
-//					YaoPao01App.palyWeekGps();
-//				}
-//					
-//				}else if(Variables.gpsStatus==1){
-//					Intent mainIntent = new Intent(MainActivity.this,
-//							SportSetActivity.class);
-//					startActivity(mainIntent);
-//				}
-				//测试代码
+				if (Variables.gpsStatus==2) {
+					DialogTool dialog = new DialogTool(MainActivity.this,handler);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip2(d);
+				if (Variables.switchVoice == 0) {
+					YaoPao01App.palyOpenGps();
+				}
+				}else if (Variables.gpsStatus==0) {
+					DialogTool dialog = new DialogTool(MainActivity.this,null);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip1(d);
+				if (Variables.switchVoice == 0) {
+					YaoPao01App.palyWeekGps();
+				}
+					
+				}else if(Variables.gpsStatus==1){
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
+				}
+				//测试代码
+//					Intent mainIntent = new Intent(MainActivity.this,
+//							SportSetActivity.class);
+//					startActivity(mainIntent);
 				//测试代码
 				break;
 			}
@@ -427,7 +427,14 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				showSetPhotoDialog();
+				if(Variables.islogin==0){
+					Intent mainIntent = new Intent(MainActivity.this,
+							LoginActivity.class);
+					startActivity(mainIntent);
+				}else if(Variables.islogin==1){
+					showSetPhotoDialog();
+				}
+				
 				break;
 			}
 			break;
@@ -532,19 +539,17 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 				// Intent mainIntent = new Intent(MainActivity.this,
 				// MatchWatchActivity.class);
 				// MainActivity.this.startActivity(mainIntent);
-			/*这个有冲突不知道怎么解决,
-			 Intent intent= new Intent();        
-			    intent.setAction("android.intent.action.VIEW");    
-			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
-			    intent.setData(content_url);  
+//			 Intent intent= new Intent();        
+//			    intent.setAction("android.intent.action.VIEW");    
+//			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
+//			    intent.setData(content_url);  
 			 Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
 			    startActivity(intent);
-			*/
 			
 			//24小时比赛跳转页面判定,chenxy add
 			//先判断比赛是否开始了,没开始都进web页面,
 			//如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-			Intent teamIntent = null;
+		/*	Intent teamIntent = null;
 			
 			String matchState = Variables.matchState;
 			if("2" == matchState){
@@ -563,17 +568,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
 				}
 			}
-			/*
-			if (Variables.islogin == 1) {
-				teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
-				teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
-				
-			} else {
-				Toast.makeText(MainActivity.this, "您必须注册并登录，才会收到系统消息，所以现在没有系统消息哦", Toast.LENGTH_LONG).show();
-				teamIntent = new Intent(MainActivity.this, RegisterActivity.class);
-			}
-			*/
-			startActivity(teamIntent);
+			startActivity(teamIntent);*/
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,
