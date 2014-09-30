@@ -47,7 +47,7 @@
     <dimen name="main_middle_height">20dp</dimen>
     <dimen name="main_middle_width1">118dp</dimen>
     <dimen name="main_middle_width2">100dp</dimen>
-    
+    <dimen name="main_middle_width3">95dp</dimen>
     <dimen name="main_mnum_height">16dp</dimen>
     <dimen name="main_mnum_width">10dp</dimen>
     <dimen name="main_mnum_margin">1dp</dimen>

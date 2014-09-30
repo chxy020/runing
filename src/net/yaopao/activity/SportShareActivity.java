@@ -68,6 +68,8 @@ public class SportShareActivity extends Activity implements OnClickListener {
 	private TextView titleV;
 	/** 运动标题 */
 	private TextView mSportText;
+	private ImageView mAvatarImg;
+	
 	//private TextView disV;
 	private ImageView typeV;
 	private ImageView mindV;
@@ -160,6 +162,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
 		mSportText = (TextView)findViewById(R.id.sportText);
+		mAvatarImg = (ImageView)findViewById(R.id.avatarImg);
 		//disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
 		mindV = (ImageView) findViewById(R.id.one_mind);
@@ -334,6 +337,11 @@ public class SportShareActivity extends Activity implements OnClickListener {
 //		titleV.setText(YaoPao01App.getWeekOfDate(date) + title);
 //		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
 		titleV.setText("告诉朋友");
+		//改变头像
+		Bitmap head = Variables.avatar;
+		if (head != null) {
+			mAvatarImg.setImageBitmap(head);
+		}
 	}
 	
 	/**
@@ -346,7 +354,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 	private void initTitle(double distance,int type){
 		double km = distance / 1000;
 		//保留两位小数
-		km = (double)(Math.round(km*100)/100.0);
+		km = (double)(Math.floor(km*100)/100.0);
 		
 		String[] typeText = {"","步行了","跑步了","骑行了"};
 		String text = "我刚刚" + typeText[type] + km + "公里";

@@ -215,6 +215,8 @@ public class PlayVoice {
 				}
 			});
 		} catch (IOException e) {
+			//播报错误之后,重新播放下一条
+			mHandler.sendEmptyMessageDelayed(PLAY_VOICE_HANDLER,100);
 		}
 	}
 	

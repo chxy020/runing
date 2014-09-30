@@ -154,7 +154,7 @@
 			android:layout_below="@id/one_map_layout" >
 	
 			<LinearLayout
-				android:layout_width="@dimen/main_middle_width2"
+				android:layout_width="@dimen/main_middle_width3"
 				android:layout_height="match_parent"
 				android:background="@color/gray_dark"
 				android:orientation="vertical" >
@@ -215,7 +215,7 @@
 				android:background="@color/white" />
 	
 			<LinearLayout
-				android:layout_width="@dimen/main_middle_width2"
+				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:background="@color/gray_dark"
 				android:orientation="vertical" >
