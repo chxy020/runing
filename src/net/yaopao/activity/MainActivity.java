@@ -155,7 +155,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 	private void initPspeed(DataBean data) {
 		
 		int[] speed = YaoPao01App.cal((int) (data.getPspeed()));
-		Toast.makeText(this,"pspeed="+data.getPspeed() , Toast.LENGTH_LONG).show();
 //		int[] speed = YaoPao01App.cal((int) (200));
 		
 		int s1 = speed[1] / 10;
@@ -296,96 +295,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 //		update(d6, d6v);
 		YaoPao01App.graphicTool.updateRedNum(new int[]{d1,d2,d3,d4,d5,d6},new ImageView[]{d1V,d2V,d3V,d4V,d5V,d6V});
 	}
-//	private String getSeed(double avgspeed) {
-//		int[] speed = YaoPao01App
-//				.cal((int) avgspeed);
-//		String s1 = (speed[1] / 10)+"";
-//		String s2 =( speed[1] % 10)+"";
-//		String s3 = (speed[2] / 10)+"";
-//		String s4 = (speed[2] % 10)+"";
-//		return s1+""+s2+"'"+s3+""+s4+"\"";
-//	}
-
-//	protected void update(int i, ImageView view) {
-//		if (i > 9) {
-//			i = i % 10;
-//		}
-//		switch (i) {
-//		case 0:
-//			view.setBackgroundResource(R.drawable.r_0);
-//			break;
-//		case 1:
-//			view.setBackgroundResource(R.drawable.r_1);
-//			break;
-//		case 2:
-//			view.setBackgroundResource(R.drawable.r_2);
-//			break;
-//		case 3:
-//			view.setBackgroundResource(R.drawable.r_3);
-//			break;
-//		case 4:
-//			view.setBackgroundResource(R.drawable.r_4);
-//			break;
-//		case 5:
-//			view.setBackgroundResource(R.drawable.r_5);
-//			break;
-//		case 6:
-//			view.setBackgroundResource(R.drawable.r_6);
-//			break;
-//		case 7:
-//			view.setBackgroundResource(R.drawable.r_7);
-//			break;
-//		case 8:
-//			view.setBackgroundResource(R.drawable.r_8);
-//			break;
-//		case 9:
-//			view.setBackgroundResource(R.drawable.r_9);
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
-//	protected void updateMiddleData(int i, ImageView view) {
-//		if (i > 9) {
-//			i = i % 10;
-//		}
-//		switch (i) {
-//		case 0:
-//			view.setBackgroundResource(R.drawable.w_0);
-//			break;
-//		case 1:
-//			view.setBackgroundResource(R.drawable.w_1);
-//			break;
-//		case 2:
-//			view.setBackgroundResource(R.drawable.w_2);
-//			break;
-//		case 3:
-//			view.setBackgroundResource(R.drawable.w_3);
-//			break;
-//		case 4:
-//			view.setBackgroundResource(R.drawable.w_4);
-//			break;
-//		case 5:
-//			view.setBackgroundResource(R.drawable.w_5);
-//			break;
-//		case 6:
-//			view.setBackgroundResource(R.drawable.w_6);
-//			break;
-//		case 7:
-//			view.setBackgroundResource(R.drawable.w_7);
-//			break;
-//		case 8:
-//			view.setBackgroundResource(R.drawable.w_8);
-//			break;
-//		case 9:
-//			view.setBackgroundResource(R.drawable.w_9);
-//			break;
-//			
-//		default:
-//			break;
-//		}
-//	}
 
 	@Override
 	protected void onDestroy() {
@@ -407,32 +316,32 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 				break;
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
-//				if (Variables.gpsStatus==2) {
-//					DialogTool dialog = new DialogTool(MainActivity.this,handler);
-//					WindowManager m = getWindowManager();
-//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-//					dialog.alertGpsTip2(d);
-//				if (Variables.switchVoice == 0) {
-//					YaoPao01App.palyOpenGps();
-//				}
-//				}else if (Variables.gpsStatus==0) {
-//					DialogTool dialog = new DialogTool(MainActivity.this,null);
-//					WindowManager m = getWindowManager();
-//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-//					dialog.alertGpsTip1(d);
-//				if (Variables.switchVoice == 0) {
-//					YaoPao01App.palyWeekGps();
-//				}
-//					
-//				}else if(Variables.gpsStatus==1){
-//					Intent mainIntent = new Intent(MainActivity.this,
-//							SportSetActivity.class);
-//					startActivity(mainIntent);
-//				}
-				//测试代码
+				if (Variables.gpsStatus==2) {
+					DialogTool dialog = new DialogTool(MainActivity.this,handler);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip2(d);
+				if (Variables.switchVoice == 0) {
+					YaoPao01App.palyOpenGps();
+				}
+				}else if (Variables.gpsStatus==0) {
+					DialogTool dialog = new DialogTool(MainActivity.this,null);
+					WindowManager m = getWindowManager();
+					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+					dialog.alertGpsTip1(d);
+				if (Variables.switchVoice == 0) {
+					YaoPao01App.palyWeekGps();
+				}
+					
+				}else if(Variables.gpsStatus==1){
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
+				}
+				//测试代码
+//					Intent mainIntent = new Intent(MainActivity.this,
+//							SportSetActivity.class);
+//					startActivity(mainIntent);
 				//测试代码
 				break;
 			}
@@ -558,16 +467,16 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 //			    intent.setAction("android.intent.action.VIEW");    
 //			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
 //			    intent.setData(content_url);  
-			 Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
+			/* Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
 			    startActivity(intent);
-			
+			*/
 			//24小时比赛跳转页面判定,chenxy add
 			//先判断比赛是否开始了,没开始都进web页面,
 			//如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-		/*	Intent teamIntent = null;
+			Intent teamIntent = null;
 			
 			String matchState = Variables.matchState;
-			if("2" == matchState){
+			if("2".equals(matchState)){
 				//比赛未开始
 				teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
 				teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
@@ -583,7 +492,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
 				}
 			}
-			startActivity(teamIntent);*/
+			startActivity(teamIntent);
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,

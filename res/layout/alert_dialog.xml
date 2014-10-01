@@ -27,7 +27,7 @@
         android:background="@color/gray_light"
         android:gravity="center"
         android:text="是的，完成了"
-        android:textColor="@color/blue_dark"
+        android:textColor="@color/white"
         android:textSize="@dimen/font_size3" />
 
     <View
@@ -46,7 +46,7 @@
         android:background="@color/gray_light"
         android:gravity="center"
         android:text="不，还没完成"
-        android:textColor="@color/blue_dark"
+        android:textColor="@color/white"
         android:textSize="@dimen/font_size3" />
 
 </RelativeLayout>

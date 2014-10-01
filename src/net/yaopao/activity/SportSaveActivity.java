@@ -214,21 +214,21 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				Variables.remarks=descV.getText().toString();
 				lastId =YaoPao01App.db.saveOneSport();
 				Log.v("wysport", "lastId = "+lastId);
-				Intent myIntent = new Intent();
+//				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				reset();
 				//改成跳转到分享页面 chenxy add
-				myIntent = new Intent(SportSaveActivity.this,
-						SportListActivity.class);
-				startActivity(myIntent);
-				SportSaveActivity.this.finish();
-				//分享页面
-//				myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
-//				myIntent.putExtra("id", lastId + "");
+//				myIntent = new Intent(SportSaveActivity.this,
+//						SportListActivity.class);
 //				startActivity(myIntent);
-//				//end
 //				SportSaveActivity.this.finish();
-//				Log.v("wysport","save  Variables.utime="+Variables.utime);
+				//分享页面
+				Intent myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
+				myIntent.putExtra("id", lastId + "");
+				startActivity(myIntent);
+				//end
+				SportSaveActivity.this.finish();
+				Log.v("wysport","save  Variables.utime="+Variables.utime);
 				break;
 			}
 			break;

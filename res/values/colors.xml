@@ -2,11 +2,11 @@
 <resources>
 
     <color name="red_bg">#FF0000</color>
-    <color name="blue_dark">#FF666698</color>
+    <color name="blue_dark">#FF8FC31F</color>
     <color name="gray_light">#FFA5A5A5</color>
     <color name="gray_dark">#FF595959</color>
     <color name="black">#FF000000</color>
-    <color name="red">#FFFF3300</color>
+    <color name="red">#FF007BC7</color>
      <color name="white">#FFFFFFFF</color>
      <color name="text">#FFAACFEA</color>
     
@@ -20,7 +20,7 @@
 	<color name="setting_item_bg_curr">#CCCCCC</color>
 	
 	<!-- 点击颜色 -->
-	<color name="red_h">#FFFF5D35</color>
+	<color name="red_h">#FF00588E</color>
 	<color name="white_h">#FFE5E5E5</color>
-	<color name="blue_h">#FF9090CC</color>
+	<color name="blue_h">#FF6F961A</color>
 </resources>

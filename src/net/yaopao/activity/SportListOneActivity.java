@@ -57,7 +57,7 @@ public class SportListOneActivity extends BaseActivity {
 	private TextView dateV;
 	private TextView desV;
 	private TextView titleV;
-	//private TextView shareV;
+	private TextView shareV;
 	private ImageView typeV;
 	private ImageView mindV;
 	private ImageView wayV;
@@ -144,7 +144,7 @@ public class SportListOneActivity extends BaseActivity {
 		pspeedV = (TextView) findViewById(R.id.one_pspeed);
 		ponitV = (TextView) findViewById(R.id.one_ponit);
 		titleV = (TextView) findViewById(R.id.recording_one_title);
-//		shareV = (TextView) findViewById(R.id.recording_one_share);
+		shareV = (TextView) findViewById(R.id.recording_one_share);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
 		//disV = (TextView) findViewById(R.id.one_dis);
@@ -168,17 +168,17 @@ public class SportListOneActivity extends BaseActivity {
 			}
 		});
 		
-//		shareV.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				Intent myIntent = new Intent();
-//				//分享页面
-//				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
-//				myIntent.putExtra("id", recordId + "");
-//				startActivity(myIntent);
-//			}
-//		});
+		shareV.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent myIntent = new Intent();
+				//分享页面
+				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
+				myIntent.putExtra("id", recordId + "");
+				startActivity(myIntent);
+			}
+		});
 		initMap();
 	}
 
