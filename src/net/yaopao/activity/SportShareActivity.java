@@ -689,7 +689,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
 		oks.setTitle(title);
 		// text是分享文本，所有平台都需要这个字段
-		oks.setText("");
+		oks.setText(" ");
 		
 		if(captureView){
 			//截屏view
@@ -743,7 +743,6 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
 //		oks.setCallback(new OneKeyShareCallback());
 		oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
-
 		// 去除注释，演示在九宫格设置自定义的图标
 //		Bitmap logo = BitmapFactory.decodeResource(menu.getResources(), R.drawable.ic_launcher);
 //		String label = menu.getResources().getString(R.string.app_name);
