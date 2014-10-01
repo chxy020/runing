@@ -52,7 +52,7 @@ public class WebViewActivity extends BaseActivity {
 		mWebView.addJavascriptInterface(new Object(){
 			//回到前一页
 			public void gotoPrePage(){
-				Log.e("","chxy _______prepage");
+				//Log.e("","chxy _______prepage");
 				WebViewActivity.this.finish();
 			}
 			//显示第三方web页面
@@ -60,7 +60,7 @@ public class WebViewActivity extends BaseActivity {
 				Intent intent = new Intent(WebViewActivity.this,ThirdWebActivity.class);
 				intent.putExtra("net.yaopao.activity.ThirdUrl",url);
 				startActivity(intent);
-				Log.e("","chxy _______showThirdWeb" + url);
+				//Log.e("","chxy _______showThirdWeb" + url);
 			}
 		}, "JSAndroidBridge");
 
@@ -137,6 +137,7 @@ public class WebViewActivity extends BaseActivity {
 				JSONObject user = new JSONObject();
 				//未注册给空串""
 				user.put("uid", Variables.uid);
+				//Log.e("","chxy_____uid" + Variables.uid);
 				//未报名给空串""
 				user.put("bid", Variables.bid);
 				//未组队给空串""
@@ -159,7 +160,7 @@ public class WebViewActivity extends BaseActivity {
 				deviceInfo = device.toJSONString();
 				
 				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
-				Log.e("","chxy_____________" + param);
+				//Log.e("","chxy_____________" + param);
 				jsCallbackMethod(param);
 			}
 		}
