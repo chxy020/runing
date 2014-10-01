@@ -22,7 +22,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
+//import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

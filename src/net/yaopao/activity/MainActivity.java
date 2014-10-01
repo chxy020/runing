@@ -543,13 +543,13 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 //			    intent.setAction("android.intent.action.VIEW");    
 //			    Uri content_url = Uri.parse("http://www.yaopao.net/html/ssxx.html");   
 //			    intent.setData(content_url);  
-			 Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
+			/* Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
 			    startActivity(intent);
-			
+			*/
 			//24小时比赛跳转页面判定,chenxy add
 			//先判断比赛是否开始了,没开始都进web页面,
 			//如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-		/*	Intent teamIntent = null;
+			Intent teamIntent = null;
 			
 			String matchState = Variables.matchState;
 			if("2" == matchState){
@@ -568,7 +568,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
 				}
 			}
-			startActivity(teamIntent);*/
+			startActivity(teamIntent);
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,
