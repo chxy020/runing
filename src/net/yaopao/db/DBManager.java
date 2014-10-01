@@ -210,7 +210,7 @@ public class DBManager {
 		Log.v("wysport", "db count="+count);
 		double totalDistance = 0;
 		int speed = 0;// 平均配速 单位秒
-		long totalTime = 0;// 秒
+		long totalTime = 0;// 毫秒
 		int points = 0;// 秒
 		while (c.moveToNext()) {
 			totalDistance += c.getDouble(c.getColumnIndex("distance"));
@@ -218,7 +218,8 @@ public class DBManager {
 			points += c.getInt(c.getColumnIndex("points"));
 		}
 		c.close();
-		speed = (int) ((1000 / totalDistance) * totalTime);
+//		speed = (int) (totalTime/totalDistance);
+		speed = (int) Math.round(totalTime/totalDistance);
 		data.setCount(count);
 		data.setDistance(totalDistance);
 		data.setPspeed(speed);

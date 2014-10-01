@@ -92,7 +92,6 @@
 		                android:id="@+id/list_sport_num1"
 		                android:layout_width="@dimen/list_num_width"
 		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0"
 		                android:visibility="gone"
 		                 />
 		
@@ -100,25 +99,25 @@
 		                android:id="@+id/list_sport_num2"
 		                android:layout_width="@dimen/list_num_width"
 		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0" />
+		                 />
 		
 		            <ImageView
 		                android:id="@+id/list_sport_dot"
 		                android:layout_width="@dimen/list_dot_width"
 		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_dot" />
+		                 />
 		
 		            <ImageView
 		                android:id="@+id/list_sport_dec1"
 		                android:layout_width="@dimen/list_num_width"
 		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0" />
+		                />
 		
 		            <ImageView
 		                android:id="@+id/list_sport_dec2"
 		                android:layout_width="@dimen/list_num_width"
 		                android:layout_height="@dimen/list_num_height"
-		                android:background="@drawable/r_0" />
+		                />
 		       	 </LinearLayout> 
 		       	 
 				<ImageView
@@ -126,7 +125,6 @@
 	                android:layout_toRightOf="@id/list_sport_distance"
 	                android:layout_width="@dimen/list_km_width"
 	                android:layout_height="@dimen/list_num_height"
-	                android:background="@drawable/r_km" 
 	                android:layout_centerInParent="true"/>
 		</RelativeLayout>
 

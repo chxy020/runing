@@ -43,6 +43,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		UmengUpdateAgent.update(this);
 		MobclickAgent.updateOnlineConfig( this );
+	
 		
 		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
 		Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
@@ -57,6 +58,8 @@ public class SplashActivity extends BaseActivity {
 		//测试代码
 //		Constants.endpoints=Constants.endpoints1;
 //		Constants.endpoints_img=Constants.endpoints2;
+		int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+		Toast.makeText(this, "Max memory is " + maxMemory + "KB", Toast.LENGTH_LONG).show();
 		//测试代码
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);

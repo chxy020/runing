@@ -1,7 +1,5 @@
 package net.yaopao.activity;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,10 +17,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,13 +49,15 @@ public class SportRecordActivity extends BaseActivity implements
 	private TextView recodingTimeTextV;
 	private TextView recodingMileageTextV;
 	public static ImageView gpsV;
+	private ImageView mapV;
+	private SliderRelativeLayout slider;
+	private ProgressBar progressHorizontal;
+	
 	private ImageView d1v;
 	private ImageView d2v;
 	private ImageView d3v;
 	private ImageView d4v;
-	private ImageView mapV;
-	private SliderRelativeLayout slider;
-	private ProgressBar progressHorizontal;
+
 	private ImageView t1V;
 	private ImageView t2V;
 	private ImageView t3V;
@@ -74,16 +70,6 @@ public class SportRecordActivity extends BaseActivity implements
 	private ImageView s3V;
 	private ImageView s4V;
 
-	private static Bitmap num0 = null;
-	private static Bitmap num1 = null;
-	private static Bitmap num2 = null;
-	private static Bitmap num3 = null;
-	private static Bitmap num4 = null;
-	private static Bitmap num5 = null;
-	private static Bitmap num6 = null;
-	private static Bitmap num7 = null;
-	private static Bitmap num8 = null;
-	private static Bitmap num9 = null;
 
 	private ImageView sliderIconV;
 
@@ -123,8 +109,8 @@ public class SportRecordActivity extends BaseActivity implements
 	private double sprortDis = 0;// 累计距离，暂停后计算距离要加上此距离
 
 	// 测试代码
-	// public static double lon = 116.395823;
-	// public static double lat = 39.839016;
+	 public static double lon = 116.395823;
+	 public static double lat = 39.839016;
 
 	// 以上测试代码
 
@@ -139,9 +125,6 @@ public class SportRecordActivity extends BaseActivity implements
 		if (Variables.switchVoice == 0) {
 			PlayVoice.StartSportsVoice(this);
 		}
-
-		// 初始化数字图片
-		initNumImg();
 
 		doneV = (TextView) findViewById(R.id.slider_done);
 		resumeV = (TextView) findViewById(R.id.slider_resume);
@@ -218,50 +201,6 @@ public class SportRecordActivity extends BaseActivity implements
 		};
 	}
 
-	private void initNumImg() {
-		InputStream is = null;
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inSampleSize = 2;
-		options.inPreferredConfig = Bitmap.Config.RGB_565;
-		options.inPurgeable = true;
-		options.inInputShareable = true;
-		try {
-			is = this.getResources().openRawResource(R.drawable.w_0);
-			num0 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_1);
-			num1 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_2);
-			num2 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_3);
-			num3 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_4);
-			num4 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_5);
-			num5 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_6);
-			num6 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_7);
-			num7 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_8);
-			num8 = BitmapFactory.decodeStream(is, null, options);
-			is = this.getResources().openRawResource(R.drawable.w_9);
-			num9 = BitmapFactory.decodeStream(is, null, options);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (is != null) {
-					is.close();
-					is = null;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-
 	private void initRunLayout() {
 		if (Variables.runtar == 0) {
 			progressHorizontal.setVisibility(View.GONE);
@@ -332,89 +271,11 @@ public class SportRecordActivity extends BaseActivity implements
 		stopRecordGps();
 		Variables.distancePlayed = 0;
 		Variables.timePlayed = 0;
-		releaseBitmap();
-
+		//releaseBitmap();
+		YaoPao01App.graphicTool.unbindDrawables(new ImageView[]{d1v,d2v,d3v,d4v,t1V,t2V,t3V,t4V,t5V,t6V,s1V,s2V,s3V,s4V});
 		unregisterReceiver(broadcastReceiver);
-		System.gc();
 	}
 
-	private void releaseBitmap() {
-
-		try {
-			releaseViewBitmap(d1v);
-			releaseViewBitmap(d2v);
-			releaseViewBitmap(d3v);
-			releaseViewBitmap(d4v);
-			releaseViewBitmap(t1V);
-			releaseViewBitmap(t2V);
-			releaseViewBitmap(t3V);
-			releaseViewBitmap(t4V);
-			releaseViewBitmap(t5V);
-			releaseViewBitmap(t6V);
-			releaseViewBitmap(s1V);
-			releaseViewBitmap(s2V);
-			releaseViewBitmap(s3V);
-			releaseViewBitmap(s4V);
-
-			if (num0 != null) {
-				num0.recycle();
-				num0 = null;
-			}
-			if (num1 != null) {
-				num1.recycle();
-				num1 = null;
-			}
-			if (num2 != null) {
-				num2.recycle();
-				num2 = null;
-			}
-			if (num3 != null) {
-				num3.recycle();
-				num3 = null;
-			}
-			if (num4 != null) {
-				num4.recycle();
-				num4 = null;
-			}
-			if (num5 != null) {
-				num5.recycle();
-				num5 = null;
-			}
-			if (num6 != null) {
-				num6.recycle();
-				num6 = null;
-			}
-			if (num7 != null) {
-				num7.recycle();
-				num7 = null;
-			}
-			if (num8 != null) {
-				num8.recycle();
-				num8 = null;
-			}
-			if (num9 != null) {
-				num9.recycle();
-				num9 = null;
-			}
-		} catch (Exception e) {
-
-		}
-
-	}
-
-	private void releaseViewBitmap(ImageView view) {
-		// 把历史的ImageView 图片对象（image_)释放
-		if (view == null) {
-			return;
-		}
-		BitmapDrawable bitmapDrawable = (BitmapDrawable) view.getBackground();
-		if (bitmapDrawable != null) {
-			Bitmap hisBitmap = bitmapDrawable.getBitmap();
-			if (hisBitmap.isRecycled() == false) {
-				hisBitmap.recycle();
-			}
-		}
-	}
 
 	@Override
 	protected void onResume() {
@@ -549,25 +410,25 @@ public class SportRecordActivity extends BaseActivity implements
 	};
 
 	public static GpsPoint getOnePoint() {
-		GpsPoint point = null;
-		if (YaoPao01App.loc != null) {
-			point = new GpsPoint();
-			point.lon = YaoPao01App.loc.getLongitude();
-			point.lat = YaoPao01App.loc.getLatitude();
-			point.time = YaoPao01App.loc.getTime();
-			point.altitude = YaoPao01App.loc.getAltitude();
-			point.course = YaoPao01App.loc.getBearing();
-			point.speed = YaoPao01App.loc.getSpeed();
-			point.status = Variables.sportStatus;
-		}
+//		GpsPoint point = null;
+//		if (YaoPao01App.loc != null) {
+//			point = new GpsPoint();
+//			point.lon = YaoPao01App.loc.getLongitude();
+//			point.lat = YaoPao01App.loc.getLatitude();
+//			point.time = YaoPao01App.loc.getTime();
+//			point.altitude = YaoPao01App.loc.getAltitude();
+//			point.course = YaoPao01App.loc.getBearing();
+//			point.speed = YaoPao01App.loc.getSpeed();
+//			point.status = Variables.sportStatus;
+//		}
 		// 测试代码
-		// Random random1 = new Random();
-		// lat = lat + random1.nextFloat() / 1000;
-		// lon = lon + random1.nextFloat() / 1000;
-		// Log.v("wysport", "lat =" + random1.nextFloat() / 1000 + " lon="
-		// + random1.nextFloat() / 1000);
-		// GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
-		// new Date().getTime());
+		 Random random1 = new Random();
+		 lat = lat + random1.nextFloat() / 1000;
+		 lon = lon + random1.nextFloat() / 1000;
+		 Log.v("wysport", "lat =" + random1.nextFloat() / 1000 + " lon="
+		 + random1.nextFloat() / 1000);
+		 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
+		 new Date().getTime());
 		// 测试代码
 		return point;
 
@@ -867,21 +728,10 @@ public class SportRecordActivity extends BaseActivity implements
 								long duringTime = (new Date().getTime() - startTime)
 										- (Variables.utime - sprortTime);
 								timePerKm += duringTime;
-								// timePer5min += duringTime;
 								Variables.utime = new Date().getTime()
 										- startTime + sprortTime;
-								// Log.v("wyvoice", " timeper5=" +
-								// timePer5min/1000+ "秒     duringTime=" +
-								// duringTime
-								// +" Variables.utime="+Variables.utime);
-								// YaoPao01App.lts.writeFileToSD("wyvoice: timeper5="
-								// + timePer5min/1000+ "秒     duringTime=" +
-								// duringTime
-								// +" Variables.utime="+Variables.utime,
-								// "uploadLocation");
 							}
 						}
-						// sprortTime=sprortTime+1;
 						int[] time = YaoPao01App.cal(Variables.utime / 1000);
 						int t1 = time[0] / 10;
 						int t2 = time[0] % 10;
@@ -889,12 +739,15 @@ public class SportRecordActivity extends BaseActivity implements
 						int t4 = time[1] % 10;
 						int t5 = time[2] / 10;
 						int t6 = time[2] % 10;
-						update(t1, t1V);
-						update(t2, t2V);
-						update(t3, t3V);
-						update(t4, t4V);
-						update(t5, t5V);
-						update(t6, t6V);
+//						update(t1, t1V);
+//						update(t2, t2V);
+//						update(t3, t3V);
+//						update(t4, t4V);
+//						update(t5, t5V);
+//						update(t6, t6V);
+						
+						YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V});
+						
 					}
 				});
 			}
@@ -986,63 +839,62 @@ public class SportRecordActivity extends BaseActivity implements
 		if (d1 > 0) {
 			d1v.setVisibility(View.VISIBLE);
 		}
-		update(d1, d1v);
-		update(d2, d2v);
-		update(d3, d3v);
-		update(d4, d4v);
+//		update(d1, d1v);
+//		update(d2, d2v);
+//		update(d3, d3v);
+//		update(d4, d4v);
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1v,d2v,d3v,d4v});
 
-		// int[] speed = YaoPao01App.cal((int) ((1000 / Variables.distance) *
-		// VariaVariables.utime/1000// Variables.pspeed = (int) ((1000 /
-		// Variables.distance) * Variables.utime);
-
-		Variables.pspeed = (int) (Variables.utime / Variables.distance);
+//		Variables.pspeed = (int) (Variables.utime / Variables.distance);
+		Variables.pspeed = (int) Math.round(Variables.utime / Variables.distance);
 		int[] speed = YaoPao01App.cal(Variables.pspeed);
 
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		update(s1, s1V);
-		update(s2, s2V);
-		update(s3, s3V);
-		update(s4, s4V);
+//		update(s1, s1V);
+//		update(s2, s2V);
+//		update(s3, s3V);
+//		update(s4, s4V);
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{s1,s2,s3,s4},new ImageView[]{s1V,s2V,s3V,s4V});
 
 	}
 
-	protected static void update(int i, ImageView view) {
+	/*protected static void update(int i, ImageView view) {
 		if (i > 9) {
 			i = i % 10;
 		}
 		switch (i) {
 		case 0:
-			view.setImageBitmap(num0);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_0));
 			break;
 		case 1:
-			view.setImageBitmap(num1);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_1));
 			break;
 		case 2:
-			view.setImageBitmap(num2);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_2));
 			break;
 		case 3:
-			view.setImageBitmap(num3);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_3));
 			break;
 		case 4:
-			view.setImageBitmap(num4);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_4));
 			break;
 		case 5:
-			view.setImageBitmap(num5);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_5));
 			break;
 		case 6:
-			view.setImageBitmap(num6);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_6));
 			break;
 		case 7:
-			view.setImageBitmap(num7);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_7));
 			break;
 		case 8:
-			view.setImageBitmap(num8);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_8));
 			break;
 		case 9:
-			view.setImageBitmap(num9);
+			view.setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_9));
 			break;
 
 		default:
@@ -1093,7 +945,7 @@ public class SportRecordActivity extends BaseActivity implements
 		// default:
 		// break;
 		// }
-	}
+	}*/
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -1113,6 +965,7 @@ public class SportRecordActivity extends BaseActivity implements
 			}
 		}
 	};
+	
 	// 在地图页面关闭此页面
 	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 

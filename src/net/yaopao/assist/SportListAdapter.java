@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.yaopao.activity.R;
+import net.yaopao.activity.YaoPao01App;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,6 +60,11 @@ public class SportListAdapter extends BaseAdapter {
 		// 获取list_item布局文件的视图
 	//	try {
 			convertView = listContainer.inflate(R.layout.sport_recording_adapter,null);
+			
+			ImageView disDot = (ImageView) convertView.findViewById(R.id.list_sport_dot);
+			ImageView disKm = (ImageView) convertView.findViewById(R.id.list_sport_km);
+			disDot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+			disKm.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
 			// 获取控件对象
 			ImageView runtyV = (ImageView) convertView
 					.findViewById(R.id.list_sport_type);
@@ -125,11 +131,11 @@ public class SportListAdapter extends BaseAdapter {
 		if (d1 > 0) {
 			images[0].setVisibility(View.VISIBLE);
 		}
-		update(d1, images[0]);
-		update(d2, images[1]);
-		update(d3, images[2]);
-		update(d4, images[3]);
-		
+//		update(d1, images[0]);
+//		update(d2, images[1]);
+//		update(d3, images[2]);
+//		update(d4, images[3]);
+		YaoPao01App.graphicTool.updateRedNum(new int[]{d1,d2,d3,d4},images);
 	}
 	protected void update(int i, ImageView view) {
 		if (i > 9) {

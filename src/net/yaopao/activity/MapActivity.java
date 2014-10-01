@@ -160,11 +160,11 @@ public class MapActivity extends BaseActivity implements LocationSource,
 					lonLatEncryption.encrypt(lastDrawPoint).lon));
 			if (newPoint.status == 0) {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
-						Color.GREEN));
+						Color.GREEN).width(13f));
 				aMap.invalidate();
 			} else {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
-						Color.GRAY));
+						Color.GRAY).width(13f));
 				aMap.invalidate();
 			}
 			lastDrawPoint = newPoint;

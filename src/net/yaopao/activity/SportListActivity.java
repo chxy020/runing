@@ -314,12 +314,20 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			this.mPager = (ViewPager) this.findViewById(R.id.vPager);
 			this.mListViews = new ArrayList<View>();
 			this.mInflater = this.getLayoutInflater();
-			View totalDis = mInflater.inflate(R.layout.sport_list_slider_lay1,
-					null);
-			View totalCount = mInflater.inflate(
-					R.layout.sport_list_slider_lay2, null);
-			View totalTime = mInflater.inflate(R.layout.sport_list_slider_lay3,
-					null);
+			
+			View totalDis = mInflater.inflate(R.layout.sport_list_slider_lay1,null);
+			ImageView disDot = (ImageView) totalDis.findViewById(R.id.main_milage_dot);
+			ImageView disKm = (ImageView) totalDis.findViewById(R.id.main_milage_km);
+			disDot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+			disKm.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+			
+			View totalCount = mInflater.inflate(R.layout.sport_list_slider_lay2, null);
+			
+			View totalTime = mInflater.inflate(R.layout.sport_list_slider_lay3,null);
+			ImageView colon1 = (ImageView) totalTime.findViewById(R.id.time_d1);
+			ImageView colon2 = (ImageView) totalTime.findViewById(R.id.time_d2);
+			colon1.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_colon));
+			colon2.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_colon));
 			// 初始化滑动的view
 			initPagerViews(new View[] { totalDis, totalCount, totalTime });
 			this.mListViews.add(totalDis);
@@ -337,7 +345,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			mSliderImage3 = (ImageView) findViewById(R.id.sport_list_cursor3);
 		}
 	}
-
+	
 
 	/**
 	 * 修改当前高亮圆点
@@ -524,12 +532,13 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		if (d3 > 0) {
 			views[2].setVisibility(View.VISIBLE);
 		}
-		update(d1, views[0]);
-		update(d2, views[1]);
-		update(d3, views[2]);
-		update(d4, views[3]);
-		update(d5, views[4]);
-		update(d6, views[5]);
+//		update(d1, views[0]);
+//		update(d2, views[1]);
+//		update(d3, views[2]);
+//		update(d4, views[3]);
+//		update(d5, views[4]);
+//		update(d6, views[5]);
+		YaoPao01App.graphicTool.updateRedNum(new int[]{d1,d2,d3,d4,d5,d6},views);
 	}
 	
 	private void initCount(ImageView[] views){
@@ -544,13 +553,17 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		Log.v("wysport", " c3="+c3);
 		if (c1 > 0) {
 			views[0].setVisibility(View.VISIBLE);
-			update(c1, views[0]);
+//			update(c1, views[0]);
+			YaoPao01App.graphicTool.updateRedNum(c1,views[0]);
 		}
 		if (c2 > 0) {
 			views[1].setVisibility(View.VISIBLE);
-			update(c2, views[1]);
+//			update(c2, views[1]);
+			YaoPao01App.graphicTool.updateRedNum(c2,views[1]);
 		}
-		update(c3, views[2]);
+		
+//		update(c3, views[2]);
+		YaoPao01App.graphicTool.updateRedNum(c3,views[2]);
 	}
 	
 	private void initTime(ImageView[] views){
@@ -568,26 +581,31 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		int t8 = time[2] % 10;
 		
 		if (t1>0) {
-			update(t1, views[0]);
+//			update(t1, views[0]);
 			views[0].setVisibility(View.VISIBLE);
+			YaoPao01App.graphicTool.updateRedNum(t1,views[0]);
 		}
 		if (t2>0) {
-			update(t2, views[1]);
+//			update(t2, views[1]);
 			views[1].setVisibility(View.VISIBLE);
+			YaoPao01App.graphicTool.updateRedNum(t2,views[1]);
 		}
 		if (t3>0) {
-			update(t3, views[2]);
+//			update(t3, views[2]);
 			views[2].setVisibility(View.VISIBLE);
+			YaoPao01App.graphicTool.updateRedNum(t3,views[2]);
 		}
 		if (t4>0) {
-			update(t4, views[3]);
+//			update(t4, views[3]);
 			views[3].setVisibility(View.VISIBLE);
 			views[8].setVisibility(View.VISIBLE);
+			YaoPao01App.graphicTool.updateRedNum(t4,views[3]);
 		}
 		update(t5, views[4]);
 		update(t6, views[5]);
 		update(t7, views[6]);
 		update(t8, views[7]);
+		YaoPao01App.graphicTool.updateRedNum(new int[]{t5,t6,t7,t8},new ImageView[]{views[4],views[5],views[6],views[7]});
 	}
 	
 	protected void update(int i, ImageView view) {
@@ -639,4 +657,5 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
+	
 }

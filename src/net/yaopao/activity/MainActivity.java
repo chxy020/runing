@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
+import net.yaopao.assist.GraphicTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
@@ -76,6 +77,10 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
+		//初始化数字符号
+		initinitSymbol();
+		
+		
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnClickListener(this);
 		recording.setOnClickListener(this);
@@ -98,7 +103,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 		 
 	}
 	
-	 public static int px2dip(Context context, int pxValue) {
+	
+
+	public static int px2dip(Context context, int pxValue) {
          final float scale = context.getResources().getDisplayMetrics().density;
          return (int) (pxValue / scale + 0.5f);
  }
@@ -134,18 +141,21 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 		int c3 =count%10;
 		if (c1 > 0) {
 			views[0].setVisibility(View.VISIBLE);
-			updateMiddleData(c1, views[0]);
+			//updateMiddleData(c1, views[0]);
 		}
 		if (c2 > 0) {
 			views[1].setVisibility(View.VISIBLE);
-			updateMiddleData(c2, views[1]);
+			//updateMiddleData(c2, views[1]);
 		}
-		updateMiddleData(c3, views[2]);
+//		updateMiddleData(c3, views[2]);
+//		views[2].setImageBitmap(GraphicTool.numBitmap.get(R.drawable.w_2));
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{c1,c2,c3},views);
 	}
 	//初始化平均配速
 	private void initPspeed(DataBean data) {
 		
 		int[] speed = YaoPao01App.cal((int) (data.getPspeed()));
+		Toast.makeText(this,"pspeed="+data.getPspeed() , Toast.LENGTH_LONG).show();
 //		int[] speed = YaoPao01App.cal((int) (200));
 		
 		int s1 = speed[1] / 10;
@@ -157,10 +167,12 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 		ImageView s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
 		ImageView s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
 		  
-		updateMiddleData(s1, s1V);
-		updateMiddleData(s2, s2V);
-		updateMiddleData(s3, s3V);
-		updateMiddleData(s4, s4V);
+		
+//		updateMiddleData(s1, s1V);
+//		updateMiddleData(s2, s2V);
+//		updateMiddleData(s3, s3V);
+//		updateMiddleData(s4, s4V);
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{s1,s2,s3,s4},new ImageView[]{s1V,s2V,s3V,s4V});
 		
 	}
 	//初始化积分
@@ -173,34 +185,36 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 		int p5 = (int) (point % 100) / 10;
 		int p6 = (int) (point % 10);
 		
-		ImageView p1v = (ImageView) this.findViewById(R.id.main_point_num1);
-		ImageView p2v = (ImageView) this.findViewById(R.id.main_point_num2);
-		ImageView p3v = (ImageView) this.findViewById(R.id.main_point_num3);
-		ImageView p4v = (ImageView) this.findViewById(R.id.main_point_num4);
-		ImageView p5v = (ImageView) this.findViewById(R.id.main_point_num5);
-		ImageView p6v = (ImageView) this.findViewById(R.id.main_point_num6);
+		ImageView p1V = (ImageView) this.findViewById(R.id.main_point_num1);
+		ImageView p2V = (ImageView) this.findViewById(R.id.main_point_num2);
+		ImageView p3V = (ImageView) this.findViewById(R.id.main_point_num3);
+		ImageView p4V = (ImageView) this.findViewById(R.id.main_point_num4);
+		ImageView p5V = (ImageView) this.findViewById(R.id.main_point_num5);
+		ImageView p6V = (ImageView) this.findViewById(R.id.main_point_num6);
 		
 		if (p1 > 0) {
-			p1v.setVisibility(View.VISIBLE);
+			p1V.setVisibility(View.VISIBLE);
 		}
 		if (p2 > 0) {
-			p2v.setVisibility(View.VISIBLE);
+			p2V.setVisibility(View.VISIBLE);
 		}
 		if (p3 > 0) {
-			p3v.setVisibility(View.VISIBLE);
+			p3V.setVisibility(View.VISIBLE);
 		}
 		if (p4 > 0) {
-			p4v.setVisibility(View.VISIBLE);
+			p4V.setVisibility(View.VISIBLE);
 		}
 		if (p5 > 0) {
-			p5v.setVisibility(View.VISIBLE);
+			p5V.setVisibility(View.VISIBLE);
 		}
-		updateMiddleData(p1, p1v);
-		updateMiddleData(p2, p2v);
-		updateMiddleData(p3, p3v);
-		updateMiddleData(p4, p4v);
-		updateMiddleData(p5, p5v);
-		updateMiddleData(p6, p6v);
+//		updateMiddleData(p1, p1v);
+//		updateMiddleData(p2, p2v);
+//		updateMiddleData(p3, p3v);
+//		updateMiddleData(p4, p4v);
+//		updateMiddleData(p5, p5v);
+//		updateMiddleData(p6, p6v);
+		
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{p1,p2,p3,p4,p5,p6},new ImageView[]{p1V,p2V,p3V,p4V,p5V,p6V});
 		
 	}
 	@Override
@@ -250,15 +264,15 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 	private void initMileage(DataBean data) {
 		distance = data.getDistance();
 		//distance = 549254;
-		ImageView d1v = (ImageView) this.findViewById(R.id.main_milage_num1);
-		ImageView d2v = (ImageView) this.findViewById(R.id.main_milage_num2);
-		ImageView d3v = (ImageView) this.findViewById(R.id.main_milage_num3);
-		ImageView d4v = (ImageView) this.findViewById(R.id.main_milage_num4);
-		ImageView d5v = (ImageView) this.findViewById(R.id.main_milage_dec1);
-		ImageView d6v = (ImageView) this.findViewById(R.id.main_milage_dec2);
-		d1v.setVisibility(View.GONE);
-		d2v.setVisibility(View.GONE);
-		d3v.setVisibility(View.GONE);
+		ImageView d1V  = (ImageView) this.findViewById(R.id.main_milage_num1);
+		ImageView d2V = (ImageView) this.findViewById(R.id.main_milage_num2);
+		ImageView d3V = (ImageView) this.findViewById(R.id.main_milage_num3);
+		ImageView d4V = (ImageView) this.findViewById(R.id.main_milage_num4);
+		ImageView d5V = (ImageView) this.findViewById(R.id.main_milage_dec1);
+		ImageView d6V = (ImageView) this.findViewById(R.id.main_milage_dec2);
+		d1V.setVisibility(View.GONE);
+		d2V.setVisibility(View.GONE);
+		d3V.setVisibility(View.GONE);
 		int d1 = (int) distance / 1000000;
 		int d2 = (int) (distance % 1000000) / 100000;
 		int d3 = (int) (distance % 100000) / 10000;
@@ -266,111 +280,112 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
 		if (d1 > 0) {
-			d1v.setVisibility(View.VISIBLE);
+			d1V.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
-			d2v.setVisibility(View.VISIBLE);
+			d2V.setVisibility(View.VISIBLE);
 		}
 		if (d3 > 0) {
-			d3v.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE);
 		}
-		update(d1, d1v);
-		update(d2, d2v);
-		update(d3, d3v);
-		update(d4, d4v);
-		update(d5, d5v);
-		update(d6, d6v);
+//		update(d1, d1v);
+//		update(d2, d2v);
+//		update(d3, d3v);
+//		update(d4, d4v);
+//		update(d5, d5v);
+//		update(d6, d6v);
+		YaoPao01App.graphicTool.updateRedNum(new int[]{d1,d2,d3,d4,d5,d6},new ImageView[]{d1V,d2V,d3V,d4V,d5V,d6V});
 	}
-	private String getSeed(double avgspeed) {
-		int[] speed = YaoPao01App
-				.cal((int) avgspeed);
-		String s1 = (speed[1] / 10)+"";
-		String s2 =( speed[1] % 10)+"";
-		String s3 = (speed[2] / 10)+"";
-		String s4 = (speed[2] % 10)+"";
-		return s1+""+s2+"'"+s3+""+s4+"\"";
-	}
+//	private String getSeed(double avgspeed) {
+//		int[] speed = YaoPao01App
+//				.cal((int) avgspeed);
+//		String s1 = (speed[1] / 10)+"";
+//		String s2 =( speed[1] % 10)+"";
+//		String s3 = (speed[2] / 10)+"";
+//		String s4 = (speed[2] % 10)+"";
+//		return s1+""+s2+"'"+s3+""+s4+"\"";
+//	}
 
-	protected void update(int i, ImageView view) {
-		if (i > 9) {
-			i = i % 10;
-		}
-		switch (i) {
-		case 0:
-			view.setBackgroundResource(R.drawable.r_0);
-			break;
-		case 1:
-			view.setBackgroundResource(R.drawable.r_1);
-			break;
-		case 2:
-			view.setBackgroundResource(R.drawable.r_2);
-			break;
-		case 3:
-			view.setBackgroundResource(R.drawable.r_3);
-			break;
-		case 4:
-			view.setBackgroundResource(R.drawable.r_4);
-			break;
-		case 5:
-			view.setBackgroundResource(R.drawable.r_5);
-			break;
-		case 6:
-			view.setBackgroundResource(R.drawable.r_6);
-			break;
-		case 7:
-			view.setBackgroundResource(R.drawable.r_7);
-			break;
-		case 8:
-			view.setBackgroundResource(R.drawable.r_8);
-			break;
-		case 9:
-			view.setBackgroundResource(R.drawable.r_9);
-			break;
-
-		default:
-			break;
-		}
-	}
-	protected void updateMiddleData(int i, ImageView view) {
-		if (i > 9) {
-			i = i % 10;
-		}
-		switch (i) {
-		case 0:
-			view.setBackgroundResource(R.drawable.w_0);
-			break;
-		case 1:
-			view.setBackgroundResource(R.drawable.w_1);
-			break;
-		case 2:
-			view.setBackgroundResource(R.drawable.w_2);
-			break;
-		case 3:
-			view.setBackgroundResource(R.drawable.w_3);
-			break;
-		case 4:
-			view.setBackgroundResource(R.drawable.w_4);
-			break;
-		case 5:
-			view.setBackgroundResource(R.drawable.w_5);
-			break;
-		case 6:
-			view.setBackgroundResource(R.drawable.w_6);
-			break;
-		case 7:
-			view.setBackgroundResource(R.drawable.w_7);
-			break;
-		case 8:
-			view.setBackgroundResource(R.drawable.w_8);
-			break;
-		case 9:
-			view.setBackgroundResource(R.drawable.w_9);
-			break;
-			
-		default:
-			break;
-		}
-	}
+//	protected void update(int i, ImageView view) {
+//		if (i > 9) {
+//			i = i % 10;
+//		}
+//		switch (i) {
+//		case 0:
+//			view.setBackgroundResource(R.drawable.r_0);
+//			break;
+//		case 1:
+//			view.setBackgroundResource(R.drawable.r_1);
+//			break;
+//		case 2:
+//			view.setBackgroundResource(R.drawable.r_2);
+//			break;
+//		case 3:
+//			view.setBackgroundResource(R.drawable.r_3);
+//			break;
+//		case 4:
+//			view.setBackgroundResource(R.drawable.r_4);
+//			break;
+//		case 5:
+//			view.setBackgroundResource(R.drawable.r_5);
+//			break;
+//		case 6:
+//			view.setBackgroundResource(R.drawable.r_6);
+//			break;
+//		case 7:
+//			view.setBackgroundResource(R.drawable.r_7);
+//			break;
+//		case 8:
+//			view.setBackgroundResource(R.drawable.r_8);
+//			break;
+//		case 9:
+//			view.setBackgroundResource(R.drawable.r_9);
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
+//	protected void updateMiddleData(int i, ImageView view) {
+//		if (i > 9) {
+//			i = i % 10;
+//		}
+//		switch (i) {
+//		case 0:
+//			view.setBackgroundResource(R.drawable.w_0);
+//			break;
+//		case 1:
+//			view.setBackgroundResource(R.drawable.w_1);
+//			break;
+//		case 2:
+//			view.setBackgroundResource(R.drawable.w_2);
+//			break;
+//		case 3:
+//			view.setBackgroundResource(R.drawable.w_3);
+//			break;
+//		case 4:
+//			view.setBackgroundResource(R.drawable.w_4);
+//			break;
+//		case 5:
+//			view.setBackgroundResource(R.drawable.w_5);
+//			break;
+//		case 6:
+//			view.setBackgroundResource(R.drawable.w_6);
+//			break;
+//		case 7:
+//			view.setBackgroundResource(R.drawable.w_7);
+//			break;
+//		case 8:
+//			view.setBackgroundResource(R.drawable.w_8);
+//			break;
+//		case 9:
+//			view.setBackgroundResource(R.drawable.w_9);
+//			break;
+//			
+//		default:
+//			break;
+//		}
+//	}
 
 	@Override
 	protected void onDestroy() {
@@ -392,32 +407,32 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 				break;
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
-				if (Variables.gpsStatus==2) {
-					DialogTool dialog = new DialogTool(MainActivity.this,handler);
-					WindowManager m = getWindowManager();
-					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-					dialog.alertGpsTip2(d);
-				if (Variables.switchVoice == 0) {
-					YaoPao01App.palyOpenGps();
-				}
-				}else if (Variables.gpsStatus==0) {
-					DialogTool dialog = new DialogTool(MainActivity.this,null);
-					WindowManager m = getWindowManager();
-					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-					dialog.alertGpsTip1(d);
-				if (Variables.switchVoice == 0) {
-					YaoPao01App.palyWeekGps();
-				}
-					
-				}else if(Variables.gpsStatus==1){
-					Intent mainIntent = new Intent(MainActivity.this,
-							SportSetActivity.class);
-					startActivity(mainIntent);
-				}
-				//测试代码
+//				if (Variables.gpsStatus==2) {
+//					DialogTool dialog = new DialogTool(MainActivity.this,handler);
+//					WindowManager m = getWindowManager();
+//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+//					dialog.alertGpsTip2(d);
+//				if (Variables.switchVoice == 0) {
+//					YaoPao01App.palyOpenGps();
+//				}
+//				}else if (Variables.gpsStatus==0) {
+//					DialogTool dialog = new DialogTool(MainActivity.this,null);
+//					WindowManager m = getWindowManager();
+//					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+//					dialog.alertGpsTip1(d);
+//				if (Variables.switchVoice == 0) {
+//					YaoPao01App.palyWeekGps();
+//				}
+//					
+//				}else if(Variables.gpsStatus==1){
 //					Intent mainIntent = new Intent(MainActivity.this,
 //							SportSetActivity.class);
 //					startActivity(mainIntent);
+//				}
+				//测试代码
+					Intent mainIntent = new Intent(MainActivity.this,
+							SportSetActivity.class);
+					startActivity(mainIntent);
 				//测试代码
 				break;
 			}
@@ -746,5 +761,17 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 						Toast.LENGTH_LONG).show();
 			}
 		}
+	}
+	
+	 private void initinitSymbol() {
+		 ImageView dot=(ImageView) this.findViewById(R.id.main_milage_dot);
+		 ImageView min=(ImageView) this.findViewById(R.id.match_recoding_speed_d1);
+		 ImageView sec=(ImageView) this.findViewById(R.id.match_recoding_speed_d2);
+		 ImageView km=(ImageView) this.findViewById(R.id.main_milage_km);
+				dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+				min.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_min));
+				sec.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_sec));
+				//colon.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_colon));
+				km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
 	}
 }

@@ -22,7 +22,6 @@
 		    android:id="@+id/main_count_num1"
 		    android:layout_width="@dimen/slider_num_width"
 		    android:layout_height="@dimen/slider_num_height"
-		    android:background="@drawable/r_0" 
 		    android:visibility="gone"
 		    />
 
@@ -30,14 +29,12 @@
             android:id="@+id/main_count_num2"
             android:layout_width="@dimen/slider_num_width"
             android:layout_height="@dimen/slider_num_height"
-            android:background="@drawable/r_0"
             android:visibility="gone"
              />
          <ImageView
             android:id="@+id/main_count_num3"
             android:layout_width="@dimen/slider_num_width"
             android:layout_height="@dimen/slider_num_height"
-            android:background="@drawable/r_0"
              />
 	</LinearLayout>
 
