@@ -38,7 +38,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.framework.Platform.ShareParams;
@@ -139,14 +138,24 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		this.mInflater = this.getLayoutInflater();
 		mapLayout = mInflater.inflate(R.layout.sport_one_slider_map, null);
 		phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
+//		if (oneSport.getSportpho()==1) {
+//			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
+//			phoV.setScaleType(ScaleType.CENTER_CROP);
+//			phoV.setImageBitmap(getImg(Constants.sportPho_s +oneSport.getSportPhoPath()));
+//		}
+		
+		//如果没有拍照就不左右滑动了
 		if (oneSport.getSportpho()==1) {
+			phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
-			phoV.setImageBitmap(getImg(Constants.sportPho_s +oneSport.getSportPhoPath()));
+			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
 		}
 		
 		this.mListViews.add(mapLayout);
-		this.mListViews.add(phoLayout);
+		if (phoLayout!=null) {
+			this.mListViews.add(phoLayout);
+		}
 		this.mMessageAdapter = new MessagePagerAdapter(mListViews);
 		this.mPager.setAdapter(this.mMessageAdapter);
 		this.mPager.setOnPageChangeListener(new MessageOnPageChangeListener());
@@ -300,7 +309,7 @@ public class SportShareActivity extends Activity implements OnClickListener {
 			int runway, String remarks, int utime, int pspeed, int ponit,
 			long addtime) {
 
-		int[] time = YaoPao01App.cal(utime);
+		int[] time = YaoPao01App.cal(utime/1000);
 		int t1 = time[0] / 10;
 		int t2 = time[0] % 10;
 		int t3 = time[1] / 10;
@@ -320,7 +329,6 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 		ponitV.setText("+ " + ponit);
 		initDis(distance);
-		//disV.setText(df.format(distance / 1000) + " km");
 		desV.setText(remarks);
 		Date date = new Date(addtime);
 		dateV.setText(sdf4.format(date) + "年" + sdf1.format(date) + "月"

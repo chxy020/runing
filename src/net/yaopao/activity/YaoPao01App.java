@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.yaopao.assist.GraphicTool;
 import net.yaopao.assist.LogtoSD;
 import net.yaopao.assist.Variables;
 import net.yaopao.db.DBManager;
@@ -52,12 +53,12 @@ public class YaoPao01App extends Application {
 	public static String openNetwork ="110112";
 	
 	public LocationListener locationlisten;
-	//
+	
+	public static GraphicTool graphicTool ;
 
 	@SuppressLint("NewApi")
 	@Override
 	public void onCreate() {
-
 		instance = this;
 		db = new DBManager(this);
 		Log.v("wy", "app");
@@ -70,6 +71,7 @@ public class YaoPao01App extends Application {
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
 		voice = new VoiceUtil();
+		graphicTool = new  GraphicTool(getResources());
 		//注册广播  
 //        registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
@@ -489,7 +491,7 @@ public class YaoPao01App extends Application {
 
 	// 获取配速数据的id
 	public static String getPspeedCode() {
-		int[] speeds = YaoPao01App.cal((int) (Variables.pspeed));
+		int[] speeds = YaoPao01App.cal(Variables.pspeed);
 		List<Integer> speed = voice
 				.voiceOfTime(speeds[0], speeds[1], speeds[2]);
 		String speedStr = "";
@@ -846,7 +848,7 @@ public class YaoPao01App extends Application {
 				
 			}
 		}
-		
+		//gps状态监听
 	    private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {  
 	           
 	        @Override  

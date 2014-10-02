@@ -212,10 +212,13 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 		switch (view.getId()) {
 
 		case R.id.userinfo_save:
+			
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				save.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				save.setBackgroundResource(R.color.red);
 				nickname = nicknameV.getText().toString().trim();
 				realname = realnameV.getText().toString().trim();
 				if ("".equals(nickname) || nickname == null) {

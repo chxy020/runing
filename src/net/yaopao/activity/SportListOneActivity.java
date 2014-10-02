@@ -61,10 +61,10 @@ public class SportListOneActivity extends BaseActivity {
 	private ImageView typeV;
 	private ImageView mindV;
 	private ImageView wayV;
-	private ImageView d1v;
-	private ImageView d2v;
-	private ImageView d3v;
-	private ImageView d4v;
+	private ImageView d1V;
+	private ImageView d2V;
+	private ImageView d3V;
+	private ImageView d4V;
 	/** 消息内容 */
 	private ViewPager mPager = null;
 	/** Tab页面列表 */
@@ -106,6 +106,7 @@ public class SportListOneActivity extends BaseActivity {
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
 		sdf4 = new SimpleDateFormat("yyyy");
+		
 //		df = (DecimalFormat) NumberFormat.getInstance();
 //		df.setMaximumFractionDigits(2);
 //		df.setRoundingMode(RoundingMode.DOWN);
@@ -152,11 +153,11 @@ public class SportListOneActivity extends BaseActivity {
 		wayV = (ImageView) findViewById(R.id.one_way);
 		backV = (TextView) findViewById(R.id.recording_one_back);
 		
-		 d1v = (ImageView) findViewById(R.id.list_sport_num1);
-		 d2v = (ImageView) findViewById(R.id.list_sport_num2);
-		 d3v = (ImageView) findViewById(R.id.list_sport_dec1);
-		 d4v = (ImageView) findViewById(R.id.list_sport_dec2);
-		
+		 d1V = (ImageView) findViewById(R.id.list_sport_num1);
+		 d2V = (ImageView) findViewById(R.id.list_sport_num2);
+		 d3V = (ImageView) findViewById(R.id.list_sport_dec1);
+		 d4V = (ImageView) findViewById(R.id.list_sport_dec2);
+		 initinitSymbol();
 //		backV.setOnTouchListener(this);
 		backV.setOnClickListener(new OnClickListener() {
 			
@@ -346,12 +347,16 @@ public class SportListOneActivity extends BaseActivity {
 		int d3 = (int) (distance % 1000) / 100;
 		int d4 = (int) (distance % 100) / 10;
 		if (d1 > 0) {
-			d1v.setVisibility(View.VISIBLE);
+			d1V.setVisibility(View.VISIBLE);
+			update(d1, d1V);
+			YaoPao01App.graphicTool.updateRedNum(d1,d1V);
 		}
-		update(d1, d1v);
-		update(d2, d2v);
-		update(d3, d3v);
-		update(d4, d4v);
+		
+		update(d2, d2V);
+		update(d3, d3V);
+		update(d4, d4V);
+		YaoPao01App.graphicTool.updateRedNum(new int[]{d2,d3,d4},new ImageView[]{d2V,d3V,d4V});
+		
 		
 	}
 	protected void update(int i, ImageView view) {
@@ -634,5 +639,11 @@ public class SportListOneActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 		return bitmap;
+	}
+	 private void initinitSymbol() {
+		 ImageView dot=(ImageView) this.findViewById(R.id.list_sport_dot);
+		 ImageView km=(ImageView) this.findViewById(R.id.list_sport_km);
+				dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+				km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
 	}
 }

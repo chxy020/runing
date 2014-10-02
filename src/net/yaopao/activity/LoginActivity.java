@@ -176,6 +176,9 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 	}
 
 	public boolean verifyPhone() {
+		if (Variables.isTest) {
+			return true;
+		}
 		phoneNumStr = phoneNumV.getText().toString().trim();
 		Log.v("wy", "phone=" + phoneNumStr);
 		if (phoneNumStr != null && !"".equals(phoneNumStr)) {
@@ -238,26 +241,26 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 				switch (rtCode) {
 				case 0:
 					//登录成功之后保存跳转web页面需要的参数 chenxy add
-					saveLoginStatus(rt);
+				//	saveLoginStatus(rt);
 					//chenxy end
 					
-					Variables.islogin = 1;
-					Variables.uid = rt.getJSONObject("userinfo").getInteger(
-							"uid");
-					Variables.utype = rt.getJSONObject("userinfo").getInteger(
-							"utype");
-					// 下载头像
-					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
-					try {
-						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
-							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-						}
-					} catch (Exception e) {
-						Log.v("wyuser", "下载头像异常="+e.toString());
-						e.printStackTrace();
-					}
-					DataTool.setUserInfo(loginJson);
-					
+//					Variables.islogin = 1;
+//					Variables.uid = rt.getJSONObject("userinfo").getInteger(
+//							"uid");
+//					Variables.utype = rt.getJSONObject("userinfo").getInteger(
+//							"utype");
+//					// 下载头像
+//					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
+//					try {
+//						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
+//							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+//						}
+//					} catch (Exception e) {
+//						Log.v("wyuser", "下载头像异常="+e.toString());
+//						e.printStackTrace();
+//					}
+//					DataTool.setUserInfo(loginJson);
+					initUserInfo(rt);
 					break;
 				case -8:
 					loginStatus=-8;
@@ -333,37 +336,81 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 	
 	
 	/****************** chenxy add ****************/
-	private void saveLoginStatus(JSONObject rt){
-		//保存其他登录数据chenxy add
-		/*
-		{"announcement":{"isann":"0"},"integral":{"integral":"300"},
-		"match":{"gid":1,"groupname":"AAA","isbaton":"1","isgroup":"1",
-		"isleader":"1","ismatch":"1","issign":"1","mid":1},
-		"state":{"code":0,"desc":"请求成功"},
-		"userinfo":{"gender":"F","imgpath":"","nickname":"13122233303",
-			"phone":"13122233303","uid":3,"utype":1}}
-		*/
-		//是否报名
-		Variables.bid = rt.getJSONObject("match").getString("issign");
+//	private void saveLoginStatus(JSONObject rt){
+//		//保存其他登录数据chenxy add
+//		/*
+//		{"announcement":{"isann":"0"},"integral":{"integral":"300"},
+//		"match":{"gid":1,"groupname":"AAA","isbaton":"1","isgroup":"1",
+//		"isleader":"1","ismatch":"1","issign":"1","mid":1},
+//		"state":{"code":0,"desc":"请求成功"},
+//		"userinfo":{"gender":"F","imgpath":"","nickname":"13122233303",
+//			"phone":"13122233303","uid":3,"utype":1}}
+//		*/
+//		//是否报名
+//		Variables.bid = rt.getJSONObject("match").getString("issign");
+//		
+//		Variables.gid = "";
+//		if(null != rt.getJSONObject("match").getInteger("gid")){
+//			//组ID
+//			Variables.gid = rt.getJSONObject("match").getInteger("gid").toString();
+//		}
+//		//用户名称
+//		//Variables.userName = rt.getJSONObject("userinfo").getString("username");
+//		//昵称
+//		Variables.nikeName = rt.getJSONObject("userinfo").getString("nickname");
+//		//头像URL
+//		Variables.headPath = rt.getJSONObject("userinfo").getString("imgpath");
+//		//组名
+//		Variables.groupName = rt.getJSONObject("match").getString("groupname");
+//		//是否领队,"1"/"0"
+//		Variables.isLeader = rt.getJSONObject("match").getString("isleader");
+//		//是否第一棒,"1"/"0"
+//		Variables.isBaton = rt.getJSONObject("match").getString("isbaton");
+//		//比赛状态
+//		Variables.matchState = rt.getJSONObject("match").getString("ismatch");
+//	}
+	private void initUserInfo(JSONObject rt) {
+		JSONObject userInfo= rt.getJSONObject("userinfo");
+		JSONObject match= rt.getJSONObject("match");
+		Variables.islogin = 1;
+		Variables.uid =userInfo.getInteger("uid");
+		Variables.utype = userInfo.getInteger("utype");
+		Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
+		Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
+		Variables.headPath=userInfo.getString("imgpath");
 		
-		Variables.gid = "";
-		if(null != rt.getJSONObject("match").getInteger("gid")){
-			//组ID
-			Variables.gid = rt.getJSONObject("match").getInteger("gid").toString();
+		if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
+			// 下载头像
+			Variables.headUrl = Constants.endpoints_img +Variables.headPath;
+			Log.v("wyuser", "头像======="+Variables.headUrl);
+			try {
+					Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+			} catch (Exception e) {
+				Log.v("wyuser", "下载头像异常="+e.toString());
+				e.printStackTrace();
+			}
 		}
-		//用户名称
-		//Variables.userName = rt.getJSONObject("userinfo").getString("username");
-		//昵称
-		Variables.nikeName = rt.getJSONObject("userinfo").getString("nickname");
-		//头像URL
-		Variables.photoUrl = rt.getJSONObject("userinfo").getString("imgpath");
-		//组名
-		Variables.groupName = rt.getJSONObject("match").getString("groupname");
-		//是否领队,"1"/"0"
-		Variables.isLeader = rt.getJSONObject("match").getString("isleader");
-		//是否第一棒,"1"/"0"
-		Variables.isBaton = rt.getJSONObject("match").getString("isbaton");
-		//比赛状态
-		Variables.matchState = rt.getJSONObject("match").getString("ismatch");
+		DataTool.setUserInfo(loginJson);
+		Log.v("wyuser", "loginJson = " + loginJson);
+		//是否有比赛
+		if ("1".equals(match.getString("ismatch"))) {
+			Variables.mid=match.getInteger("mid");
+		}
+		//是否报名
+		if ("1".equals(match.getString("issign"))) {
+			Variables.isSigned=true;
+			Variables.bid="1";
+		}
+		//是否组队
+		if ("1".equals(match.getString("isgroup"))) {
+			Variables.gid=match.getString("gid");
+		}
+		//是否队长
+		Variables.isLeader=match.getString("isleader");
+		//是否是头棒
+		if ("4".equals(match.getString("isgroup"))) {
+			Variables.isBaton="1";
+		}
 	}
+
 }
