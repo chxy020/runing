@@ -44,23 +44,27 @@ public class SplashActivity extends BaseActivity {
 		UmengUpdateAgent.update(this);
 		MobclickAgent.updateOnlineConfig( this );
 	
-		
-		Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
-		Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
-		Log.v("wyuser", "在线参数1="+Constants.endpoints);
-		Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
-		if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
+		if (Variables.isTest) {
+			//测试代码
 			Constants.endpoints=Constants.endpoints1;
 			Constants.endpoints_img=Constants.endpoints2;
+			int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+			Toast.makeText(this, "Max memory is " + maxMemory + "KB", Toast.LENGTH_LONG).show();
+			//测试代码
 		}else{
-			Constants.endpoints+="chSports";
+			Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
+			Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
+			Log.v("wyuser", "在线参数1="+Constants.endpoints);
+			Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
+			if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
+				Constants.endpoints=Constants.endpoints1;
+				Constants.endpoints_img=Constants.endpoints2;
+			}else{
+				Constants.endpoints+="chSports";
+			}
 		}
-		//测试代码
-//		Constants.endpoints=Constants.endpoints1;
-//		Constants.endpoints_img=Constants.endpoints2;
-//		int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-//		Toast.makeText(this, "Max memory is " + maxMemory + "KB", Toast.LENGTH_LONG).show();
-		//测试代码
+
+		
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
 		setContentView(R.layout.splash);
@@ -184,21 +188,8 @@ public class SplashActivity extends BaseActivity {
 				Log.v("wypho", "rtCode="+rtCode);
 				switch (rtCode) {
 				case 0:
-					Variables.islogin = 1;
-					Variables.uid = rt.getJSONObject("userinfo").getInteger(
-							"uid");
-					Variables.utype = rt.getJSONObject("userinfo").getInteger(
-							"utype");
-					// 下载头像
-					Variables.headUrl = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
-					Log.v("wyuser", "头像======="+Variables.headUrl);
-					if (Variables.headUrl != null	&& !"".equals(Variables.headUrl)) {
-						// Looper.prepare();
-						messageHandler.obtainMessage(0).sendToTarget();
-						// Looper.loop();
-					}
-					DataTool.setUserInfo(loginJson);
-					Log.v("wyuser", "loginJson = " + loginJson);
+					//登录成功，初始化用户信息
+					initUserInfo(rt);
 					break;
 				case -7:
 					Variables.islogin = 3;
@@ -213,6 +204,8 @@ public class SplashActivity extends BaseActivity {
 			}
 
 		}
+
+		
 
 		@Override
 		protected void onPostExecute(Boolean result) {
@@ -246,8 +239,63 @@ public class SplashActivity extends BaseActivity {
 //						Toast.LENGTH_LONG).show();
 			}
 		}
+		private void initUserInfo(JSONObject rt) {
+			JSONObject userInfo= rt.getJSONObject("userinfo");
+			JSONObject match= rt.getJSONObject("match");
+			Variables.islogin = 1;
+			Variables.uid =userInfo.getInteger("uid");
+			Variables.utype = userInfo.getInteger("utype");
+			Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
+			Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
+//			// 下载头像
+//			Variables.headUrl = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
+//			Log.v("wyuser", "头像======="+Variables.headUrl);
+//			if (Variables.headUrl != null	&& !"".equals(Variables.headUrl)) {
+//				// Looper.prepare();
+//				messageHandler.obtainMessage(0).sendToTarget();
+//				// Looper.loop();
+//			}
+			
+			Variables.headPath=userInfo.getString("imgpath");
+			
+			if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
+				// 下载头像
+				Variables.headUrl = Constants.endpoints_img +Variables.headPath;
+				Log.v("wyuser", "头像======="+Variables.headUrl);
+				try {
+						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+				} catch (Exception e) {
+					Log.v("wyuser", "下载头像异常="+e.toString());
+					e.printStackTrace();
+				}
+			}
+			
+			DataTool.setUserInfo(loginJson);
+			Log.v("wyuser", "loginJson = " + loginJson);
+			//是否有比赛
+			if ("1".equals(match.getString("ismatch"))) {
+				Variables.mid=match.getInteger("mid");
+			}
+			//是否报名
+			if ("1".equals(match.getString("issign"))) {
+				Variables.isSigned=true;
+				Variables.bid="1";
+			}
+			//是否组队
+			if ("1".equals(match.getString("isgroup"))) {
+				Variables.gid=match.getString("gid");
+			}
+			//是否队长
+			Variables.isLeader=match.getString("isleader");
+			//是否是头棒
+			if ("4".equals(match.getString("isgroup"))) {
+				Variables.isBaton="1";
+			}
+		}
 
 	}
+	
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

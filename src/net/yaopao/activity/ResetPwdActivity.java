@@ -223,26 +223,30 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				switch (rtCode) {
 				case 0:
-					Variables.islogin = 1;
 					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
 							Toast.LENGTH_LONG).show();
-					//发广播通知注册和登录页面关闭
-					Variables.uid = rt.getJSONObject("userinfo").getInteger(
-							"uid");
-					Variables.utype = rt.getJSONObject("userinfo").getInteger(
-							"utype");
-					// 下载头像
-					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
-					try {
-						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
-							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-						}
-					} catch (Exception e) {
-						Log.v("wyuser", "下载头像异常="+e.toString());
-						e.printStackTrace();
-					}
+//					Variables.islogin = 1;
+//					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
+//							Toast.LENGTH_LONG).show();
+//					//发广播通知注册和登录页面关闭
+//					Variables.uid = rt.getJSONObject("userinfo").getInteger(
+//							"uid");
+//					Variables.utype = rt.getJSONObject("userinfo").getInteger(
+//							"utype");
+//					// 下载头像
+//					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
+//					try {
+//						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
+//							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+//						}
+//					} catch (Exception e) {
+//						Log.v("wyuser", "下载头像异常="+e.toString());
+//						e.printStackTrace();
+//					}
+//					
+//					DataTool.setUserInfo(resetJson);
 					
-					DataTool.setUserInfo(resetJson);
+					initUserInfo(rt);
 					Intent closeintent = new Intent(closeAction);
 					closeintent.putExtra("data", "close");
 					sendBroadcast(closeintent);
@@ -266,7 +270,48 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 						Toast.LENGTH_LONG).show();
 			}
 		}
-
+		private void initUserInfo(JSONObject rt) {
+			JSONObject userInfo= rt.getJSONObject("userinfo");
+			JSONObject match= rt.getJSONObject("match");
+			Variables.islogin = 1;
+			Variables.uid =userInfo.getInteger("uid");
+			Variables.utype = userInfo.getInteger("utype");
+			Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
+			Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
+			Variables.headPath=userInfo.getString("imgpath");
+			
+			if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
+				// 下载头像
+				Variables.headUrl = Constants.endpoints_img +Variables.headPath;
+				Log.v("wyuser", "头像======="+Variables.headUrl);
+				try {
+						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+				} catch (Exception e) {
+					Log.v("wyuser", "下载头像异常="+e.toString());
+					e.printStackTrace();
+				}
+			}
+			DataTool.setUserInfo(resetJson);
+			Log.v("wyuser", "loginJson = " + resetJson);
+			//是否有比赛
+			if ("1".equals(match.getString("ismatch"))) {
+				Variables.mid=match.getInteger("mid");
+			}
+			//是否报名
+			if ("1".equals(match.getString("issign"))) {
+				Variables.isSigned=true;
+			}
+			//是否组队
+			if ("1".equals(match.getString("isgroup"))) {
+				Variables.gid=match.getString("gid");
+			}
+			//是否队长
+			Variables.isLeader=match.getString("isleader");
+			//是否是头棒
+			if ("4".equals(match.getString("isgroup"))) {
+				Variables.isBaton="1";
+			}
+		}
 	}
 
 	private class verifyCodAsyncTask extends AsyncTask<String, Void, Boolean> {

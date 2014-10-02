@@ -142,10 +142,10 @@ public class WebViewActivity extends BaseActivity {
 				user.put("bid", Variables.bid);
 				//未组队给空串""
 				user.put("gid", Variables.gid);
-				user.put("username","");
+				user.put("username",Variables.userName);
 				user.put("nickname",Variables.nikeName);
 				user.put("groupname",Variables.groupName);
-				user.put("userphoto",Variables.photoUrl);
+				user.put("userphoto",Variables.headUrl);
 				user.put("isleader",Variables.isLeader);
 				user.put("isbaton",Variables.isBaton);
 				JSONObject play = new JSONObject();

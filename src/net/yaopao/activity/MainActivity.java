@@ -316,33 +316,36 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 				break;
 			case MotionEvent.ACTION_UP:
 				start.setBackgroundResource(R.drawable.button_start);
-				if (Variables.gpsStatus==2) {
-					DialogTool dialog = new DialogTool(MainActivity.this,handler);
-					WindowManager m = getWindowManager();
-					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-					dialog.alertGpsTip2(d);
-				if (Variables.switchVoice == 0) {
-					YaoPao01App.palyOpenGps();
-				}
-				}else if (Variables.gpsStatus==0) {
-					DialogTool dialog = new DialogTool(MainActivity.this,null);
-					WindowManager m = getWindowManager();
-					Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-					dialog.alertGpsTip1(d);
-				if (Variables.switchVoice == 0) {
-					YaoPao01App.palyWeekGps();
-				}
-					
-				}else if(Variables.gpsStatus==1){
+				if(Variables.isTest){
+					//测试代码
 					Intent mainIntent = new Intent(MainActivity.this,
 							SportSetActivity.class);
 					startActivity(mainIntent);
+				//测试代码
+				}else{
+					if (Variables.gpsStatus==2) {
+						DialogTool dialog = new DialogTool(MainActivity.this,handler);
+						WindowManager m = getWindowManager();
+						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+						dialog.alertGpsTip2(d);
+					if (Variables.switchVoice == 0) {
+						YaoPao01App.palyOpenGps();
+					}
+					}else if (Variables.gpsStatus==0) {
+						DialogTool dialog = new DialogTool(MainActivity.this,null);
+						WindowManager m = getWindowManager();
+						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+						dialog.alertGpsTip1(d);
+					if (Variables.switchVoice == 0) {
+						YaoPao01App.palyWeekGps();
+					}
+						
+					}else if(Variables.gpsStatus==1){
+						Intent mainIntent = new Intent(MainActivity.this,
+								SportSetActivity.class);
+						startActivity(mainIntent);
+					}
 				}
-				//测试代码
-//					Intent mainIntent = new Intent(MainActivity.this,
-//							SportSetActivity.class);
-//					startActivity(mainIntent);
-				//测试代码
 				break;
 			}
 			break;
@@ -483,14 +486,14 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 			}
 			else{
 				//比赛开始了/结束了
-				if (Variables.islogin == 1) {
+				//if (Variables.islogin == 1) {
 					//登录了,跳转本地比赛页面,需要王雨添加逻辑
 					
-				} else {
+				//} else {
 					//未登录,跳转到web页面
 					teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
 					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
-				}
+				//}
 			}
 			startActivity(teamIntent);
 			break;
