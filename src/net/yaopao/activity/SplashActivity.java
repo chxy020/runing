@@ -246,7 +246,7 @@ public class SplashActivity extends BaseActivity {
 			Variables.uid =userInfo.getInteger("uid");
 			Variables.utype = userInfo.getInteger("utype");
 			Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
-			Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
+			Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nickname"):"";
 //			// 下载头像
 //			Variables.headUrl = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
 //			Log.v("wyuser", "头像======="+Variables.headUrl);

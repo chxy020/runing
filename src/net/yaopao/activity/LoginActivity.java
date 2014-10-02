@@ -376,7 +376,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		Variables.uid =userInfo.getInteger("uid");
 		Variables.utype = userInfo.getInteger("utype");
 		Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
-		Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
+		Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nickname"):"";
 		Variables.headPath=userInfo.getString("imgpath");
 		
 		if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
