@@ -69,17 +69,17 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	}
 
 	private void drawLine() {
-		if (MatchRunActivity.points.size() < 1) {
+		if (MatchMainActivity.points.size() < 1) {
 			return;
 		}
 		List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-		for (int i = 0; i < MatchRunActivity.points.size(); i++) {
-			GpsPoint gpsPoint = MatchRunActivity.points.get(i);
+		for (int i = 0; i < MatchMainActivity.points.size(); i++) {
+			GpsPoint gpsPoint = MatchMainActivity.points.get(i);
 			oneLinePoints.add(new LatLng(
 					lonLatEncryption.encrypt(gpsPoint).lat, lonLatEncryption
 							.encrypt(gpsPoint).lon));
 		}
-		lastDrawPoint = MatchRunActivity.points.get(oneLinePoints.size() - 1);
+		lastDrawPoint = MatchMainActivity.points.get(oneLinePoints.size() - 1);
 		aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints).color(
 				Color.RED));
 	}
@@ -104,11 +104,11 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 
 	private void drawNewLine() {
 
-		if (MatchRunActivity.points.size() < 2) {
+		if (MatchMainActivity.points.size() < 2) {
 			return;
 		}
 
-		GpsPoint newPoint = MatchRunActivity.points.get(MatchRunActivity.points
+		GpsPoint newPoint = MatchMainActivity.points.get(MatchMainActivity.points
 				.size() - 1);
 		if (newPoint.lon != lastDrawPoint.lon
 				|| newPoint.lat != lastDrawPoint.lat) {

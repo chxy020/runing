@@ -63,7 +63,7 @@ public class MatchRelayActivity extends BaseActivity implements OnTouchListener 
 			case MotionEvent.ACTION_UP:
 				Intent intent = new Intent();
 				intent = new Intent(MatchRelayActivity.this,
-						MatchRunActivity.class);
+						MatchMainActivity.class);
 				startActivity(intent);
 				finish();
 				break;

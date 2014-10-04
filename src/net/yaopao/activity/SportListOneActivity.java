@@ -245,7 +245,7 @@ public class SportListOneActivity extends BaseActivity {
 					+ df.format(pointsArray.get(i).lat);
 		}
 		
-//		YaoPao01App.lts.writeFileToSD("运动记录: " +gpsStr, "gps");
+		YaoPao01App.lts.writeFileToSD("运动记录: " +gpsStr, "gps");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
@@ -319,7 +319,8 @@ public class SportListOneActivity extends BaseActivity {
 		int t6 = time[2] % 10;
 		Log.v("wysport", "utime =" + utime);
 
-		timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" + t6);
+	//	timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" + t6);
+			timeV.setText(time[0] + ":" + time[1] + ":" +  time[2]);
 		Log.v("wysport", "time =" + t1 + "" + t2 + ":" + t3 + "" + t4 + ":"	+ t5 + "" + t6);
 		int[] speed = YaoPao01App.cal(pspeed);
 		int s1 = speed[1] / 10;

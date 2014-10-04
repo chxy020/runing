@@ -24,7 +24,7 @@ import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.umeng.analytics.MobclickAgent;
 
-public class MatchRunActivity extends BaseActivity implements OnTouchListener {
+public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private ImageView mapV;
 	private ImageView teamV;
 	private ImageView batonV;
@@ -204,7 +204,7 @@ public class MatchRunActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				mapV.setBackgroundResource(R.drawable.button_map);
-				Intent intent = new Intent(MatchRunActivity.this,
+				Intent intent = new Intent(MatchMainActivity.this,
 						MatchMapActivity.class);
 				startActivity(intent);
 				// MatchRunActivity.this.finish();
@@ -217,7 +217,7 @@ public class MatchRunActivity extends BaseActivity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent intent = new Intent(MatchRunActivity.this,
+				Intent intent = new Intent(MatchMainActivity.this,
 						MatchScoreListActivity.class);
 				startActivity(intent);
 				// MatchRunActivity.this.finish();
@@ -230,7 +230,7 @@ public class MatchRunActivity extends BaseActivity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent intent = new Intent(MatchRunActivity.this,
+				Intent intent = new Intent(MatchMainActivity.this,
 						MatchRelayActivity.class);
 				startActivity(intent);
 				// MatchRunActivity.this.finish();

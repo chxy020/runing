@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar"
+    android:background="@color/black" >
+
+    <ImageView
+        android:id="@+id/relay_wait_gps_status"
+        android:layout_width="@dimen/small_height"
+        android:layout_height="@dimen/small_height"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin1"
+        android:background="@drawable/gps_3" />
+
+    <TextView
+        android:id="@+id/relay_wait_gps"
+        android:layout_width="@dimen/common_height"
+        android:layout_height="@dimen/small_height"
+        android:layout_marginLeft="@dimen/margin1"
+        android:layout_toLeftOf="@id/relay_wait_gps_status"
+        android:text="GPS"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size2"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/relay_wait_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_traget_width"
+        android:layout_marginTop="@dimen/margin10" >
+
+        <ImageView
+            android:id="@+id/relay_wait_head"
+            android:layout_width="@dimen/head_hight1"
+            android:layout_height="@dimen/head_hight1"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/avatar_default" />
+
+        <TextView
+             android:id="@+id/relay_wait_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@+id/relay_wait_head"
+            android:layout_centerHorizontal="true"
+            android:text="昵 称"
+            android:textColor="@color/white"
+             />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relay_wait_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_traget_width"
+        android:layout_below="@id/relay_wait_head_layout"
+        android:layout_marginTop="@dimen/margin3" 
+        >
+
+        <TextView
+            android:id="@+id/relay_wait_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/match_countdown_num_width"
+            android:layout_centerHorizontal="true"
+            android:text="持棒队员尚未进入交接区"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/font_size3"
+            android:textStyle="bold" 
+            android:textColor="@color/white"/>
+	<RelativeLayout 
+	   android:id="@+id/relay_wait_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/relay_wait_desc"
+            android:background="@color/blue_dark"
+	    >
+	      <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:text="返回"
+            android:textColor="@color/white" />
+	</RelativeLayout>
+      
+    </RelativeLayout>
+</RelativeLayout>

@@ -102,7 +102,7 @@
             android:name="net.yaopao.activity.MatchCountdownActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchRunActivity"
+            android:name="net.yaopao.activity.MatchMainActivity"
             android:screenOrientation="portrait" />
          <activity
             android:name="net.yaopao.activity.MatchMapActivity"

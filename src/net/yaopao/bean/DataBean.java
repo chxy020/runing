@@ -4,7 +4,7 @@ public class DataBean {
 
 	private long totalTime; // 秒数
 	private double distance;// 距离 m
-	private double pspeed;// 平均配速 m/s
+	private int pspeed;// 平均配速 s
 	private int count;// 记录条数
 	private int points;// 积分
 
@@ -24,11 +24,11 @@ public class DataBean {
 		this.distance = distance;
 	}
 
-	public double getPspeed() {
+	public int getPspeed() {
 		return pspeed;
 	}
 
-	public void setPspeed(double pspeed) {
+	public void setPspeed(int pspeed) {
 		this.pspeed = pspeed;
 	}
 

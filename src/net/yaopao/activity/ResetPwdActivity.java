@@ -246,7 +246,10 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 //					
 //					DataTool.setUserInfo(resetJson);
 					
-					initUserInfo(rt);
+//					initUserInfo(rt);
+					
+					//登录成功，初始化用户信息
+					DataTool.initUserInfo(rt,resetJson);
 					Intent closeintent = new Intent(closeAction);
 					closeintent.putExtra("data", "close");
 					sendBroadcast(closeintent);

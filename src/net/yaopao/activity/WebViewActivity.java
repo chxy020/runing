@@ -129,7 +129,9 @@ public class WebViewActivity extends BaseActivity {
 				userInfo = "{\"uid\":\"" + Variables.uid + "\"}";
 				playInfo = "{}";
 				deviceInfo = "{\"deviceid\":\"" + Variables.pid + "\"}";
-				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
+//				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
+				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "','" + Constants.endpoints2+ "')";
+
 				jsCallbackMethod(param);
 			}
 			else if(-1 != url.indexOf("team_index.html")){
@@ -145,7 +147,7 @@ public class WebViewActivity extends BaseActivity {
 				user.put("username",Variables.userName);
 				user.put("nickname",Variables.nikeName);
 				user.put("groupname",Variables.groupName);
-				user.put("userphoto",Variables.headUrl);
+				user.put("userphoto",Variables.headPath);
 				user.put("isleader",Variables.isLeader);
 				user.put("isbaton",Variables.isBaton);
 				JSONObject play = new JSONObject();
@@ -159,7 +161,9 @@ public class WebViewActivity extends BaseActivity {
 				playInfo = play.toJSONString();
 				deviceInfo = device.toJSONString();
 				
-				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
+//				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
+				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "','" + Constants.endpoints2+ "')";
+				Log.v("wymatch", "param="+param);
 				//Log.e("","chxy_____________" + param);
 				jsCallbackMethod(param);
 			}

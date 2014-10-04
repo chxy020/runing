@@ -260,7 +260,9 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 //						e.printStackTrace();
 //					}
 //					DataTool.setUserInfo(loginJson);
-					initUserInfo(rt);
+//					initUserInfo(rt);
+					//登录成功，初始化用户信息
+					DataTool.initUserInfo(rt,loginJson);
 					break;
 				case -8:
 					loginStatus=-8;
@@ -319,6 +321,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if ("close".equals(intent.getExtras().getString("data"))) {
+				unregisterReceiver(this); // 不写也能关闭，但是会报错
 				LoginActivity.this.finish();
 			}
 		}

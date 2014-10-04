@@ -12,7 +12,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -275,12 +274,12 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				int uid = 0;
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
-//					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
-//					Variables.utype = rt.getJSONObject("userinfo").getInteger("utype");
-//					Variables.islogin = 1;
-//					DataTool.setUserInfo(regJson);
-//					Log.v("wy", "save info =" + regJson);
-//					Log.v("wy", "save info =" + DataTool.getUserInfo());
+					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
+					Variables.utype = rt.getJSONObject("userinfo").getInteger("utype");
+					Variables.islogin = 1;
+					DataTool.setUserInfo(regJson);
+					Log.v("wy", "save info =" + regJson);
+					Log.v("wy", "save info =" + DataTool.getUserInfo());
 					Toast.makeText(RegisterActivity.this, "注册成功",
 							Toast.LENGTH_LONG).show();
 					Intent myIntent = new Intent();
@@ -305,33 +304,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试",
 						Toast.LENGTH_LONG).show();
 			}
-		}
-		private void initUserInfo(JSONObject rt) {
-			JSONObject userInfo= rt.getJSONObject("userinfo");
-			JSONObject match= rt.getJSONObject("match");
-			Variables.islogin = 1;
-			Variables.uid =userInfo.getInteger("uid");
-			Variables.utype = userInfo.getInteger("utype");
-			DataTool.setUserInfo(regJson);
-			Log.v("wyuser", "loginJson = " + regJson);
-//			//是否有比赛
-//			if ("1".equals(match.getString("ismatch"))) {
-//				Variables.mid=match.getInteger("mid");
-//			}
-//			//是否报名
-//			if ("1".equals(match.getString("issign"))) {
-//				Variables.isSigned=true;
-//			}
-//			//是否组队
-//			if ("1".equals(match.getString("isgroup"))) {
-//				Variables.gid=match.getString("gid");
-//			}
-//			//是否队长
-//			Variables.isLeader=match.getString("isleader");
-//			//是否是头棒
-//			if ("4".equals(match.getString("isgroup"))) {
-//				Variables.isBaton="1";
-//			}
 		}
 	}
 
@@ -358,11 +330,7 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				
-				/*
-				 * 0.9.1代码
-				 * 
-				 * JSONObject rt = JSON.parseObject(verifyCodeJson);
+				JSONObject rt = JSON.parseObject(verifyCodeJson);
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Toast.makeText(RegisterActivity.this, "验证码已发送，请查收短信",
@@ -372,37 +340,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 							Toast.LENGTH_LONG).show();
 				}
 				else {
-					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
-							Toast.LENGTH_LONG).show();
-				}*/
-				
-				Log.v("wy", verifyCodeJson);
-				JSONObject rt=null;
-				int rtCode =-999;
-				String desc ="";
-				try {
-					 rt = JSON.parseObject(verifyCodeJson);
-					 rtCode = rt.getJSONObject("state").getInteger("code");
-					 desc= rt.getJSONObject("state").getString("desc");
-					 
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-				
-				if (rtCode == 0) {
-					Toast.makeText(RegisterActivity.this, desc,
-							Toast.LENGTH_LONG).show();
-				} else if (rtCode == -3) {
-					Toast.makeText(RegisterActivity.this, desc,
-							Toast.LENGTH_LONG).show();
-				}else if (rtCode == -13) {
-					Toast.makeText(RegisterActivity.this, desc,
-							Toast.LENGTH_LONG).show();
-				} else if (rtCode == -14) {
-					Toast.makeText(RegisterActivity.this, desc,
-							Toast.LENGTH_LONG).show();
-				} else {
-					Log.v("wyuser", "重置密码验证码获取返回=="+rt);
 					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
 				}
@@ -425,6 +362,7 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				if ("close".equals(intent.getExtras().getString("data"))) {
+					unregisterReceiver(this); // 不写也能关闭，但是会报错
 					RegisterActivity.this.finish();
 				}
 			}

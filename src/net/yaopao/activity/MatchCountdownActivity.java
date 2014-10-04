@@ -54,7 +54,7 @@ public class MatchCountdownActivity extends BaseActivity {
 						update(0, time2);
 						update(0, time3);
 						Intent intent = new Intent(MatchCountdownActivity.this,
-								MatchRunActivity.class);
+								MatchMainActivity.class);
 						startActivity(intent);
 						MatchCountdownActivity.this.finish();
 						Toast.makeText(MatchCountdownActivity.this, "stop",
