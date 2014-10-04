@@ -119,7 +119,11 @@ public class WebViewActivity extends BaseActivity {
 			// getWindowManager().getDefaultDisplay().getMetrics(dm);
 			// int nowWidth = dm.widthPixels; // 当前分辨率 宽度
 			// int nowHeight = dm.heightPixels; // 当前分辨率高度
-
+			
+			//先调用load接口,因为ios返回不刷新
+			String load = "window.pageLoad()";
+			jsCallbackMethod(load);
+			
 			String userInfo = "";
 			String playInfo = "";
 			String deviceInfo = "";
