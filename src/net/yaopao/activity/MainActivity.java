@@ -447,7 +447,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 				Variables.toUserInfo=0;
 				userIntent = new Intent(MainActivity.this, UserInfoActivity.class);
 			} else {
-				userIntent = new Intent(MainActivity.this, RegisterActivity.class);
+				userIntent = new Intent(MainActivity.this, LoginActivity.class);
 			}
 
 			startActivity(userIntent);

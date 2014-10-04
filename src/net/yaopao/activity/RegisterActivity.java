@@ -5,18 +5,17 @@ import java.util.regex.Pattern;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -39,7 +38,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 	public EditText phoneNumV;
 	public EditText pwdV;
 	public EditText codeV;
-	public TextView toLogin;
 	public TextView goBack;
 
 	public String phoneNumStr;
@@ -54,17 +52,15 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
-		registerReceiver(broadcastReceiver, filter);
+//		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
+//		registerReceiver(broadcastReceiver, filter);
 		initLayout();
 	}
 	
 	private void initLayout() {
 		goBack = (TextView) this.findViewById(R.id.reg_goback);
-		toLogin = (TextView) this.findViewById(R.id.to_login);
 		getCodeV = (TextView) this.findViewById(R.id.reg_get_code);
 		reg = (TextView) this.findViewById(R.id.reg_go);
-		toLogin.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		phoneNumV = (EditText) this.findViewById(R.id.reg_phoneNum);
 		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.reg_pwd);
@@ -76,7 +72,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 
 		getCodeV.setOnTouchListener(this);
 		goBack.setOnTouchListener(this);
-		toLogin.setOnTouchListener(this);
 		reg.setOnTouchListener(this);
 		serviceV.setOnTouchListener(this);
 		serviceSelectV.setOnTouchListener(this);
@@ -165,23 +160,25 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				goBack.setBackgroundResource(R.color.red);
+				Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+				startActivity(intent);
 				RegisterActivity.this.finish();
 				break;
 			}
 			break;
 
-		case R.id.to_login:
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				break;
-			case MotionEvent.ACTION_UP:
-				Intent myIntent = new Intent();
-				myIntent = new Intent(RegisterActivity.this,
-						LoginActivity.class);
-				startActivityForResult(myIntent, 0);
-				break;
-			}
-			break;
+//		case R.id.to_login:
+//			switch (action) {
+//			case MotionEvent.ACTION_DOWN:
+//				break;
+//			case MotionEvent.ACTION_UP:
+//				Intent myIntent = new Intent();
+//				myIntent = new Intent(RegisterActivity.this,
+//						LoginActivity.class);
+//				startActivityForResult(myIntent, 0);
+//				break;
+//			}
+//			break;
 		case R.id.reg_go:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
@@ -271,7 +268,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 			if (result) {
 				Log.v("wy", regJson);
 				JSONObject rt = JSON.parseObject(regJson);
-				int uid = 0;
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
@@ -357,16 +353,16 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		}
 	}
 	// 如果重置密码成功，关闭此页面
-		BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				if ("close".equals(intent.getExtras().getString("data"))) {
-					unregisterReceiver(this); // 不写也能关闭，但是会报错
-					RegisterActivity.this.finish();
-				}
-			}
-		};
+//		BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//
+//			@Override
+//			public void onReceive(Context context, Intent intent) {
+//				if ("close".equals(intent.getExtras().getString("data"))) {
+//					unregisterReceiver(this); // 不写也能关闭，但是会报错
+//					RegisterActivity.this.finish();
+//				}
+//			}
+//		};
 		public void onResume() {
 			super.onResume();
 			MobclickAgent.onResume(this);
@@ -375,5 +371,14 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		public void onPause() {
 			super.onPause();
 			MobclickAgent.onPause(this);
+		}
+		
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			Intent myIntent = new Intent();
+			myIntent = new Intent(RegisterActivity.this,LoginActivity.class);
+			startActivity(myIntent);
+			RegisterActivity.this.finish();
+			return false;
 		}
 }

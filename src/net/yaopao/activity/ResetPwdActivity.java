@@ -10,13 +10,13 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -30,7 +30,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
-	public static final String closeAction = "resetpwd_close.action";
+//	public static final String closeAction = "resetpwd_close.action";
 	public TextView reset;
 	public TextView goBack;
 	public TextView getCodeV;
@@ -81,6 +81,8 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				goBack.setBackgroundResource(R.color.red);
+				Intent intent = new Intent(ResetPwdActivity.this,LoginActivity.class);
+				startActivity(intent);
 				ResetPwdActivity.this.finish();
 				break;
 			}
@@ -173,7 +175,7 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 		codeStr = codeV.getText().toString().trim();
 		Log.v("wy", "codeStr=" + codeStr);
 		if (codeStr != null && !"".equals(codeStr)) {
-			Pattern p = Pattern.compile("^[0-9]{6}$");
+			Pattern p = Pattern.compile("^[0-9]{4,}$");
 			Matcher m = p.matcher(codeStr);
 			if (m.matches()) {
 				return true;
@@ -250,9 +252,9 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 					
 					//登录成功，初始化用户信息
 					DataTool.initUserInfo(rt,resetJson);
-					Intent closeintent = new Intent(closeAction);
-					closeintent.putExtra("data", "close");
-					sendBroadcast(closeintent);
+//					Intent closeintent = new Intent(closeAction);
+//					closeintent.putExtra("data", "close");
+//					sendBroadcast(closeintent);
 //					Intent myIntent = new Intent();
 //					myIntent = new Intent(ResetPwdActivity.this,
 //							MainActivity.class);
@@ -424,5 +426,14 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 			return conn.getInputStream();
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Intent myIntent = new Intent();
+		myIntent = new Intent(ResetPwdActivity.this,LoginActivity.class);
+		startActivity(myIntent);
+		ResetPwdActivity.this.finish();
+		return false;
 	}
 }

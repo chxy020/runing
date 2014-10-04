@@ -5,7 +5,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import net.yaopao.activity.YaoPao01App;
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -15,24 +14,24 @@ import com.alibaba.fastjson.JSONObject;
 
 public class DataTool {
 	// 用户信息
-	public static JSONObject getUserInfo() {
-		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
-				.getString("userInfo", null));
-		JSONObject userInfo = rt.getJSONObject("userinfo");
-		if (userInfo == null) {
-			return rt;
-		}
-		return userInfo;
-	}
+//	public static JSONObject getUserInfo() {
+//		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
+//				.getString("userInfo", null));
+//		JSONObject userInfo = rt.getJSONObject("userinfo");
+//		if (userInfo == null) {
+//			return rt;
+//		}
+//		return userInfo;
+//	}
 
-	public static void setUserInfo(String data) {
-		Log.v("wyuser", "要存储的=" + data);
-		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
-		editor.putString("userInfo", data);
-		editor.putInt("uid", Variables.uid);
-		editor.commit();
-
-	}
+//	public static void setUserInfo(String data) {
+//		Log.v("wyuser", "要存储的=" + data);
+//		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+//		editor.putString("userInfo", data);
+//		editor.putInt("uid", Variables.uid);
+//		editor.commit();
+//
+//	}
 
 	// 头像
 	public static String getHeadUrl() {
