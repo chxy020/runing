@@ -5,6 +5,7 @@ import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -108,6 +109,7 @@ public class WebViewActivity extends BaseActivity {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
+			Log.v("wymatch", "match onPageFinished");
 			// if(!firstComeIn)return;
 			// firstComeIn = false;
 
@@ -138,30 +140,37 @@ public class WebViewActivity extends BaseActivity {
 				//消息首页
 				JSONObject user = new JSONObject();
 				//未注册给空串""
-				user.put("uid", Variables.uid);
+				user.put("uid", Variables.uid==0?"":Variables.uid);
 				//Log.e("","chxy_____uid" + Variables.uid);
+				
+				JSONObject localUserinfo = new JSONObject();
+				user.put("username", localUserinfo.getString("uname")!=null?localUserinfo.getString("uname"):"");
+				user.put("nickname", localUserinfo.getString("nikeName")!=null?localUserinfo.getString("nikeName"):localUserinfo.get("phone"));
+				user.put("userphoto",localUserinfo.getString("imgpath")!=null?localUserinfo.getString("imgpath"):"");
+				
 				//未报名给空串""
-				user.put("bid", Variables.bid);
+				JSONObject loacalMatchInfo = Variables.matchinfo;
+				user.put("bid", "1".equals(loacalMatchInfo.getString("issign"))?"l1":"");
 				//未组队给空串""
-				user.put("gid", Variables.gid);
-				user.put("username",Variables.userName);
-				user.put("nickname",Variables.nikeName);
-				user.put("groupname",Variables.groupName);
-				user.put("userphoto",Variables.headPath);
-				user.put("isleader",Variables.isLeader);
-				user.put("isbaton",Variables.isBaton);
+				user.put("gid", "1".equals(loacalMatchInfo.getString("isgroup"))?loacalMatchInfo.getString("gid"):"");
+				user.put("groupname", "1".equals(loacalMatchInfo.getString("isgroup"))?loacalMatchInfo.getString("groupname"):"");
+				user.put("isleader",loacalMatchInfo.getString("isleader"));
+				user.put("isbaton",loacalMatchInfo.getString("isbaton"));
+				
 				JSONObject play = new JSONObject();
-				play.put("mid",Variables.mid);
+				play.put("mid","1".equals(loacalMatchInfo.getString("ismatch"))?loacalMatchInfo.getString("mid"):"");
 				play.put("stime","");
 				play.put("etime","");
+				
 				JSONObject device = new JSONObject();
 				device.put("deviceid",Variables.pid);
 				device.put("platform","android");
+				
 				userInfo = user.toJSONString();
 				playInfo = play.toJSONString();
 				deviceInfo = device.toJSONString();
 				
-//				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "')";
+				Log.v("wymatch", "match window.callbackInit");
 				String param = "window.callbackInit('" + userInfo + "','" + playInfo + "'," + "'" + deviceInfo + "','" + Constants.endpoints3 + "','" + Constants.endpoints2+ "')";
 				Log.v("wymatch", "param="+param);
 				//Log.e("","chxy_____________" + param);

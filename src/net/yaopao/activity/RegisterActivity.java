@@ -252,7 +252,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 			codeStr = codeV.getText().toString().trim();
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
-			DataTool.setPhone(phoneNumStr);
 			regJson = NetworkHandler.httpPost(Constants.endpoints
 					+ Constants.reg, "phone=" + phoneNumStr + "&passwd="
 					+ pwdStr + "&vcode=" + codeStr);
@@ -271,11 +270,13 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				int rtCode = rt.getJSONObject("state").getInteger("code");
 				if (rtCode == 0) {
 					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
-					Variables.utype = rt.getJSONObject("userinfo").getInteger("utype");
+					DataTool.setUid(Variables.uid);
 					Variables.islogin = 1;
-					DataTool.setUserInfo(regJson);
+					
+					Variables.userinfo =  rt.getJSONObject("userinfo");
+					Variables.matchinfo =  rt.getJSONObject("match");
+					
 					Log.v("wy", "save info =" + regJson);
-					Log.v("wy", "save info =" + DataTool.getUserInfo());
 					Toast.makeText(RegisterActivity.this, "注册成功",
 							Toast.LENGTH_LONG).show();
 					Intent myIntent = new Intent();

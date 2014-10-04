@@ -230,7 +230,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 	private void initLayout() {
 		DataBean data = YaoPao01App.db.queryData();
 		if (Variables.islogin == 1) {
-			JSONObject userInfo = DataTool.getUserInfo();
+			JSONObject userInfo =Variables.userinfo;
 			if (userInfo != null) {
 				if (!"".equals(userInfo.getString("nickname"))&&userInfo.getString("nickname")!=null) {
 					state.setText(userInfo.getString("nickname"));
@@ -476,26 +476,27 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 			//24小时比赛跳转页面判定,chenxy add
 			//先判断比赛是否开始了,没开始都进web页面,
 			//如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-			Intent teamIntent = null;
+			//Intent teamIntent = null;
 			
-			String matchState = Variables.matchState;
-			if("2".equals(matchState)){
+			//String matchState = Variables.matchState;
+			//if(!"1".equals(Variables.matchState)){
 				//比赛未开始
-				teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
+				Intent teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
 				teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
-			}
-			else{
-				//比赛开始了/结束了
-				//if (Variables.islogin == 1) {
-					//登录了,跳转本地比赛页面,需要王雨添加逻辑
-					
-				//} else {
-					//未登录,跳转到web页面
-					teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
-					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
-				//}
-			}
-			startActivity(teamIntent);
+				startActivity(teamIntent);
+			//}
+//			else{
+//				//比赛开始了/结束了
+//				//if (Variables.islogin == 1) {
+//					//登录了,跳转本地比赛页面,需要王雨添加逻辑
+//					
+//				//} else {
+//					//未登录,跳转到web页面
+//					teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
+//					teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
+//				//}
+//			}
+			
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,
@@ -652,6 +653,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,OnClic
 							Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 							dialog.alertLoginOnOther(d);
 							Variables.islogin=3;
+							DataTool.setUid(0);
 						} else {
 							Toast.makeText(MainActivity.this, "更新头像失败",
 									Toast.LENGTH_LONG).show();
