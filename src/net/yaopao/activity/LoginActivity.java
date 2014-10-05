@@ -13,10 +13,7 @@ import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
@@ -24,6 +21,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -39,6 +37,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 public class LoginActivity extends BaseActivity implements OnTouchListener {
+	private TextView to_reg;
 	private TextView to_reset;
 	private TextView login;
 	private TextView goBack;
@@ -58,8 +57,8 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
-		registerReceiver(broadcastReceiver, filter);
+//		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
+//		registerReceiver(broadcastReceiver, filter);
 		if (Variables.islogin==3) {
 			DialogTool dialog = new DialogTool(this,null);
 			WindowManager m = getWindowManager();
@@ -73,7 +72,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		goBack = (TextView) this.findViewById(R.id.login_goback);
 		login = (TextView) this.findViewById(R.id.login_go);
 		to_reset = (TextView) this.findViewById(R.id.to_reset);
-		to_reset.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		to_reg = (TextView) this.findViewById(R.id.to_reg);
 		phoneNumV = (EditText) this.findViewById(R.id.login_phoneNum);
 		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		pwdV = (EditText) this.findViewById(R.id.login_pwd);
@@ -81,9 +80,9 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		serviceSelectV = (ImageView) this.findViewById(R.id.term_of_service_select);
 		dialog = new LoadingDialog(this);
-		// dialog.setCanceledOnTouchOutside(false);
 		goBack.setOnTouchListener(this);
 		to_reset.setOnTouchListener(this);
+		to_reg.setOnTouchListener(this);
 		login.setOnTouchListener(this);
 		serviceV.setOnTouchListener(this);
 		serviceSelectV.setOnTouchListener(this);
@@ -108,12 +107,29 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		case R.id.to_reset:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				to_reset.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				to_reset.setBackgroundResource(R.color.red);
 				Intent myIntent = new Intent();
 				myIntent = new Intent(LoginActivity.this,
 						ResetPwdActivity.class);
 				startActivity(myIntent);
+				LoginActivity.this.finish();
+				break;
+			}
+			break;
+		case R.id.to_reg:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				to_reg.setBackgroundResource(R.color.red_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				to_reg.setBackgroundResource(R.color.red);
+				Intent myIntent = new Intent();
+				myIntent = new Intent(LoginActivity.this,RegisterActivity.class);
+				startActivity(myIntent);
+				LoginActivity.this.finish();
 				break;
 			}
 			break;
@@ -235,41 +251,6 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 			Log.v("wyuser", "登录请求返回loginJson=" + loginJson);
 			Log.e("", "chxy loginJson=" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
-
-				JSONObject rt = JSON.parseObject(loginJson);
-				int rtCode = rt.getJSONObject("state").getInteger("code");
-				switch (rtCode) {
-				case 0:
-					//登录成功之后保存跳转web页面需要的参数 chenxy add
-				//	saveLoginStatus(rt);
-					//chenxy end
-					
-//					Variables.islogin = 1;
-//					Variables.uid = rt.getJSONObject("userinfo").getInteger(
-//							"uid");
-//					Variables.utype = rt.getJSONObject("userinfo").getInteger(
-//							"utype");
-//					// 下载头像
-//					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
-//					try {
-//						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
-//							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-//						}
-//					} catch (Exception e) {
-//						Log.v("wyuser", "下载头像异常="+e.toString());
-//						e.printStackTrace();
-//					}
-//					DataTool.setUserInfo(loginJson);
-//					initUserInfo(rt);
-					//登录成功，初始化用户信息
-					DataTool.initUserInfo(rt,loginJson);
-					break;
-				case -8:
-					loginStatus=-8;
-					return false;
-				default:
-					break;
-				}
 				return true;
 			} else {
 				return false;
@@ -280,18 +261,50 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		protected void onPostExecute(Boolean result) {
 			dialog.dismiss();
 			if (result) {
-				setResult(Activity.RESULT_OK);
-				LoginActivity.this.finish();
-				Toast.makeText(LoginActivity.this, "登录成功",
-						Toast.LENGTH_LONG).show();
-			} else {
-				if (loginStatus==-8) {
+				
+				JSONObject rt = JSON.parseObject(loginJson);
+				int rtCode = rt.getJSONObject("state").getInteger("code");
+				switch (rtCode) {
+				case 0:
+					//登录成功之后保存跳转web页面需要的参数 chenxy add
+				//	saveLoginStatus(rt);
+					//chenxy end
+					
+					Variables.islogin = 1;
+					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
+					DataTool.setUid(Variables.uid);
+					// 登录成功，初始化用户信息,比赛信息
+					Variables.userinfo =  rt.getJSONObject("userinfo");
+					Variables.matchinfo =  rt.getJSONObject("match");
+//					Variables.utype = rt.getJSONObject("userinfo").getInteger(
+//							"utype");
+					// 下载头像
+					try {
+						if (Variables.userinfo.getString("imgpath")!=null) {
+							Variables.headUrl  = Constants.endpoints_img +Variables.userinfo.getString("imgpath");
+							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+						}
+					} catch (Exception e) {
+						Log.v("wyuser", "下载头像异常="+e.toString());
+						e.printStackTrace();
+					}
+					
+					setResult(Activity.RESULT_OK);
+					LoginActivity.this.finish();
+					//Toast.makeText(LoginActivity.this, "登录成功",	Toast.LENGTH_LONG).show();
+					break;
+				case -8:
 					Toast.makeText(LoginActivity.this, "密码错误",
 							Toast.LENGTH_LONG).show();
-				}else {
+					break;
+				default:
 					Toast.makeText(LoginActivity.this, "登录失败，请稍后重试",
 							Toast.LENGTH_LONG).show();
+					break;
 				}
+			} else {
+				Toast.makeText(LoginActivity.this, "登录失败，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -315,17 +328,17 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		}
 		return null;
 	}
-	// 如果重置密码成功，关闭此页面
-	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if ("close".equals(intent.getExtras().getString("data"))) {
-				unregisterReceiver(this); // 不写也能关闭，但是会报错
-				LoginActivity.this.finish();
-			}
-		}
-	};
+//	// 如果重置密码成功，关闭此页面
+//	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			if ("close".equals(intent.getExtras().getString("data"))) {
+//				unregisterReceiver(this); // 不写也能关闭，但是会报错
+//				LoginActivity.this.finish();
+//			}
+//		}
+//	};
 	
 	public void onResume() {
 		super.onResume();
@@ -337,83 +350,6 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		MobclickAgent.onPause(this);
 	}
 	
-	
-	/****************** chenxy add ****************/
-//	private void saveLoginStatus(JSONObject rt){
-//		//保存其他登录数据chenxy add
-//		/*
-//		{"announcement":{"isann":"0"},"integral":{"integral":"300"},
-//		"match":{"gid":1,"groupname":"AAA","isbaton":"1","isgroup":"1",
-//		"isleader":"1","ismatch":"1","issign":"1","mid":1},
-//		"state":{"code":0,"desc":"请求成功"},
-//		"userinfo":{"gender":"F","imgpath":"","nickname":"13122233303",
-//			"phone":"13122233303","uid":3,"utype":1}}
-//		*/
-//		//是否报名
-//		Variables.bid = rt.getJSONObject("match").getString("issign");
-//		
-//		Variables.gid = "";
-//		if(null != rt.getJSONObject("match").getInteger("gid")){
-//			//组ID
-//			Variables.gid = rt.getJSONObject("match").getInteger("gid").toString();
-//		}
-//		//用户名称
-//		//Variables.userName = rt.getJSONObject("userinfo").getString("username");
-//		//昵称
-//		Variables.nikeName = rt.getJSONObject("userinfo").getString("nickname");
-//		//头像URL
-//		Variables.headPath = rt.getJSONObject("userinfo").getString("imgpath");
-//		//组名
-//		Variables.groupName = rt.getJSONObject("match").getString("groupname");
-//		//是否领队,"1"/"0"
-//		Variables.isLeader = rt.getJSONObject("match").getString("isleader");
-//		//是否第一棒,"1"/"0"
-//		Variables.isBaton = rt.getJSONObject("match").getString("isbaton");
-//		//比赛状态
-//		Variables.matchState = rt.getJSONObject("match").getString("ismatch");
-//	}
-	private void initUserInfo(JSONObject rt) {
-		JSONObject userInfo= rt.getJSONObject("userinfo");
-		JSONObject match= rt.getJSONObject("match");
-		Variables.islogin = 1;
-		Variables.uid =userInfo.getInteger("uid");
-		Variables.utype = userInfo.getInteger("utype");
-		Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
-		Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nickname"):"";
-		Variables.headPath=userInfo.getString("imgpath");
-		
-		if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
-			// 下载头像
-			Variables.headUrl = Constants.endpoints_img +Variables.headPath;
-			Log.v("wyuser", "头像======="+Variables.headUrl);
-			try {
-					Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-			} catch (Exception e) {
-				Log.v("wyuser", "下载头像异常="+e.toString());
-				e.printStackTrace();
-			}
-		}
-		DataTool.setUserInfo(loginJson);
-		Log.v("wyuser", "loginJson = " + loginJson);
-		//是否有比赛
-		if ("1".equals(match.getString("ismatch"))) {
-			Variables.mid=match.getInteger("mid");
-		}
-		//是否报名
-		if ("1".equals(match.getString("issign"))) {
-			Variables.isSigned=true;
-			Variables.bid="1";
-		}
-		//是否组队
-		if ("1".equals(match.getString("isgroup"))) {
-			Variables.gid=match.getString("gid");
-		}
-		//是否队长
-		Variables.isLeader=match.getString("isleader");
-		//是否是头棒
-		if ("4".equals(match.getString("isgroup"))) {
-			Variables.isBaton="1";
-		}
-	}
+
 
 }

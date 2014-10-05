@@ -11,15 +11,14 @@
 
         <TextView
             android:id="@+id/login_title"
-             android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:text="手机号登录"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size2"
-             />
+            android:textSize="@dimen/font_size2" />
 
         <TextView
             android:id="@+id/login_goback"
@@ -33,9 +32,9 @@
 
     <LinearLayout
         android:id="@+id/login_edit"
-        android:layout_below="@id/login_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/login_top_bar"
         android:layout_marginTop="@dimen/reg_margin_top"
         android:orientation="vertical" >
 
@@ -50,13 +49,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-             <ImageView
+            <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
                 android:background="@drawable/acount" />
-
 
             <EditText
                 android:id="@+id/login_phoneNum"
@@ -77,13 +75,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-             <ImageView
+            <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
                 android:background="@drawable/pwd" />
-
 
             <EditText
                 android:id="@+id/login_pwd"
@@ -94,7 +91,6 @@
                 android:password="true" />
         </LinearLayout>
 
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="1px"
@@ -102,35 +98,24 @@
         </View>
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/login_go"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/common_height"
         android:layout_below="@id/login_edit"
         android:layout_marginTop="@dimen/login_margin_edit"
-        android:orientation="vertical" >
+        android:background="@color/blue_dark"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/login_go"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_height"
-            android:background="@color/blue_dark"
-            android:gravity="center"
-            android:text="登录"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/to_reset"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_height"
-            android:gravity="center"
-            android:text="忘记密码？点这里 找回密码"
-            android:textColor="@color/text" />
-         <RelativeLayout
+    <RelativeLayout
+        android:id="@+id/term_of_service_l"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/to_reset"
-      >
-             <TextView
+        android:layout_below="@id/login_go" >
+
+        <TextView
             android:id="@+id/term_of_service"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/common_height"
@@ -138,17 +123,52 @@
             android:gravity="center"
             android:text="我已同意要跑服务协议"
             android:textColor="@color/text" />
+
         <ImageView
             android:id="@+id/term_of_service_select"
-            android:layout_marginRight="@dimen/margin5"
-            android:padding="@dimen/margin5"
             android:layout_width="@dimen/small_height"
             android:layout_height="@dimen/small_height"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin5"
             android:layout_toLeftOf="@id/term_of_service"
             android:background="@drawable/service_checked"
-            />
-        </RelativeLayout>
-    </LinearLayout>
+            android:padding="@dimen/margin5" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/term_of_service_l"
+        android:layout_marginTop="@dimen/login_margin_edit" >
+
+        <TextView
+            android:id="@+id/to_reset"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/common_height"
+            android:text="重置密码"
+             android:gravity="center"
+             android:textColor="@color/white" 
+             android:background="@color/red" 
+             />
+           
+        
+        <TextView
+            android:id="@+id/to_reg"
+            android:layout_toRightOf="@+id/to_reset"
+            android:layout_width="@dimen/width_half"
+            android:layout_height="@dimen/common_height"
+            android:gravity="center"
+            android:text="注册"
+             android:textColor="@color/white" 
+             android:background="@color/red" 
+             />
+<View
+               android:layout_toRightOf="@+id/to_reset"
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white" />
+        
+    </RelativeLayout>
 
 </RelativeLayout>

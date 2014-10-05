@@ -2,6 +2,8 @@ package net.yaopao.assist;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONObject;
+
 import android.graphics.Bitmap;
 
 /**
@@ -15,42 +17,52 @@ public class Variables {
 
 	public static int islogin;// 0-未登录，1-登录成功，2-正在登录,3-用户在其他设别上登录
 	
+	public static int uid = 0;
+	
+//	//头像URL,完整地址
+	public static String headUrl = "";
+	
 //	public static int userStatus;// 0-未登录，1-登录成功，2-正在登录
 	
 	//用户信息
-	public static int uid = 4;
 
-	public static int utype = 1;// 1-会员，0-未注册
-	//用户名称
-	public static String userName = "0004";
-	//昵称
-	public static String nikeName = "1234";
-	//头像URL,完整地址
-	public static String headUrl = "";
-	//头像访问路径
-	public static String headPath = "";
-	//比赛信息
-	//是否有比赛
-	public static boolean hasMatch=false;
-	//是否报名
-	public static boolean isSigned=false;
+//
+//	public static int utype = 1;// 1-会员，0-未注册
+//	//用户名称
+//	public static String userName = "0004";
+//	//昵称
+//	public static String nikeName = "1234";
+//	//头像URL,完整地址
+//	public static String headUrl = "";
+//	//头像访问路径
+//	public static String headPath = "";
+	public static JSONObject userinfo=null;
 	
-	//报名ID
-	public static String bid = "1";
-	//组队ID
-	public static String gid = "1";
-
-	//组名
-	public static String groupName = "要跑一队";
-
-	//是否领队,"1"/"0"
-	public static String isLeader = "0";
-	//是否第一棒,"1"/"0"
-	public static String isBaton = "0";
-	//比赛ID
-	public static int mid = 1;
-	//比赛状态1比赛开始 2未开始3 比赛结束
-	public static String matchState = "1";
+	//比赛信息
+	
+	public static JSONObject matchinfo =null;
+	
+//	//是否有比赛
+//	public static boolean hasMatch=false;
+//	//是否报名
+//	public static boolean isSigned=false;
+//	
+//	//报名ID
+//	public static String bid = "1";
+//	//组队ID
+//	public static String gid = "1";
+//
+//	//组名
+//	public static String groupName = "要跑一队";
+//
+//	//是否领队,"1"/"0"
+//	public static String isLeader = "0";
+//	//是否第一棒,"1"/"0"
+//	public static String isBaton = "0";
+//	//比赛ID
+//	public static int mid = 1;
+//	//比赛状态1比赛开始 2未开始3 比赛结束
+//	public static String matchState = "1";
 		
 	
 	public static int network = 0;// 0-网络不可用，1-网络可用

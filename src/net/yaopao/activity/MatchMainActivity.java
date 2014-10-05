@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.umeng.analytics.MobclickAgent;
-
 public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private ImageView mapV;
 	private ImageView teamV;
@@ -88,7 +87,10 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		timer.schedule(task, 0, 1000);
 		lonLatEncryption = new LonLatEncryption();
 		trackData = new TrackData();
-		trackData.read("TrackData.properties");
+		//trackData.read("TrackData.properties");
+		//测试代码
+		trackData.read("DaXingTest2.properties");
+		
 	}
 
 	TimerTask task = new TimerTask() {
@@ -281,8 +283,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 			boolean isInTrack = trackData.isInTheTracks(
 					lonLatEncryption.encrypt(point).lon,
 					lonLatEncryption.encrypt(point).lat);
-			// Log.v("wytrack",
-			// "isInTrack ="+isInTrack+" claimedLength="+trackData.claimedLength+" name"+trackData.name+" pgTracks"+trackData.pgTracks);
+			// Log.v("wytrack", "isInTrack ="+isInTrack+" claimedLength="+trackData.claimedLength+" name"+trackData.name+" pgTracks"+trackData.pgTracks);
 			if (points.size() == 0) {
 				points.add(point);
 				last = point;

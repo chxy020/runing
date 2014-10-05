@@ -147,17 +147,10 @@
             android:text="注册"
             android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/to_login"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_height"
-            android:gravity="center"
-            android:text="已经注册过众辉跑步？点这里登录"
-            android:textColor="@color/text" />
         <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/to_login"
+        android:layout_below="@id/reg_go"
       >
         <TextView
             android:id="@+id/term_of_service"

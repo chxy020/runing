@@ -1,5 +1,7 @@
 package net.yaopao.assist;
 
+import net.yaopao.activity.HelperGpsActivity;
+import net.yaopao.activity.HelperNetworkActivity;
 import net.yaopao.activity.R;
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
@@ -190,6 +192,33 @@ public class DialogTool implements OnTouchListener {
 		setV.setOnTouchListener(this);
 		openV.setOnTouchListener(this);
 	}
+	/**
+	 * 网络未开启提示
+	 * @param d
+	 */
+	@SuppressWarnings("deprecation")
+	public void alertNetworkTip(Display d) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View dialogView = inflater.inflate(R.layout.tip_network, null);
+		dialog = new Dialog(context, R.style.mydialog);
+		dialog.setContentView(dialogView);
+		openV = (TextView) dialogView.findViewById(R.id.howto_open_network);
+		cancelV = (TextView) dialogView.findViewById(R.id.network_cancle);
+		setV = (TextView) dialogView.findViewById(R.id.network_set);
+		Window dialogWindow = dialog.getWindow();
+		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
+		cancelV.getLayoutParams().width = p.width / 2;
+		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+		cancelV.setOnTouchListener(this);
+		setV.setOnTouchListener(this);
+		openV.setOnTouchListener(this);
+	}
 	// 在其他设备登陆
 	@SuppressWarnings("deprecation")
 	public void alertLoginOnOther(Display d) {
@@ -253,7 +282,7 @@ public class DialogTool implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				setV.setBackgroundResource(R.color.blue_dark);
-				openset();
+				openSetGps();
 				dialog.dismiss();
 				break;
 			default:
@@ -272,6 +301,18 @@ public class DialogTool implements OnTouchListener {
 				break;
 			}
 			break;
+		case R.id.howto_open_network:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				//dialog.dismiss();
+				handler.obtainMessage(0).sendToTarget();
+				break;
+			default:
+				break;
+			}
+			break;
 
 		default:
 			break;
@@ -279,8 +320,12 @@ public class DialogTool implements OnTouchListener {
 
 		return true;
 	}
-
-	private void openset() {
+	private void openHowToOpenNetwork() {
+		Intent intent = new Intent(context, HelperNetworkActivity.class);
+		context.startActivity(intent);
+	}
+	
+	private void openSetGps() {
 		Intent intent = new Intent();
 		intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

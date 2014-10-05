@@ -12,10 +12,8 @@ import net.yaopao.assist.GraphicTool;
 import net.yaopao.assist.LogtoSD;
 import net.yaopao.assist.Variables;
 import net.yaopao.db.DBManager;
-import net.yaopao.listener.NetworkStateReceiver;
 import net.yaopao.voice.PlayVoice;
 import net.yaopao.voice.VoiceUtil;
-import android.R.id;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.BroadcastReceiver;
@@ -30,13 +28,11 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
-	public static NetworkStateReceiver mReceiver;
+	//public static NetworkStateReceiver mReceiver;
 	public static YaoPao01App instance;
 	public static LocationManager locationManager;
 	public static int rank;

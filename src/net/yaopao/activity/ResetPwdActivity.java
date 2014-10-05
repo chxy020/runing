@@ -10,13 +10,13 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -30,7 +30,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
-	public static final String closeAction = "resetpwd_close.action";
+//	public static final String closeAction = "resetpwd_close.action";
 	public TextView reset;
 	public TextView goBack;
 	public TextView getCodeV;
@@ -81,6 +81,8 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				goBack.setBackgroundResource(R.color.red);
+				Intent intent = new Intent(ResetPwdActivity.this,LoginActivity.class);
+				startActivity(intent);
 				ResetPwdActivity.this.finish();
 				break;
 			}
@@ -173,7 +175,7 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 		codeStr = codeV.getText().toString().trim();
 		Log.v("wy", "codeStr=" + codeStr);
 		if (codeStr != null && !"".equals(codeStr)) {
-			Pattern p = Pattern.compile("^[0-9]{6}$");
+			Pattern p = Pattern.compile("^[0-9]{4,}$");
 			Matcher m = p.matcher(codeStr);
 			if (m.matches()) {
 				return true;
@@ -225,38 +227,25 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 				case 0:
 					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
 							Toast.LENGTH_LONG).show();
-//					Variables.islogin = 1;
-//					Toast.makeText(ResetPwdActivity.this, "重置密码成功",
-//							Toast.LENGTH_LONG).show();
-//					//发广播通知注册和登录页面关闭
-//					Variables.uid = rt.getJSONObject("userinfo").getInteger(
-//							"uid");
-//					Variables.utype = rt.getJSONObject("userinfo").getInteger(
-//							"utype");
-//					// 下载头像
-//					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
-//					try {
-//						if (rt.getJSONObject("userinfo").getString("imgpath")!=null) {
-//							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-//						}
-//					} catch (Exception e) {
-//						Log.v("wyuser", "下载头像异常="+e.toString());
-//						e.printStackTrace();
-//					}
-//					
-//					DataTool.setUserInfo(resetJson);
+					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
+					DataTool.setUid(Variables.uid);
+					Variables.islogin = 1;
 					
-//					initUserInfo(rt);
+					Variables.userinfo =  rt.getJSONObject("userinfo");
+					Variables.matchinfo =  rt.getJSONObject("match");
 					
-					//登录成功，初始化用户信息
-					DataTool.initUserInfo(rt,resetJson);
-					Intent closeintent = new Intent(closeAction);
-					closeintent.putExtra("data", "close");
-					sendBroadcast(closeintent);
-//					Intent myIntent = new Intent();
-//					myIntent = new Intent(ResetPwdActivity.this,
-//							MainActivity.class);
-//					startActivity(myIntent);
+					// 下载头像
+					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
+					try {
+						if (Variables.userinfo.getString("imgpath")!=null) {
+							Variables.headUrl  = Constants.endpoints_img +Variables.userinfo .getString("imgpath");
+							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+						}
+					} catch (Exception e) {
+						Log.v("wyuser", "下载头像异常="+e.toString());
+						e.printStackTrace();
+					}
+					
 					ResetPwdActivity.this.finish();
 					break;
 				case -2:
@@ -273,48 +262,48 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 						Toast.LENGTH_LONG).show();
 			}
 		}
-		private void initUserInfo(JSONObject rt) {
-			JSONObject userInfo= rt.getJSONObject("userinfo");
-			JSONObject match= rt.getJSONObject("match");
-			Variables.islogin = 1;
-			Variables.uid =userInfo.getInteger("uid");
-			Variables.utype = userInfo.getInteger("utype");
-			Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
-			Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
-			Variables.headPath=userInfo.getString("imgpath");
-			
-			if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
-				// 下载头像
-				Variables.headUrl = Constants.endpoints_img +Variables.headPath;
-				Log.v("wyuser", "头像======="+Variables.headUrl);
-				try {
-						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-				} catch (Exception e) {
-					Log.v("wyuser", "下载头像异常="+e.toString());
-					e.printStackTrace();
-				}
-			}
-			DataTool.setUserInfo(resetJson);
-			Log.v("wyuser", "loginJson = " + resetJson);
-			//是否有比赛
-			if ("1".equals(match.getString("ismatch"))) {
-				Variables.mid=match.getInteger("mid");
-			}
-			//是否报名
-			if ("1".equals(match.getString("issign"))) {
-				Variables.isSigned=true;
-			}
-			//是否组队
-			if ("1".equals(match.getString("isgroup"))) {
-				Variables.gid=match.getString("gid");
-			}
-			//是否队长
-			Variables.isLeader=match.getString("isleader");
-			//是否是头棒
-			if ("4".equals(match.getString("isgroup"))) {
-				Variables.isBaton="1";
-			}
-		}
+//		private void initUserInfo(JSONObject rt) {
+//			JSONObject userInfo= rt.getJSONObject("userinfo");
+//			JSONObject match= rt.getJSONObject("match");
+//			Variables.islogin = 1;
+//			Variables.uid =userInfo.getInteger("uid");
+//			Variables.utype = userInfo.getInteger("utype");
+//			Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
+//			Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nicknames"):"";
+//			Variables.headPath=userInfo.getString("imgpath");
+//			
+//			if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
+//				// 下载头像
+//				Variables.headUrl = Constants.endpoints_img +Variables.headPath;
+//				Log.v("wyuser", "头像======="+Variables.headUrl);
+//				try {
+//						Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+//				} catch (Exception e) {
+//					Log.v("wyuser", "下载头像异常="+e.toString());
+//					e.printStackTrace();
+//				}
+//			}
+//			DataTool.setUserInfo(resetJson);
+//			Log.v("wyuser", "loginJson = " + resetJson);
+//			//是否有比赛
+//			if ("1".equals(match.getString("ismatch"))) {
+//				Variables.mid=match.getInteger("mid");
+//			}
+//			//是否报名
+//			if ("1".equals(match.getString("issign"))) {
+//				Variables.isSigned=true;
+//			}
+//			//是否组队
+//			if ("1".equals(match.getString("isgroup"))) {
+//				Variables.gid=match.getString("gid");
+//			}
+//			//是否队长
+//			Variables.isLeader=match.getString("isleader");
+//			//是否是头棒
+//			if ("4".equals(match.getString("isgroup"))) {
+//				Variables.isBaton="1";
+//			}
+//		}
 	}
 
 	private class verifyCodAsyncTask extends AsyncTask<String, Void, Boolean> {
@@ -424,5 +413,14 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 			return conn.getInputStream();
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Intent myIntent = new Intent();
+		myIntent = new Intent(ResetPwdActivity.this,LoginActivity.class);
+		startActivity(myIntent);
+		ResetPwdActivity.this.finish();
+		return false;
 	}
 }

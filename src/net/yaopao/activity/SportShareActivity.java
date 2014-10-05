@@ -699,6 +699,8 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		// text是分享文本，所有平台都需要这个字段
 		oks.setText(" ");
 		
+		oks.setTitleUrl("http://www.yaopao.net");
+		
 		if(captureView){
 			//截屏view
 			oks.setViewToShare((RelativeLayout)this.findViewById(R.id.share_layout));

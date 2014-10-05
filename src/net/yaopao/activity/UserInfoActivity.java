@@ -79,6 +79,8 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 	/** 体重数据 */
 	private String weigthData = "";
 	
+	private JSONObject user;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -123,7 +125,7 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 		});
 		
 		//保存生日
-		JSONObject user = DataTool.getUserInfo();
+		user = Variables.userinfo;
 		birthDayData = user.getString("birthday");
 		birthDayData = birthDayData == null ||"".equals(birthDayData)? "1985-7-15" : birthDayData;
 		//保存身高
@@ -157,7 +159,7 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 			back.setVisibility(View.VISIBLE);
 		}
 		if (Variables.islogin == 1) {
-			JSONObject user = DataTool.getUserInfo();
+			JSONObject user = Variables.userinfo;
 			if (user != null) {
 				String nickname = user.getString("nickname");
 				Log.v("wyuser", "nickname = "+nickname+"--");
@@ -167,7 +169,7 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 				if (!"".equals(user.getString("nickname"))&&user.getString("nickname")!=null) {
 					nicknameV.setText(user.getString("nickname"));
 				} else {
-					nicknameV.setText(DataTool.getPhone());
+					nicknameV.setText(user.getString("phone"));
 				}
 				realnameV.setText(user.getString("uname"));
 				//nicknameV.setText(user.getString("nickname"));
@@ -199,8 +201,8 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 							R.color.black));
 				}
 			} else {
-				nicknameV.setText(DataTool.getPhone());
-				phoneV.setText(DataTool.getPhone());
+				nicknameV.setText(user.getString("phone"));
+				phoneV.setText(user.getString("phone"));
 			}
 
 		}
@@ -388,7 +390,7 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 					+ realname + "&nickname=" + nickname + "&birthday="
 					+ birthday + "&height=" + height + "&weight=" + weight
 					+ "&signature=" + sign + "&uid=" + Variables.uid
-					+ "&utype=" + Variables.utype);
+					+ "&utype=" +  user.getString("utype"));
 			if (saveJson != null && !"".equals(saveJson)) {
 				return true;
 			} else {
@@ -408,14 +410,19 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 					Toast.makeText(UserInfoActivity.this, "修改成功",
 							Toast.LENGTH_LONG).show();
 					Log.v("wyuser", "保存修改返回的 =" + saveJson);
-					Log.v("wyuser", "存之前 =" + DataTool.getUserInfo());
-					DataTool.setUserInfo(saveJson);
-					Log.v("wyuser", "存之后 =" + DataTool.getUserInfo());
+					Variables.userinfo =  rt.getJSONObject("userinfo");
 					UserInfoActivity.this.finish();
 					break;
 					case -7:
 							Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
 							Variables.islogin=3;
+							DataTool.setUid(0);
+							Variables.headUrl="";
+							if (Variables.avatar!=null) {
+								Variables.avatar=null;
+							}
+							Variables.userinfo = null;
+							Variables.matchinfo = null;
 							UserInfoActivity.this.finish();
 							startActivity(intent);
 							break;
@@ -426,8 +433,8 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 				}
 
 			} else {
-				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(UserInfoActivity.this, "网络异常，请稍后重试",
+//						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -468,6 +475,16 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 					} else if(rt.getJSONObject("state").getInteger("code") == -7){
 						Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
 						Variables.islogin=3;
+						DataTool.setUid(0);
+						Variables.headUrl="";
+						if (Variables.avatar!=null) {
+							Variables.avatar.recycle();
+							Variables.avatar=null;
+						}
+						
+						Variables.userinfo = null;
+						Variables.matchinfo = null;
+						
 						UserInfoActivity.this.finish();
 						startActivity(intent);
 					}else {
