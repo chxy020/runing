@@ -273,7 +273,7 @@ public class SportRecordActivity extends BaseActivity implements
 		Variables.timePlayed = 0;
 		//releaseBitmap();
 		YaoPao01App.graphicTool.unbindDrawables(new ImageView[]{d1v,d2v,d3v,d4v,t1V,t2V,t3V,t4V,t5V,t6V,s1V,s2V,s3V,s4V});
-		unregisterReceiver(broadcastReceiver);
+//		unregisterReceiver(broadcastReceiver);
 	}
 
 
@@ -360,8 +360,9 @@ public class SportRecordActivity extends BaseActivity implements
 						super.handleMessage(msg);
 					}
 				};
-				DialogTool.doneSport(SportRecordActivity.this, sliderHandler);
-
+				//DialogTool.doneSport(SportRecordActivity.this, sliderHandler);
+				DialogTool dialog = new DialogTool(SportRecordActivity.this);
+				dialog.doneSport(sliderHandler);
 				break;
 			}
 			break;

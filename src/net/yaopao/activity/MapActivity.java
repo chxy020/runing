@@ -386,7 +386,9 @@ public class MapActivity extends BaseActivity implements LocationSource,
 					}
 				};
 				
-				DialogTool.doneSport(MapActivity.this, sliderHandler);
+//				DialogTool.doneSport(MapActivity.this, sliderHandler);
+				DialogTool dialog = new DialogTool(MapActivity.this);
+				dialog.doneSport(sliderHandler);
 				break;
 			}
 			break;

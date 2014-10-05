@@ -60,10 +60,10 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 //		IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
 //		registerReceiver(broadcastReceiver, filter);
 		if (Variables.islogin==3) {
-			DialogTool dialog = new DialogTool(this,null);
-			WindowManager m = getWindowManager();
-			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-			dialog.alertLoginOnOther(d);
+			DialogTool dialog = new DialogTool(this);
+//			WindowManager m = getWindowManager();
+//			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			dialog.alertLoginOnOther();
 		}
 		initLayout();
 	}

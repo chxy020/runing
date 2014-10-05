@@ -75,19 +75,17 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		start.setOnTouchListener(this);
 		headv.setOnTouchListener(this);
 		if (Variables.gpsStatus == 2) {
-			DialogTool dialog = new DialogTool(MainActivity.this, null);
-			WindowManager m = getWindowManager();
-			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-			dialog.alertGpsTip2(d);
+			DialogTool dialog = new DialogTool(this);
+//			WindowManager m = getWindowManager();
+//			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			dialog.alertGpsTip2();
 			if (Variables.switchVoice == 0) {
 				YaoPao01App.palyOpenGps();
 			}
 		}
 		//测试代码，打开网络异常提示
-		DialogTool dddd = new DialogTool(MainActivity.this, null);
-		WindowManager m = getWindowManager();
-		Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-		dddd.alertNetworkTip(d);
+		DialogTool dddd = new DialogTool(this);
+		dddd.alertNetworkTip();
 		
 		this.initView();
 		checkLogin();
@@ -121,10 +119,10 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			// Toast.makeText(this, "此用户已在其他设备上登录，请重新登录",
 			// Toast.LENGTH_LONG).show();
 			// startActivity(mainIntent);
-			DialogTool dialog = new DialogTool(MainActivity.this, null);
-			WindowManager m = getWindowManager();
-			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-			dialog.alertLoginOnOther(d);
+			DialogTool dialog = new DialogTool(this);
+//			WindowManager m = getWindowManager();
+//			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+			dialog.alertLoginOnOther();
 			Variables.islogin = 0;
 			return;
 		}
@@ -327,19 +325,18 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 					// 测试代码
 				} else {
 					if (Variables.gpsStatus == 2) {
-						DialogTool dialog = new DialogTool(MainActivity.this,null);
-						WindowManager m = getWindowManager();
-						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-						dialog.alertGpsTip2(d);
+						DialogTool dialog = new DialogTool(MainActivity.this);
+//						WindowManager m = getWindowManager();
+//						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+						dialog.alertGpsTip2();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyOpenGps();
 						}
 					} else if (Variables.gpsStatus == 0) {
-						DialogTool dialog = new DialogTool(MainActivity.this,
-								null);
-						WindowManager m = getWindowManager();
-						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-						dialog.alertGpsTip1(d);
+						DialogTool dialog = new DialogTool(MainActivity.this);
+//						WindowManager m = getWindowManager();
+//						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+						dialog.alertGpsTip1();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyWeekGps();
 						}

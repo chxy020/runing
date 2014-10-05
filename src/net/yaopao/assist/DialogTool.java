@@ -2,10 +2,12 @@ package net.yaopao.assist;
 
 import net.yaopao.activity.HelperGpsActivity;
 import net.yaopao.activity.HelperNetworkActivity;
+import net.yaopao.activity.MainActivity;
 import net.yaopao.activity.R;
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -27,14 +29,32 @@ import android.widget.TextView;
 public class DialogTool implements OnTouchListener {
 	TextView openV;
 	TextView cancelV;
-	Dialog dialog;
+
 	TextView setV;
 	Context context;
-	Handler handler;
-	public DialogTool(Context context,Handler handler) {
+//	Handler handler;
+	static Dialog dialog;
+	Display d;
+	Window dialogWindow;
+	WindowManager.LayoutParams p ;
+	LayoutInflater inflater ;
+	public DialogTool(Context context) {
 		this.context = context;
-		this.handler=handler;
+		//this.handler=handler;
+		WindowManager m = ((Activity) context).getWindowManager();
+		d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+		
+		dialog = new Dialog(context, R.style.mydialog);
+		dialog.setCanceledOnTouchOutside(false);
+		
+		dialogWindow = dialog.getWindow();
+		p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
+		inflater= LayoutInflater.from(context);
 	}
+
 
 	public static void quit(Context context) {
 		new AlertDialog.Builder(context).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
@@ -55,17 +75,15 @@ public class DialogTool implements OnTouchListener {
 
 	}
 
-	public static void doneSport(final Context context, final Handler handler) {
-		LayoutInflater inflater = LayoutInflater.from(context);
+	public  void doneSport( final Handler handler) {
+		//LayoutInflater inflater = LayoutInflater.from(context);
 		final View dialogView = inflater.inflate(R.layout.alert_dialog, null);
 		final TextView confirm = (TextView) dialogView
 				.findViewById(R.id.alert_confirm);
 		final TextView cancel = (TextView) dialogView
 				.findViewById(R.id.alert_cancle);
 
-		final Dialog dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
-		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		confirm.setOnTouchListener(new OnTouchListener() {
 			@SuppressLint("NewApi")
@@ -129,21 +147,18 @@ public class DialogTool implements OnTouchListener {
 	}
 
 	// gps信号弱
-	public void alertGpsTip1(Display d) {
-		LayoutInflater inflater = LayoutInflater.from(context);
+	public void alertGpsTip1() {
+//		LayoutInflater inflater = LayoutInflater.from(context);
 		final View dialogView = inflater.inflate(R.layout.tip_dialog1, null);
-		final TextView cancel = (TextView) dialogView
-				.findViewById(R.id.tip_cancle);
+		final TextView cancel = (TextView) dialogView.findViewById(R.id.tip_cancle);
 
-		final Dialog dialog = new Dialog(context, R.style.mydialog);
-		dialog.setContentView(dialogView);
-		dialog.setCanceledOnTouchOutside(false);
 
-		Window dialogWindow = dialog.getWindow();
-		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.9); //
-		p.width = (int) (d.getWidth() * 0.7); //
-		dialogWindow.setAttributes(p);
+
+//		Window dialogWindow = dialog.getWindow();
+//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+//		p.height = (int) (d.getHeight() * 0.9); //
+//		p.width = (int) (d.getWidth() * 0.7); //
+//		dialogWindow.setAttributes(p);
 
 		dialog.show();
 		cancel.setOnTouchListener(new OnTouchListener() {
@@ -169,19 +184,19 @@ public class DialogTool implements OnTouchListener {
 
 	// gps关闭
 	@SuppressWarnings("deprecation")
-	public void alertGpsTip2(Display d) {
-		LayoutInflater inflater = LayoutInflater.from(context);
+	public void alertGpsTip2() {
+		//LayoutInflater inflater = LayoutInflater.from(context);
 		View dialogView = inflater.inflate(R.layout.tip_dialog2, null);
-		dialog = new Dialog(context, R.style.mydialog);
+	//	dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		openV = (TextView) dialogView.findViewById(R.id.howto_open);
 		cancelV = (TextView) dialogView.findViewById(R.id.tip2_cancle);
 		setV = (TextView) dialogView.findViewById(R.id.tip2_set);
-		Window dialogWindow = dialog.getWindow();
-		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.9);
-		p.width = (int) (d.getWidth() * 0.7);
-		dialogWindow.setAttributes(p);
+//		Window dialogWindow = dialog.getWindow();
+//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+//		p.height = (int) (d.getHeight() * 0.9);
+//		p.width = (int) (d.getWidth() * 0.7);
+//		dialogWindow.setAttributes(p);
 		cancelV.getLayoutParams().width = p.width / 2;
 //		setV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -197,23 +212,23 @@ public class DialogTool implements OnTouchListener {
 	 * @param d
 	 */
 	@SuppressWarnings("deprecation")
-	public void alertNetworkTip(Display d) {
-		LayoutInflater inflater = LayoutInflater.from(context);
+	public void alertNetworkTip() {
+//		LayoutInflater inflater = LayoutInflater.from(context);
 		View dialogView = inflater.inflate(R.layout.tip_network, null);
-		dialog = new Dialog(context, R.style.mydialog);
+//		dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		openV = (TextView) dialogView.findViewById(R.id.howto_open_network);
 		cancelV = (TextView) dialogView.findViewById(R.id.network_cancle);
 		setV = (TextView) dialogView.findViewById(R.id.network_set);
-		Window dialogWindow = dialog.getWindow();
-		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.9);
-		p.width = (int) (d.getWidth() * 0.7);
-		dialogWindow.setAttributes(p);
+//		Window dialogWindow = dialog.getWindow();
+//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+//		p.height = (int) (d.getHeight() * 0.9);
+//		p.width = (int) (d.getWidth() * 0.7);
+//		dialogWindow.setAttributes(p);
 		cancelV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		
-		dialog.setCanceledOnTouchOutside(false);
+//		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		cancelV.setOnTouchListener(this);
 		setV.setOnTouchListener(this);
@@ -221,19 +236,19 @@ public class DialogTool implements OnTouchListener {
 	}
 	// 在其他设备登陆
 	@SuppressWarnings("deprecation")
-	public void alertLoginOnOther(Display d) {
-		LayoutInflater inflater = LayoutInflater.from(context);
+	public void alertLoginOnOther() {
+//		LayoutInflater inflater = LayoutInflater.from(context);
 		View dialogView = inflater.inflate(R.layout.tip_dialog3, null);
-		dialog = new Dialog(context, R.style.mydialog);
+		//dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		cancelV = (TextView) dialogView.findViewById(R.id.tip3_cancel);
-		Window dialogWindow = dialog.getWindow();
-		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-		p.height = (int) (d.getHeight() * 0.9);
-		p.width = (int) (d.getWidth() * 0.7);
-		dialogWindow.setAttributes(p);
+	//	Window dialogWindow = dialog.getWindow();
+//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+//		p.height = (int) (d.getHeight() * 0.9);
+//		p.width = (int) (d.getWidth() * 0.7);
+//		dialogWindow.setAttributes(p);
 		
-		dialog.setCanceledOnTouchOutside(false);
+//		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		cancelV.setOnTouchListener(new OnTouchListener() {
 			@Override
