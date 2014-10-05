@@ -23,7 +23,7 @@ public class HelperNetworkActivity extends BaseActivity implements OnTouchListen
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_helper);
+		setContentView(R.layout.activity_helper_network);
 		init();
 	}
 
@@ -61,10 +61,10 @@ public class HelperNetworkActivity extends BaseActivity implements OnTouchListen
 		case R.id.back:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				backV.setBackgroundResource(R.color.btn_bg_curr);
+				backV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				backV.setBackgroundResource(R.color.btn_bg);
+				backV.setBackgroundResource(R.color.red);
 				finish();
 				break;
 			}

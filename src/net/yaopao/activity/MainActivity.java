@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		start.setOnTouchListener(this);
 		headv.setOnTouchListener(this);
 		if (Variables.gpsStatus == 2) {
-			DialogTool dialog = new DialogTool(MainActivity.this, handler);
+			DialogTool dialog = new DialogTool(MainActivity.this, null);
 			WindowManager m = getWindowManager();
 			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 			dialog.alertGpsTip2(d);
@@ -83,6 +83,12 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				YaoPao01App.palyOpenGps();
 			}
 		}
+		//测试代码，打开网络异常提示
+		DialogTool dddd = new DialogTool(MainActivity.this, null);
+		WindowManager m = getWindowManager();
+		Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+		dddd.alertNetworkTip(d);
+		
 		this.initView();
 		checkLogin();
 		dialog = new LoadingDialog(this);
@@ -321,8 +327,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 					// 测试代码
 				} else {
 					if (Variables.gpsStatus == 2) {
-						DialogTool dialog = new DialogTool(MainActivity.this,
-								handler);
+						DialogTool dialog = new DialogTool(MainActivity.this,null);
 						WindowManager m = getWindowManager();
 						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 						dialog.alertGpsTip2(d);
@@ -425,22 +430,22 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	// }
 	// }
 	// };
-	Handler handler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == 0) {
-				Log.v("wyalert", "0");
-				openHtml();
-			}
-			super.handleMessage(msg);
-		}
-	};
+//	Handler handler = new Handler() {
+//		public void handleMessage(Message msg) {
+//			if (msg.what == 0) {
+//				Log.v("wyalert", "0");
+//				openHtml();
+//			}
+//			super.handleMessage(msg);
+//		}
+//	};
 
-	private void openHtml() {
-		Intent intent = new Intent(this, HelperGpsActivity.class);
-		// startActivityForResult(intent, 0);
-		startActivity(intent);
-
-	}
+//	private void openHtml() {
+//		Intent intent = new Intent(this, HelperGpsActivity.class);
+//		// startActivityForResult(intent, 0);
+//		startActivity(intent);
+//
+//	}
 
 	@Override
 	public void onClick(View view) {

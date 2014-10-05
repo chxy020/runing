@@ -289,13 +289,42 @@ public class DialogTool implements OnTouchListener {
 				break;
 			}
 			break;
+		case R.id.network_cancle:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				cancelV.setBackgroundResource(R.color.blue_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				cancelV.setBackgroundResource(R.color.blue_dark);
+				dialog.dismiss();
+				// handker.obtainMessage(1).sendToTarget();
+				break;
+			default:
+				break;
+			}
+			break;
+		case R.id.network_set:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				setV.setBackgroundResource(R.color.blue_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				setV.setBackgroundResource(R.color.blue_dark);
+				openSetNetwork();
+				dialog.dismiss();
+				break;
+			default:
+				break;
+			}
+			break;
 		case R.id.howto_open:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
 				//dialog.dismiss();
-				handler.obtainMessage(0).sendToTarget();
+				//handler.obtainMessage(0).sendToTarget();
+				howToOpenGps();
 				break;
 			default:
 				break;
@@ -306,8 +335,8 @@ public class DialogTool implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				//dialog.dismiss();
-				handler.obtainMessage(0).sendToTarget();
+				howToOpenNetwork();
+				dialog.dismiss();
 				break;
 			default:
 				break;
@@ -320,11 +349,16 @@ public class DialogTool implements OnTouchListener {
 
 		return true;
 	}
-	private void openHowToOpenNetwork() {
+	private void howToOpenNetwork() {
 		Intent intent = new Intent(context, HelperNetworkActivity.class);
 		context.startActivity(intent);
 	}
-	
+	private void howToOpenGps() {
+		Intent intent = new Intent(context, HelperGpsActivity.class);
+		// startActivityForResult(intent, 0);
+		context.startActivity(intent);
+
+	}
 	private void openSetGps() {
 		Intent intent = new Intent();
 		intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -339,5 +373,8 @@ public class DialogTool implements OnTouchListener {
 			}
 		}
 
+	}
+	private void openSetNetwork() {
+			context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
 	}
 }
