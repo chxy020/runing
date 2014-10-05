@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/alert_title"
+            android:layout_marginTop="@dimen/margin1"
+            android:layout_marginBottom="@dimen/margin1"
+            android:layout_marginLeft="@dimen/margin1"
+            android:layout_marginRight="@dimen/margin1"
+            android:gravity="center_vertical"
+            android:text="在比赛中，要跑需要定时向服务器上报您的位置信息，这是为了："
+            android:textSize="@dimen/font_size2" />
+
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text1"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/l1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text1" 
+                 android:layout_marginTop="@dimen/margin1"
+                >
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="@dimen/margin1"
+                    android:layout_marginRight="@dimen/margin2"
+                    android:layout_marginTop="@dimen/margin9"
+                    android:background="@drawable/dot_b" />
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin1"
+                    android:gravity="center_vertical"
+                    android:text="赛会统计比赛成绩；"
+                    android:textSize="@dimen/font_size2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/l1" >
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="@dimen/margin1"
+                    android:layout_marginRight="@dimen/margin2"
+                    android:layout_marginTop="@dimen/margin9"
+                    android:background="@drawable/dot_b" />
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin1"
+                    android:gravity="center_vertical"
+                    android:text="让您的队友知晓您的位置，给予您相应支持。"
+                    android:textSize="@dimen/font_size2" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/howto_open_network"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/l1"
+            android:layout_marginTop="@dimen/margin4"
+            android:gravity="center"
+            android:text="如何打开"
+            android:textColor="@color/text" />
+
+        <TextView
+            android:id="@+id/network_cancle"
+            android:layout_width="@dimen/margin1"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/l1"
+            android:layout_marginTop="@dimen/margin11"
+            android:background="@color/blue_dark"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/network_set"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@id/l1"
+            android:layout_marginTop="@dimen/margin11"
+            android:layout_toRightOf="@id/network_cancle"
+            android:background="@color/blue_dark"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size3" />
+
+        <TextView
+            android:id="@+id/alert_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="请启用数据流量"
+            android:textSize="@dimen/font_size3" />
+    </RelativeLayout>
+
+</RelativeLayout>

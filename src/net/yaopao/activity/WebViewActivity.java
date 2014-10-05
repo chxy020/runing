@@ -147,24 +147,42 @@ public class WebViewActivity extends BaseActivity {
 				user.put("uid", Variables.uid==0?"":Variables.uid);
 				//Log.e("","chxy_____uid" + Variables.uid);
 				
-				JSONObject localUserinfo = new JSONObject();
-				user.put("username", localUserinfo.getString("uname")!=null?localUserinfo.getString("uname"):"");
-				user.put("nickname", localUserinfo.getString("nikeName")!=null?localUserinfo.getString("nikeName"):localUserinfo.get("phone"));
-				user.put("userphoto",localUserinfo.getString("imgpath")!=null?localUserinfo.getString("imgpath"):"");
+				JSONObject localUserinfo =Variables.userinfo;
+				if (localUserinfo==null) {
+					user.put("username", "");
+					user.put("nickname", "");
+					user.put("userphoto","");
+				}else {
+					user.put("username", localUserinfo.getString("uname")!=null?localUserinfo.getString("uname"):"");
+					user.put("nickname", (localUserinfo.getString("nikeName")!=null&&!"".equals(localUserinfo.getString("nikeName")))?localUserinfo.getString("nikeName"):localUserinfo.get("phone"));
+					user.put("userphoto",localUserinfo.getString("imgpath")!=null?localUserinfo.getString("imgpath"):"");
+					
+				}
 				
+			
 				//未报名给空串""
 				JSONObject loacalMatchInfo = Variables.matchinfo;
-				user.put("bid", "1".equals(loacalMatchInfo.getString("issign"))?"l1":"");
-				//未组队给空串""
-				user.put("gid", "1".equals(loacalMatchInfo.getString("isgroup"))?loacalMatchInfo.getString("gid"):"");
-				user.put("groupname", "1".equals(loacalMatchInfo.getString("isgroup"))?loacalMatchInfo.getString("groupname"):"");
-				user.put("isleader",loacalMatchInfo.getString("isleader"));
-				user.put("isbaton",loacalMatchInfo.getString("isbaton"));
-				
 				JSONObject play = new JSONObject();
-				play.put("mid","1".equals(loacalMatchInfo.getString("ismatch"))?loacalMatchInfo.getString("mid"):"");
-				play.put("stime","");
-				play.put("etime","");
+				
+				if (loacalMatchInfo == null) {
+					user.put("bid", "");
+					// 未组队给空串""
+					user.put("gid", "");
+					user.put("groupname", "");
+					user.put("isleader", "0");
+					user.put("isbaton", "0");
+					play.put("mid","");
+				}else{
+					user.put("bid", "1".equals(loacalMatchInfo.getString("issign"))?"l1":"");
+					//未组队给空串""
+					user.put("gid", "1".equals(loacalMatchInfo.getString("isgroup"))?loacalMatchInfo.getString("gid"):"");
+					user.put("groupname", "1".equals(loacalMatchInfo.getString("isgroup"))?loacalMatchInfo.getString("groupname"):"");
+					user.put("isleader",loacalMatchInfo.getString("isleader"));
+					user.put("isbaton",loacalMatchInfo.getString("isbaton"));
+					play.put("mid","1".equals(loacalMatchInfo.getString("ismatch"))?loacalMatchInfo.getString("mid"):"");
+					play.put("stime","");
+					play.put("etime","");
+				}
 				
 				JSONObject device = new JSONObject();
 				device.put("deviceid",Variables.pid);

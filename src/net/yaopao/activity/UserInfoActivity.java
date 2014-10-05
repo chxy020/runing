@@ -417,6 +417,12 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 							Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
 							Variables.islogin=3;
 							DataTool.setUid(0);
+							Variables.headUrl="";
+							if (Variables.avatar!=null) {
+								Variables.avatar=null;
+							}
+							Variables.userinfo = null;
+							Variables.matchinfo = null;
 							UserInfoActivity.this.finish();
 							startActivity(intent);
 							break;
@@ -470,6 +476,15 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 						Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
 						Variables.islogin=3;
 						DataTool.setUid(0);
+						Variables.headUrl="";
+						if (Variables.avatar!=null) {
+							Variables.avatar.recycle();
+							Variables.avatar=null;
+						}
+						
+						Variables.userinfo = null;
+						Variables.matchinfo = null;
+						
 						UserInfoActivity.this.finish();
 						startActivity(intent);
 					}else {

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -408,25 +409,25 @@ public class SportRecordActivity extends BaseActivity implements
 	};
 
 	public static GpsPoint getOnePoint() {
-		GpsPoint point = null;
-		if (YaoPao01App.loc != null) {
-			point = new GpsPoint();
-			point.lon = YaoPao01App.loc.getLongitude();
-			point.lat = YaoPao01App.loc.getLatitude();
-			point.time = YaoPao01App.loc.getTime();
-			point.altitude = YaoPao01App.loc.getAltitude();
-			point.course = YaoPao01App.loc.getBearing();
-			point.speed = YaoPao01App.loc.getSpeed();
-			point.status = Variables.sportStatus;
-		}
+//		GpsPoint point = null;
+//		if (YaoPao01App.loc != null) {
+//			point = new GpsPoint();
+//			point.lon = YaoPao01App.loc.getLongitude();
+//			point.lat = YaoPao01App.loc.getLatitude();
+//			point.time = YaoPao01App.loc.getTime();
+//			point.altitude = YaoPao01App.loc.getAltitude();
+//			point.course = YaoPao01App.loc.getBearing();
+//			point.speed = YaoPao01App.loc.getSpeed();
+//			point.status = Variables.sportStatus;
+//		}
 		// 测试代码
-//		 Random random1 = new Random();
-//		 lat = lat + random1.nextFloat() / 1000;
-//		 lon = lon + random1.nextFloat() / 1000;
-//		 Log.v("wysport", "lat =" + random1.nextFloat() / 1000 + " lon="
-//		 + random1.nextFloat() / 1000);
-//		 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
-//		 new Date().getTime());
+		 Random random1 = new Random();
+		 lat = lat + random1.nextFloat() / 1000;
+		 lon = lon + random1.nextFloat() / 1000;
+		 Log.v("wysport", "lat =" + random1.nextFloat() / 1000 + " lon="
+		 + random1.nextFloat() / 1000);
+		 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
+		 new Date().getTime());
 		// 测试代码
 		return point;
 

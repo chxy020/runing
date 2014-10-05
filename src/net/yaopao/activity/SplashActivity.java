@@ -1,6 +1,10 @@
 package net.yaopao.activity;
 
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
@@ -12,6 +16,7 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -114,7 +119,16 @@ public class SplashActivity extends BaseActivity {
 					Variables.islogin = 1;
 					Variables.userinfo =  rt.getJSONObject("userinfo");
 					Variables.matchinfo =  rt.getJSONObject("match");
-					
+					// 下载头像
+					try {
+						if (Variables.userinfo.getString("imgpath")!=null) {
+							Variables.headUrl  = Constants.endpoints_img +Variables.userinfo .getString("imgpath");
+							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
+						}
+					} catch (Exception e) {
+						Log.v("wyuser", "下载头像异常="+e.toString());
+						e.printStackTrace();
+					}
 					break;
 				case -7:
 					//设备已在其他设备登陆
@@ -131,6 +145,24 @@ public class SplashActivity extends BaseActivity {
 			}
 		}
 
+		/**
+		 * Get image from newwork
+		 * 
+		 * @param path
+		 *            The path of image
+		 * @return InputStream
+		 * @throws Exception
+		 */
+		public InputStream getImageStream(String path) throws Exception {
+			URL url = new URL(path);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setConnectTimeout(5 * 1000);
+			conn.setRequestMethod("GET");
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				return conn.getInputStream();
+			}
+			return null;
+		}
 	}
 	
 	@Override

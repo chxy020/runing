@@ -279,10 +279,9 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 //					Variables.utype = rt.getJSONObject("userinfo").getInteger(
 //							"utype");
 					// 下载头像
-					Variables.headUrl  = Constants.endpoints_img + rt.getJSONObject("userinfo").getString("imgpath");
 					try {
 						if (Variables.userinfo.getString("imgpath")!=null) {
-							Variables.headUrl  = Constants.endpoints_img +Variables.userinfo .getString("imgpath");
+							Variables.headUrl  = Constants.endpoints_img +Variables.userinfo.getString("imgpath");
 							Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
 						}
 					} catch (Exception e) {
@@ -292,11 +291,12 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 					
 					setResult(Activity.RESULT_OK);
 					LoginActivity.this.finish();
-					Toast.makeText(LoginActivity.this, "登录成功",	Toast.LENGTH_LONG).show();
+					//Toast.makeText(LoginActivity.this, "登录成功",	Toast.LENGTH_LONG).show();
 					break;
 				case -8:
 					Toast.makeText(LoginActivity.this, "密码错误",
 							Toast.LENGTH_LONG).show();
+					break;
 				default:
 					Toast.makeText(LoginActivity.this, "登录失败，请稍后重试",
 							Toast.LENGTH_LONG).show();

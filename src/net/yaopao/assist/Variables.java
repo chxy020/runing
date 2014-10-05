@@ -38,10 +38,6 @@ public class Variables {
 //	public static String headPath = "";
 	public static JSONObject userinfo=null;
 	
-	
-	
-	
-	
 	//比赛信息
 	
 	public static JSONObject matchinfo =null;
@@ -139,6 +135,6 @@ public class Variables {
 		return uid + new Date().getTime() + "";
 	}
 	
-	public static boolean isTest=false;//是否是测试客户端
+	public static boolean isTest=true;//是否是测试客户端
 
 }

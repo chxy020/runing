@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 /**
  */
-public class HelperActivity extends BaseActivity implements OnTouchListener {
+public class HelperGpsActivity extends BaseActivity implements OnTouchListener {
 	private TextView backV;
 
 	@Override
@@ -33,7 +33,7 @@ public class HelperActivity extends BaseActivity implements OnTouchListener {
 		WebView wView = (WebView)findViewById(R.id.wv1);     
         WebSettings wSet = wView.getSettings();     
         wSet.setJavaScriptEnabled(true);  
-        wView.loadUrl("file:///android_asset/setting/gps.html");
+        wView.loadUrl("file:///android_asset/web/gps.html");
 	}
 
 	public void onResume() {
