@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private TextView mMainSetting = null;
 	/** 系统消息 */
 	private LinearLayout mMessageLayout = null;
-	private LoadingDialog dialog;
+	// private LoadingDialog dialog;
 
 	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
 	private Uri imageUri;// to store the big bitmap
@@ -76,21 +76,15 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		headv.setOnTouchListener(this);
 		if (Variables.gpsStatus == 2) {
 			DialogTool dialog = new DialogTool(this);
-//			WindowManager m = getWindowManager();
-//			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 			dialog.alertGpsTip2();
 			if (Variables.switchVoice == 0) {
 				YaoPao01App.palyOpenGps();
 			}
 		}
-		//测试代码，打开网络异常提示
-		DialogTool dddd = new DialogTool(this);
-		dddd.alertNetworkTip();
-		
-		this.initView();
-		checkLogin();
-		dialog = new LoadingDialog(this);
+
 		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
+		checkLogin();
+		this.initView();
 
 		/**
 		 * 测试代码 加载赛道数据，调用jts方法
@@ -104,6 +98,14 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		// Log.v("wytrack",
 		// "isInTrack ="+isInTrack+" claimedLength="+trackData.claimedLength+" name"+trackData.name+" pgTracks"+trackData.pgTracks);
 		//
+
+		// YaoPao01App.matchOneKmAndNotInTakeOver();
+		// YaoPao01App.matchOneKmTeam();
+		// YaoPao01App.matchRunningInTakeOver();
+		// YaoPao01App.matchRunningTransmitRelay();
+		// YaoPao01App.matchDeviateTrack();
+		// YaoPao01App.matchReturnTrack();
+		// YaoPao01App.matchWaitGetRelay();
 	}
 
 	public static int px2dip(Context context, int pxValue) {
@@ -114,14 +116,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	// 检查用户是否在其他设备上登录
 	private void checkLogin() {
 		if (Variables.islogin == 3) {
-			// Intent mainIntent = new Intent(MainActivity.this,
-			// LoginActivity.class);
-			// Toast.makeText(this, "此用户已在其他设备上登录，请重新登录",
-			// Toast.LENGTH_LONG).show();
-			// startActivity(mainIntent);
 			DialogTool dialog = new DialogTool(this);
-//			WindowManager m = getWindowManager();
-//			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 			dialog.alertLoginOnOther();
 			Variables.islogin = 0;
 			return;
@@ -326,16 +321,16 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				} else {
 					if (Variables.gpsStatus == 2) {
 						DialogTool dialog = new DialogTool(MainActivity.this);
-//						WindowManager m = getWindowManager();
-//						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+						// WindowManager m = getWindowManager();
+						// Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 						dialog.alertGpsTip2();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyOpenGps();
 						}
 					} else if (Variables.gpsStatus == 0) {
 						DialogTool dialog = new DialogTool(MainActivity.this);
-//						WindowManager m = getWindowManager();
-//						Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+						// WindowManager m = getWindowManager();
+						// Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 						dialog.alertGpsTip1();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyWeekGps();
@@ -415,35 +410,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		mMessageLayout.setOnClickListener(this);
 	}
 
-	/**
-	 * 单击事件
-	 */
-	// private View.OnClickListener mOnClickListener = new
-	// View.OnClickListener() {
-	// @Override
-	// public void onClick(View v) {
-	// switch (v.getId()) {
-	//
-	// }
-	// }
-	// };
-//	Handler handler = new Handler() {
-//		public void handleMessage(Message msg) {
-//			if (msg.what == 0) {
-//				Log.v("wyalert", "0");
-//				openHtml();
-//			}
-//			super.handleMessage(msg);
-//		}
-//	};
-
-//	private void openHtml() {
-//		Intent intent = new Intent(this, HelperGpsActivity.class);
-//		// startActivityForResult(intent, 0);
-//		startActivity(intent);
-//
-//	}
-
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
@@ -466,49 +432,19 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			break;
 
 		case R.id.main_fun_macth:
-			/*
-			 * if (YaoPao01App.isGpsAvailable()) { Intent mainIntent = new
-			 * Intent(MainActivity.this, MatchCountdownActivity.class);
-			 * MainActivity.this.startActivity(mainIntent); }
-			 */
-			// Intent mainIntent = new Intent(MainActivity.this,
-			// MatchWatchActivity.class);
-			// MainActivity.this.startActivity(mainIntent);
-			// Intent intent= new Intent();
-			// intent.setAction("android.intent.action.VIEW");
-			// Uri content_url =
-			// Uri.parse("http://www.yaopao.net/html/ssxx.html");
-			// intent.setData(content_url);
-			/*
-			 * Intent intent= new
-			 * Intent(MainActivity.this,MatchWebActivity.class);
-			 * startActivity(intent);
-			 */
+			
+		     Intent mainIntent = new
+			 Intent(MainActivity.this, MatchCountdownActivity.class);
+			 MainActivity.this.startActivity(mainIntent);
+			 
 			// 24小时比赛跳转页面判定,chenxy add
 			// 先判断比赛是否开始了,没开始都进web页面,
 			// 如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-			// Intent teamIntent = null;
-
-			// String matchState = Variables.matchState;
-			// if(!"1".equals(Variables.matchState)){
-			// 比赛未开始
-			Intent teamIntent = new Intent(MainActivity.this,
-					WebViewActivity.class);
-			teamIntent.putExtra("net.yaopao.activity.PageUrl",
-					"team_index.html");
-			startActivity(teamIntent);
-			// }
-			// else{
-			// //比赛开始了/结束了
-			// //if (Variables.islogin == 1) {
-			// //登录了,跳转本地比赛页面,需要王雨添加逻辑
-			//
-			// //} else {
-			// //未登录,跳转到web页面
-			// teamIntent = new Intent(MainActivity.this,WebViewActivity.class);
-			// teamIntent.putExtra("net.yaopao.activity.PageUrl","team_index.html");
-			// //}
-			// }
+//			Intent teamIntent = new Intent(MainActivity.this,
+//					WebViewActivity.class);
+//			teamIntent.putExtra("net.yaopao.activity.PageUrl",
+//					"team_index.html");
+//			startActivity(teamIntent);
 
 			break;
 		case R.id.main_setting:
@@ -539,163 +475,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	}
 
-	// private void showSetPhotoDialog() {
-	// final String[] item_type = new String[] { "相机", "相册", "取消" };
-	//
-	// new
-	// AlertDialog.Builder(this).setTitle("选取来自").setIcon(R.drawable.icon_s).setItems(item_type,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog, int which) {
-	// Log.v("wycam", "which = "+which);
-	// switch (which) {
-	// case 0:
-	// goGetPhotoFromCamera();
-	// break;
-	// case 1:
-	// goGetPhotoFromGallery();
-	// break;
-	// }
-	// }
-	// }).show();
-	// }
-	// private void goGetPhotoFromCamera() {
-	// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	// intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-	// startActivityForResult(intent, Constants.RET_CAMERA);
-	// }
-	// //
-	// public void startPhotoZoom(Uri uri) {
-	// Intent intent = new Intent("com.android.camera.action.CROP");
-	// intent.setDataAndType(uri, Constants.IMAGE_UNSPECIFIED);
-	// intent.putExtra("crop", "true");
-	// // aspectX aspectY 是宽高的比例
-	// intent.putExtra("aspectX", 1);
-	// intent.putExtra("aspectY", 1);
-	// // outputX outputY 是裁剪图片宽高
-	// intent.putExtra("outputX", 640);
-	// intent.putExtra("outputY", 640);
-	// intent.putExtra("return-data", false);
-	// intent.putExtra("scale", true);
-	// intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-	// intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-	// intent.putExtra("noFaceDetection", true);
-	// startActivityForResult(intent, Constants.RET_CROP);
-	// }
-	// //
-	// @Override
-	// protected void onActivityResult(int requestCode, int resultCode, Intent
-	// data) {
-	// switch (requestCode) {
-	// case Constants.RET_CAMERA:
-	// if (resultCode == Activity.RESULT_OK) {
-	// startPhotoZoom(imageUri);
-	// }
-	// break;
-	// case Constants.RET_CROP:
-	// if (resultCode == Activity.RESULT_OK) {
-	// doneGetPhotoFromCamera();
-	// }
-	// break;
-	// }
-	//
-	// super.onActivityResult(requestCode, resultCode, data);
-	// }
-	//
-	// private void goGetPhotoFromGallery() {
-	// Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
-	// intent.setType("image/*");
-	// intent.putExtra("crop", "true");
-	// intent.putExtra("aspectX", 1);
-	// intent.putExtra("aspectY", 1);
-	// intent.putExtra("outputX", 640);
-	// intent.putExtra("outputY", 640);
-	// intent.putExtra("scale", true);
-	// intent.putExtra("return-data", false);
-	// intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-	// intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-	// intent.putExtra("noFaceDetection", false); // no face detection
-	// startActivityForResult(intent, Constants.RET_CROP);
-	// }
-	//
-	// private void doneGetPhotoFromCamera() {
-	// if(imageUri != null){
-	// Variables.avatar = decodeUriAsBitmap(imageUri);
-	// }
-	// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	// Variables.avatar.compress(Bitmap.CompressFormat.PNG, 100, stream);
-	// imageByte = stream.toByteArray();
-	// try {
-	// new upImgAsyncTask().execute("");
-	// } catch (Exception e) {
-	// }
-	//
-	// }
-	// private Bitmap decodeUriAsBitmap(Uri uri){
-	// Bitmap bitmap = null;
-	// try {
-	// bitmap =
-	// BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-	// } catch (FileNotFoundException e) {
-	// e.printStackTrace();
-	// return null;
-	// }
-	// return bitmap;
-	// }
-	// private class upImgAsyncTask extends AsyncTask<String, Void, Boolean> {
-	// //
-	// @Override
-	// protected void onPreExecute() {
-	// }
-	//
-	// @Override
-	// protected Boolean doInBackground(String... params) {
-	// upImgJson = NetworkHandler.upImg(1, "", imageByte);
-	// Log.v("wyuser", "imageByte="+imageByte.length);
-	// if (upImgJson != null && !"".equals(upImgJson)) {
-	// return true;
-	// } else {
-	// return false;
-	// }
-	// }
-	//
-	// @Override
-	// protected void onPostExecute(Boolean result) {
-	// dialog.dismiss();
-	// if (result) {
-	// JSONObject rt = JSON.parseObject(upImgJson);
-	// if (rt != null && !"".equals(upImgJson)) {
-	// if (rt.getJSONObject("state").getInteger("code") == 0) {
-	// if (Variables.avatar!=null) {
-	// headv.setImageBitmap(Variables.avatar);
-	// }else if(rt.getJSONObject("state").getInteger("code") == -7){
-	// DialogTool dialog = new DialogTool(MainActivity.this,null);
-	// WindowManager m = getWindowManager();
-	// Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
-	// dialog.alertLoginOnOther(d);
-	// Variables.islogin=3;
-	// DataTool.setUid(0);
-	// } else {
-	// Toast.makeText(MainActivity.this, "更新头像失败",
-	// Toast.LENGTH_LONG).show();
-	// }
-	// // mPhotoBmp.recycle();
-	// // mPhotoBmp=null;
-	// } else {
-	// Toast.makeText(MainActivity.this, "更新头像失败",
-	// Toast.LENGTH_LONG).show();
-	// }
-	//
-	// } else {
-	// Toast.makeText(MainActivity.this, "更新头像失败",
-	// Toast.LENGTH_LONG).show();
-	// }
-	//
-	// } else {
-	// Toast.makeText(MainActivity.this, "网络异常，请稍后重试",
-	// Toast.LENGTH_LONG).show();
-	// }
-	// }
-	// }
 
 	private void initinitSymbol() {
 		ImageView dot = (ImageView) this.findViewById(R.id.main_milage_dot);

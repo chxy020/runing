@@ -25,6 +25,7 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DialogTool implements OnTouchListener {
 	TextView openV;
@@ -32,15 +33,14 @@ public class DialogTool implements OnTouchListener {
 
 	TextView setV;
 	Context context;
-//	Handler handler;
-	static Dialog dialog;
+	Dialog dialog;
 	Display d;
 	Window dialogWindow;
 	WindowManager.LayoutParams p ;
 	LayoutInflater inflater ;
 	public DialogTool(Context context) {
 		this.context = context;
-		//this.handler=handler;
+		inflater= LayoutInflater.from(context);
 		WindowManager m = ((Activity) context).getWindowManager();
 		d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 		
@@ -52,7 +52,11 @@ public class DialogTool implements OnTouchListener {
 		p.height = (int) (d.getHeight() * 0.9);
 		p.width = (int) (d.getWidth() * 0.7);
 		dialogWindow.setAttributes(p);
-		inflater= LayoutInflater.from(context);
+		
+		Log.v("wysport", "11111----height = "+d.getHeight()+" width="+d.getWidth());
+		Log.v("wysport", "22222----height = "+p.height+" width="+p.width);
+		
+		
 	}
 
 
@@ -187,21 +191,18 @@ public class DialogTool implements OnTouchListener {
 	public void alertGpsTip2() {
 		//LayoutInflater inflater = LayoutInflater.from(context);
 		View dialogView = inflater.inflate(R.layout.tip_dialog2, null);
-	//	dialog = new Dialog(context, R.style.mydialog);
+		//Dialog	dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		openV = (TextView) dialogView.findViewById(R.id.howto_open);
 		cancelV = (TextView) dialogView.findViewById(R.id.tip2_cancle);
 		setV = (TextView) dialogView.findViewById(R.id.tip2_set);
-//		Window dialogWindow = dialog.getWindow();
-//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-//		p.height = (int) (d.getHeight() * 0.9);
-//		p.width = (int) (d.getWidth() * 0.7);
-//		dialogWindow.setAttributes(p);
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
 		cancelV.getLayoutParams().width = p.width / 2;
-//		setV.getLayoutParams().width = p.width / 2;
+		setV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-
-		dialog.setCanceledOnTouchOutside(false);
+		
 		dialog.show();
 		cancelV.setOnTouchListener(this);
 		setV.setOnTouchListener(this);
@@ -220,11 +221,9 @@ public class DialogTool implements OnTouchListener {
 		openV = (TextView) dialogView.findViewById(R.id.howto_open_network);
 		cancelV = (TextView) dialogView.findViewById(R.id.network_cancle);
 		setV = (TextView) dialogView.findViewById(R.id.network_set);
-//		Window dialogWindow = dialog.getWindow();
-//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-//		p.height = (int) (d.getHeight() * 0.9);
-//		p.width = (int) (d.getWidth() * 0.7);
-//		dialogWindow.setAttributes(p);
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
 		cancelV.getLayoutParams().width = p.width / 2;
 		openV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		
@@ -237,18 +236,12 @@ public class DialogTool implements OnTouchListener {
 	// 在其他设备登陆
 	@SuppressWarnings("deprecation")
 	public void alertLoginOnOther() {
-//		LayoutInflater inflater = LayoutInflater.from(context);
 		View dialogView = inflater.inflate(R.layout.tip_dialog3, null);
-		//dialog = new Dialog(context, R.style.mydialog);
 		dialog.setContentView(dialogView);
 		cancelV = (TextView) dialogView.findViewById(R.id.tip3_cancel);
-	//	Window dialogWindow = dialog.getWindow();
-//		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-//		p.height = (int) (d.getHeight() * 0.9);
-//		p.width = (int) (d.getWidth() * 0.7);
-//		dialogWindow.setAttributes(p);
-		
-//		dialog.setCanceledOnTouchOutside(false);
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
 		dialog.show();
 		cancelV.setOnTouchListener(new OnTouchListener() {
 			@Override

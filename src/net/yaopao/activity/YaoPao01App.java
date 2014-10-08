@@ -830,6 +830,118 @@ public class YaoPao01App extends Application {
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
 		
+		
+		/**
+		 * 获取团队已完成公里数
+		 */
+		public static String getTeamCompletedMileage(){
+			return ",";
+			}
+		/**
+		 * 获取个人已完成公里数
+		 */
+		public static String getPersonnalCompletedMileage(){
+			return ",";
+		}
+		/**
+		 * 获取个人已完成用时
+		 */
+		public static String getPersonnalCompletedTime(){
+			return ",";
+		}
+		/**
+		 * 获取个人已完成配速
+		 */
+		public static String getPersonnalPspeed(){
+			return ",";
+		}
+		/**
+		 * 距交接区距离
+		 */
+		public static String getDisToTakeOver(){
+			return ",";
+			}
+		
+		/**
+		 * 1，持棒队员;
+		 * 2，团队成绩至整公里数时；
+		 * 3，尚未到达交接区时；
+		 */
+		public static void matchOneKmAndNotInTakeOver() {
+			StringBuffer ids = new StringBuffer();
+			//你的团队已完成XX公里，距离下一交接区还有XX公里。
+			ids.append("131101,").append(getTeamCompletedMileage()).append("110041,131102,").append(getDisToTakeOver()).append("110041");
+			Log.v("wyvoice", "你的团队已完成XX公里，距离下一交接区还有XX公里 ids =" + ids);
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		/**
+		 * 1，持棒队员；
+		 * 2，团队成绩至整公里数时；
+		 * 3，到达交接区时；
+		 */
+		public static void matchOneKmTeam() {
+			StringBuffer ids = new StringBuffer();
+			//你的团队已完成XX公里。
+			ids.append("131101,").append(getTeamCompletedMileage()).append("110041");
+			Log.v("wyvoice", "你的团队已完成XX公里。 ids =" + ids);
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		/**
+		 * 进入交接区
+		 */
+		public static void matchRunningInTakeOver() {
+			String id = "131103";
+			//你已进入交接区。
+			PlayVoice.StartPlayVoice(id, instance);
+		}
+		/**
+		 * 1，持棒队员；
+		 * 2，把接力棒交给队友后；
+		 */
+		public static void matchRunningTransmitRelay() {
+			StringBuffer ids = new StringBuffer();
+//			
+//			 [voiceArray addObject:@"131104"];
+//		        [voiceArray addObject:@"120211"];
+//		        [voiceArray addObjectsFromArray:[self voiceOfDouble:distance]];
+//		        [voiceArray addObject:@"110041"];
+//		        [voiceArray addObject:@"120212"];
+//		        [voiceArray addObjectsFromArray:[self voiceOfTime:second]];
+//		        [voiceArray addObject:@"120213"];
+//		        [voiceArray addObjectsFromArray:[self voiceOfTime:speed]];
+//		        [voiceArray addObject:@"120103"];
+//		        [voiceArray addObject:@"131105"];
+			
+			//接力棒已交给队友。你已完成XX公里，用时XX分XX秒，平均速度每公里XX分XX秒。恭喜你！完成了本阶段赛程。
+//			ids.append("131104,120221,").append("110041,120212,").append("120213,").append("120103,131105");
+//			Log.v("wyvoice", "接力棒已交给队友。你已完成XX公里，用时XX分XX秒，平均速度每公里XX分XX秒。恭喜你！完成了本阶段赛程。 ids =" + ids);
+			ids.append("131104,120221,").append(getPersonnalCompletedMileage()).append("110041,120212,").
+			append(getPersonnalCompletedTime()).append("120213,").append(getPersonnalPspeed()).append("120103,131105");
+			Log.v("wyvoice", "接力棒已交给队友。你已完成XX公里，用时XX分XX秒，平均速度每公里XX分XX秒。恭喜你！完成了本阶段赛程。 ids =" + ids);
+			PlayVoice.StartPlayVoice(ids.toString(), instance);
+		}
+		/**
+		 * 你已接到了接力棒
+		 */
+		public static void matchWaitGetRelay() {
+			//你已接到了接力棒，出发吧，加油！
+	    	String id = "131107,120112,120102";
+			//你已进入交接区。
+			PlayVoice.StartPlayVoice(id, instance);
+		}
+		/**
+		 * 偏离赛道 
+		 */
+		public static void matchDeviateTrack() {
+			PlayVoice.StartPlayVoice("130201", instance);
+		}
+		/**
+		 * 返回赛道 
+		 */
+		public static void matchReturnTrack() {
+			PlayVoice.StartPlayVoice("130202", instance);
+		}
+		
 		public static void palyOpenGps(){
 			PlayVoice.StartPlayVoice(openGps, instance);
 		}

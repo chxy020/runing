@@ -244,9 +244,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		protected Boolean doInBackground(String... params) {
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
-			loginJson = NetworkHandler.httpPost(Constants.endpoints1
-					+ Constants.login, "phone=" + phoneNumStr + "&passwd="
-					+ pwdStr);
+			loginJson = NetworkHandler.httpPost(Constants.endpoints1+ Constants.login, "phone=" + phoneNumStr + "&passwd="	+ pwdStr);
 			Log.v("wyuser", "登录请求参数==" + Constants.endpoints	+ Constants.login+" phone=" + phoneNumStr + "&passwd="+ pwdStr);
 			Log.v("wyuser", "登录请求返回loginJson=" + loginJson);
 			Log.e("", "chxy loginJson=" + loginJson);

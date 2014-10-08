@@ -51,6 +51,19 @@ public class Constants {
 	public static final String modifyPwd = "/login/modifypass.htm";// 修改密码
 
 	public static final String upData = "/login/runstar.htm";// 上报数据
+	
+	
+	public static final String matchReport = "/matchstart/gpsreport.htm";// 比赛上报gps
+	public static final String matchOnekm = "/matchstart/kilometrereport.htm";// 整公里上报
+	public static final String smallMapPage = "/matchstart/showmapgps.htm";// 比赛概况
+	public static final String transmitRelay = "/matchstart/applysuccession.htm";// 交接扫描
+	public static final String confirmTransmit = "/matchstart/confirmsuccession.htm";// 确认交棒
+	public static final String cancelTransmit = "/matchstart/cancelsuccession.htm";//取消交棒
+	public static final String listKM = "/matchstart/matchendkilometre.htm";// 按里程查看比赛数据
+	public static final String listPersonal = "/matchstart/cancelsuccession.htm";// 按个人查看比赛数据
+	public static final String checkServerTime = "/matchstart/returntime.htm";// 与服务器同步时间
+	public static final String endMatch = "/matchstart/advancefinish.htm";// 提前完赛
+	
 
 	public static final String MAPKEY = "edb052cf66b6d7f82477334887205ff7";// 高德地图key
 	

@@ -14,21 +14,21 @@
             android:layout_width="@dimen/match_countdown_num_width"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin3"
-            android:background="@drawable/r_3" />
+            />
 
         <ImageView
             android:id="@+id/match_countdown_2"
             android:layout_width="@dimen/match_countdown_num_width"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/match_countdown_1"
-            android:background="@drawable/r_0" />
+            />
 
         <ImageView
             android:id="@+id/match_countdown_3"
             android:layout_width="@dimen/match_countdown_num_width"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/match_countdown_2"
-            android:background="@drawable/r_0" />
+             />
     </RelativeLayout>
 
 </RelativeLayout>
