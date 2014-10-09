@@ -9,7 +9,6 @@ import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.match.track.TrackData;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,12 +18,16 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 import com.umeng.analytics.MobclickAgent;
 public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private ImageView mapV;
+	private ImageView avatarV;
+	private TextView nameV;
+	private TextView teamNameV;
 	private ImageView teamV;
 	private ImageView batonV;
 	private ImageView d1V;
@@ -62,6 +65,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		mapV = (ImageView) findViewById(R.id.match_map);
 		teamV = (ImageView) findViewById(R.id.match_team);
 		batonV = (ImageView) findViewById(R.id.match_run_baton);
+		nameV = (TextView) findViewById(R.id.match_username);
+		teamNameV = (TextView) findViewById(R.id.match_team_name);
+		
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
 		batonV.setOnTouchListener(this);

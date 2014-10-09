@@ -20,7 +20,7 @@
             android:background="@drawable/avatar_default" />
 
         <TextView
-            android:id="@+id/match_recoding_username"
+            android:id="@+id/match_username"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/small_height"
             android:layout_marginTop="@dimen/margin1"
@@ -32,10 +32,10 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/match_recoding_team"
+            android:id="@+id/match_team_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/small_height"
-            android:layout_below="@id/match_recoding_username"
+            android:layout_below="@id/match_username"
             android:layout_toRightOf="@id/match_head"
             android:gravity="center"
             android:text="所属跑队名称"
