@@ -13,17 +13,9 @@ import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
-import net.yaopao.assist.DataTool;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
-import net.yaopao.assist.Variables;
-<<<<<<< HEAD
-
-=======
-import net.yaopao.match.track.TrackData;
->>>>>>> eb1b74e22926a6b413e08b052c425be398119ac4
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 import com.vividsolutions.jts.operation.distance.GeometryLocation;
 public class MatchMainActivity extends BaseActivity implements OnTouchListener {
@@ -45,10 +36,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private ImageView avatarV;
 	private TextView nameV;
 	private TextView teamNameV;
-<<<<<<< HEAD
 	private TextView nextArea;
-=======
->>>>>>> eb1b74e22926a6b413e08b052c425be398119ac4
 	private ImageView teamV;
 	private ImageView batonV;
 	private ImageView d1V;
@@ -113,11 +101,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		batonV = (ImageView) findViewById(R.id.match_run_baton);
 		nameV = (TextView) findViewById(R.id.match_username);
 		teamNameV = (TextView) findViewById(R.id.match_team_name);
-		
-<<<<<<< HEAD
-		
-=======
->>>>>>> eb1b74e22926a6b413e08b052c425be398119ac4
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
 		batonV.setOnTouchListener(this);
