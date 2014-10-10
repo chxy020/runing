@@ -5,13 +5,13 @@
     android:theme="@android:style/Theme.NoTitleBar" >
 
     <RelativeLayout
-        android:id="@+id/match_top"
+        android:id="@+id/match_recome_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black" >
 
         <ImageView
-            android:id="@+id/match_head"
+            android:id="@+id/match_recome_head"
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_alignParentLeft="true"
@@ -20,11 +20,11 @@
             android:background="@drawable/avatar_default" />
 
         <TextView
-            android:id="@+id/match_username"
+            android:id="@+id/match_recome_username"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/small_height"
             android:layout_marginTop="@dimen/margin1"
-            android:layout_toRightOf="@id/match_head"
+            android:layout_toRightOf="@id/match_recome_head"
             android:gravity="center"
             android:text="关羽"
             android:textColor="@color/white"
@@ -32,18 +32,18 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/match_team_name"
+            android:id="@+id/match_recome_team_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/small_height"
-            android:layout_below="@id/match_username"
-            android:layout_toRightOf="@id/match_head"
+            android:layout_below="@id/match_recome_username"
+            android:layout_toRightOf="@id/match_recome_head"
             android:gravity="center"
             android:text="所属跑队名称"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size7" />
 
         <ImageView
-            android:id="@+id/match_gps_status"
+            android:id="@+id/match_recome_gps_status"
             android:layout_width="@dimen/small_height"
             android:layout_height="@dimen/small_height"
             android:layout_alignParentRight="true"
@@ -51,11 +51,11 @@
             android:background="@drawable/gps_4" />
 
         <TextView
-            android:id="@+id/match_gps"
+            android:id="@+id/match_recome_gps"
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/small_height"
             android:layout_marginLeft="@dimen/margin1"
-            android:layout_toLeftOf="@id/match_gps_status"
+            android:layout_toLeftOf="@id/match_recome_gps_status"
             android:text="GPS"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size2"
@@ -63,57 +63,57 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/match_time"
+        android:id="@+id/match_recome_time"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/match_bottom"
-        android:layout_below="@id/match_top"
+        android:layout_above="@+id/match_recome_bottom"
+        android:layout_below="@id/match_recome_top"
         android:background="@color/black" >
 <RelativeLayout
-        android:id="@+id/match_time"
+        android:id="@+id/match_recome_time"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_num_height"
-        android:layout_above="@+id/match_recoding_mileage_text">
+        android:layout_above="@+id/match_recome_recoding_mileage_text">
     <ImageView
-            android:id="@+id/match_recoding_dis1"
-            android:layout_toLeftOf="@+id/match_recoding_dis2"
+            android:id="@+id/match_recome_recoding_dis1"
+            android:layout_toLeftOf="@+id/match_recome_recoding_dis2"
             android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
     <ImageView
-            android:id="@+id/match_recoding_dis2"
-            android:layout_toLeftOf="@+id/match_recoding_dis_d"
+            android:id="@+id/match_recome_recoding_dis2"
+            android:layout_toLeftOf="@+id/match_recome_recoding_dis_d"
             android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_dis_d"
+            android:id="@+id/match_recome_recoding_dis_d"
             android:layout_width="@dimen/match_dot_width"
             android:layout_centerHorizontal="true"
             android:layout_height="match_parent"
               android:background="@drawable/w_dot"
              />
         <ImageView
-            android:id="@+id/match_recoding_dis3"
+            android:id="@+id/match_recome_recoding_dis3"
             android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/match_recoding_dis_d"
+            android:layout_toRightOf="@id/match_recome_recoding_dis_d"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_dis4"
+            android:id="@+id/match_recome_recoding_dis4"
             android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/match_recoding_dis3"
+            android:layout_toRightOf="@id/match_recome_recoding_dis3"
               android:background="@drawable/w_0"
              />
 </RelativeLayout>
          
 
         <TextView
-            android:id="@+id/match_recoding_mileage_text"
+            android:id="@+id/match_recome_recoding_mileage_text"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
             android:layout_above="@+id/line_under_recoding_mileage"
@@ -130,65 +130,65 @@
             android:background="@color/white" >
         </View>
 <RelativeLayout 
-     android:id="@+id/match_recoding_time"
+     android:id="@+id/match_recome_recoding_time"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
-            android:layout_above="@+id/match_recoding_time_text"
+            android:layout_above="@+id/match_recome_recoding_time_text"
     		android:layout_marginLeft="@dimen/margin6"
     		android:layout_marginTop="@dimen/margin9"
     		android:layout_marginBottom="@dimen/margin9"
     >
        <ImageView
-            android:id="@+id/match_recoding_time_h1"
+            android:id="@+id/match_recome_recoding_time_h1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
             android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_time_h2"
-            android:layout_toRightOf="@id/match_recoding_time_h1"
+            android:id="@+id/match_recome_recoding_time_h2"
+            android:layout_toRightOf="@id/match_recome_recoding_time_h1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_time_d1"
-            android:layout_toRightOf="@id/match_recoding_time_h2"
+            android:id="@+id/match_recome_recoding_time_d1"
+            android:layout_toRightOf="@id/match_recome_recoding_time_h2"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_colon"
              />
         <ImageView
-            android:id="@+id/match_recoding_time_m1"
-            android:layout_toRightOf="@id/match_recoding_time_d1"
+            android:id="@+id/match_recome_recoding_time_m1"
+            android:layout_toRightOf="@id/match_recome_recoding_time_d1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_time_m2"
-            android:layout_toRightOf="@id/match_recoding_time_m1"
+            android:id="@+id/match_recome_recoding_time_m2"
+            android:layout_toRightOf="@id/match_recome_recoding_time_m1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
           <ImageView
-            android:id="@+id/match_recoding_time_d2"
-            android:layout_toRightOf="@id/match_recoding_time_m2"
+            android:id="@+id/match_recome_recoding_time_d2"
+            android:layout_toRightOf="@id/match_recome_recoding_time_m2"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_colon"
              />
         <ImageView
-            android:id="@+id/match_recoding_time_s1"
-              android:layout_toRightOf="@id/match_recoding_time_d2"
+            android:id="@+id/match_recome_recoding_time_s1"
+              android:layout_toRightOf="@id/match_recome_recoding_time_d2"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_time_s2"
-                    android:layout_toRightOf="@id/match_recoding_time_s1"
+            android:id="@+id/match_recome_recoding_time_s2"
+                    android:layout_toRightOf="@id/match_recome_recoding_time_s1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
@@ -198,7 +198,7 @@
      
 
         <TextView
-            android:id="@+id/match_recoding_time_text"
+            android:id="@+id/match_recome_recoding_time_text"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/small_height"
              android:layout_above="@+id/line_under_recoding_speed_text"
@@ -216,52 +216,52 @@
         </View>
         
 <RelativeLayout 
-     android:id="@+id/match_recoding_speed"
+     android:id="@+id/match_recome_recoding_speed"
              android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
-            android:layout_above="@id/match_recoding_time_text"
+            android:layout_above="@id/match_recome_recoding_time_text"
             android:layout_toRightOf="@id/line_vertical"
             android:layout_marginTop="@dimen/margin9"
             android:layout_marginBottom="@dimen/margin9"
     >
              <ImageView
-            android:id="@+id/match_recoding_speed1"
+            android:id="@+id/match_recome_recoding_speed1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin8"
             android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_speed2"
-            android:layout_toRightOf="@id/match_recoding_speed1"
+            android:id="@+id/match_recome_recoding_speed2"
+            android:layout_toRightOf="@id/match_recome_recoding_speed1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_speed_d1"
-            android:layout_toRightOf="@id/match_recoding_speed2"
+            android:id="@+id/match_recome_recoding_speed_d1"
+            android:layout_toRightOf="@id/match_recome_recoding_speed2"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_min"
              />
         <ImageView
-            android:id="@+id/match_recoding_speed3"
-            android:layout_toRightOf="@id/match_recoding_speed_d1"
+            android:id="@+id/match_recome_recoding_speed3"
+            android:layout_toRightOf="@id/match_recome_recoding_speed_d1"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
         <ImageView
-            android:id="@+id/match_recoding_speed4"
-            android:layout_toRightOf="@id/match_recoding_speed3"
+            android:id="@+id/match_recome_recoding_speed4"
+            android:layout_toRightOf="@id/match_recome_recoding_speed3"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_0"
              />
           <ImageView
-            android:id="@+id/match_recoding_speed_d2"
-            android:layout_toRightOf="@id/match_recoding_speed4"
+            android:id="@+id/match_recome_recoding_speed_d2"
+            android:layout_toRightOf="@id/match_recome_recoding_speed4"
             android:layout_width="@dimen/match_tnum_width"
             android:layout_height="match_parent"
               android:background="@drawable/w_sec"
@@ -270,7 +270,7 @@
      
 
         <TextView
-            android:id="@+id/match_recoding_speed_text"
+            android:id="@+id/match_recome_recoding_speed_text"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/small_height"
             android:layout_above="@+id/line_under_recoding_speed_text"
@@ -281,7 +281,7 @@
 
         <View
             android:id="@+id/line_under_recoding_speed_text"
-              android:layout_above="@+id/match_next_area"
+              android:layout_above="@+id/match_recome_next_area"
             android:layout_width="fill_parent"
             android:layout_height="1px"
             android:background="@color/white" >
@@ -299,17 +299,17 @@
             android:visibility="visible" /> -->
 
         <TextView
-            android:id="@+id/match_next_area"
+            android:id="@+id/match_recome_next_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
-            android:layout_above="@+id/line_under_match_next_area"
+            android:layout_above="@+id/line_under_match_recome_next_area"
             android:gravity="center"
             android:text="距离下一交接区还有：0.00公里"
             android:textColor="@color/white" 
             android:textSize="@dimen/font_size2"/>
 
         <View
-            android:id="@+id/line_under_match_next_area"
+            android:id="@+id/line_under_match_recome_next_area"
             android:layout_width="fill_parent"
             android:layout_height="1px"
             android:background="@color/white" 
@@ -318,14 +318,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/match_bottom"
+        android:id="@+id/match_recome_bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/match_bottom_height"
         android:layout_alignParentBottom="true"
         android:background="@color/black" >
 
         <ImageView
-            android:id="@+id/match_team"
+            android:id="@+id/match_recome_team"
             android:layout_width="@dimen/sport_set_height"
             android:layout_height="@dimen/sport_set_height"
             android:layout_alignParentBottom="true"
@@ -334,7 +334,7 @@
             android:background="@drawable/match_team" />
 
         <ImageView
-            android:id="@+id/match_run_baton"
+            android:id="@+id/match_recome_run_baton"
             android:layout_width="@dimen/main_start_hight"
             android:layout_height="@dimen/main_start_hight"
             android:layout_alignParentBottom="true"
@@ -343,7 +343,7 @@
             android:background="@drawable/match_baton" />
 
         <ImageView
-            android:id="@+id/match_map"
+            android:id="@+id/match_recome_map"
             android:layout_width="@dimen/sport_set_height"
             android:layout_height="@dimen/sport_set_height"
             android:layout_alignParentBottom="true"

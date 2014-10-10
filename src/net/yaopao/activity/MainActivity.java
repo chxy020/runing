@@ -52,6 +52,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
 	private Uri imageUri;// to store the big bitmap
 	public String upImgJson = "";
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -493,4 +495,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
 				.get(R.drawable.r_km));
 	}
+	
+	
 }

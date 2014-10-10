@@ -30,5 +30,15 @@
             android:layout_toRightOf="@id/match_countdown_2"
              />
     </RelativeLayout>
-
+<TextView
+    android:id="@+id/countdown_tip"
+    android:layout_below="@id/match_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin7"
+    android:layout_marginRight="@dimen/margin7"
+    android:textSize="@dimen/font_size3"
+    android:text="你尚未进入出发区，请于倒计时结束前进入出发区，否则将无法开始比赛"
+        />
+    
 </RelativeLayout>

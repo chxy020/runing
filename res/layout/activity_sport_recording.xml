@@ -383,16 +383,6 @@
                 android:background="@color/white" >
             </View>
 
-            <ProgressBar
-                android:id="@+id/recoding_process"
-                style="@style/ProgressBar_sport"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_above="@id/recoding_process_text"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="8dp"
-                android:visibility="visible" />
 
             <View
                 android:id="@+id/line_under_recoding_process_text"
@@ -413,6 +403,17 @@
                 android:gravity="center"
                 android:text="目标"
                 android:textColor="@color/white" />
+            
+            <ProgressBar
+                android:id="@+id/recoding_process"
+                style="@style/ProgressBar_sport"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_above="@id/recoding_process_text"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="8dp"
+                android:visibility="visible" />
         </RelativeLayout>
 
         <ImageView

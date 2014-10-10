@@ -3,21 +3,27 @@ package net.yaopao.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.yaopao.activity.R.drawable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class MatchCountdownActivity extends BaseActivity {
+public class MatchCountdownActivity extends BaseActivity  {
 	private ImageView time1;
 	private ImageView time2;
 	private ImageView time3;
-	private int time = 3;
+	private TextView  countdownTip;
+	private int startSecond = 3;
 	Timer timer = new Timer();
 
 	@Override
@@ -28,7 +34,9 @@ public class MatchCountdownActivity extends BaseActivity {
 		time1 = (ImageView) findViewById(R.id.match_countdown_1);
 		time2 = (ImageView) findViewById(R.id.match_countdown_2);
 		time3 = (ImageView) findViewById(R.id.match_countdown_3);
+		countdownTip = (TextView) findViewById(R.id.countdown_tip);
 		timer.schedule(task, 0, 1000);
+		
 	}
 
 	TimerTask task = new TimerTask() {
@@ -38,14 +46,14 @@ public class MatchCountdownActivity extends BaseActivity {
 			runOnUiThread(new Runnable() { // UI thread
 				@Override
 				public void run() {
-					time--;
-					int i = time / 100;
-					int j = (time % 100) / 10;
-					int k = (time % 100) % 10;
+					startSecond--;
+					int i = startSecond / 100;
+					int j = (startSecond % 100) / 10;
+					int k = (startSecond % 100) % 10;
 					Log.v("wytime", "i=" + i + " j=" + j + " k=" + k);
 					YaoPao01App.graphicTool.updateRedNum(new int[]{i,j,k},new ImageView[]{time1,time2,time3});
 
-					if (time == 0) {
+					if (startSecond == 0) {
 						Intent intent = new Intent(MatchCountdownActivity.this,
 								MatchMainActivity.class);
 						startActivity(intent);
@@ -74,4 +82,27 @@ public class MatchCountdownActivity extends BaseActivity {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
+//	@Override
+//	public boolean onTouch(View view, MotionEvent event) {
+//		int action = event.getAction();
+//		switch (view.getId()) {
+//		case R.id.countdown_tip:
+//			switch (action) {
+//			case MotionEvent.ACTION_DOWN:
+//				time1.setVisibility(View.VISIBLE);
+//				time1.setBackgroundResource(R.drawable.r_0);
+//				break;
+//			case MotionEvent.ACTION_UP:
+//				time1.setVisibility(View.GONE);
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//		
+//		
+//		return false;
+//	}
+	
+	
 }

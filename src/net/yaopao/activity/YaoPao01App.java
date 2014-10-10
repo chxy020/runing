@@ -51,6 +51,8 @@ public class YaoPao01App extends Application {
 	public LocationListener locationlisten;
 	
 	public static GraphicTool graphicTool ;
+	
+	public static final String forceJumpAction = "Jump.action";//任意页面跳转到比赛页面的广播
 
 	@SuppressLint("NewApi")
 	@Override
@@ -977,4 +979,10 @@ public class YaoPao01App extends Application {
 				}
 	        }  
 	    };  
+	    
+	    public void sendForceJumpBraodcast(){
+			 Intent intent = new Intent(forceJumpAction);
+				intent.putExtra("data", "jumpToMatch");
+				sendBroadcast(intent);
+		}
 }

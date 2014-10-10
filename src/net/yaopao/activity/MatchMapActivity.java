@@ -37,11 +37,8 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private MapView mapView;
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
-
 	private ImageView backV;
-
 	private LonLatEncryption lonLatEncryption;
-	public GpsPoint lastDrawPoint;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +48,6 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		lonLatEncryption = new LonLatEncryption();
 		init();
-		startTimer();
 	}
 
 	/**
@@ -65,77 +61,8 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 
 		backV = (ImageView) findViewById(R.id.match_map_back);
 		backV.setOnTouchListener(this);
-		drawLine();
 	}
 
-	private void drawLine() {
-		if (MatchMainActivity.points.size() < 1) {
-			return;
-		}
-		List<LatLng> oneLinePoints = new ArrayList<LatLng>();
-		for (int i = 0; i < MatchMainActivity.points.size(); i++) {
-			GpsPoint gpsPoint = MatchMainActivity.points.get(i);
-			oneLinePoints.add(new LatLng(
-					lonLatEncryption.encrypt(gpsPoint).lat, lonLatEncryption
-							.encrypt(gpsPoint).lon));
-		}
-		lastDrawPoint = MatchMainActivity.points.get(oneLinePoints.size() - 1);
-		aMap.addPolyline((new PolylineOptions()).addAll(oneLinePoints).color(
-				Color.RED));
-	}
-
-	public void startTimer() {
-		timer.postDelayed(drawTask, 3000);
-	}
-
-	public void stopTimer() {
-		timer.removeCallbacks(drawTask);
-	}
-
-	Handler timer = new Handler();
-	Runnable drawTask = new Runnable() {
-		@Override
-		public void run() {
-			drawNewLine();
-			timer.postDelayed(this, 3000);
-		}
-
-	};
-
-	private void drawNewLine() {
-
-		if (MatchMainActivity.points.size() < 2) {
-			return;
-		}
-
-		GpsPoint newPoint = MatchMainActivity.points.get(MatchMainActivity.points
-				.size() - 1);
-		if (newPoint.lon != lastDrawPoint.lon
-				|| newPoint.lat != lastDrawPoint.lat) {
-			List<LatLng> newLine = new ArrayList<LatLng>();
-			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,
-					lonLatEncryption.encrypt(newPoint).lon));
-			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,
-					lonLatEncryption.encrypt(lastDrawPoint).lon));
-			aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
-					Color.RED));
-			aMap.invalidate();
-			lastDrawPoint = newPoint;
-		}
-	}
-
-	/**
-	 * 设置一些amap的属性
-	 */
-	private void setUpMap() {
-		aMap.getUiSettings().setZoomControlsEnabled(false);
-		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-		aMap.setLocationSource(this);// 设置定位监听
-		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-
-	}
 
 	/**
 	 * 方法必须重写
@@ -264,4 +191,17 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		}
 		return false;
 	}
+
+/**
+ * 设置一些amap的属性
+ */
+private void setUpMap() {
+	aMap.getUiSettings().setZoomControlsEnabled(false);
+	aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+	aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+	aMap.setLocationSource(this);// 设置定位监听
+	aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+	aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+
+}
 }
