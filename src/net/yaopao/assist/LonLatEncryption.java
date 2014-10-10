@@ -111,9 +111,41 @@ public class LonLatEncryption {
 		GeometryFactory gf = new GeometryFactory();
 		return gf.createPoint(c);
 	}
-
+	
 	public GpsPoint encrypt(GpsPoint wg) {
 		GpsPoint china = new GpsPoint();
+
+		double x_add;
+		double y_add;
+		double x_l;
+		double y_l;
+
+		x_l = (int) Math.round(wg.lon * CHINA_LON_LAT_PRECISION_FLOAT);
+		x_l = x_l / CHINA_LON_LAT_PRECISION_FLOAT;
+		y_l = (int) Math.round(wg.lat * CHINA_LON_LAT_PRECISION_FLOAT);
+		y_l = y_l / CHINA_LON_LAT_PRECISION_FLOAT;
+
+		if (x_l < 72.004 || x_l > 137.8347 || y_l < 0.8293 || y_l > 55.8271) {
+			return china;
+		}
+
+		x_add = Transform_yj5(x_l - 105, y_l - 35);
+		y_add = Transform_yjy5(x_l - 105, y_l - 35);
+		x_l = (x_l + Transform_jy5(y_l, x_add)) * CHINA_LON_LAT_PRECISION_FLOAT;
+		y_l = (y_l + Transform_jyj5(y_l, y_add))
+				* CHINA_LON_LAT_PRECISION_FLOAT;
+
+		if (x_l > 2147483647 || y_l > 2147483647) {
+			return china;
+		}
+
+		china.lon = x_l / CHINA_LON_LAT_PRECISION_FLOAT;
+		china.lat = y_l / CHINA_LON_LAT_PRECISION_FLOAT;
+		return china;
+	}
+	
+	public CNLonLat encrypt(CNLonLat wg) {
+		CNLonLat china = new CNLonLat();
 
 		double x_add;
 		double y_add;

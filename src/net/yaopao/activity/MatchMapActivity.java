@@ -38,7 +38,6 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	private ImageView backV;
-	private LonLatEncryption lonLatEncryption;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +45,25 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		setContentView(R.layout.activity_match_map);
 		mapView = (MapView) findViewById(R.id.match_map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
-		lonLatEncryption = new LonLatEncryption();
 		init();
+		//头像、username、teamname needwy
+		drawTrack();//画赛道
+	    drawStratZone();//画出发区
+	    drawTakeOverZone();//画接力区
+	    drawRunTrack();//画已经跑得轨迹
 	}
-
+	void drawTrack(){
+		
+	}
+	void drawStratZone(){
+		
+	}
+	void drawTakeOverZone(){
+		
+	}
+	void drawRunTrack(){
+		
+	}
 	/**
 	 * 初始化AMap对象
 	 */

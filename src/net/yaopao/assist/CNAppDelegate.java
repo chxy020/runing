@@ -4,16 +4,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import net.yaopao.activity.LoginActivity;
+import net.yaopao.activity.UserInfoActivity;
+import net.yaopao.match.track.TrackData;
+
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 //有关比赛的变量和方法byzc
 public class CNAppDelegate {
 	//一些常量
+	
+	//测试比赛用
+	public static final boolean istest = false;
+	
 	public static final String kTrackName = "LongWan";//使用赛道
 	public static final String kStartTime = "2014-10-18 15:00:00";//比赛开始时间
 	public static final int kDuringMinute = 24*60;//比赛持续时间
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
+	public static final int kMatchInterval = 2;//两秒取一个点
+	public static final int kBoundary1 = 10;//偏离赛道界限1，10分钟
+	public static final int kBoundary2 = 60;//偏离赛道界限2，60分钟
 	//一些变量
 	//地图数据
 	public static String match_track_line;//赛道
@@ -23,6 +39,7 @@ public class CNAppDelegate {
 	//队员信息
 	public static int isMatch = 0;//是否参赛
 	public static int isbaton = 0;//是否持棒
+	public static String uid;
 	public static String gid;
 	public static String mid;
 	//一些时间属性
@@ -57,6 +74,8 @@ public class CNAppDelegate {
 	public static Timer timer_one_point = new Timer();//每个2秒去一个点的timer
 	public static Timer timer_secondplusplus = new Timer();//比赛显示时间的timer
 	
+	public static TrackData geosHandler;
+	
 	//全局方法
 	//获取系统时间——秒
 	public static long getNowTime(){
@@ -88,6 +107,12 @@ public class CNAppDelegate {
 	public static void match_save2plist(){//每隔几秒写plist
 	
 	}
+	public static String match_readHistoryPlist(){//每隔几秒写plist
+		return "";
+	}
+	public static void match_deleteHistoryPlist(){//删除记录的plist
+		
+	}
 	public static void ForceGoMatchPage(String target){//强制跳转到某个界面
 		
 	}
@@ -102,5 +127,37 @@ public class CNAppDelegate {
 	}
 	public static boolean isInStartZone(){//判断是否在出发区
 		return true;
+	}
+	//比赛网络请求响应的一个过滤器，判断两点：第一是否已经结束比赛，第二是否账号在其他设备登录
+	public static void matchRequestResponseFilter(String responseJson,String requestType,Context context){
+		JSONObject result = JSON.parseObject(responseJson);
+		int gstate = result.getIntValue("gstate");
+	    if(gstate == 2){
+	        if(CNAppDelegate.hasFinishTeamMatch == false){
+	            CNAppDelegate.timer_one_point.cancel();
+	            CNAppDelegate.timer_secondplusplus.cancel();
+	            CNAppDelegate.match_timer_report.cancel();
+	            if(!requestType.equals(Constants.endMatch)){
+	                //跳转
+	                CNAppDelegate.ForceGoMatchPage("finishTeam");
+	            }
+	            CNAppDelegate.hasFinishTeamMatch = true;
+	        }
+	    }
+	    JSONObject stateDic = result.getJSONObject("state");
+	    if(stateDic == null)return;
+	    int code = stateDic.getIntValue("code");
+	    if(code == -7){//用户已经在其他手机登录
+	    	Intent intent = new Intent(context,LoginActivity.class);
+			Variables.islogin=3;
+			DataTool.setUid(0);
+			Variables.headUrl="";
+			if (Variables.avatar!=null) {
+				Variables.avatar=null;
+			}
+			Variables.userinfo = null;
+			Variables.matchinfo = null;
+			context.startActivity(intent);
+	    }
 	}
 }
