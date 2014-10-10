@@ -157,7 +157,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent intent = new Intent(MatchMainActivity.this,
-						MatchScoreListActivity.class);
+						MatchGroupListActivity.class);
 				startActivity(intent);
 				// MatchRunActivity.this.finish();
 
@@ -170,7 +170,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent intent = new Intent(MatchMainActivity.this,
-						MatchRelayActivity.class);
+						MatchGiveRelayActivity.class);
 				startActivity(intent);
 
 				break;

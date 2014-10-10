@@ -1,3 +1,4 @@
+package net.yaopao.activity;
 //package net.yaopao.activity;
 //
 //import android.app.Activity;

@@ -108,16 +108,16 @@
             android:name="net.yaopao.activity.MatchMapActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchWatchActivity"
+            android:name="net.yaopao.activity.MatchGroupInfoActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchWatchMapActivity"
+            android:name="net.yaopao.activity.MatchNoRunMapActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchScoreListActivity"
+            android:name="net.yaopao.activity.MatchGroupListActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchRelayActivity"
+            android:name="net.yaopao.activity.MatchGiveRelayActivity"
             android:screenOrientation="portrait" />
          <activity
             android:name="net.yaopao.activity.SportTrackMap"
