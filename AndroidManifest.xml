@@ -4,9 +4,7 @@
     android:versionCode="2"
     android:versionName="0.9.1" >
 
-   <!--  <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" /> -->
+   <!--  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="18" /> -->
 
     <application
         android:allowBackup="true"
@@ -108,16 +106,16 @@
             android:name="net.yaopao.activity.MatchMapActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchWatchActivity"
+            android:name="net.yaopao.activity.MatchGroupInfoActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchWatchMapActivity"
+            android:name="net.yaopao.activity.MatchNoRunMapActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchScoreListActivity"
+            android:name="net.yaopao.activity.MatchGroupListActivity"
             android:screenOrientation="portrait" />
          <activity
-            android:name="net.yaopao.activity.MatchRelayActivity"
+            android:name="net.yaopao.activity.MatchGiveRelayActivity"
             android:screenOrientation="portrait" />
          <activity
             android:name="net.yaopao.activity.SportTrackMap"

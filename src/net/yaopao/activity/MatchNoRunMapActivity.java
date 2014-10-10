@@ -17,7 +17,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchWatchMapActivity extends BaseActivity implements OnTouchListener {
+public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListener {
 
 	private ImageView backV;
 	private MapView mapView;

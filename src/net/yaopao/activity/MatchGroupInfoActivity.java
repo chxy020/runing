@@ -1,6 +1,5 @@
 package net.yaopao.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -20,7 +19,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchWatchActivity extends BaseActivity implements OnTouchListener,
+public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListener,
 		OnMapClickListener {
 	private MapView mapView;
 	private AMap aMap;
@@ -122,8 +121,8 @@ public class MatchWatchActivity extends BaseActivity implements OnTouchListener,
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent intent = new Intent(MatchWatchActivity.this,
-						MatchScoreListActivity.class);
+				Intent intent = new Intent(MatchGroupInfoActivity.this,
+						MatchGroupListActivity.class);
 				startActivity(intent);
 				break;
 			}
@@ -133,8 +132,8 @@ public class MatchWatchActivity extends BaseActivity implements OnTouchListener,
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent intent = new Intent(MatchWatchActivity.this,
-						MatchRelayActivity.class);
+				Intent intent = new Intent(MatchGroupInfoActivity.this,
+						MatchGiveRelayActivity.class);
 				startActivity(intent);
 				break;
 			}
@@ -145,8 +144,8 @@ public class MatchWatchActivity extends BaseActivity implements OnTouchListener,
 
 	@Override
 	public void onMapClick(LatLng arg0) {
-		Intent intent = new Intent(MatchWatchActivity.this,
-				MatchWatchMapActivity.class);
+		Intent intent = new Intent(MatchGroupInfoActivity.this,
+				MatchNoRunMapActivity.class);
 		startActivity(intent);
 	}
 

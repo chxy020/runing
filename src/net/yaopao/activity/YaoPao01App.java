@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.yaopao.assist.GraphicTool;
 import net.yaopao.assist.LogtoSD;
@@ -27,8 +29,10 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
@@ -53,7 +57,12 @@ public class YaoPao01App extends Application {
 	public static GraphicTool graphicTool ;
 	
 	public static final String forceJumpAction = "Jump.action";//任意页面跳转到比赛页面的广播
-
+	
+	  //测试代码
+	Timer jumptimTimer = new Timer();
+	int jumpTime = 15;
+	  //测试代码
+	
 	@SuppressLint("NewApi")
 	@Override
 	public void onCreate() {
@@ -71,8 +80,8 @@ public class YaoPao01App extends Application {
 		voice = new VoiceUtil();
 		graphicTool = new  GraphicTool(getResources());
 		//注册广播  
-//        registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
+        startJumpTimer();
 	};
 
 	private void initGPS() {
@@ -979,10 +988,37 @@ public class YaoPao01App extends Application {
 				}
 	        }  
 	    };  
+	    //测试代码
+	    TimerTask jumpTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				jumpTime--;
+				if(jumpTime==0){
+					//sendForceJumpBraodcast("");
+				}
+			}
+		};
+		
+		 public void startJumpTimer(){
+			 jumptimTimer.schedule(jumpTask,  0, 1000);
+		 }
+		  //测试代码
 	    
-	    public void sendForceJumpBraodcast(){
-			 Intent intent = new Intent(forceJumpAction);
-				intent.putExtra("data", "jumpToMatch");
-				sendBroadcast(intent);
-		}
+	    
+	    public  void ForceGoMatchPage(String target){
+	    	Intent intent = new Intent(forceJumpAction);
+	    	intent.putExtra("action", target);//这里的参数表明跳转到那个页面
+	    	
+	        if("countdown".equals(target)){
+	        	//倒计时
+	        	//这里添加页面初始化参数
+	        	
+	        } else if("finishTeam".equals(target)){
+	        	//结束整队比赛
+	        	// kApp.isbaton = 0;
+	        	//intent.putExtra("data", target);//这里添加页面初始化参数
+	        }
+	        sendBroadcast(intent);
+	    }
 }

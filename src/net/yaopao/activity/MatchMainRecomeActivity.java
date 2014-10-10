@@ -386,7 +386,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 				break;
 			case MotionEvent.ACTION_UP:
 				Intent intent = new Intent(MatchMainRecomeActivity.this,
-						MatchScoreListActivity.class);
+						MatchGroupListActivity.class);
 				startActivity(intent);
 
 				break;
@@ -406,11 +406,11 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 				}
 				if(isInTakeOverZone != -1){
 					Intent intent = new Intent(MatchMainRecomeActivity.this,
-							MatchRelayActivity.class);
+							MatchGiveRelayActivity.class);
 					startActivity(intent);
 	            }else{
 	            	Intent intent = new Intent(MatchMainRecomeActivity.this,
-							MatchRelayActivity.class);
+	            			MatchGiveRelayActivity.class);
 					startActivity(intent);
 	            }
 
