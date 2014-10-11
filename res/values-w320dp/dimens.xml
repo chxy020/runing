@@ -9,6 +9,7 @@
     <dimen name="font_size7">15dp</dimen>
     <dimen name="font_size8">10dp</dimen>
     <dimen name="font_size9">12dp</dimen>
+    <dimen name="font_size10">23dp</dimen>
     <dimen name="margin1">6dp</dimen>
     <dimen name="margin2">20dp</dimen>
     <dimen name="margin3">40dp</dimen>

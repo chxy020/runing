@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    
+
+    <TextView
+        android:id="@+id/congratulation_team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin10"
+        android:text="恭喜要跑一队!"
+        android:textSize="@dimen/font_size10"
+         />
+    <TextView
+        android:id="@+id/complete_team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="@dimen/margin2"
+         android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/congratulation_team"
+        android:text="完成24小时接力赛！"
+        android:textSize="@dimen/font_size10"
+         />
+
+    <RelativeLayout
+        android:id="@+id/match_score"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/recording_List_main_height"
+        android:layout_marginTop="@dimen/margin2"
+        android:layout_below="@id/complete_team" >
+
+        <TextView
+            android:id="@+id/match_list_mileage_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin1"
+            android:text="成绩为:"
+             android:textSize="@dimen/font_size10"
+         />
+
+        <LinearLayout
+            android:id="@+id/tip_team"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/match_list_mileage_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin1"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/match_milage_num1"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="@dimen/main_num_height"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/match_milage_num2"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="@dimen/main_num_height"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/match_milage_num3"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="@dimen/main_num_height"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/match_milage_num4"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="@dimen/main_num_height" 
+                android:background="@drawable/r_0"
+                />
+
+            <ImageView
+                android:id="@+id/match_milage_dot"
+                android:layout_width="@dimen/small_height"
+                android:layout_height="@dimen/main_num_height"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginRight="-4dp"
+                android:background="@drawable/r_dot"
+                 />
+
+            <ImageView
+                android:id="@+id/match_milage_dec1"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="@dimen/main_num_height" 
+                android:background="@drawable/r_0"
+                />
+
+            <ImageView
+                android:id="@+id/match_milage_dec2"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="@dimen/main_num_height" 
+                android:background="@drawable/r_0"
+                />
+
+            <ImageView
+                android:id="@+id/match_milage_km"
+                android:layout_width="@dimen/common_height"
+                android:layout_height="@dimen/main_num_height"
+                android:layout_marginLeft="@dimen/margin1" 
+                android:background="@drawable/r_km"/>
+        </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/tip_team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/match_score"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin3"
+        android:text="记得截屏记录哦~~~"
+        android:textSize="@dimen/font_size10"
+         />
+    
+		
+         
+</RelativeLayout>

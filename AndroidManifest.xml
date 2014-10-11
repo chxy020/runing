@@ -129,6 +129,9 @@
          <activity
             android:name="net.yaopao.activity.HelperNetworkActivity"
             android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.MatchFinishTeamActivity"
+            android:screenOrientation="portrait" />
           <receiver android:name="net.yaopao.listener.NetworkStateReceiver">  
             <intent-filter>  
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
