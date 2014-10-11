@@ -6,12 +6,20 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.alibaba.fastjson.JSON;
+
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
+import net.yaopao.assist.Constants;
 import net.yaopao.assist.GraphicTool;
 import net.yaopao.assist.LogtoSD;
+import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.db.DBManager;
 import net.yaopao.voice.PlayVoice;
@@ -27,6 +35,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -161,6 +170,8 @@ public class YaoPao01App extends Application {
 					} else {
 						Variables.gpsStatus = 0;
 					}
+					
+					checkSomeSituation();
 					// lts.writeFileToSD("rank: " + rank, "uploadLocation");
 
 				} else {
@@ -179,7 +190,84 @@ public class YaoPao01App extends Application {
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000, 0, locationlisten);
 
 	}
+	void checkSomeSituation(){
+	    //以下必须等待与服务器同步完时间再做
+		if(CNAppDelegate.canStartButNotInStartZone){
+	        if(CNAppDelegate.isInStartZone()){//进入了出发区
+	            //needwy 关闭不在出发区无法出发的窗口，可能关不关都行
+	            CNAppDelegate.canStartButNotInStartZone = false;
+	            CNAppDelegate.ForceGoMatchPage("matchRun_normal");
+	        }
+	    }
+	    if(CNAppDelegate.hasCheckTimeFromServer 
+	    		&& CNAppDelegate.getNowTimeDelta() > 1 
+	    		&& CNAppDelegate.getNowTimeDelta() > CNAppDelegate.match_start_timestamp 
+	    		&& CNAppDelegate.getNowTimeDelta() < CNAppDelegate.match_end_timestamp){
+	        if(CNAppDelegate.isMatch == 1){//参赛
+	        	CNAppDelegate.match_inMatch = true;
+	        }
+	    }
+	    if(CNAppDelegate.hasCheckTimeFromServer 
+	    		&& CNAppDelegate.getNowTimeDelta() > 1 
+	    		&& CNAppDelegate.match_inMatch == true 
+	    		&& CNAppDelegate.getNowTimeDelta() > CNAppDelegate.match_end_timestamp){//比赛结束时间
+	        if(CNAppDelegate.hasFinishTeamMatch == false){
+	        	CNAppDelegate.hasFinishTeamMatch = true;
+	            if(CNAppDelegate.isbaton == 1){
+	                finishMatch();
+	            }else{
+	                CNAppDelegate.ForceGoMatchPage("finishTeam");
+	            }
+	        }
+	    }
+	}
+	void finishMatch(){
+		CNAppDelegate.saveMatchToRecord();
+		CNAppDelegate.timer_one_point.cancel();
+        CNAppDelegate.timer_secondplusplus.cancel();
+        CNAppDelegate.match_timer_report.cancel();
+	    CNAppDelegate.match_deleteHistoryPlist();
+	    new FinishMatchTask().execute("");
+	}
+	private class FinishMatchTask extends AsyncTask<String, Void, Boolean> {
+		private String responseJson;
 
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			List<Map<String,String>> pointList = new ArrayList<Map<String,String>>();
+		    Map<String,String> onepoint = new HashMap<String,String>();
+		    CNGPSPoint4Match gpsPoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
+		    onepoint.put("uptime", ""+gpsPoint.getTime()*1000);
+		    onepoint.put("distanceur", ""+CNAppDelegate.match_totaldis);
+		    onepoint.put("inrunway", ""+gpsPoint.getIsInTrack());
+		    onepoint.put("slat", ""+gpsPoint.getLat());
+		    onepoint.put("slon", ""+gpsPoint.getLon());
+		    onepoint.put("mstate", "2");
+		    pointList.add(onepoint);
+		    String pointJson =JSON.toJSONString(pointList);
+		    String request_params = String.format("uid=%s&mid=%s&gid=%s&longitude=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,pointJson);
+		    Log.v("zc","结束比赛参数 is "+request_params);
+		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.endMatch, request_params);
+			if (responseJson != null && !"".equals(responseJson)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (result) {
+				CNAppDelegate.ForceGoMatchPage("finish");
+			} else {
+			}
+		}
+
+	}
 	@Override
 	public void onTerminate() {
 		super.onTerminate();

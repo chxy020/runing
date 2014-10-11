@@ -33,6 +33,7 @@ public class CNAppDelegate {
 	public static final int kBoundary1 = 10;//偏离赛道界限1，10分钟
 	public static final int kBoundary2 = 60;//偏离赛道界限2，60分钟
 	public static final int kScanTransmitinterval = 10;//交接棒扫描间隔
+	public static final int kShortTime = 3000;//和服务器同步时间要小于
 	//一些变量
 	//地图数据
 	public static String match_track_line;//赛道
@@ -48,6 +49,7 @@ public class CNAppDelegate {
 	public static String mid;
 	public static boolean hasMessage = false;
 	public static int gstate = 0;//是否已经结束比赛
+	public static boolean loginSucceedAndNext = false;//表示已经登录成功准备进行下一步判断
 	//一些时间属性
 	public static int deltaTime;
 	public static long match_before5min_timestamp;

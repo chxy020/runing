@@ -288,7 +288,18 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 						Log.v("wyuser", "下载头像异常="+e.toString());
 						e.printStackTrace();
 					}
-					
+					//登陆成功判断比赛信息
+					JSONObject dic = rt.getJSONObject("match");
+					if(dic != null){
+						CNAppDelegate.matchDic = dic;
+						CNAppDelegate.uid = Variables.userinfo.getString("uid");
+						CNAppDelegate.gid = dic.getString("gid");
+						CNAppDelegate.mid = dic.getString("mid");
+						CNAppDelegate.isMatch = dic.getIntValue("ismatch");
+						CNAppDelegate.isbaton = dic.getIntValue("isbaton");
+						CNAppDelegate.gstate = dic.getIntValue("gstate");
+						CNAppDelegate.loginSucceedAndNext = true;
+		            }
 					setResult(Activity.RESULT_OK);
 					LoginActivity.this.finish();
 					//Toast.makeText(LoginActivity.this, "登录成功",	Toast.LENGTH_LONG).show();

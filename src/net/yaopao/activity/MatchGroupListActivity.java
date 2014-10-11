@@ -1,8 +1,20 @@
 package net.yaopao.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.Constants;
+import net.yaopao.assist.NetworkHandler;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -11,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -20,6 +35,24 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	
 	private TextView button_back,label_tname,button_personal,button_km;
 	private ScrollView scrollview;
+	
+	Timer timer_personal;
+	Timer timer_km;
+	int tabIndex = 0;
+	List<ImageView> imageviewList = new ArrayList<ImageView>();
+	List<String> urlList = new ArrayList<String>();
+	TimerTask task_request_personal = new TimerTask() {
+		@Override
+		public void run() {
+			requestPersonal();
+		}
+	};
+	TimerTask task_request_km = new TimerTask() {
+		@Override
+		public void run() {
+			requestKm();
+		}
+	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -27,8 +60,28 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		setContentView(R.layout.activity_match_score_list);
 		initinitSymbol();
 		init();
+		label_tname.setText(CNAppDelegate.matchDic.getString("groupname"));
+		timer_personal.schedule(task_request_personal, 0, CNAppDelegate.kMatchReportInterval);
+//	    self.big_div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(4, 60+IOS7OFFSIZE, 260, 64)];
+//	    self.big_div.distance = 0;
+//	    self.big_div.color = @"red";
+//	    [self.big_div fitToSize];
+//	    [self.view addSubview:self.big_div];
+//	    self.image_km = [[UIImageView alloc]initWithFrame:CGRectMake(self.big_div.frame.origin.x+self.big_div.frame.size.width, 60+IOS7OFFSIZE,52, 64)];
+//	    self.image_km.image = [UIImage imageNamed:@"redkm.png"];
+//	    [self.view addSubview:self.image_km];needwy
 	}
-
+	void requestPersonal(){
+		
+	}
+	void requestKm(){
+		
+	}
+	void clearScrollview(){
+		scrollview.removeAllViews();
+	    imageviewList.clear();
+	    urlList.clear();
+	}
 	private void init() {
 		button_back = (TextView) findViewById(R.id.match_score_list_back);
 		label_tname = (TextView) findViewById(R.id.match_score_list_title);
@@ -49,6 +102,8 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+		timer_personal.cancel();
+	    timer_km.cancel();
 	}
 
 	/**
@@ -81,6 +136,10 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				break;
 			case MotionEvent.ACTION_UP:
 				button_personal.setBackgroundResource(R.color.blue_dark);
+				if(tabIndex == 0)return true;
+	            tabIndex = 0;
+	            timer_km.cancel();
+	            timer_personal.schedule(task_request_personal, 0, CNAppDelegate.kMatchReportInterval);
 				break;
 			}
 			break;
@@ -92,6 +151,10 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				break;
 			case MotionEvent.ACTION_UP:
 				button_km.setBackgroundResource(R.color.blue_dark);
+				if(tabIndex == 1)return true;
+	            tabIndex = 1;
+	            timer_personal.cancel();
+	            timer_km.schedule(task_request_km, 0, CNAppDelegate.kMatchReportInterval);
 				break;
 			}
 			break;
@@ -144,6 +207,94 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 //		// colon.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_colon));
 		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
 				.get(R.drawable.r_km));
+	}
+	private class RequestPersonal extends AsyncTask<String, Void, Boolean> {
+		private String responseJson;
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
+		    Log.v("zc","按照人员查询成绩 is "+request_params);
+		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.listPersonal, request_params);
+			if (responseJson != null && !"".equals(responseJson)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			hideLoading();
+			if (result) {
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupListActivity.this);
+				JSONObject resultDic = JSON.parseObject(responseJson);
+				clearScrollview();
+			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
+//			    self.big_div.distance = distance;
+//			    self.big_div.color = @"red";
+//			    [self.big_div fitToSize];
+//			    self.image_km.frame = CGRectMake(self.big_div.frame.origin.x+self.big_div.frame.size.width, 60+IOS7OFFSIZE,52, 64);needwy
+			    
+			    JSONArray dataList = resultDic.getJSONArray("list");
+			    if(dataList!=null&&dataList.size()>0){
+			        int y_used = 0;
+			        for(int i=0;i<dataList.size();i++){
+			            JSONObject oneRecordDic = dataList.getJSONObject(i);//数值从oneRecordDic得到
+			            
+			            
+			            y_used += 60;
+			        }
+			    }
+			} else {
+				
+			}
+		}
+	}
+	private class RequestKM extends AsyncTask<String, Void, Boolean> {
+		private String responseJson;
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
+		    Log.v("zc","按照公里查询成绩 is "+request_params);
+		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.listKM, request_params);
+			if (responseJson != null && !"".equals(responseJson)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			hideLoading();
+			if (result) {
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupListActivity.this);
+				JSONObject resultDic = JSON.parseObject(responseJson);
+				
+			} else {
+				
+			}
+		}
+	}
+	void displayLoading(){
+	    disableAllButton();
+	}
+	void hideLoading(){
+	    enableAllButton();
+	}
+	void disableAllButton(){
+	}
+	void enableAllButton(){
 	}
 	
 }

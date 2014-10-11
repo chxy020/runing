@@ -15,6 +15,7 @@ import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,6 +63,37 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_finish);
 		initView();
+	    if(Variables.avatar != null){
+	    	image_avatar.setImageBitmap(Variables.avatar);
+	    }
+	    label_username.setText(Variables.userinfo.getString("nickname"));
+	    label_teamname.setText(CNAppDelegate.matchDic.getString("groupname"));
+	    
+	    double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
+	    double match_totaldis = this_dis+CNAppDelegate.match_historydis;
+	    int speed_second;
+	    if(match_totaldis < 1){
+	        speed_second = 0;
+	    }else{
+	        speed_second = (int) (1000*(CNAppDelegate.match_historySecond/match_totaldis));
+	    }
+//	    CNDistanceImageView* big_div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(-2.5, 138, 325, 80)];
+//	    big_div.distance = (match_totaldis+5)/1000.0;
+//	    big_div.color = @"white";
+//	    [big_div fitToSize];
+//	    [self.view addSubview:big_div];
+//	    
+//	    CNTimeImageView* tiv = [[CNTimeImageView alloc]initWithFrame:CGRectMake(10, 245+IOS7OFFSIZE, 140, 32)];
+//	    tiv.time = kApp.match_historySecond;
+//	    tiv.color = @"white";
+//	    [tiv fitToSize];
+//	    [self.view addSubview:tiv];
+//	    
+//	    CNSpeedImageView* siv = [[CNSpeedImageView alloc]initWithFrame:CGRectMake(190, 245+IOS7OFFSIZE, 100, 32)];
+//	    siv.time = speed_second;
+//	    siv.color = @"white";
+//	    [siv fitToSize];
+//	    [self.view addSubview:siv];needwy
 	}
 	private void initView() {
 		image_avatar = (ImageView) findViewById(R.id.match_head);
@@ -143,6 +175,14 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				if(CNAppDelegate.hasFinishTeamMatch){//比赛已经结束
+			        Intent intent = new Intent(MatchFinishActivity.this,
+	        				MatchFinishTeamActivity.class);
+	        		startActivity(intent);
+			    }else{
+			        Intent intent = new Intent(MatchFinishActivity.this,MatchGroupInfoActivity.class);
+	        		startActivity(intent);
+			    }
 				break;
 			}
 			break;

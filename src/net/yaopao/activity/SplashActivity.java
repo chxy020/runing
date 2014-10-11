@@ -142,14 +142,7 @@ public class SplashActivity extends BaseActivity {
 						CNAppDelegate.isMatch = dic.getIntValue("ismatch");
 						CNAppDelegate.isbaton = dic.getIntValue("isbaton");
 						CNAppDelegate.gstate = dic.getIntValue("gstate");
-		                if(CNAppDelegate.gstate == 2){//已经结束比赛了且时间在比赛进行中
-		                	CNAppDelegate.hasFinishTeamMatch = true;
-		                }else{
-		                    if(CNAppDelegate.isMatch == 1){
-//		                        doRequest_checkServerTime();
-//		                        [CNAppDelegate popupWarningCheckTime];needwy
-		                    }
-		                }
+						CNAppDelegate.loginSucceedAndNext = true;
 		            }
 					
 					

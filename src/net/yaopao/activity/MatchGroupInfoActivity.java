@@ -69,6 +69,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_watch);
+		from = getIntent().getExtras().getString("from");
 		mapView = (MapView) findViewById(R.id.match_watch_map);
 		mapView.onCreate(savedInstanceState);
 		mapView.setOnTouchListener(this);
