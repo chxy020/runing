@@ -32,8 +32,6 @@
         android:layout_height="@dimen/match_bottom_height"
         android:layout_marginTop="@dimen/margin10" >
 
-
-
         <RelativeLayout
             android:id="@+id/out_delay_tip_layout"
             android:layout_width="match_parent"

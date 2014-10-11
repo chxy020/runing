@@ -15,7 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchGroupListActivity extends BaseActivity implements OnTouchListener {
+public class MatchFinishTeamActivity extends BaseActivity implements OnTouchListener {
 	
 	
 	private TextView button_back,label_tname,button_personal,button_km;
@@ -77,10 +77,9 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			//点击队员
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				button_personal.setBackgroundResource(R.color.gray_dark);
 				break;
 			case MotionEvent.ACTION_UP:
-				button_personal.setBackgroundResource(R.color.blue_dark);
+				finish();
 				break;
 			}
 			break;
@@ -88,10 +87,9 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			//点击里程
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				button_km.setBackgroundResource(R.color.gray_dark);
 				break;
 			case MotionEvent.ACTION_UP:
-				button_km.setBackgroundResource(R.color.blue_dark);
+				finish();
 				break;
 			}
 			break;
