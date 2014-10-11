@@ -22,6 +22,7 @@ import net.yaopao.assist.LogtoSD;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.db.DBManager;
+import net.yaopao.match.track.TrackData;
 import net.yaopao.voice.PlayVoice;
 import net.yaopao.voice.VoiceUtil;
 import android.annotation.SuppressLint;
@@ -80,6 +81,8 @@ public class YaoPao01App extends Application {
 		Log.v("wy", "app");
 		Variables.pid = getImeiCode();
 		Variables.ua = this.getOptVer() + ",a_0.9.1";
+		CNAppDelegate.geosHandler = new TrackData();
+		CNAppDelegate.geosHandler.read("TrackData.properties");
 		Log.v("wy", "pid=" + Variables.pid + " ua=" + Variables.ua);
 		getPreference();
 		initGPS();

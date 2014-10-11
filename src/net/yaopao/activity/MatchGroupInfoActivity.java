@@ -323,6 +323,17 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			if (result) {
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupInfoActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
+				if(resultDic.getJSONObject("announcement")!=null&&!resultDic.getJSONObject("announcement").isEmpty()){
+		            JSONObject messageDic = resultDic.getJSONObject("announcement");
+		            int isann = messageDic.getIntValue("isann");
+		            if(isann == 0){
+		            	CNAppDelegate.hasMessage = false;
+		            }else{
+		            	CNAppDelegate.hasMessage = true;
+		            }
+		        }
+				
+				
 				double distance = resultDic.getDoubleValue("distancegr");
 			    
 //			    self.div.distance = (distance+5)/1000.0;
