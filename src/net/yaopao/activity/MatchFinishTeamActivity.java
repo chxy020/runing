@@ -41,6 +41,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	private ImageView mSliderImage2 = null;
 	
 	
+	private TextView match_fininsh_confirm;
 //	private TextView button_back,label_tname,button_personal,button_km;
 //	private ScrollView scrollview;
 	@Override
@@ -49,12 +50,12 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_team_finish);
 //		initinitSymbol();
-//		init();
+		init();
 		initViewPager();
 	}
 
 	private void init() {
-//		button_back = (TextView) findViewById(R.id.match_score_list_back);
+		match_fininsh_confirm = (TextView) findViewById(R.id.match_fininsh_confirm);
 //		label_tname = (TextView) findViewById(R.id.match_score_list_title);
 //		button_personal = (TextView) findViewById(R.id.match_score_list_personal);
 //		button_km = (TextView) findViewById(R.id.match_score_list_mileage);
@@ -87,16 +88,15 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
-//		case R.id.match_score_list_back:
-//			//返回
-//			switch (action) {
-//			case MotionEvent.ACTION_DOWN:
-//				break;
-//			case MotionEvent.ACTION_UP:
-//				finish();
-//				break;
-//			}
-//			break;
+		case R.id.match_fininsh_confirm:
+			//返回
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				break;
+			}
+			break;
 //		case R.id.match_score_list_personal:
 //			//点击队员
 //			switch (action) {

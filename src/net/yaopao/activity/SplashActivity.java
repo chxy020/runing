@@ -60,11 +60,11 @@ public class SplashActivity extends BaseActivity {
 		setContentView(R.layout.splash);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				Intent mainIntent = new Intent(SplashActivity.this,
-						MainActivity.class);
 //				Intent mainIntent = new Intent(SplashActivity.this,
-//						MatchFinishTeamActivity.class);
-//				SplashActivity.this.startActivity(mainIntent);
+//						MainActivity.class);
+				Intent mainIntent = new Intent(SplashActivity.this,
+						MatchFinishTeamActivity.class);
+				SplashActivity.this.startActivity(mainIntent);
 				SplashActivity.this.finish();
 			}
 		}, Constants.SPLASH_DISPLAY_LENGHT);
