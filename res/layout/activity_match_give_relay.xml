@@ -55,6 +55,7 @@
         android:layout_height="@dimen/sport_set_traget_width"
         android:layout_below="@id/relay_wait_head_layout"
         android:layout_marginTop="@dimen/margin3" 
+        android:visibility="gone"
         >
 
         <TextView
@@ -83,5 +84,30 @@
             android:textColor="@color/white" />
 	</RelativeLayout>
       
+    </RelativeLayout>
+<RelativeLayout
+        android:id="@+id/relay_wait_relay_head"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_traget_width"
+        android:layout_marginBottom="@dimen/margin10"
+        android:layout_alignParentBottom="true"
+        >
+
+        <ImageView
+            android:id="@+id/relay_wait_head"
+            android:layout_width="@dimen/head_hight1"
+            android:layout_height="@dimen/head_hight1"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/avatar_default" />
+
+        <TextView
+            android:id="@+id/relay_wait_relay_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@+id/relay_wait_head"
+            android:layout_centerHorizontal="true"
+            android:text="昵 称"
+            android:textColor="@color/white"
+             />
     </RelativeLayout>
 </RelativeLayout>

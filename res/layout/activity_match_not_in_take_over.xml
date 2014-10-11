@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:theme="@android:style/Theme.NoTitleBar" >
+
+    <ImageView
+        android:id="@+id/relay_gps_status"
+        android:layout_width="@dimen/small_height"
+        android:layout_height="@dimen/small_height"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin1"
+        android:background="@drawable/gps_3" />
+
+    <TextView
+        android:id="@+id/relay_gps"
+        android:layout_width="@dimen/common_height"
+        android:layout_height="@dimen/small_height"
+        android:layout_marginLeft="@dimen/margin1"
+        android:layout_toLeftOf="@id/relay_gps_status"
+        android:text="GPS"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size2"
+        android:textStyle="bold" />
+    <!-- 头部布局1 -->
+
+    <RelativeLayout
+        android:id="@+id/relay_header_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/match_bottom_height"
+        android:layout_marginTop="@dimen/margin10" >
+
+
+
+        <RelativeLayout
+            android:id="@+id/out_delay_tip_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/match_bottom_height"
+            android:visibility="visible" >
+
+            <TextView
+                android:id="@+id/out_delay_tip1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:gravity="center"
+                android:text="未进入交接区，无法交接棒"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size3" />
+
+            <TextView
+                android:id="@+id/out_delay_tip2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:layout_below="@id/out_delay_tip1"
+                android:gravity="center"
+                android:text="坚持一下，完成你的赛程！"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/out_delay_tip_back"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:layout_below="@id/out_delay_tip2"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/margin5"
+                android:background="@color/blue_dark"
+                android:gravity="center"
+                android:text="返回"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 可见性和上边的保持一致 -->
+
+    <TextView
+        android:id="@+id/relay_end"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_height"
+        android:layout_below="@id/relay_header_layout1"
+        android:gravity="center"
+        android:text="提前结束跑队的赛程"
+        android:textColor="@color/white"
+        android:visibility="visible" />
+
+
+    <RelativeLayout
+        android:id="@+id/relay_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_traget_width"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin7" >
+
+        <ImageView
+            android:id="@+id/relay_head"
+            android:layout_width="@dimen/head_hight1"
+            android:layout_height="@dimen/head_hight1"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/avatar_default" />
+
+        <TextView
+            android:id="@+id/relay_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@+id/relay_head"
+            android:layout_centerHorizontal="true"
+            android:text="昵 称"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

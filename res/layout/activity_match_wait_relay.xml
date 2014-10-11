@@ -3,9 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@android:style/Theme.NoTitleBar"
-    android:background="@color/black" >
-
+    android:background="@color/black"
+    android:theme="@android:style/Theme.NoTitleBar" >
+ <ImageView 
+     android:id="@+id/relay_anim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/match_relay_animation"
+        android:visibility="gone"
+        />
+  <RelativeLayout 
+      android:id="@+id/relay_main"
+      android:layout_width="match_parent"
+        android:layout_height="match_parent"
+      >
     <ImageView
         android:id="@+id/relay_wait_gps_status"
         android:layout_width="@dimen/small_height"
@@ -29,7 +40,7 @@
         android:id="@+id/relay_wait_head_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_traget_width"
-        android:layout_marginTop="@dimen/margin10" >
+        android:layout_marginTop="@dimen/margin3" >
 
         <ImageView
             android:id="@+id/relay_wait_head"
@@ -39,22 +50,21 @@
             android:background="@drawable/avatar_default" />
 
         <TextView
-             android:id="@+id/relay_wait_nickname"
+            android:id="@+id/relay_wait_nickname"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/common_height"
             android:layout_below="@+id/relay_wait_head"
             android:layout_centerHorizontal="true"
             android:text="昵 称"
-            android:textColor="@color/white"
-             />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relay_wait_bottom"
+        android:id="@+id/relay_wait_back_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sport_set_traget_width"
         android:layout_below="@id/relay_wait_head_layout"
-        android:layout_marginTop="@dimen/margin3" 
+        android:layout_marginTop="@dimen/margin2" 
         >
 
         <TextView
@@ -62,26 +72,53 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/match_countdown_num_width"
             android:layout_centerHorizontal="true"
-            android:text="持棒队员尚未进入交接区"
             android:gravity="center_vertical"
+            android:text="持棒队员尚未进入交接区"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_size3"
-            android:textStyle="bold" 
-            android:textColor="@color/white"/>
-	<RelativeLayout 
-	   android:id="@+id/relay_wait_back"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/relay_wait_back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/relay_wait_desc"
-            android:background="@color/blue_dark"
-	    >
-	      <TextView
+            android:background="@color/blue_dark" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:text="返回"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relay_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sport_set_traget_width"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin3"
+        android:visibility="gone"
+         >
+
+        <ImageView
+            android:id="@+id/relay_head"
+            android:layout_width="@dimen/head_hight1"
+            android:layout_height="@dimen/head_hight1"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/avatar_default" />
+
+        <TextView
+            android:id="@+id/relay_nickname"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_centerInParent="true"
-            android:text="返回"
+            android:layout_height="@dimen/common_height"
+            android:layout_below="@+id/relay_head"
+            android:layout_centerHorizontal="true"
+            android:text="昵 称"
             android:textColor="@color/white" />
-	</RelativeLayout>
-      
+    </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
