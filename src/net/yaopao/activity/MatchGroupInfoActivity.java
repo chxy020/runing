@@ -6,7 +6,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
@@ -23,8 +25,13 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		OnMapClickListener {
 	private MapView mapView;
 	private AMap aMap;
-	private RelativeLayout scoreV;
-	private RelativeLayout batonV;
+	private RelativeLayout button_list;
+	private RelativeLayout button_message;
+	private RelativeLayout button_me;
+	private ImageView button_relay;
+	
+	private ImageView image_avatar;
+	private TextView label_uname,label_tName,button_back,label_date,label_time,label_pspeed,label_avr_speed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +46,26 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 
 	private void init() {
 		setUpMap();
-		scoreV = (RelativeLayout) findViewById(R.id.match_watch_score);
-		batonV = (RelativeLayout) findViewById(R.id.match_watch_baton);
+		button_list = (RelativeLayout) findViewById(R.id.match_watch_score);
+		button_message = (RelativeLayout) findViewById(R.id.match_watch_message);
+		button_me = (RelativeLayout) findViewById(R.id.match_watch_user);
+		
+		button_relay = (ImageView) findViewById(R.id.main_start);
+		image_avatar = (ImageView) findViewById(R.id.match_watch_head);		
+		
+		label_uname = (TextView) findViewById(R.id.username);
+		label_tName = (TextView) findViewById(R.id.match_watch_title);
+		button_back = (TextView) findViewById(R.id.button_back);
+		label_date = (TextView) findViewById(R.id.match_watch_date);
+		label_time = (TextView) findViewById(R.id.match_watch_time);
+		label_pspeed = (TextView) findViewById(R.id.match_watch_pspeed);
+		label_avr_speed = (TextView) findViewById(R.id.match_watch_avg_speed);
+		
 
-		scoreV.setOnTouchListener(this);
-		batonV.setOnTouchListener(this);
+		button_list.setOnTouchListener(this);
+		button_message.setOnTouchListener(this);
+		button_me.setOnTouchListener(this);
+		button_relay.setOnTouchListener(this);
 	}
 
 	/**
@@ -127,7 +149,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				break;
 			}
 			break;
-		case R.id.match_watch_baton:
+		case R.id.match_watch_message:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;

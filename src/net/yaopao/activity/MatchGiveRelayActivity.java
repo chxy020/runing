@@ -20,7 +20,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements OnTouchListe
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_match_relay);
+		setContentView(R.layout.activity_match_give_relay);
 		init();
 	}
 

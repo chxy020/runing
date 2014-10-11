@@ -88,6 +88,8 @@
     <dimen name="list_dot_width">8dp</dimen>
     
      <dimen name="one_date_width">160dp</dimen>
+     
+      <dimen name="match_fun_height">181dp</dimen>
 	
     <!-- chenxy add --><dimen name="sport_size_5">5dp</dimen>
     <dimen name="sport_size_15">15dp</dimen>
