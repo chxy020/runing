@@ -41,6 +41,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	private ImageView mSliderImage2 = null;
 	
 	
+	private TextView button_ok,label_tname,label_tname2;
 //	private TextView button_back,label_tname,button_personal,button_km;
 //	private ScrollView scrollview;
 	@Override
@@ -49,12 +50,13 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_team_finish);
 //		initinitSymbol();
-//		init();
+		init();
 		initViewPager();
 	}
 
 	private void init() {
-//		button_back = (TextView) findViewById(R.id.match_score_list_back);
+		label_tname = (TextView) findViewById(R.id.match_score_list_title);
+		button_ok = (TextView) findViewById(R.id.match_fininsh_confirm);
 //		label_tname = (TextView) findViewById(R.id.match_score_list_title);
 //		button_personal = (TextView) findViewById(R.id.match_score_list_personal);
 //		button_km = (TextView) findViewById(R.id.match_score_list_mileage);
@@ -87,16 +89,15 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
-//		case R.id.match_score_list_back:
-//			//返回
-//			switch (action) {
-//			case MotionEvent.ACTION_DOWN:
-//				break;
-//			case MotionEvent.ACTION_UP:
-//				finish();
-//				break;
-//			}
-//			break;
+		case R.id.match_fininsh_confirm:
+			//返回
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				break;
+			}
+			break;
 //		case R.id.match_score_list_personal:
 //			//点击队员
 //			switch (action) {
@@ -178,10 +179,8 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			this.mInflater = this.getLayoutInflater();
 			
 			View team_finish1 = mInflater.inflate(R.layout.activity_match_team_finish1,null);
-//			ImageView disDot = (ImageView) totalDis.findViewById(R.id.main_milage_dot);
-//			ImageView disKm = (ImageView) totalDis.findViewById(R.id.main_milage_km);
-//			disDot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
-//			disKm.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+			
+			 label_tname2 = (TextView) team_finish1.findViewById(R.id.congratulation_team);
 			
 			View team_finish2 = mInflater.inflate(R.layout.activity_match_team_finish2, null);
 			
