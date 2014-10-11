@@ -1,5 +1,7 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LoadingDialog;
@@ -411,7 +413,31 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		mMainSetting.setOnClickListener(this);
 		mMessageLayout.setOnClickListener(this);
 	}
-
+	void gotoJSPage(){
+		Intent teamIntent = new Intent(MainActivity.this,
+				WebViewActivity.class);
+		teamIntent.putExtra("net.yaopao.activity.PageUrl",
+				"team_index.html");
+		startActivity(teamIntent);
+	}
+	void shouldStartButNot(){
+	    Toast.makeText(this, "你未能正常开始比赛，请重新登录", Toast.LENGTH_LONG).show();
+	    CNAppDelegate.match_isLogin = 0;
+	    
+	    Intent intent = new Intent(this,LoginActivity.class);
+		Variables.islogin=3;
+		DataTool.setUid(0);
+		Variables.headUrl="";
+		if (Variables.avatar!=null) {
+			Variables.avatar=null;
+		}
+		Variables.userinfo = null;
+		Variables.matchinfo = null;
+		startActivity(intent);
+	}
+	void gotoScorePage(){
+		
+	}
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
@@ -434,19 +460,41 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			break;
 
 		case R.id.main_fun_macth:
-			
-		     Intent mainIntent = new
-			 Intent(MainActivity.this, MatchCountdownActivity.class);
-			 MainActivity.this.startActivity(mainIntent);
-			 
 			// 24小时比赛跳转页面判定,chenxy add
 			// 先判断比赛是否开始了,没开始都进web页面,
 			// 如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-//			Intent teamIntent = new Intent(MainActivity.this,
-//					WebViewActivity.class);
-//			teamIntent.putExtra("net.yaopao.activity.PageUrl",
-//					"team_index.html");
-//			startActivity(teamIntent);
+			
+			
+			if(CNAppDelegate.match_isLogin == 0){//如果没登录，进宣宇界面
+                gotoJSPage();
+            }else{//登录了
+                String matchstage = CNAppDelegate.getMatchStage();
+                if(matchstage.equals("beforeMatch")){//赛前5分钟还要之前
+                    gotoJSPage();
+                }else if(matchstage.equals("closeToMatch")){//赛前5分钟到比赛正式开始
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        shouldStartButNot();
+                    }else{
+                        gotoJSPage();
+                    }
+                }else if(matchstage.equals("isMatching")){//正式比赛时间
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        if(CNAppDelegate.hasFinishTeamMatch){//提前结束比赛了
+                            gotoScorePage();
+                        }else{
+                            shouldStartButNot();
+                        }
+                    }else{
+                        gotoJSPage();
+                    }
+                }else{//赛后
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        gotoScorePage();
+                    }else{
+                        gotoJSPage();
+                    }
+                }
+            }
 
 			break;
 		case R.id.main_setting:

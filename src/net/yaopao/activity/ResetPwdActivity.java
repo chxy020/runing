@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
@@ -230,6 +231,8 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
 					DataTool.setUid(Variables.uid);
 					Variables.islogin = 1;
+					CNAppDelegate.match_isLogin = 1;
+					
 					
 					Variables.userinfo =  rt.getJSONObject("userinfo");
 					Variables.matchinfo =  rt.getJSONObject("match");

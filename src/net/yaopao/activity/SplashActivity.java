@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
+import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
@@ -117,6 +118,7 @@ public class SplashActivity extends BaseActivity {
 				case 0:
 					// 登录成功，初始化用户信息,比赛信息
 					Variables.islogin = 1;
+					CNAppDelegate.match_isLogin = 1;
 					Variables.userinfo =  rt.getJSONObject("userinfo");
 					Variables.matchinfo =  rt.getJSONObject("match");
 					// 下载头像
@@ -129,6 +131,28 @@ public class SplashActivity extends BaseActivity {
 						Log.v("wyuser", "下载头像异常="+e.toString());
 						e.printStackTrace();
 					}
+					//登陆成功判断比赛信息
+					JSONObject dic = rt.getJSONObject("match");
+					if(dic != null){
+						CNAppDelegate.matchDic = dic;
+		                //比赛信息就不保存到本地了，因为认为比赛前必须要经历登录或者手动登录这个过程
+						CNAppDelegate.uid = Variables.userinfo.getString("uid");
+						CNAppDelegate.gid = dic.getString("gid");
+						CNAppDelegate.mid = dic.getString("mid");
+						CNAppDelegate.isMatch = dic.getIntValue("ismatch");
+						CNAppDelegate.isbaton = dic.getIntValue("isbaton");
+						CNAppDelegate.gstate = dic.getIntValue("gstate");
+		                if(CNAppDelegate.gstate == 2){//已经结束比赛了且时间在比赛进行中
+		                	CNAppDelegate.hasFinishTeamMatch = true;
+		                }else{
+		                    if(CNAppDelegate.isMatch == 1){
+//		                        doRequest_checkServerTime();
+//		                        [CNAppDelegate popupWarningCheckTime];needwy
+		                    }
+		                }
+		            }
+					
+					
 					break;
 				case -7:
 					//设备已在其他设备登陆

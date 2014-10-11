@@ -15,7 +15,7 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class MatchGiveRelayActivity extends BaseActivity implements OnTouchListener {
 	private ImageView backV;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);

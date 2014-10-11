@@ -10,6 +10,8 @@ import java.util.List;
 
 import net.yaopao.activity.SportRecordActivity;
 import net.yaopao.activity.YaoPao01App;
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
@@ -94,6 +96,71 @@ public class DBManager {
 							Variables.stamp, statusIndex, Variables.temp,
 							Variables.utime, Variables.weather,Variables.points,
 							Variables.sportty,Variables.hassportpho,Variables.sport_pho,
+							new Date().getTime() });
+
+
+			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
+			// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
+			// 使用占位符有效区分了这种情况
+			db.setTransactionSuccessful(); // 设置事务成功完成
+			Log.v("wydb", "insert success");
+			Cursor cursor = db.rawQuery("select last_insert_rowid() from "+ DatabaseHelper.SPORTDATA_TABLE, null);
+			int strid=-1;
+			if (cursor.moveToFirst()){
+				strid = cursor.getInt(0);
+			}
+			return strid;
+		} finally {
+			db.endTransaction(); // 结束事务
+		}
+	}
+	@SuppressLint("NewApi")
+	public int saveOneSportMatch() {
+		if(CNAppDelegate.match_totaldis < 1000){
+			CNAppDelegate.match_score = 2;
+	    }else{
+	        int meter = (int)CNAppDelegate.match_totaldis % 1000;
+	        if(meter > 500){
+	        	CNAppDelegate.match_score += 4;
+	        }
+	    }
+	    //计算点序列
+	    StringBuffer pointString = new StringBuffer();
+	    for(int i=0;i<CNAppDelegate.match_pointList.size();i++){
+	        CNGPSPoint4Match point = CNAppDelegate.match_pointList.get(i);
+	        if(i == CNAppDelegate.match_pointList.size()-1){
+	        	pointString.append(String.format("%f %f", point.getLon(),point.getLat()));
+	        }else{
+	        	pointString.append(String.format("%f %f,", point.getLon(),point.getLat()));
+	        }
+	    }
+	    
+	    int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
+	    
+	    CNGPSPoint4Match firstPoint = CNAppDelegate.match_pointList.get(0);
+	    long stamp = firstPoint.getTime();
+		// 采用事务处理，确保数据完整性
+		db.beginTransaction(); // 开始事务
+		try {
+			db.execSQL(
+					"INSERT INTO "
+							+ DatabaseHelper.SPORTDATA_TABLE
+							+ " (aheart,distance,rid,heat,hspeed,image_count,"
+							+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,points,"
+							+ "sportty,sportpho,sport_pho_path,"
+							+ "addtime)"
+							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+							+ ",?,?,?"
+							+ ")",
+					new Object[] { 0, CNAppDelegate.match_totaldis,
+							Variables.getRid(), 0,
+							0, 0,
+							0, 0, speed_second,
+							"", 1,
+							2, pointString, 0,
+							stamp, "", 0,
+							CNAppDelegate.match_historySecond*1000, 0,CNAppDelegate.match_score,
+							1,0,"",
 							new Date().getTime() });
 
 
