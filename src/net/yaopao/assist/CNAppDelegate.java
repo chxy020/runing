@@ -32,6 +32,7 @@ public class CNAppDelegate {
 	public static final int kMatchInterval = 2;//两秒取一个点
 	public static final int kBoundary1 = 10;//偏离赛道界限1，10分钟
 	public static final int kBoundary2 = 60;//偏离赛道界限2，60分钟
+	public static final int kScanTransmitinterval = 10;//交接棒扫描间隔
 	//一些变量
 	//地图数据
 	public static String match_track_line;//赛道
@@ -45,6 +46,7 @@ public class CNAppDelegate {
 	public static String uid;
 	public static String gid;
 	public static String mid;
+	public static boolean hasMessage = false;
 	public static int gstate = 0;//是否已经结束比赛
 	//一些时间属性
 	public static int deltaTime;

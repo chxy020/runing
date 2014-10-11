@@ -424,12 +424,12 @@
             android:background="@color/black" />
 
         <LinearLayout
+            android:id="@+id/main_start"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/main_start"
                 android:layout_width="@dimen/main_start_hight"
                 android:layout_height="@dimen/main_start_hight"
                 android:layout_marginLeft="@dimen/margin2"

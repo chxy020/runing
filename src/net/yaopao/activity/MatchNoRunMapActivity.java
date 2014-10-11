@@ -79,7 +79,8 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		
 	}
 	void requestData(){
-		
+		displayLoading();
+		new RequestTask().execute("");
 	}
 	/**
 	 * 设置一些amap的属性
@@ -190,6 +191,9 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchNoRunMapActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
+				if(infoDic.isEmpty()){
+					return;
+				}
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
@@ -219,7 +223,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	}
 	
 	void downloadImage(){
-		
+		new RequestImageTask().execute("");
 	}
 	private class RequestImageTask extends AsyncTask<String, Void, Boolean> {
 		private String responseJson;
@@ -248,12 +252,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		}
 		@Override
 		protected void onPostExecute(Boolean result) {
-			if(result){
-				addAnnotation();
-			}else{
-				
-			}
-			
+			addAnnotation();
 		}
 	}
 	public InputStream getImageStream(String path) throws Exception {
