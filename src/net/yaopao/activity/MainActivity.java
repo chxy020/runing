@@ -1,22 +1,14 @@
 package net.yaopao.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import net.yaopao.assist.CNAppDelegate;
-import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
-import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LoadingDialog;
-import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
-import net.yaopao.match.track.TrackData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,14 +18,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,6 +57,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	
 	long endRequestTime;
 	long startRequestTime;
+	//接收自动登录发送的消息，关闭
+	public static Handler loginHandler;
+	private LoadingDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +91,18 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		}
 
 		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
+		
+		loginHandler  = new Handler() {
+			public void handleMessage(Message msg) {
+				if (msg.what == 1) {
+					if (dialog!=null) {
+						dialog.dismiss();
+					}
+				} 
+				super.handleMessage(msg);
+			}
+		};
+		
 		checkLogin();
 		this.initView();
 		if(CNAppDelegate.loginSucceedAndNext){
@@ -152,6 +157,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			dialog.alertLoginOnOther();
 			Variables.islogin = 0;
 			return;
+		}else if(Variables.islogin == 2){
+			dialog = new LoadingDialog(this);
+			dialog.show();
 		}
 	}
 
@@ -574,6 +582,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
 				.get(R.drawable.r_km));
 	}
+	
+	
+	
 	private class CheckServerTimeTask extends AsyncTask<String, Void, Boolean> {
 		private String responseJson;
 
@@ -618,6 +629,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		}
 
 	}
+	
+	
+	
 	void CloseCheckTime(){
 		//needwy 关闭和服务器同步时间的弹框
 		CNAppDelegate.whatShouldIdo();
