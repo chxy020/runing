@@ -107,9 +107,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		
 		checkLogin();
 		this.initView();
-		if(CNAppDelegate.loginSucceedAndNext){
-			prepare4match();
-		}
+		
 
 		/**
 		 * 测试代码 加载赛道数据，调用jts方法
@@ -145,6 +143,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 	void doRequest_checkServerTime(){
 		startRequestTime = CNAppDelegate.getNowTime1000();
+		Log.v("zc","startRequestTime is "+startRequestTime);
 		new CheckServerTimeTask().execute("");
 	}
 	public static int px2dip(Context context, int pxValue) {
@@ -254,6 +253,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		super.onResume();
 		initLayout();
 		MobclickAgent.onResume(this);
+		if(CNAppDelegate.loginSucceedAndNext){
+			prepare4match();
+		}
 	}
 
 	public void onPause() {
@@ -600,10 +602,14 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				long serverTime = resultDic.getLongValue("systime");
                 endRequestTime = CNAppDelegate.getNowTime1000();
+                Log.v("zc","endRequestTime is "+endRequestTime);
+                Log.v("zc","endRequestTime-startRequestTime is "+(endRequestTime-startRequestTime));
                 if(endRequestTime-startRequestTime < CNAppDelegate.kShortTime){
                     //如果时间满足条件，则delataTime取值确定
                     int deltaTime1000 = (int)(serverTime-(startRequestTime+endRequestTime)/2);//取得毫秒数
+                    Log.v("zc","deltaTime1000 is "+deltaTime1000);
                     CNAppDelegate.deltaTime = (deltaTime1000+500)/1000;
+                    Log.v("zc","CNAppDelegate.deltaTime is "+CNAppDelegate.deltaTime);
                     CNAppDelegate.hasCheckTimeFromServer = true;
                     CloseCheckTime();
                 }else{

@@ -3,6 +3,8 @@ package net.yaopao.activity;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,6 +85,19 @@ public class YaoPao01App extends Application {
 		Variables.ua = this.getOptVer() + ",a_0.9.1";
 		CNAppDelegate.geosHandler = new TrackData();
 		CNAppDelegate.geosHandler.read(CNAppDelegate.kTrackName+".properties");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		 
+		try {
+			CNAppDelegate.match_start_timestamp = sdf.parse(CNAppDelegate.kStartTime).getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		CNAppDelegate.match_before5min_timestamp = CNAppDelegate.match_start_timestamp-5*60;
+		CNAppDelegate.match_end_timestamp = CNAppDelegate.match_start_timestamp+CNAppDelegate.kDuringMinute*60;
+		
+		
 		Log.v("wy", "pid=" + Variables.pid + " ua=" + Variables.ua);
 		getPreference();
 		initGPS();
