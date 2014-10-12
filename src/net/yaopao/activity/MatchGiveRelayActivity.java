@@ -21,7 +21,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			label_user2, label_user3, label_user4, label_myname, tip;
 	private ImageView view_user1, view_user2, view_user3, view_user4, image_me,
 			image_gps;
-
+	
 	private RelativeLayout relay_wait_header_layout1,
 			relay_wait_header_layout2,text_button;
 

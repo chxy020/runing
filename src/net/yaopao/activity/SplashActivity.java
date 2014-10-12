@@ -34,7 +34,7 @@ public class SplashActivity extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		UmengUpdateAgent.update(this);
-		MobclickAgent.updateOnlineConfig( this );
+		MobclickAgent.updateOnlineConfig(this);
 	
 			//测试代码
 			Constants.endpoints=Constants.endpoints1;
@@ -60,12 +60,8 @@ public class SplashActivity extends BaseActivity {
 		setContentView(R.layout.splash);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-//				Intent mainIntent = new Intent(SplashActivity.this,
-//						MainActivity.class);
-				
 				Intent mainIntent = new Intent(SplashActivity.this,
-						MatchGiveRelayActivity.class);
-				SplashActivity.this.startActivity(mainIntent);
+						MainActivity.class);
 				
 				SplashActivity.this.finish();
 			}

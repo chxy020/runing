@@ -1019,11 +1019,13 @@ public final class R {
         public static final int tip_dialog1=0x7f030045;
         public static final int tip_dialog2=0x7f030046;
         public static final int tip_dialog3=0x7f030047;
-        public static final int tip_network=0x7f030048;
-        public static final int umeng_common_download_notification=0x7f030049;
-        public static final int umeng_update_dialog=0x7f03004a;
-        public static final int xlistview_footer=0x7f03004b;
-        public static final int xlistview_header=0x7f03004c;
+        public static final int tip_dialog_not_in=0x7f030048;
+        public static final int tip_dialog_sync_time=0x7f030049;
+        public static final int tip_network=0x7f03004a;
+        public static final int umeng_common_download_notification=0x7f03004b;
+        public static final int umeng_update_dialog=0x7f03004c;
+        public static final int xlistview_footer=0x7f03004d;
+        public static final int xlistview_header=0x7f03004e;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
