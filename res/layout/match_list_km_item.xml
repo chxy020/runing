@@ -38,7 +38,9 @@
                 android:layout_height="@dimen/common_height"
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/margin1"
-                android:src="@drawable/avatar_default" />
+                android:src="@drawable/avatar_default" 
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/match_list_head1"
@@ -46,7 +48,9 @@
                 android:layout_height="@dimen/common_height"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin7"
-                android:src="@drawable/avatar_default" />
+                android:src="@drawable/avatar_default" 
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/list_sport_num2"
@@ -78,6 +82,13 @@
                 android:layout_height="@dimen/list_num_height"
                 android:background="@drawable/r_sec" />
         </LinearLayout>
+         
+    
     </RelativeLayout>
-
+   <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/match_watch_user"
+        android:background="@color/black" >
+        </View>
 </RelativeLayout>

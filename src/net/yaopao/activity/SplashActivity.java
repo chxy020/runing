@@ -63,9 +63,11 @@ public class SplashActivity extends BaseActivity {
 			public void run() {
 //				Intent mainIntent = new Intent(SplashActivity.this,
 //						MainActivity.class);
+				
 				Intent mainIntent = new Intent(SplashActivity.this,
-						MatchFinishTeamActivity.class);
+						MatchGiveRelayActivity.class);
 				SplashActivity.this.startActivity(mainIntent);
+				
 				SplashActivity.this.finish();
 			}
 		}, Constants.SPLASH_DISPLAY_LENGHT);
