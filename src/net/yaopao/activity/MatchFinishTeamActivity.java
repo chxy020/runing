@@ -180,7 +180,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			
 			View team_finish1 = mInflater.inflate(R.layout.activity_match_team_finish1,null);
 			
-			 label_tname2 = (TextView) team_finish1.findViewById(R.id.congratulation_team);
+			label_tname2 = (TextView) team_finish1.findViewById(R.id.congratulation_team);
 			
 			View team_finish2 = mInflater.inflate(R.layout.activity_match_team_finish2, null);
 			

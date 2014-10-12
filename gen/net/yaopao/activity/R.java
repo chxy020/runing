@@ -401,8 +401,8 @@ public final class R {
         public static final int back=0x7f0b0009;
         public static final int button_back=0x7f0b00ed;
         public static final int clause_layout=0x7f0b003e;
-        public static final int complete_team=0x7f0b00e3;
-        public static final int congratulation_team=0x7f0b00e2;
+        public static final int complete_team=0x7f0b00e4;
+        public static final int congratulation_team=0x7f0b00e3;
         public static final int countdown_tip=0x7f0b004c;
         public static final int full_back=0x7f0b0133;
         public static final int full_date=0x7f0b0137;
@@ -503,7 +503,7 @@ public final class R {
         public static final int match_countdown_2=0x7f0b004a;
         public static final int match_countdown_3=0x7f0b004b;
         public static final int match_data=0x7f0b00dd;
-        public static final int match_fininsh_confirm=0x7f0b00df;
+        public static final int match_fininsh_confirm=0x7f0b00e0;
         public static final int match_full_map=0x7f0b00fc;
         public static final int match_full_map_back=0x7f0b00fd;
         public static final int match_gps=0x7f0b0052;
@@ -511,10 +511,10 @@ public final class R {
         public static final int match_head=0x7f0b004e;
         public static final int match_layout=0x7f0b0048;
         public static final int match_list_baton=0x7f0b01cb;
-        public static final int match_list_cursor1=0x7f0b00e0;
-        public static final int match_list_cursor2=0x7f0b00e1;
-        public static final int match_list_head1=0x7f0b01c7;
-        public static final int match_list_head2=0x7f0b01c8;
+        public static final int match_list_cursor1=0x7f0b00e1;
+        public static final int match_list_cursor2=0x7f0b00e2;
+        public static final int match_list_head1=0x7f0b01c8;
+        public static final int match_list_head2=0x7f0b01c7;
         public static final int match_list_km=0x7f0b01c6;
         public static final int match_list_mileage_text=0x7f0b00d0;
         public static final int match_map=0x7f0b0076;
@@ -604,7 +604,7 @@ public final class R {
         public static final int match_recome_top=0x7f0b008b;
         public static final int match_recome_username=0x7f0b008d;
         public static final int match_run_baton=0x7f0b00b2;
-        public static final int match_score=0x7f0b00e4;
+        public static final int match_score=0x7f0b00e5;
         public static final int match_score_list_back=0x7f0b00ce;
         public static final int match_score_list_data=0x7f0b00dc;
         public static final int match_score_list_middle=0x7f0b00d9;
@@ -618,7 +618,7 @@ public final class R {
         public static final int match_time=0x7f0b0053;
         public static final int match_top=0x7f0b004d;
         public static final int match_username=0x7f0b004f;
-        public static final int match_vPager=0x7f0b00de;
+        public static final int match_vPager=0x7f0b00df;
         public static final int match_watch_avg_speed=0x7f0b00f4;
         public static final int match_watch_date=0x7f0b00f0;
         public static final int match_watch_head=0x7f0b00f6;
@@ -757,7 +757,7 @@ public final class R {
         public static final int reset_title=0x7f0b0109;
         public static final int reset_top_bar=0x7f0b0108;
         public static final int reset_veri_code=0x7f0b010f;
-        public static final int scrollview_List=0x7f0b00e7;
+        public static final int scrollview_List=0x7f0b00de;
         public static final int service_back_btn=0x7f0b0111;
         public static final int setting_back_btn=0x7f0b0000;
         public static final int shareBtn=0x7f0b0189;
@@ -852,7 +852,7 @@ public final class R {
         public static final int tip2_set=0x7f0b020b;
         public static final int tip3_cancel=0x7f0b020c;
         public static final int tip_cancle=0x7f0b0207;
-        public static final int tip_team=0x7f0b00e5;
+        public static final int tip_team=0x7f0b00e6;
         public static final int title_bar=0x7f0b0007;
         public static final int to_reg=0x7f0b0016;
         public static final int to_reset=0x7f0b0015;
@@ -929,7 +929,7 @@ public final class R {
         public static final int userinfo_weight=0x7f0b01b7;
         public static final int username=0x7f0b00f7;
         public static final int vPager=0x7f0b01f0;
-        public static final int view_list=0x7f0b00e6;
+        public static final int view_list=0x7f0b00e7;
         public static final int webview_about=0x7f0b0001;
         public static final int webview_clause=0x7f0b0002;
         public static final int webview_service=0x7f0b0112;

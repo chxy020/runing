@@ -147,7 +147,11 @@ android:layout_marginBottom="@dimen/margin1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        
+        <FrameLayout
+            android:id="@+id/scrollview_List"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
     </ScrollView>
     </RelativeLayout>
 
