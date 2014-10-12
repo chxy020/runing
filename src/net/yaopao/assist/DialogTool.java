@@ -263,6 +263,22 @@ public class DialogTool implements OnTouchListener {
 			}
 		});
 	}
+	public void alertNotIntakeOver() {
+		View dialogView = inflater.inflate(R.layout.tip_dialog_not_in, null);
+		dialog.setContentView(dialogView);
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
+		dialog.show();
+	}
+	public void alertSyncTime() {
+		View dialogView = inflater.inflate(R.layout.tip_dialog_sync_time, null);
+		dialog.setContentView(dialogView);
+		p.height = (int) (d.getHeight() * 0.9);
+		p.width = (int) (d.getWidth() * 0.7);
+		dialogWindow.setAttributes(p);
+		dialog.show();
+	}
 
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {

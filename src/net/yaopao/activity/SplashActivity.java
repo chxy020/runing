@@ -35,7 +35,7 @@ public class SplashActivity extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		UmengUpdateAgent.update(this);
-		MobclickAgent.updateOnlineConfig( this );
+		MobclickAgent.updateOnlineConfig(this);
 	
 			//测试代码
 			Constants.endpoints=Constants.endpoints1;
@@ -61,12 +61,8 @@ public class SplashActivity extends BaseActivity {
 		setContentView(R.layout.splash);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-//				Intent mainIntent = new Intent(SplashActivity.this,
-//						MainActivity.class);
-				
 				Intent mainIntent = new Intent(SplashActivity.this,
-						MatchGiveRelayActivity.class);
-				SplashActivity.this.startActivity(mainIntent);
+						MainActivity.class);
 				
 				SplashActivity.this.finish();
 			}
@@ -104,6 +100,7 @@ public class SplashActivity extends BaseActivity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			Log.v("wyuser", "自动登录中");
+			Variables.islogin=2;
 			loginJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.autoLogin, "uid="+Variables.uid);
 			if (loginJson != null && !"".equals(loginJson)) {
 				return true;
@@ -120,7 +117,10 @@ public class SplashActivity extends BaseActivity {
 				Log.v("wypho", "rtCode=" + rtCode);
 				switch (rtCode) {
 				case 0:
+					//登录成功，通知主界面取消等待动画
+					MainActivity.loginHandler.obtainMessage(1).sendToTarget();
 					// 登录成功，初始化用户信息,比赛信息
+					
 					Variables.islogin = 1;
 					CNAppDelegate.match_isLogin = 1;
 					Variables.userinfo =  rt.getJSONObject("userinfo");
@@ -157,10 +157,12 @@ public class SplashActivity extends BaseActivity {
 					DataTool.setUid(0);
 					break;
 				default:
+					Variables.islogin=0;
 					break;
 				}
 
 			} else {
+				Variables.islogin=0;
 				// Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
 				// Toast.LENGTH_LONG).show();
 			}

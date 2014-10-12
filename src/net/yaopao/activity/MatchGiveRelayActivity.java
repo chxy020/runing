@@ -46,6 +46,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	private ImageView button_user1, button_user2, button_user3, button_user4, image_me,
 			image_gps;
 
+
 	private RelativeLayout relay_wait_header_layout1,relay_wait_header_layout2,text_button,view_user1,view_user2,view_user3;
 	
 	String joinid;
