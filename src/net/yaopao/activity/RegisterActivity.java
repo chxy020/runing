@@ -3,6 +3,7 @@ package net.yaopao.activity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;

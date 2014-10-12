@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import net.yaopao.activity.R.drawable;
+import net.yaopao.assist.CNAppDelegate;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +24,9 @@ public class MatchCountdownActivity extends BaseActivity  {
 	private ImageView time2;
 	private ImageView time3;
 	private TextView  countdownTip;
+	
 	private int startSecond = 3;
-	Timer timer = new Timer();
+	Timer timer_countdown;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,74 +37,68 @@ public class MatchCountdownActivity extends BaseActivity  {
 		time2 = (ImageView) findViewById(R.id.match_countdown_2);
 		time3 = (ImageView) findViewById(R.id.match_countdown_3);
 		countdownTip = (TextView) findViewById(R.id.countdown_tip);
-		timer.schedule(task, 0, 1000);
+		
+//	    self.niv = [[CNNumImageView alloc]initWithFrame:CGRectMake(-27.5, 180, 375, 120)];
+//	    [self.view addSubview:self.niv];
+//	    self.niv.num = self.startSecond;
+//	    self.niv.color = @"red";
+//	    [self.niv fitToSize];needwy
+
 		
 	}
 
-	TimerTask task = new TimerTask() {
-		@Override
-		public void run() {
-
-			runOnUiThread(new Runnable() { // UI thread
-				@Override
-				public void run() {
-					startSecond--;
-					int i = startSecond / 100;
-					int j = (startSecond % 100) / 10;
-					int k = (startSecond % 100) % 10;
-					Log.v("wytime", "i=" + i + " j=" + j + " k=" + k);
-					YaoPao01App.graphicTool.updateRedNum(new int[]{i,j,k},new ImageView[]{time1,time2,time3});
-
-					if (startSecond == 0) {
-						Intent intent = new Intent(MatchCountdownActivity.this,
-								MatchMainActivity.class);
-						startActivity(intent);
-						MatchCountdownActivity.this.finish();
-						Toast.makeText(MatchCountdownActivity.this, "stop",	Toast.LENGTH_LONG).show();
-					}
-
-				}
-			});
-		}
-	};
+	
 
 
 
 	@Override
 	protected void onDestroy() {
-		timer.cancel();
 		super.onDestroy();
 	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		TimerTask task_countdown = new TimerTask() {
+			@Override
+			public void run() {
+
+				runOnUiThread(new Runnable() { // UI thread
+					@Override
+					public void run() {
+						//不在出发区提示:
+					    if(CNAppDelegate.isInStartZone() == false){
+					    	countdownTip.setText("你尚未进入出发区，请于倒计时结束前进入出发区，否则将无法开始比赛!");
+					    }else{
+					        countdownTip.setText("已经进入出发区!");
+					    }
+					    startSecond--;
+					    if(startSecond >= 0){
+//					        self.niv.num = self.startSecond;
+//					        self.niv.color = @"red";
+//					        [self.niv fitToSize];needwy
+					    }
+					    if(startSecond == 0){
+					        timer_countdown.cancel();
+					        if(CNAppDelegate.isInStartZone()){//在出发区
+					        	Intent intent = new Intent(MatchCountdownActivity.this,MatchMainActivity.class);
+					    		startActivity(intent);
+					        }else{//不在出发区
+					        	CNAppDelegate.canStartButNotInStartZone = true;
+//					            [CNAppDelegate popupWarningNotInStartZone];needwy
+					        }
+					    }
+						
+					}
+				});
+			}
+		};
+		timer_countdown.schedule(task_countdown, 1000, 1000);
 	}
 
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-//	@Override
-//	public boolean onTouch(View view, MotionEvent event) {
-//		int action = event.getAction();
-//		switch (view.getId()) {
-//		case R.id.countdown_tip:
-//			switch (action) {
-//			case MotionEvent.ACTION_DOWN:
-//				time1.setVisibility(View.VISIBLE);
-//				time1.setBackgroundResource(R.drawable.r_0);
-//				break;
-//			case MotionEvent.ACTION_UP:
-//				time1.setVisibility(View.GONE);
-//				break;
-//			default:
-//				break;
-//			}
-//		}
-//		
-//		
-//		return false;
-//	}
 	
 	
 }

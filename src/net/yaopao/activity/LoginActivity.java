@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
@@ -269,6 +270,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 					//chenxy end
 					
 					Variables.islogin = 1;
+					CNAppDelegate.match_isLogin = 1;
 					Variables.uid = rt.getJSONObject("userinfo").getInteger("uid");
 					DataTool.setUid(Variables.uid);
 					// 登录成功，初始化用户信息,比赛信息
@@ -286,7 +288,18 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 						Log.v("wyuser", "下载头像异常="+e.toString());
 						e.printStackTrace();
 					}
-					
+					//登陆成功判断比赛信息
+					JSONObject dic = rt.getJSONObject("match");
+					if(dic != null){
+						CNAppDelegate.matchDic = dic;
+						CNAppDelegate.uid = Variables.userinfo.getString("uid");
+						CNAppDelegate.gid = dic.getString("gid");
+						CNAppDelegate.mid = dic.getString("mid");
+						CNAppDelegate.isMatch = dic.getIntValue("ismatch");
+						CNAppDelegate.isbaton = dic.getIntValue("isbaton");
+						CNAppDelegate.gstate = dic.getIntValue("gstate");
+						CNAppDelegate.loginSucceedAndNext = true;
+		            }
 					setResult(Activity.RESULT_OK);
 					LoginActivity.this.finish();
 					//Toast.makeText(LoginActivity.this, "登录成功",	Toast.LENGTH_LONG).show();

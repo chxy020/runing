@@ -1,14 +1,16 @@
 package net.yaopao.assist;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import net.yaopao.activity.LoginActivity;
-import net.yaopao.activity.UserInfoActivity;
+import net.yaopao.activity.YaoPao01App;
 import net.yaopao.match.track.TrackData;
 
 import android.content.Context;
@@ -30,6 +32,8 @@ public class CNAppDelegate {
 	public static final int kMatchInterval = 2;//两秒取一个点
 	public static final int kBoundary1 = 10;//偏离赛道界限1，10分钟
 	public static final int kBoundary2 = 60;//偏离赛道界限2，60分钟
+	public static final int kScanTransmitinterval = 10;//交接棒扫描间隔
+	public static final int kShortTime = 3000;//和服务器同步时间要小于
 	//一些变量
 	//地图数据
 	public static String match_track_line;//赛道
@@ -37,11 +41,15 @@ public class CNAppDelegate {
 	public static String match_stringTrackZone;//赛道区域
 	public static String match_stringStartZone;//出发区
 	//队员信息
+	public static JSONObject matchDic;//参赛信息
 	public static int isMatch = 0;//是否参赛
 	public static int isbaton = 0;//是否持棒
 	public static String uid;
 	public static String gid;
 	public static String mid;
+	public static boolean hasMessage = false;
+	public static int gstate = 0;//是否已经结束比赛
+	public static boolean loginSucceedAndNext = false;//表示已经登录成功准备进行下一步判断
 	//一些时间属性
 	public static int deltaTime;
 	public static long match_before5min_timestamp;
@@ -49,7 +57,7 @@ public class CNAppDelegate {
 	public static long match_end_timestamp;
 	//一次跑步
 	public static List<CNGPSPoint4Match> match_pointList;//比赛用存点数组
-	public static int match_isLogin;//比赛是否登录过
+	public static int match_isLogin = 0;//比赛是否登录过
 	public static Map<String,Bitmap> avatarDic;//记录下载过的各种头像，以后通过url访问
 	//和单次跑有关
 	public static double match_startdis;//开始比赛，起跑时距离起点的距离
@@ -102,28 +110,97 @@ public class CNAppDelegate {
 	    }
 	}
 	public static void finishThisRun(){//结束这次跑步
-		
+		CNAppDelegate.isbaton = 0;
+	    CNAppDelegate.saveMatchToRecord();
+	    CNAppDelegate.timer_one_point.cancel();
+	    CNAppDelegate.timer_secondplusplus.cancel();
+	    CNAppDelegate.match_timer_report.cancel();
+	    CNAppDelegate.match_deleteHistoryPlist();
 	}
 	public static void match_save2plist(){//每隔几秒写plist
-	
+		Map<String,String> dic = new HashMap<String,String>();
+		dic.put("match_historydis", ""+CNAppDelegate.match_historydis);
+		dic.put("match_totalDisTeam", ""+CNAppDelegate.match_totalDisTeam);
+		dic.put("match_targetkm", ""+CNAppDelegate.match_targetkm);
+		dic.put("match_historySecond", ""+CNAppDelegate.match_historySecond);
+		dic.put("match_startdis", ""+CNAppDelegate.match_startdis);
+		dic.put("match_currentLapDis", ""+CNAppDelegate.match_currentLapDis);
+		dic.put("match_countPass", ""+CNAppDelegate.match_countPass);
+		if(CNAppDelegate.match_time_last_in_track < 1){
+	    	CNAppDelegate.match_time_last_in_track = CNAppDelegate.getNowTimeDelta();
+	    }
+		dic.put("match_time_last_in_track", ""+CNAppDelegate.match_time_last_in_track);
+		dic.put("match_score", ""+CNAppDelegate.match_score);
+		dic.put("match_km_target_personal", ""+CNAppDelegate.match_km_target_personal);
+		dic.put("match_km_start_time", ""+CNAppDelegate.match_km_start_time);
+		String historyJson = JSON.toJSONString(dic);
+		//needwy 
 	}
-	public static String match_readHistoryPlist(){//每隔几秒写plist
+	public static String match_readHistoryPlist(){//读取preference
+		//needwy
 		return "";
 	}
-	public static void match_deleteHistoryPlist(){//删除记录的plist
-		
+	public static void match_deleteHistoryPlist(){//删除记录的preference
+		//needwy
 	}
 	public static void ForceGoMatchPage(String target){//强制跳转到某个界面
-		
+		YaoPao01App.instance.ForceGoMatchPage(target);
 	}
 	public static void whatShouldIdo(){//启动手机后应该干嘛
-		
+		//先判断时间
+	    String matchstage = CNAppDelegate.getMatchStage();
+	    if(matchstage.equals("beforeMatch")){//赛前5分钟还要之前
+	    	TimerTask task_check_start_match = new TimerTask() {
+				@Override
+				public void run() {
+					check_start_match();
+				}
+			};
+			CNAppDelegate.match_timer_check_countdown.schedule(task_check_start_match, 1000, 1000);
+	    }else if(matchstage.equals("closeToMatch")){//赛前5分钟到比赛正式开始
+	        if(CNAppDelegate.isbaton == 1){//第一棒
+	            CNAppDelegate.ForceGoMatchPage("countdown");
+	        }else{//不是第一棒
+	            CNAppDelegate.ForceGoMatchPage("matchWatch");
+	        }
+	    }else if(matchstage.equals("isMatching")){//正式比赛时间
+	        if(CNAppDelegate.isbaton == 1){//正在跑
+	            //通过plist文件判断是否是崩溃重进
+	            //needwy
+	        	boolean fileexist = true;
+	            if(!fileexist){//没有这个文件，则说明上次不是比赛中闪退的
+	                if(CNAppDelegate.isbaton == 1 && CNAppDelegate.match_totalDisTeam < 1){//如果是第一棒有个特殊条件才能启动，就是必须在出发区
+	                    if(CNAppDelegate.isInStartZone()){
+	                        CNAppDelegate.ForceGoMatchPage("matchRun_normal");
+	                    }else{
+	                    	CNAppDelegate.canStartButNotInStartZone = true;
+//	                        [CNAppDelegate popupWarningNotInStartZone];needwy
+	                    }
+	                }else{
+	                    CNAppDelegate.ForceGoMatchPage("matchRun_normal");
+	                }
+	            }else{
+	            	CNAppDelegate.ForceGoMatchPage("matchRun_crash");
+	            }
+	        }else{//没再跑
+	        	CNAppDelegate.ForceGoMatchPage("matchWatch");
+	        }
+	    }else{//赛后
+	        
+	    }
 	}
 	public static void saveMatchToRecord(){//把比赛记到记录里
-		
+		YaoPao01App.db.saveOneSportMatch();
 	}
 	public static void check_start_match(){
-		
+		if(CNAppDelegate.getNowTimeDelta() >= CNAppDelegate.match_before5min_timestamp){//进入了赛前5分钟
+	        CNAppDelegate.match_timer_check_countdown.cancel();
+	        if(CNAppDelegate.isbaton == 1){//第一棒
+	            CNAppDelegate.ForceGoMatchPage("countdown");
+	        }else{//不是第一棒
+	            CNAppDelegate.ForceGoMatchPage("matchWatch");
+	        }
+	    }
 	}
 	public static boolean isInStartZone(){//判断是否在出发区
 		return true;

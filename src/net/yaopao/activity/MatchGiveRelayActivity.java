@@ -15,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
+
 public class MatchGiveRelayActivity extends BaseActivity implements
 		OnTouchListener {
 	private TextView label_back, label_finish, confirm, cancel, label_user1,

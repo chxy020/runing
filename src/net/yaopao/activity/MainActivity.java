@@ -1,9 +1,19 @@
 package net.yaopao.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
+import net.yaopao.assist.Constants;
+import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.LonLatEncryption;
+import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import net.yaopao.match.track.TrackData;
@@ -11,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
@@ -53,7 +65,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private Uri imageUri;// to store the big bitmap
 	public String upImgJson = "";
 	
-	
+	long endRequestTime;
+	long startRequestTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +100,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
 		checkLogin();
 		this.initView();
+		if(CNAppDelegate.loginSucceedAndNext){
+			prepare4match();
+		}
 
 		/**
 		 * 测试代码 加载赛道数据，调用jts方法
@@ -109,7 +125,21 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		// YaoPao01App.matchReturnTrack();
 		// YaoPao01App.matchWaitGetRelay();
 	}
-
+	void prepare4match(){//登陆成功准备比赛
+		CNAppDelegate.loginSucceedAndNext = false;
+		if(CNAppDelegate.gstate == 2){//已经结束比赛了且时间在比赛进行中
+			CNAppDelegate.hasFinishTeamMatch = true;
+        }else{
+            if(CNAppDelegate.isMatch == 1){
+                doRequest_checkServerTime();
+//                [CNAppDelegate popupWarningCheckTime];needwy
+            }
+        }
+	}
+	void doRequest_checkServerTime(){
+		startRequestTime = CNAppDelegate.getNowTime1000();
+		new CheckServerTimeTask().execute("");
+	}
 	public static int px2dip(Context context, int pxValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (pxValue / scale + 0.5f);
@@ -411,7 +441,34 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		mMainSetting.setOnClickListener(this);
 		mMessageLayout.setOnClickListener(this);
 	}
-
+	void gotoJSPage(){
+		Intent teamIntent = new Intent(MainActivity.this,
+				WebViewActivity.class);
+		teamIntent.putExtra("net.yaopao.activity.PageUrl",
+				"team_index.html");
+		startActivity(teamIntent);
+	}
+	void shouldStartButNot(){
+	    Toast.makeText(this, "你未能正常开始比赛，请重新登录", Toast.LENGTH_LONG).show();
+	    CNAppDelegate.match_isLogin = 0;
+	    
+	    Intent intent = new Intent(this,LoginActivity.class);
+		Variables.islogin=3;
+		DataTool.setUid(0);
+		Variables.headUrl="";
+		if (Variables.avatar!=null) {
+			Variables.avatar=null;
+		}
+		Variables.userinfo = null;
+		Variables.matchinfo = null;
+		startActivity(intent);
+	}
+	void gotoScorePage(){
+		Intent intent = new Intent(this,
+				MatchGroupInfoActivity.class);
+		intent.putExtra("from", "main");
+		startActivity(intent);
+	}
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
@@ -434,19 +491,41 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			break;
 
 		case R.id.main_fun_macth:
-			
-		     Intent mainIntent = new
-			 Intent(MainActivity.this, MatchCountdownActivity.class);
-			 MainActivity.this.startActivity(mainIntent);
-			 
 			// 24小时比赛跳转页面判定,chenxy add
 			// 先判断比赛是否开始了,没开始都进web页面,
 			// 如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-//			Intent teamIntent = new Intent(MainActivity.this,
-//					WebViewActivity.class);
-//			teamIntent.putExtra("net.yaopao.activity.PageUrl",
-//					"team_index.html");
-//			startActivity(teamIntent);
+			
+			
+			if(CNAppDelegate.match_isLogin == 0){//如果没登录，进宣宇界面
+                gotoJSPage();
+            }else{//登录了
+                String matchstage = CNAppDelegate.getMatchStage();
+                if(matchstage.equals("beforeMatch")){//赛前5分钟还要之前
+                    gotoJSPage();
+                }else if(matchstage.equals("closeToMatch")){//赛前5分钟到比赛正式开始
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        shouldStartButNot();
+                    }else{
+                        gotoJSPage();
+                    }
+                }else if(matchstage.equals("isMatching")){//正式比赛时间
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        if(CNAppDelegate.hasFinishTeamMatch){//提前结束比赛了
+                            gotoScorePage();
+                        }else{
+                            shouldStartButNot();
+                        }
+                    }else{
+                        gotoJSPage();
+                    }
+                }else{//赛后
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        gotoScorePage();
+                    }else{
+                        gotoJSPage();
+                    }
+                }
+            }
 
 			break;
 		case R.id.main_setting:
@@ -495,6 +574,52 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
 				.get(R.drawable.r_km));
 	}
-	
-	
+	private class CheckServerTimeTask extends AsyncTask<String, Void, Boolean> {
+		private String responseJson;
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.checkServerTime, "");
+			if (responseJson != null && !"".equals(responseJson)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (result) {
+				JSONObject resultDic = JSON.parseObject(responseJson);
+				long serverTime = resultDic.getLongValue("systime");
+                endRequestTime = CNAppDelegate.getNowTime1000();
+                if(endRequestTime-startRequestTime < CNAppDelegate.kShortTime){
+                    //如果时间满足条件，则delataTime取值确定
+                    int deltaTime1000 = (int)(serverTime-(startRequestTime+endRequestTime)/2);//取得毫秒数
+                    CNAppDelegate.deltaTime = (deltaTime1000+500)/1000;
+                    CNAppDelegate.hasCheckTimeFromServer = true;
+                    CloseCheckTime();
+                }else{
+                	//失败了两秒后再请求
+                    new Handler().postDelayed(new Runnable(){  
+            	        public void run() {  
+            	        	//execute the task
+            	        	doRequest_checkServerTime();
+            	        }  
+            	     }, 2000); 
+                }
+			} else {
+				
+			}
+		}
+
+	}
+	void CloseCheckTime(){
+		//needwy 关闭和服务器同步时间的弹框
+		CNAppDelegate.whatShouldIdo();
+	}
 }

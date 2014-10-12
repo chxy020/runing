@@ -33,7 +33,7 @@
                 android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/match_list_head1"
+                android:id="@+id/match_list_head2"
                 android:layout_width="@dimen/common_height"
                 android:layout_height="@dimen/common_height"
                 android:layout_centerVertical="true"
@@ -43,7 +43,7 @@
                 />
 
             <ImageView
-                android:id="@+id/match_list_head2"
+                android:id="@+id/match_list_head1"
                 android:layout_width="@dimen/common_height"
                 android:layout_height="@dimen/common_height"
                 android:layout_centerVertical="true"

@@ -1,7 +1,27 @@
 package net.yaopao.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.alibaba.fastjson.JSON;
+
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
+import net.yaopao.assist.CNLonLat;
+import net.yaopao.assist.Constants;
+import net.yaopao.assist.LonLatEncryption;
+import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.Variables;
+
+import android.content.Intent;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -25,11 +45,19 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	
 	private ImageView image_gps;
 	
+	Timer checkInTakeOver;
+	private LonLatEncryption lonLatEncryption;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_not_in_take_over);
+		lonLatEncryption = new LonLatEncryption();
 		init();
+		if(Variables.avatar != null){
+			imageview_avatar.setImageBitmap(Variables.avatar);
+	    }
+	    label_uname.setText(Variables.userinfo.getString("nickname"));
 	}
 	private void init() {
 		label_uname = (TextView) findViewById(R.id.relay_nickname);
@@ -48,6 +76,27 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	@Override
 	protected void onResume() {
 		super.onResume();
+		TimerTask task_check = new TimerTask() {
+			@Override
+			public void run() {
+
+				runOnUiThread(new Runnable() { // UI thread
+					@Override
+					public void run() {
+						CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
+						CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
+					    int isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(encryptionPoint.getLon(),encryptionPoint.getLat());
+					    if(isInTakeOverZone != -1){
+					        finish();
+					        Intent intent = new Intent(MatchNotInTakeOverActivity.this,
+			        				MatchGiveRelayActivity.class);
+					        startActivity(intent);
+					    }
+					}
+				});
+			}
+		};
+		checkInTakeOver.schedule(task_check, 1000, 1000);
 	}
 
 	/**
@@ -56,6 +105,7 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	@Override
 	protected void onPause() {
 		super.onPause();
+		checkInTakeOver.cancel();
 	}
 
 
@@ -86,12 +136,59 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 				break;
 			case MotionEvent.ACTION_UP:
 				//提前结束处理
+				//needwy
 				break;
 			}
 			break;
 		}
 		return true;
 	}
+	void finishMatch(){
+		CNAppDelegate.saveMatchToRecord();
+		CNAppDelegate.timer_one_point.cancel();
+        CNAppDelegate.timer_secondplusplus.cancel();
+        CNAppDelegate.match_timer_report.cancel();
+	    CNAppDelegate.match_deleteHistoryPlist();
+	    new FinishMatchTask().execute("");
+	}
+	private class FinishMatchTask extends AsyncTask<String, Void, Boolean> {
+		private String responseJson;
 
+		@Override
+		protected void onPreExecute() {
+		}
 
+		@Override
+		protected Boolean doInBackground(String... params) {
+			List<Map<String,String>> pointList = new ArrayList<Map<String,String>>();
+		    Map<String,String> onepoint = new HashMap<String,String>();
+		    CNGPSPoint4Match gpsPoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
+		    onepoint.put("uptime", ""+gpsPoint.getTime()*1000);
+		    onepoint.put("distanceur", ""+CNAppDelegate.match_totaldis);
+		    onepoint.put("inrunway", ""+gpsPoint.getIsInTrack());
+		    onepoint.put("slat", ""+gpsPoint.getLat());
+		    onepoint.put("slon", ""+gpsPoint.getLon());
+		    onepoint.put("mstate", "3");
+		    pointList.add(onepoint);
+		    String pointJson =JSON.toJSONString(pointList);
+		    String request_params = String.format("uid=%s&mid=%s&gid=%s&longitude=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,pointJson);
+		    Log.v("zc","结束比赛参数 is "+request_params);
+		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.endMatch, request_params);
+			if (responseJson != null && !"".equals(responseJson)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (result) {
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchNotInTakeOverActivity.this);
+				CNAppDelegate.ForceGoMatchPage("finish");
+			} else {
+			}
+		}
+
+	}
  }
