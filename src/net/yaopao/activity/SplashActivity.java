@@ -16,6 +16,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -29,7 +30,7 @@ import android.widget.Toast;
 /**
  * 显示起始画面
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -63,7 +64,7 @@ public class SplashActivity extends BaseActivity {
 			public void run() {
 				Intent mainIntent = new Intent(SplashActivity.this,
 						MainActivity.class);
-				
+				SplashActivity.this.startActivity(mainIntent);
 				SplashActivity.this.finish();
 			}
 		}, Constants.SPLASH_DISPLAY_LENGHT);

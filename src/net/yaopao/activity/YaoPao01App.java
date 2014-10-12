@@ -81,8 +81,8 @@ public class YaoPao01App extends Application {
 		Log.v("wy", "app");
 		Variables.pid = getImeiCode();
 		Variables.ua = this.getOptVer() + ",a_0.9.1";
-//		CNAppDelegate.geosHandler = new TrackData();
-//		CNAppDelegate.geosHandler.read(CNAppDelegate.kTrackName+".properties");
+		CNAppDelegate.geosHandler = new TrackData();
+		CNAppDelegate.geosHandler.read(CNAppDelegate.kTrackName+".properties");
 		Log.v("wy", "pid=" + Variables.pid + " ua=" + Variables.ua);
 		getPreference();
 		initGPS();
