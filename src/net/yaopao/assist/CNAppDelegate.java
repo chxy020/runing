@@ -17,6 +17,7 @@ import net.yaopao.match.track.TrackData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 //有关比赛的变量和方法byzc
 public class CNAppDelegate {
@@ -152,6 +153,7 @@ public class CNAppDelegate {
 	public static void whatShouldIdo(){//启动手机后应该干嘛
 		//先判断时间
 	    String matchstage = CNAppDelegate.getMatchStage();
+	    Log.v("zc","matchstage is"+matchstage);
 	    if(matchstage.equals("beforeMatch")){//赛前5分钟还要之前
 	    	TimerTask task_check_start_match = new TimerTask() {
 				@Override
