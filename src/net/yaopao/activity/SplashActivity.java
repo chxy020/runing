@@ -101,6 +101,12 @@ public class SplashActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			Log.v("wyuser", "自动登录中");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Variables.islogin=2;
 			loginJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.autoLogin, "uid="+Variables.uid);
 			if (loginJson != null && !"".equals(loginJson)) {
@@ -119,7 +125,10 @@ public class SplashActivity extends Activity {
 				switch (rtCode) {
 				case 0:
 					//登录成功，通知主界面取消等待动画
-					MainActivity.loginHandler.obtainMessage(1).sendToTarget();
+					if (MainActivity.loginHandler!=null) {
+						MainActivity.loginHandler.obtainMessage(1).sendToTarget();
+					}
+					
 					// 登录成功，初始化用户信息,比赛信息
 					
 					Variables.islogin = 1;

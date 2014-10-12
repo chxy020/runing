@@ -96,7 +96,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			public void handleMessage(Message msg) {
 				if (msg.what == 1) {
 					if (dialog!=null) {
+						initLayout();
 						dialog.dismiss();
+						
 					}
 				} 
 				super.handleMessage(msg);
@@ -323,12 +325,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		if (d3 > 0) {
 			d3V.setVisibility(View.VISIBLE);
 		}
-		// update(d1, d1v);
-		// update(d2, d2v);
-		// update(d3, d3v);
-		// update(d4, d4v);
-		// update(d5, d5v);
-		// update(d6, d6v);
 		YaoPao01App.graphicTool.updateRedNum(
 				new int[] { d1, d2, d3, d4, d5, d6 }, new ImageView[] { d1V,
 						d2V, d3V, d4V, d5V, d6V });
@@ -363,16 +359,12 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				} else {
 					if (Variables.gpsStatus == 2) {
 						DialogTool dialog = new DialogTool(MainActivity.this);
-						// WindowManager m = getWindowManager();
-						// Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 						dialog.alertGpsTip2();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyOpenGps();
 						}
 					} else if (Variables.gpsStatus == 0) {
 						DialogTool dialog = new DialogTool(MainActivity.this);
-						// WindowManager m = getWindowManager();
-						// Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 						dialog.alertGpsTip1();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyWeekGps();
