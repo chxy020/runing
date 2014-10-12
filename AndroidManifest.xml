@@ -103,7 +103,19 @@
             android:name="net.yaopao.activity.MatchMainActivity"
             android:screenOrientation="portrait" />
          <activity
+            android:name="net.yaopao.activity.MatchMainRecomeActivity"
+            android:screenOrientation="portrait" />
+         <activity
             android:name="net.yaopao.activity.MatchMapActivity"
+            android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.MatchNotInTakeOverActivity"
+            android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.MatchNotRunTransmitRelayActivity"
+            android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.MatchNotInActivity"
             android:screenOrientation="portrait" />
          <activity
             android:name="net.yaopao.activity.MatchGroupInfoActivity"
@@ -117,6 +129,12 @@
          <activity
             android:name="net.yaopao.activity.MatchGiveRelayActivity"
             android:screenOrientation="portrait" />
+         <activity
+            android:name="net.yaopao.activity.MatchFinishActivity"
+            android:screenOrientation="portrait" />
+       	 <activity
+            android:name="net.yaopao.activity.MatchFinishTeamActivity"
+            android:screenOrientation="portrait" />	
          <activity
             android:name="net.yaopao.activity.SportTrackMap"
             android:screenOrientation="portrait" />

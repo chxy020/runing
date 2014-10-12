@@ -11,6 +11,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import net.yaopao.activity.YaoPao01App;
+import net.yaopao.assist.CNAppDelegate;
+
 import shawn.projection.GoogleProjection;
 import shawn.projection.Projection;
 import shawn.projection.ProjectionFactory;
@@ -315,14 +318,21 @@ public class TrackData {
 		Properties props = new Properties();
 		InputStream in;
 		try {
-			in = new BufferedInputStream(new FileInputStream(fileName));
+			in = YaoPao01App.getAppContext().getResources().getAssets()
+					.open(fileName);
 			props.load(in);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
+		
+		CNAppDelegate.match_track_line = props.getProperty("match_track_line");
+		CNAppDelegate.match_takeover_zone = props.getProperty("takeoverzone");
+		CNAppDelegate.match_stringTrackZone = props.getProperty("stringTrackZone");
+		CNAppDelegate.match_stringStartZone = props.getProperty("stringStartZone");
+	    
 		name = props.getProperty("name");
 		if (props.getProperty("isLap").equals("True")
 				|| props.getProperty("isLap").equals("true")) {

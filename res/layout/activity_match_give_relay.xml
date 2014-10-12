@@ -38,7 +38,7 @@
             android:id="@+id/relay_wait_head_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone" 
+            android:visibility="visible" 
             >
 
             <RelativeLayout
@@ -46,7 +46,8 @@
                 android:layout_width="@dimen/head_hight1"
                 android:layout_height="@dimen/recording_List_main_height"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" >
+                android:layout_centerHorizontal="true" 
+                >
 
                 <ImageView
                     android:id="@+id/relay_wait_head1"

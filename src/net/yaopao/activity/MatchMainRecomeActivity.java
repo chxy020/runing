@@ -14,6 +14,7 @@ import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -81,12 +82,11 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 //	    self.siv.time = speed_second;
 //	    [self.siv fitToSize];needwy
 	    
-//	    NSData* imageData = kApp.imageData;
-//	    if(imageData){
-//	        self.image_avatar.image = [[UIImage alloc] initWithData:imageData];
-//	    }
-//	    self.label_name.text = [kApp.userInfoDic objectForKey:@"nickname"];
-//	    self.label_team.text = [kApp.matchDic objectForKey:@"groupname"];needwy
+	    nameV.setText(Variables.userinfo.getString("nickname"));
+		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
+	    if(Variables.avatar != null){
+	    	avatarV.setImageBitmap(Variables.avatar);
+	    }
 	    startTimer();
 	}
 	void initMatch(){
@@ -138,14 +138,22 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		CNAppDelegate.match_timer_report.schedule(task_report, CNAppDelegate.kMatchReportInterval*1000, CNAppDelegate.kMatchReportInterval*1000); 
 	}
 	CNGPSPoint4Match getOnePoint() {
-		CNGPSPoint4Match point = null;
-		if (YaoPao01App.loc != null) {
-			CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
-			CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
-			long time = CNAppDelegate.getNowTimeDelta();
-			point = new CNGPSPoint4Match(time,encryptionPoint.getLon(),encryptionPoint.getLat(),1);
+		if(CNAppDelegate.istest){
+			CNAppDelegate.testIndex++;
+		    if(CNAppDelegate.testIndex == CNAppDelegate.matchtestdatalength-1){
+		    	CNAppDelegate.testIndex = 0;
+		    }
+		    return CNAppDelegate.test_getOnePoint();
+		}else{
+			CNGPSPoint4Match point = null;
+			if (YaoPao01App.loc != null) {
+				CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
+				CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
+				long time = CNAppDelegate.getNowTimeDelta();
+				point = new CNGPSPoint4Match(time,encryptionPoint.getLon(),encryptionPoint.getLat(),1);
+			}
+			return point;
 		}
-		return point;
 	}
 	void pushOnePoint(){
 		//得到新的一个点压入数组

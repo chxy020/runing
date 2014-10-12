@@ -15,6 +15,7 @@ import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -72,13 +73,11 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		initMatch();
 		initView();
 		
-		
-//		NSData* imageData = kApp.imageData;
-//	    if(imageData){
-//	        self.image_avatar.image = [[UIImage alloc] initWithData:imageData];
-//	    }
-//	    self.label_name.text = [kApp.userInfoDic objectForKey:@"nickname"];
-//	    self.label_team.text = [kApp.matchDic objectForKey:@"groupname"];needwy
+		nameV.setText(Variables.userinfo.getString("nickname"));
+		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
+	    if(Variables.avatar != null){
+	    	avatarV.setImageBitmap(Variables.avatar);
+	    }
 		startTimer();		
 		
 	}
@@ -124,14 +123,23 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		
 	}
 	CNGPSPoint4Match getOnePoint() {
-		CNGPSPoint4Match point = null;
-		if (YaoPao01App.loc != null) {
-			CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
-			CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
-			long time = CNAppDelegate.getNowTimeDelta();
-			point = new CNGPSPoint4Match(time,encryptionPoint.getLon(),encryptionPoint.getLat(),1);
+		if(CNAppDelegate.istest){
+			CNAppDelegate.testIndex++;
+		    if(CNAppDelegate.testIndex == CNAppDelegate.matchtestdatalength-1){
+		    	CNAppDelegate.testIndex = 0;
+		    }
+		    return CNAppDelegate.test_getOnePoint();
+		}else{
+			CNGPSPoint4Match point = null;
+			if (YaoPao01App.loc != null) {
+				CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
+				CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
+				long time = CNAppDelegate.getNowTimeDelta();
+				point = new CNGPSPoint4Match(time,encryptionPoint.getLon(),encryptionPoint.getLat(),1);
+			}
+			return point;
 		}
-		return point;
+		
 	}
 	void startTimer(){
 		//正常进入数组必为空，先往数组里放一个点

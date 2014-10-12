@@ -1,5 +1,6 @@
 package net.yaopao.assist;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class CNAppDelegate {
 	
 	//测试比赛用
 	public static final boolean istest = false;
+	public static int matchtestdatalength;
+	public static int testIndex= 0;
 	
 	public static final String kTrackName = "LongWan";//使用赛道
 	public static final String kStartTime = "2014-10-18 15:00:00";//比赛开始时间
@@ -236,5 +239,18 @@ public class CNAppDelegate {
 			Variables.matchinfo = null;
 			context.startActivity(intent);
 	    }
+	}
+	public static CNGPSPoint4Match test_getOnePoint(){
+		List<CNGPSPoint4Match> testlist = new ArrayList<CNGPSPoint4Match>();
+	    String[] pointlist = match_track_line.split(", ");
+	    matchtestdatalength = pointlist.length;
+	    int i=0;
+	    for(i=0;i<pointlist.length;i++){
+	    	String[] lonlats = pointlist[i].split(" ");
+	        CNGPSPoint4Match point = new CNGPSPoint4Match(getNowTimeDelta(),Double.parseDouble(lonlats[0]),Double.parseDouble(lonlats[1]),0);
+	        testlist.add(point);
+	    }
+	    CNGPSPoint4Match testpoint = testlist.get(testIndex);
+	    return testpoint;
 	}
 }

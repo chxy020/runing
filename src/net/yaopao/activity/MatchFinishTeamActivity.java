@@ -1,26 +1,44 @@
 package net.yaopao.activity;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.yaopao.activity.SportListActivity.MessageOnPageChangeListener;
 import net.yaopao.activity.SportListActivity.MessagePagerAdapter;
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.Constants;
+import net.yaopao.assist.NetworkHandler;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.FrameLayout.LayoutParams;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -42,8 +60,13 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	
 	
 	private TextView button_ok,label_tname,label_tname2;
+	Resources r = getResources(); 
 //	private TextView button_back,label_tname,button_personal,button_km;
 //	private ScrollView scrollview;
+	
+	FrameLayout view_list = null; 
+	List<ImageView> imageviewList = new ArrayList<ImageView>();
+	List<String> urlList = new ArrayList<String>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -52,8 +75,28 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 //		initinitSymbol();
 		init();
 		initViewPager();
+		label_tname.setText(CNAppDelegate.matchDic.getString("groupname"));
+	    label_tname2.setText(String.format("恭喜%s！", CNAppDelegate.matchDic.getString("groupname")));
+	    
+//	    self.div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(4, 220+IOS7OFFSIZE, 260, 64)];
+//	    self.div.color = @"red";
+//	    [self.div fitToSize];
+//	    [self.scrollview addSubview:self.div];
+//	    self.image_km = [[UIImageView alloc]initWithFrame:CGRectMake(div.frame.origin.x+div.frame.size.width, 220+IOS7OFFSIZE,52, 64)];
+//	    self.image_km.image = [UIImage imageNamed:@"redkm.png"];
+//	    [self.scrollview addSubview:self.image_km];needwy
+	    
+	    displayLoading();
+	    new Handler().postDelayed(new Runnable(){  
+	        public void run() {  
+	        	//execute the task
+	        	requestPersonal();
+	        }  
+	     }, 10*1000); 
 	}
-
+	void requestPersonal(){
+		new RequestPersonal().execute("");
+	}
 	private void init() {
 		label_tname = (TextView) findViewById(R.id.match_score_list_title);
 		button_ok = (TextView) findViewById(R.id.match_fininsh_confirm);
@@ -95,6 +138,8 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				Intent intent = new Intent(MatchFinishTeamActivity.this,
+						MainActivity.class);
 				break;
 			}
 			break;
@@ -183,6 +228,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			label_tname2 = (TextView) team_finish1.findViewById(R.id.congratulation_team);
 			
 			View team_finish2 = mInflater.inflate(R.layout.activity_match_team_finish2, null);
+			view_list = (FrameLayout)team_finish2.findViewById(R.id.scrollview_List);
 			
 			// 初始化滑动的view
 //			initPagerViews(new View[] { totalDis, totalCount, totalTime });
@@ -310,5 +356,134 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			return POSITION_NONE;
 		}
 	}
-	
+	void displayLoading(){
+	    disableAllButton();
+	}
+	void hideLoading(){
+	    enableAllButton();
+	}
+	void disableAllButton(){
+	}
+	void enableAllButton(){
+	}
+	private class RequestPersonal extends AsyncTask<String, Void, Boolean> {
+		private String responseJson;
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
+		    Log.v("zc","按照人员查询成绩 is "+request_params);
+		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.listPersonal, request_params);
+			if (responseJson != null && !"".equals(responseJson)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			hideLoading();
+			if (result) {
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchFinishTeamActivity.this);
+				JSONObject resultDic = JSON.parseObject(responseJson);
+			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
+//			    self.big_div.distance = distance;
+//			    self.big_div.color = @"red";
+//			    [self.big_div fitToSize];
+//			    self.image_km.frame = CGRectMake(self.big_div.frame.origin.x+self.big_div.frame.size.width, 60+IOS7OFFSIZE,52, 64);needwy
+			    
+			    JSONArray dataList = resultDic.getJSONArray("list");
+			    if(dataList!=null&&dataList.size()>0){
+			        for(int i=0;i<dataList.size();i++){
+			            JSONObject oneRecordDic = dataList.getJSONObject(i);//数值从oneRecordDic得到
+			            View view_one_record = mInflater.inflate(R.layout.match_list_personal_item,null);
+			            ImageView userAvatar = (ImageView)view_one_record.findViewById(R.id.match_watch_head);
+			            userAvatar.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			            String avatarUrl = oneRecordDic.getString("imgpath");
+			            if(avatarUrl == null){
+			                avatarUrl = "";
+			            }else{
+			                Bitmap image = CNAppDelegate.avatarDic.get(avatarUrl);
+			                if(image != null){//缓存中有
+			                    userAvatar.setImageBitmap(image);
+			                }else{//下载
+			                	RequestImageTask requestTask = new RequestImageTask();
+			                	requestTask.index = i;
+			                	requestTask.avatarUrl = avatarUrl;
+			                	requestTask.execute("");
+			                }
+			            }
+			            urlList.add(avatarUrl);
+			            imageviewList.add(userAvatar);
+			            
+			            TextView label_name = (TextView)view_one_record.findViewById(R.id.username);
+			            label_name.setText(oneRecordDic.getString("nickname"));
+			            
+//			            double distance = [[oneRecordDic objectForKey:@"km"]doubleValue];
+//			            CNDistanceImageView* div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(160, 14, 130, 32)];
+//			            div.distance = (distance+5)/1000.0;
+//			            div.color = @"red";
+//			            [div fitToSize];
+//			            UIImageView* image_km_one = [[UIImageView alloc]initWithFrame:CGRectMake(div.frame.origin.x+div.frame.size.width, 14,26, 32)];
+//			            image_km_one.image = [UIImage imageNamed:@"redkm.png"];
+//			            [view_one_record addSubview:div];
+//			            [view_one_record addSubview:image_km_one];needwy
+			            
+			            int height = (int) r.getDimension(R.dimen.sport_set_height);
+						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, height); 
+						lp.setMargins(0,height*i,0,0);
+						view_list.addView(view_one_record, lp);
+			        }
+			    }
+			}
+		}
+	}
+	private class RequestImageTask extends AsyncTask<String, Void, Boolean> {
+		public int index;
+		public String avatarUrl;
+		Bitmap image = null;
+
+		@Override
+		protected void onPreExecute() {
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			
+			try{
+				image = BitmapFactory.decodeStream(getImageStream(Constants.endpoints_img+avatarUrl));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			if(image != null){
+				CNAppDelegate.avatarDic.put(avatarUrl, image);
+		        return true;
+		    }else{
+		    	return false;
+		    }
+			
+			
+		}
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if(result){
+				imageviewList.get(index).setImageBitmap(image);
+			}
+		}
+	}
+	public InputStream getImageStream(String path) throws Exception {
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setConnectTimeout(5 * 1000);
+		conn.setRequestMethod("GET");
+		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			return conn.getInputStream();
+		}
+		return null;
+	}
 }
