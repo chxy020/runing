@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
             if(CNAppDelegate.isMatch == 1){
                 doRequest_checkServerTime();
                 syncTimeloadingDialog = new SyncTimeLoadingDialog(this);
-                syncTimeloadingDialog.setCancelable(false);
+//              syncTimeloadingDialog.setCancelable(false);
                 syncTimeloadingDialog.show();
                 
             }

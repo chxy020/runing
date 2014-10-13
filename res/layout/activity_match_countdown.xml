@@ -14,7 +14,6 @@
             android:layout_width="@dimen/match_countdown_num_width"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin3"
-            android:visibility="gone"
             />
 
         <ImageView
@@ -22,7 +21,6 @@
             android:layout_width="@dimen/match_countdown_num_width"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/match_countdown_1"
-             android:visibility="gone"
             />
 
         <ImageView
@@ -39,8 +37,10 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin7"
     android:layout_marginRight="@dimen/margin7"
+    android:layout_marginTop="@dimen/margin7"
     android:textSize="@dimen/font_size3"
-    android:text="你尚未进入出发区，请于倒计时结束前进入出发区，否则将无法开始比赛"
+    android:gravity="center"
+    android:text="你尚未进入出发区，请于倒计时结束前进入出发区，否则将无法开始比赛!"
         />
     
 </RelativeLayout>

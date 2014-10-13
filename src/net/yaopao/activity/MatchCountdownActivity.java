@@ -19,14 +19,14 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class MatchCountdownActivity extends BaseActivity  {
+public class MatchCountdownActivity extends BaseActivity {
 	private ImageView time1;
 	private ImageView time2;
 	private ImageView time3;
-	private TextView  countdownTip;
-	
-	private int startSecond = (int) (CNAppDelegate.match_start_timestamp - CNAppDelegate.getNowTimeDelta());
-;
+	private TextView countdownTip;
+
+	private int startSecond = (int) (CNAppDelegate.match_start_timestamp - CNAppDelegate
+			.getNowTimeDelta());;
 	Timer timer_countdown = new Timer();
 
 	@Override
@@ -38,19 +38,14 @@ public class MatchCountdownActivity extends BaseActivity  {
 		time2 = (ImageView) findViewById(R.id.match_countdown_2);
 		time3 = (ImageView) findViewById(R.id.match_countdown_3);
 		countdownTip = (TextView) findViewById(R.id.countdown_tip);
-		
 		initTime();
-		
 	}
-
-	
-
-
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 	}
+
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -61,29 +56,32 @@ public class MatchCountdownActivity extends BaseActivity  {
 				runOnUiThread(new Runnable() { // UI thread
 					@Override
 					public void run() {
-						//不在出发区提示:
-					    if(CNAppDelegate.isInStartZone() == false){
-					    	countdownTip.setText("你尚未进入出发区，请于倒计时结束前进入出发区，否则将无法开始比赛!");
-					    }else{
-					        countdownTip.setText("已经进入出发区!");
-					    }
-					    startSecond--;
-					    Log.v("zc","startSecond is "+startSecond);
-					    if(startSecond >= 0){
-					    	initTime();
-					    }
-					    if(startSecond <= 0){
-					        timer_countdown.cancel();
-					        timer_countdown = null;
-					        if(CNAppDelegate.isInStartZone()){//在出发区
-					        	Intent intent = new Intent(MatchCountdownActivity.this,MatchMainActivity.class);
-					    		startActivity(intent);
-					        }else{//不在出发区
-					        	CNAppDelegate.canStartButNotInStartZone = true;
-					        	finish();
-					        }
-					    }
-						
+						// 不在出发区提示:
+						if (CNAppDelegate.isInStartZone() == false) {
+							countdownTip
+									.setText("你尚未进入出发区，请于倒计时结束前进入出发区，否则将无法开始比赛!");
+						} else {
+							countdownTip.setText("已经进入出发区!");
+						}
+						startSecond--;
+						Log.v("zc", "startSecond is " + startSecond);
+						if (startSecond >= 0) {
+							initTime();
+						}
+						if (startSecond <= 0) {
+							timer_countdown.cancel();
+							timer_countdown = null;
+							if (CNAppDelegate.isInStartZone()) {// 在出发区
+								Intent intent = new Intent(
+										MatchCountdownActivity.this,
+										MatchMainActivity.class);
+								startActivity(intent);
+							} else {// 不在出发区
+								CNAppDelegate.canStartButNotInStartZone = true;
+								finish();
+							}
+						}
+
 					}
 				});
 			}
@@ -95,21 +93,30 @@ public class MatchCountdownActivity extends BaseActivity  {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-	
-	private void initTime(){
-		
-		int t1 = startSecond/100;
-		int t2 = (startSecond%100)/10;
-		int t3 = startSecond%10;
-		if (t1>0) {
+
+	private void initTime() {
+
+		int t1 = startSecond / 100;
+		int t2 = (startSecond % 100) / 10;
+		int t3 = startSecond % 10;
+		if (t1 > 0) {
 			time1.setVisibility(View.VISIBLE);
-			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1},new ImageView[]{time1});
+			YaoPao01App.graphicTool.updateRedNum(new int[] { t1 },
+					new ImageView[] { time1 });
+			if (t2 >= 0) {
+				time2.setVisibility(View.VISIBLE);
+				YaoPao01App.graphicTool.updateRedNum(new int[] { t2 },
+						new ImageView[] { time2 });
+			}
 		}
-		if (t2>0) {
+
+		if (t2 > 0) {
 			time2.setVisibility(View.VISIBLE);
-			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t2},new ImageView[]{time2});
+			YaoPao01App.graphicTool.updateRedNum(new int[] { t2 },
+					new ImageView[] { time2 });
 		}
-		YaoPao01App.graphicTool.updateWhiteNum(new int[]{t3},new ImageView[]{time3});
+		YaoPao01App.graphicTool.updateRedNum(new int[] { t3 },
+				new ImageView[] { time3 });
 	}
-	
+
 }
