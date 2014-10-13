@@ -16,6 +16,9 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -229,6 +232,17 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 				break;
 			}
 			break;
+			
+		case R.id.relay_end:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				quit();
+				break;
+			}
+			break;
+			
 		//needwy 加上结束的按钮事件弹两次
 		}
 		return true;
@@ -300,7 +314,6 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			    if(array.size()<1){
 			        label_test.setText("正在搜索接棒队员，请稍候...");
 			    }else{
-			    	CNAppDelegate.isbaton = 0;
 			        label_test.setText(String.format("搜索到%d个人", array.size()));
 			        
 			        view_user1.setVisibility(View.GONE);
@@ -443,6 +456,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
+				CNAppDelegate.isbaton = 0;
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchGiveRelayActivity.this);
 				if(timer_look_submit != null){
 					timer_look_submit.cancel();
@@ -524,6 +538,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s&longitude=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,pointJson);
 		    Log.v("zc","结束比赛参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.endMatch, request_params);
+		    Log.v("zc","结束比赛返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -532,14 +547,28 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		}
 
 		@Override
-		protected void onPostExecute(Boolean result) {
+		protected void onPostExecute(Boolean result) { 
 			if (result) {
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchGiveRelayActivity.this);
 				CNAppDelegate.ForceGoMatchPage("finish");
 			} else {
 			}
 		}
+	}
+	public void quit() {
+		new AlertDialog.Builder(MatchGiveRelayActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
+				.setMessage("确认退出？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						finishMatch();
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				}).show();
 
 	}
-	
 }

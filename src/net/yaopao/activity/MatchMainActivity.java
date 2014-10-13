@@ -403,45 +403,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	    CNAppDelegate.match_deleteHistoryPlist();
 	    new FinishMatchTask().execute("");
 	}
-//	private void updateUI() {
-//		
-//		int d1 = (int) distance / 10000;
-//		int d2 = (int) (distance % 10000) / 1000;
-//		int d3 = (int) (distance % 1000) / 100;
-//		int d4 = (int) (distance % 100) / 10;
-//		
-//		int[] time = YaoPao01App.cal(totalTime);
-//		int t1 = time[0] / 10;
-//		int t2 = time[0] % 10;
-//		int t3 = time[1] / 10;
-//		int t4 = time[1] % 10;
-//		int t5 = time[2] / 10;
-//		int t6 = time[2] % 10;
-//
-//		int[] speed = YaoPao01App.cal((int) ((1000 / distance) * totalTime));
-//		int s1 = speed[1] / 10;
-//		int s2 = speed[1] % 10;
-//		int s3 = speed[2] / 10;
-//		int s4 = speed[2] % 10;
-//
-//		update(d1, d1V);
-//		update(d2, d2V);
-//		update(d3, d3V);
-//		update(d4, d4V);
-//
-//		update(t1, t1V);
-//		update(t2, t2V);
-//		update(t3, t3V);
-//		update(t4, t4V);
-//		update(t5, t5V);
-//		update(t6, t6V);
-//
-//		update(s1, s1V);
-//		update(s2, s2V);
-//		update(s3, s3V);
-//		update(s4, s4V);
-//
-//	}
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -666,10 +627,10 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	}
 	private void initMileage(double distance) {
 		// distance = 549254;
-		int d1 = (int) Variables.distance / 10000;
-		int d2 = (int) (Variables.distance % 10000) / 1000;
-		int d3 = (int) (Variables.distance % 1000) / 100;
-		int d4 = (int) (Variables.distance % 100) / 10;
+		int d1 = (int) (distance % 100000) / 10000;
+		int d2 = (int) (distance % 10000) / 1000;
+		int d3 = (int) (distance % 1000) / 100;
+		int d4 = (int) (distance % 100) / 10;
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
 		}

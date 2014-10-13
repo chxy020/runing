@@ -376,7 +376,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		s3V = (ImageView) findViewById(R.id.match_recome_recoding_speed3);
 		s4V = (ImageView) findViewById(R.id.match_recome_recoding_speed4);
 		
-		dotV = (ImageView) findViewById(R.id.match_recoding_dis_d);
+		dotV = (ImageView) findViewById(R.id.match_recome_recoding_dis_d);
 		colon1V = (ImageView) findViewById(R.id.match_recome_recoding_time_d1);
 		colon2V = (ImageView) findViewById(R.id.match_recome_recoding_time_d2);
 		minV = (ImageView) findViewById(R.id.match_recome_recoding_speed_d1);
@@ -604,10 +604,14 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	}
 	private void initMileage(double distance) {
 		// distance = 549254;
-		int d1 = (int) Variables.distance / 10000;
-		int d2 = (int) (Variables.distance % 10000) / 1000;
-		int d3 = (int) (Variables.distance % 1000) / 100;
-		int d4 = (int) (Variables.distance % 100) / 10;
+//		int d1 = (int) Variables.distance / 10000;
+//		int d2 = (int) (Variables.distance % 10000) / 1000;
+//		int d3 = (int) (Variables.distance % 1000) / 100;
+//		int d4 = (int) (Variables.distance % 100) / 10;
+		int d1 = (int) (distance % 100000) / 10000;
+		int d2 = (int) (distance % 10000) / 1000;
+		int d3 = (int) (distance % 1000) / 100;
+		int d4 = (int) (distance % 100) / 10;
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
 		}

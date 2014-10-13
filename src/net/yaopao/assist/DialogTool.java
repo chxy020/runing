@@ -78,6 +78,7 @@ public class DialogTool implements OnTouchListener {
 				}).show();
 
 	}
+	
 
 	public  void doneSport( final Handler handler) {
 		//LayoutInflater inflater = LayoutInflater.from(context);

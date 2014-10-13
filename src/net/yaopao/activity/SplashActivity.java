@@ -104,6 +104,7 @@ public class SplashActivity extends Activity {
 			Log.v("wyuser", "自动登录中");
 		
 			loginJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.autoLogin, "uid="+Variables.uid);
+			Log.v("zc","自动登陆返回"+loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
 				return true;
 			} else {
