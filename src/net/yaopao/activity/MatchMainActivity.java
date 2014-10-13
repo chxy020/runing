@@ -98,10 +98,12 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private void initView() {
 		mapV = (ImageView) findViewById(R.id.match_map);
 		teamV = (ImageView) findViewById(R.id.match_team);
+		avatarV = (ImageView) findViewById(R.id.match_head);
 		batonV = (ImageView) findViewById(R.id.match_run_baton);
 		nameV = (TextView) findViewById(R.id.match_username);
 		teamNameV = (TextView) findViewById(R.id.match_team_name);
 		nextArea=(TextView)findViewById(R.id.match_next_area);
+		
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
 		batonV.setOnTouchListener(this);
@@ -254,9 +256,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	        	        	CNAppDelegate.match_targetkm ++;
 	        	        }  
 	        	     }, 1000);
-	                
 	            }
 //	            self.big_div.distance = (kApp.match_totaldis+5)/1000.0;
+	            Log.v("zc","跑了多少米:"+CNAppDelegate.match_totaldis+5);
 //	            [self.big_div fitToSize];needwy
 	            //计算配速
 	            if(CNAppDelegate.match_totaldis > 1){

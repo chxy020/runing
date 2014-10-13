@@ -299,6 +299,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			            }else{
 			                Bitmap image = CNAppDelegate.avatarDic.get(avatarUrl);
 			                if(image != null){//缓存中有
+			                	Log.v("zc","缓存中有");
 			                    userAvatar.setImageBitmap(image);
 			                }else{//下载
 			                	RequestImageTask requestTask = new RequestImageTask();
@@ -393,6 +394,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			                }else{
 			                    Bitmap image = CNAppDelegate.avatarDic.get(avatarUrl);
 			                    if(image != null){//缓存中有
+			                    	Log.v("zc","缓存中有");
 			                        userAvatar.setImageBitmap(image);
 			                    }else{//下载
 			                        RequestImageTask requestTask = new RequestImageTask();
@@ -414,7 +416,8 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			                    avatarUrl = "";
 			                }else{
 			                    Bitmap image = CNAppDelegate.avatarDic.get(avatarUrl);
-			                    if(image != null){//缓存中有
+			                    if(image != null){//
+			                    	Log.v("zc","缓存中有");
 			                        userAvatar.setImageBitmap(image);
 			                    }else{//下载
 			                        RequestImageTask requestTask = new RequestImageTask();

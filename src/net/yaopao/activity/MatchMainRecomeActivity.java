@@ -93,7 +93,9 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	}
 	void initMatch(){
 		String historyDate = CNAppDelegate.match_readHistoryPlist();
+		Log.v("zc","historyDate is "+historyDate);
 		JSONObject dic = JSON.parseObject(historyDate);
+		CNAppDelegate.match_pointList = new ArrayList<CNGPSPoint4Match>();
 	    //把已经跑过的距离作为基准值
 		CNAppDelegate.match_historydis = dic.getDouble("match_historydis");
 		CNAppDelegate.match_totalDisTeam = dic.getDouble("match_totalDisTeam");
@@ -113,7 +115,13 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	    TimerTask task_one_point = new TimerTask() {
 			@Override
 			public void run() {
-				pushOnePoint();
+				runOnUiThread(new Runnable() { // UI thread
+					@Override
+					public void run() {
+						pushOnePoint();
+						
+					}
+				});
 			}
 		};
 		CNAppDelegate.timer_one_point.schedule(task_one_point, CNAppDelegate.kMatchInterval*1000, CNAppDelegate.kMatchInterval*1000);
@@ -210,6 +218,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	            }
 //	            self.big_div.distance = (kApp.match_totaldis+5)/1000.0;
 //	            [self.big_div fitToSize];needwy
+	            Log.v("zc","跑了多少米:"+CNAppDelegate.match_totaldis+5);
 	            //计算配速
 	            if(CNAppDelegate.match_totaldis > 1){
 	                int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
@@ -286,7 +295,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	}
 	void onekmvoice(){
 		//播报语音
-	    CNGPSPoint4Match gpspoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
+	    CNGPSPoint4Match gpspoint = getOnePoint();
 	    int isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(gpspoint.getLon(),gpspoint.getLat());
 	    if(isInTakeOverZone != -1){//在交接区
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
@@ -340,6 +349,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	private void initView() {
 		mapV = (ImageView) findViewById(R.id.match_recome_map);
 		teamV = (ImageView) findViewById(R.id.match_recome_team);
+		avatarV = (ImageView) findViewById(R.id.match_recome_head);
 		batonV = (ImageView) findViewById(R.id.match_recome_run_baton);
 		nameV = (TextView) findViewById(R.id.match_recome_username);
 		teamNameV = (TextView) findViewById(R.id.match_recome_team_name);
