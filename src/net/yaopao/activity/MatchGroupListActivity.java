@@ -173,7 +173,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			//点击队员
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				button_personal.setBackgroundResource(R.color.gray_dark);
+				button_km.setBackgroundResource(R.color.gray_dark);
 				break;
 			case MotionEvent.ACTION_UP:
 				button_personal.setBackgroundResource(R.color.blue_dark);
@@ -197,7 +197,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			//点击里程
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				button_km.setBackgroundResource(R.color.gray_dark);
+				button_personal.setBackgroundResource(R.color.gray_dark);
 				break;
 			case MotionEvent.ACTION_UP:
 				button_km.setBackgroundResource(R.color.blue_dark);
