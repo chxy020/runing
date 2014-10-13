@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
+import com.amap.api.maps2d.model.PolygonOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
@@ -44,6 +47,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	private ImageView backV;
+	CNGPSPoint4Match lastDrawPoint;
 	
 	class TimerTask_drawLine extends TimerTask{
 		@Override
@@ -52,7 +56,6 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 				@Override
 				public void run() {
 					drawIncrementLine();
-					
 				}
 			});
 		}
@@ -76,22 +79,113 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	    drawStratZone();//画出发区
 	    drawTakeOverZone();//画接力区
 	    drawRunTrack();//画已经跑得轨迹
+	    if(CNAppDelegate.match_pointList.size() > 0){
+	    	lastDrawPoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
+	    }
 	}
 	void drawTrack(){
 		//polygon字符串：CNAppDelegate.match_stringTrackZone,可能多个用;分隔
+		double min_lon = 0;
+	    double min_lat = 0;
+	    double max_lon = 0;
+	    double max_lat = 0;
+	    String[] tracklist = CNAppDelegate.match_stringTrackZone.split(":");
+	    for(int i=0;i<tracklist.length;i++){
+	    	String[] oneTrackStrlist = tracklist[i].split(", ");
+			List<LatLng> points = new ArrayList<LatLng>();
+			for(int j=0;j<oneTrackStrlist.length;j++){
+				String[] lonlat = oneTrackStrlist[j].split(" ");
+				double lon = Double.parseDouble(lonlat[0]);
+				double lat = Double.parseDouble(lonlat[1]);
+				if(i == 0 && j == 0){
+					max_lon = min_lon = lon;
+	                max_lat = min_lat = lat;
+				}
+				if(lon < min_lon){
+	                min_lon = lon;
+	            }
+	            if(lat < min_lat){
+	                min_lat = lat;
+	            }
+	            if(lon > max_lon){
+	                max_lon = lon;
+	            }
+	            if(lat > max_lat){
+	                max_lat = lat;
+	            }
+				points.add(new LatLng(lat, lon));
+			}
+			aMap.addPolygon(new PolygonOptions()
+			    .addAll(points)
+			    .fillColor(Color.argb(50, 0, 0, 1)).strokeColor(Color.TRANSPARENT).strokeWidth(0));
+	    }
+	    LatLng latlon1 = new LatLng(min_lat, min_lon);
+		LatLng latlon2 = new LatLng(max_lat, max_lon);
+		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+		
 	}
 	void drawStratZone(){
 		//polygon字符串：CNAppDelegate.match_stringStartZone只有一个
+		String[] tracklist = CNAppDelegate.match_stringStartZone.split(", ");
+		List<LatLng> points = new ArrayList<LatLng>();
+		for(int i=0;i<tracklist.length;i++){
+			String[] lonlat = tracklist[i].split(" ");
+			points.add(new LatLng(Double.parseDouble(lonlat[1]), Double.parseDouble(lonlat[0])));
+		}
+		aMap.addPolygon(new PolygonOptions()
+		    .addAll(points)
+		    .fillColor(Color.TRANSPARENT).strokeColor(Color.argb(255, 255, 165, 0)).strokeWidth(3));
 	}
 	void drawTakeOverZone(){
 		//polygon字符串：CNAppDelegate.match_takeover_zone只有一个
+		String[] tracklist = CNAppDelegate.match_takeover_zone.split(", ");
+		List<LatLng> points = new ArrayList<LatLng>();
+		for(int i=0;i<tracklist.length;i++){
+			String[] lonlat = tracklist[i].split(" ");
+			points.add(new LatLng(Double.parseDouble(lonlat[1]), Double.parseDouble(lonlat[0])));
+		}
+		aMap.addPolygon(new PolygonOptions()
+		    .addAll(points)
+		    .fillColor(Color.argb(130, 255, 0, 0)).strokeColor(Color.TRANSPARENT).strokeWidth(0));
 	}
 	void drawRunTrack(){
 		//把CNAppDelegate.match_pointList画到地图上，如果遇到0,0则分段
+		int j = 0;
+	    int i = 0;
+	    int n = 0;
+	    int pointCount = CNAppDelegate.match_pointList.size();
+	    if(pointCount < 2){
+	    	return;
+	    }
+	    for(i=0;i<pointCount;i++){
+	        CNGPSPoint4Match gpsPoint = CNAppDelegate.match_pointList.get(i);
+	        if (gpsPoint.getLon() < 0.01 || i == pointCount-1) {
+	            List<LatLng> points = new ArrayList<LatLng>();
+	            for(j=0;j<i-n;j++){
+	                CNGPSPoint4Match gpsPoint2 = CNAppDelegate.match_pointList.get(n+j);
+	                points.add(new LatLng(gpsPoint2.getLat(),gpsPoint2.getLon()));
+	            }
+	            aMap.addPolyline((new PolylineOptions()).addAll(points).color(Color.GREEN).width(13f));
+	            n = i+1;//n为下一个起点
+	        }
+	    }
 	}
 	void drawIncrementLine(){
+		if(CNAppDelegate.match_pointList.size() < 2)return;
 		CNGPSPoint4Match newPoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);//取得当前最新点
 		//连接地图上最后画的一个点和newPoint
+		if(lastDrawPoint == null){
+			lastDrawPoint = newPoint;
+			return;
+		}
+		if(newPoint.getLon() != lastDrawPoint.getLon() || newPoint.getLat() != lastDrawPoint.getLat()){//5秒后点的位置有移动
+	        List<LatLng> points = new ArrayList<LatLng>();
+	        points.add(new LatLng(lastDrawPoint.getLat(),lastDrawPoint.getLon()));
+	        points.add(new LatLng(newPoint.getLat(),newPoint.getLon()));
+	        aMap.addPolyline((new PolylineOptions()).addAll(points).color(Color.GREEN).width(13f));
+	        lastDrawPoint = newPoint;
+	    }
 	    
 	}
 	/**
