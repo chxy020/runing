@@ -64,7 +64,7 @@ public class CNAppDelegate {
 	//一次跑步
 	public static List<CNGPSPoint4Match> match_pointList;//比赛用存点数组
 	public static int match_isLogin = 0;//比赛是否登录过
-	public static Map<String,Bitmap> avatarDic;//记录下载过的各种头像，以后通过url访问
+	public static Map<String,Bitmap> avatarDic = new HashMap<String,Bitmap>();//记录下载过的各种头像，以后通过url访问
 	//和单次跑有关
 	public static double match_startdis;//开始比赛，起跑时距离起点的距离
 	public static double match_currentLapDis;//已经跑过的距离（当前圈）
