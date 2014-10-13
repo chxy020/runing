@@ -33,7 +33,7 @@ public class DialogTool implements OnTouchListener {
 
 	TextView setV;
 	Context context;
-	Dialog dialog;
+	public Dialog dialog;
 	Display d;
 	Window dialogWindow;
 	WindowManager.LayoutParams p ;
@@ -266,17 +266,19 @@ public class DialogTool implements OnTouchListener {
 	public void alertNotIntakeOver() {
 		View dialogView = inflater.inflate(R.layout.tip_dialog_not_in, null);
 		dialog.setContentView(dialogView);
-		p.height = (int) (d.getHeight() * 0.9);
+		p.height = (int) (d.getHeight() * 0.7);
 		p.width = (int) (d.getWidth() * 0.7);
 		dialogWindow.setAttributes(p);
+		dialog.setCancelable(false);
 		dialog.show();
 	}
 	public void alertSyncTime() {
 		View dialogView = inflater.inflate(R.layout.tip_dialog_sync_time, null);
 		dialog.setContentView(dialogView);
-		p.height = (int) (d.getHeight() * 0.9);
+		p.height = (int) (d.getHeight() * 0.7);
 		p.width = (int) (d.getWidth() * 0.7);
 		dialogWindow.setAttributes(p);
+		dialog.setCancelable(false);
 		dialog.show();
 	}
 
@@ -401,4 +403,5 @@ public class DialogTool implements OnTouchListener {
 	private void openSetNetwork() {
 			context.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
 	}
+	
 }

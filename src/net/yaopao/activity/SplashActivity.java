@@ -100,14 +100,9 @@ public class SplashActivity extends Activity {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			Log.v("wyuser", "自动登录中");
-//			try {
-//				Thread.sleep(10000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			Variables.islogin=2;
+			Log.v("wyuser", "自动登录中");
+		
 			loginJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.autoLogin, "uid="+Variables.uid);
 			if (loginJson != null && !"".equals(loginJson)) {
 				return true;
