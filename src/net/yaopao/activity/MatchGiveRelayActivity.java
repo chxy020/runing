@@ -444,10 +444,12 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		protected void onPostExecute(Boolean result) {
 			if (result) {
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchGiveRelayActivity.this);
-				timer_look_submit.cancel();
-				CNAppDelegate.timer_one_point.cancel();
-				CNAppDelegate.timer_secondplusplus.cancel();
-				CNAppDelegate.match_timer_report.cancel();
+				if(timer_look_submit != null){
+					timer_look_submit.cancel();
+					timer_look_submit = null;
+				}
+				CNAppDelegate.cancelMatchTimer();
+				
 				startAnimation();
 				CNAppDelegate.finishThisRun();
 			    //播放语音
@@ -495,9 +497,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	}
 	void finishMatch(){
 		CNAppDelegate.saveMatchToRecord();
-		CNAppDelegate.timer_one_point.cancel();
-        CNAppDelegate.timer_secondplusplus.cancel();
-        CNAppDelegate.match_timer_report.cancel();
+		CNAppDelegate.cancelMatchTimer();
 	    CNAppDelegate.match_deleteHistoryPlist();
 	    new FinishMatchTask().execute("");
 	}

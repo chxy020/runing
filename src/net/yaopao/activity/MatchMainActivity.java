@@ -383,9 +383,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	}
 	void finishMatch(){
 		CNAppDelegate.saveMatchToRecord();
-		CNAppDelegate.timer_one_point.cancel();
-        CNAppDelegate.timer_secondplusplus.cancel();
-        CNAppDelegate.match_timer_report.cancel();
+		CNAppDelegate.cancelMatchTimer();
 	    CNAppDelegate.match_deleteHistoryPlist();
 	    new FinishMatchTask().execute("");
 	}

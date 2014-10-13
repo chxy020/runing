@@ -2,9 +2,15 @@ package net.yaopao.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import net.yaopao.activity.MatchGroupInfoActivity.TimerTask_request;
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
+import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
@@ -38,6 +44,21 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	private ImageView backV;
+	
+	class TimerTask_drawLine extends TimerTask{
+		@Override
+		public void run() {
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					drawIncrementLine();
+					
+				}
+			});
+		}
+	}
+	Timer timer_match_map = null;
+	TimerTask_drawLine task_drawLine = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,23 +67,32 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		mapView = (MapView) findViewById(R.id.match_map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		init();
-		//头像、username、teamname needwy
+//		nameV.setText(Variables.userinfo.getString("nickname"));
+//		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
+//	    if(Variables.avatar != null){
+//	    	avatarV.setImageBitmap(Variables.avatar);
+//	    }needwy
 		drawTrack();//画赛道
 	    drawStratZone();//画出发区
 	    drawTakeOverZone();//画接力区
 	    drawRunTrack();//画已经跑得轨迹
 	}
 	void drawTrack(){
-		
+		//polygon字符串：CNAppDelegate.match_stringTrackZone,可能多个用;分隔
 	}
 	void drawStratZone(){
-		
+		//polygon字符串：CNAppDelegate.match_stringStartZone只有一个
 	}
 	void drawTakeOverZone(){
-		
+		//polygon字符串：CNAppDelegate.match_takeover_zone只有一个
 	}
 	void drawRunTrack(){
-		
+		//把CNAppDelegate.match_pointList画到地图上，如果遇到0,0则分段
+	}
+	void drawIncrementLine(){
+		CNGPSPoint4Match newPoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);//取得当前最新点
+		//连接地图上最后画的一个点和newPoint
+	    
 	}
 	/**
 	 * 初始化AMap对象
@@ -86,6 +116,9 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		super.onResume();
 		mapView.onResume();
 		MobclickAgent.onResume(this);
+		task_drawLine = new TimerTask_drawLine();
+		timer_match_map = new Timer();
+		timer_match_map.schedule(task_drawLine, 2000, CNAppDelegate.kMatchInterval*1000);
 	}
 
 	/**
@@ -97,6 +130,14 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		mapView.onPause();
 		deactivate();
 		MobclickAgent.onPause(this);
+		if(timer_match_map != null){
+			timer_match_map.cancel();
+			timer_match_map = null;
+			if(task_drawLine != null){
+				task_drawLine.cancel();
+				task_drawLine = null;
+			}
+		}
 	}
 
 	/**
