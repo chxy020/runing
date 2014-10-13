@@ -79,7 +79,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		lonLatEncryption = new LonLatEncryption();
 		initMatch();
 		initView();
-		initinitSymbol();
+		initStartPage();
 		nameV.setText(Variables.userinfo.getString("nickname"));
 		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
 	    if(Variables.avatar != null){
@@ -137,7 +137,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		colon2V = (ImageView) findViewById(R.id.match_recoding_time_d2);
 		minV = (ImageView) findViewById(R.id.match_recoding_speed_d1);
 		secV = (ImageView) findViewById(R.id.match_recoding_speed_d2);
-		
 		
 	}
 	CNGPSPoint4Match getOnePoint() {
@@ -662,5 +661,12 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 			int t6 = time[2] % 10;	
 			
 			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V,});
+		}
+		
+		private void initStartPage(){
+			initMileage(0);
+			initPspeed(0);
+			initTime(0);
+			initinitSymbol();
 		}
 }
