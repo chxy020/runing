@@ -79,7 +79,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		mapView.setOnTouchListener(this);
 		lonLatEncryption = new LonLatEncryption();
 		init();
-		
+		Log.v("zc","CNAppDelegate.hasFinishTeamMatch is "+CNAppDelegate.hasFinishTeamMatch);
 		if(CNAppDelegate.hasFinishTeamMatch){
 			button_message.setVisibility(View.GONE);
 			button_relay.setVisibility(View.GONE);

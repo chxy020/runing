@@ -2,7 +2,11 @@ package net.yaopao.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import net.yaopao.activity.MatchGroupInfoActivity.TimerTask_request;
+import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import android.app.Activity;
@@ -38,6 +42,21 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	private ImageView backV;
+	
+	class TimerTask_drawLine extends TimerTask{
+		@Override
+		public void run() {
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					drawIncrementLine();
+					
+				}
+			});
+		}
+	}
+	Timer timer_match_map = null;
+	TimerTask_drawLine task_drawLine = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +83,9 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	void drawRunTrack(){
 		
 	}
+	void drawIncrementLine(){
+		
+	}
 	/**
 	 * 初始化AMap对象
 	 */
@@ -86,6 +108,9 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		super.onResume();
 		mapView.onResume();
 		MobclickAgent.onResume(this);
+		task_drawLine = new TimerTask_drawLine();
+		timer_match_map = new Timer();
+		timer_match_map.schedule(task_drawLine, 2000, CNAppDelegate.kMatchInterval*1000);
 	}
 
 	/**
@@ -97,6 +122,14 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		mapView.onPause();
 		deactivate();
 		MobclickAgent.onPause(this);
+		if(timer_match_map != null){
+			timer_match_map.cancel();
+			timer_match_map = null;
+			if(task_drawLine != null){
+				task_drawLine.cancel();
+				task_drawLine = null;
+			}
+		}
 	}
 
 	/**

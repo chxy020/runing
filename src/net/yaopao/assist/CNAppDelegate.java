@@ -31,7 +31,7 @@ public class CNAppDelegate {
 	public static int testIndex= 0;
 	
 	public static final String kTrackName = "DaXingTest2";//使用赛道
-	public static final String kStartTime = "2014-10-13 13:50:00";//比赛开始时间
+	public static final String kStartTime = "2014-10-13 14:20:00";//比赛开始时间
 	public static final int kDuringMinute = 24*60;//比赛持续时间
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
@@ -118,9 +118,7 @@ public class CNAppDelegate {
 	public static void finishThisRun(){//结束这次跑步
 		CNAppDelegate.isbaton = 0;
 	    CNAppDelegate.saveMatchToRecord();
-	    CNAppDelegate.timer_one_point.cancel();
-	    CNAppDelegate.timer_secondplusplus.cancel();
-	    CNAppDelegate.match_timer_report.cancel();
+	    CNAppDelegate.cancelMatchTimer();
 	    CNAppDelegate.match_deleteHistoryPlist();
 	}
 	public static void match_save2plist(){//每隔几秒写plist
@@ -234,9 +232,7 @@ public class CNAppDelegate {
 		int gstate = result.getIntValue("gstate");
 	    if(gstate == 2){
 	        if(CNAppDelegate.hasFinishTeamMatch == false){
-	            CNAppDelegate.timer_one_point.cancel();
-	            CNAppDelegate.timer_secondplusplus.cancel();
-	            CNAppDelegate.match_timer_report.cancel();
+	        	CNAppDelegate.cancelMatchTimer();
 	            if(!requestType.equals(Constants.endMatch)){
 	                //跳转
 	                CNAppDelegate.ForceGoMatchPage("finishTeam");
@@ -259,6 +255,20 @@ public class CNAppDelegate {
 			Variables.matchinfo = null;
 			context.startActivity(intent);
 	    }
+	}
+	public static void cancelMatchTimer(){
+		if(CNAppDelegate.timer_one_point != null){
+			CNAppDelegate.timer_one_point.cancel();
+			CNAppDelegate.timer_one_point = null;
+		}
+		if(CNAppDelegate.timer_secondplusplus != null){
+			CNAppDelegate.timer_secondplusplus.cancel();
+			CNAppDelegate.timer_secondplusplus = null;
+		}
+		if(CNAppDelegate.match_timer_report != null){
+			CNAppDelegate.match_timer_report = null;
+			CNAppDelegate.match_timer_report.cancel();
+		}
 	}
 	public static CNGPSPoint4Match test_getOnePoint(){
 		List<CNGPSPoint4Match> testlist = new ArrayList<CNGPSPoint4Match>();
