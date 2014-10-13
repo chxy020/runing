@@ -374,7 +374,8 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				Date date = new Date(time);
 				label_date.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
 				
-		        int duringTime = (int)(time-CNAppDelegate.match_start_timestamp);//秒
+		        int duringTime = (int)(time/1000-CNAppDelegate.match_start_timestamp);//豪秒
+		        Log.v("zc","duringTime:"+duringTime);
 		        initTime(duringTime);
 		        if(distance>1){
 		            int speed_second = (int) (1000*(duringTime/distance));//秒
@@ -383,7 +384,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
-			    //needwy 将地图中心点移动到lon，lat，level=16
+			    //needwy 将地图中心点移动到lon，lat，level=16 
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
 			    imagePath = runnerDic.getString("imgpath");
 			    avatarImage =  BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null);
@@ -487,13 +488,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 						d2V, d3V, d4V, d5V, d6V });
 	}
 	private void initTime(long utime) {
-		int[] time = YaoPao01App.cal(utime/1000);
-		int t1 = time[0] / 10;
-		int t2 = time[0] % 10;
-		int t3 = time[1] / 10;
-		int t4 = time[1] % 10;
-		int t5 = time[2] / 10;
-		int t6 = time[2] % 10;
+		int[] time = YaoPao01App.cal(utime);
 		label_time.setText(time[0] + ":" + time[1] + ":" +  time[2]);
 	}
 	private void initPspeed(int pspeed) {

@@ -30,7 +30,7 @@
         android:id="@+id/relay_wait_header_layout1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/match_bottom_height"
-        android:layout_marginTop="@dimen/margin3" >
+        android:layout_marginTop="@dimen/margin3" > 
 
         <!-- 选择交接时显示 -->
 
@@ -97,6 +97,7 @@
                 android:layout_height="@dimen/recording_List_main_height"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:visibility="gone"
                 android:layout_marginRight="@dimen/margin2" >
 
                 <ImageView
