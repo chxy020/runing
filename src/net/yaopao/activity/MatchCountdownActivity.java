@@ -103,17 +103,20 @@ public class MatchCountdownActivity extends BaseActivity {
 			time1.setVisibility(View.VISIBLE);
 			YaoPao01App.graphicTool.updateRedNum(new int[] { t1 },
 					new ImageView[] { time1 });
-			if (t2 >= 0) {
-				time2.setVisibility(View.VISIBLE);
-				YaoPao01App.graphicTool.updateRedNum(new int[] { t2 },
-						new ImageView[] { time2 });
-			}
 		}
 
 		if (t2 > 0) {
 			time2.setVisibility(View.VISIBLE);
 			YaoPao01App.graphicTool.updateRedNum(new int[] { t2 },
 					new ImageView[] { time2 });
+		}
+		if (t1==0) {
+			time1.setVisibility(View.GONE);
+		}
+		if (t2==0) {
+			if (t1 == 0) {
+				time2.setVisibility(View.GONE);
+			}
 		}
 		YaoPao01App.graphicTool.updateRedNum(new int[] { t3 },
 				new ImageView[] { time3 });
