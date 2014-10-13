@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -380,6 +379,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		        if(distance>1){
 		            int speed_second = (int) (1000*(duringTime/distance));//秒
 		            initPspeed(speed_second);
+		            
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");

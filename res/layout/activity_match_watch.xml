@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
-                android:text="1:21:14"
+                android:text="--:--:--"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size2"
                 android:textStyle="bold" />
@@ -170,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
-                android:text="6&apos; 42&apos;&apos; /km"
+                android:text="--&apos; --&apos;&apos;"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size2"
                 android:textStyle="bold" />
@@ -200,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_middle_height"
                 android:gravity="center"
-                android:text="15.49 km/h"
+                android:text="--.--"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size2"
                 android:textStyle="bold" />
