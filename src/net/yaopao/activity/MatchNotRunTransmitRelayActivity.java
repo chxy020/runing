@@ -80,6 +80,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		
 		
 		relayAnim = (ImageView) findViewById(R.id.relay_anim);
+		relay_main = (RelativeLayout)findViewById(R.id.relay_main);
         animationDrawable = (AnimationDrawable) relayAnim.getDrawable();  
 		button_back.setOnTouchListener(this);
 	}
