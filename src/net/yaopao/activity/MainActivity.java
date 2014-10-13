@@ -589,6 +589,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		@Override
 		protected Boolean doInBackground(String... params) {
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.checkServerTime, "");
+		    Log.v("zc","检查服务器时间返回responseJson is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -601,6 +602,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			if (result) {
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				long serverTime = resultDic.getLongValue("systime");
+				Log.v("zc","serverTime is "+serverTime);
                 endRequestTime = CNAppDelegate.getNowTime1000();
                 Log.v("zc","endRequestTime is "+endRequestTime);
                 Log.v("zc","endRequestTime-startRequestTime is "+(endRequestTime-startRequestTime));

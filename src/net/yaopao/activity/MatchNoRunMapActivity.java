@@ -41,7 +41,8 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	private MapView mapView;
 	private AMap aMap;
 	
-	Timer timer_refresh_data = new Timer();
+	Timer timer_refresh_data;
+	TimerTask_reqeust task_request;
 	String imagePath;
 	double lon;//最新位置
 	double lat;//最新位置
@@ -58,15 +59,16 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		init();
 		drawTrack();//画赛道
 		drawTakeOverZone();//画接力区
-		TimerTask task_request = new TimerTask() {
-			@Override
-			public void run() {
-				requestData();
-			}
-		};
-		timer_refresh_data.schedule(task_request, 0, CNAppDelegate.kMatchReportInterval);
+		task_request = new TimerTask_reqeust();
+		timer_refresh_data = new Timer();
+		timer_refresh_data.schedule(task_request, 0, CNAppDelegate.kMatchReportInterval*1000);
 	}
-
+	class TimerTask_reqeust extends TimerTask{
+		@Override
+		public void run() {
+			requestData();
+		}
+	}
 	private void init() {
 		backV = (ImageView) findViewById(R.id.match_full_map_back);
 		backV.setOnTouchListener(this);
@@ -127,7 +129,15 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
-		timer_refresh_data.cancel();
+		if(timer_refresh_data != null){
+			timer_refresh_data.cancel();
+			timer_refresh_data = null;
+			if(task_request != null){
+				task_request.cancel();
+				task_request = null;
+			}
+		}
+		
 		MobclickAgent.onPause(this);
 	}
 
@@ -177,6 +187,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","查询跑步队员位置参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.smallMapPage, request_params);
+		    Log.v("zc","查询跑步队员位置返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {

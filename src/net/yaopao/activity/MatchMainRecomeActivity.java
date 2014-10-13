@@ -18,6 +18,7 @@ import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -194,12 +195,17 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	            }
 	            double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
 	            CNAppDelegate.match_totaldis = this_dis+CNAppDelegate.match_historydis;
-	            if(CNAppDelegate.match_totalDisTeam + CNAppDelegate.match_totaldis > CNAppDelegate.match_targetkm*CNAppDelegate.geosHandler.claimedLength){
+	            if(CNAppDelegate.match_totalDisTeam + CNAppDelegate.match_totaldis > CNAppDelegate.match_targetkm*CNAppDelegate.kkmInterval){
 	                //整公里上报
 	                oneKmReport(gpsPoint.getTime());
 	                //播报语音
 	                onekmvoice();
-	                CNAppDelegate.match_targetkm ++;
+	                new Handler().postDelayed(new Runnable(){  
+	        	        public void run() {  
+	        	        	//execute the task
+	        	        	CNAppDelegate.match_targetkm ++;
+	        	        }  
+	        	     }, 1000);
 	            }
 //	            self.big_div.distance = (kApp.match_totaldis+5)/1000.0;
 //	            [self.big_div fitToSize];needwy

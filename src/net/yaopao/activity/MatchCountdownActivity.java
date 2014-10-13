@@ -79,6 +79,7 @@ public class MatchCountdownActivity extends BaseActivity  {
 					    }
 					    if(startSecond == 0){
 					        timer_countdown.cancel();
+					        timer_countdown = null;
 					        if(CNAppDelegate.isInStartZone()){//在出发区
 					        	Intent intent = new Intent(MatchCountdownActivity.this,MatchMainActivity.class);
 					    		startActivity(intent);

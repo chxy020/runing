@@ -56,7 +56,8 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	String avatarurl1;
 	String avatarurl2;
 	String avatarurl3;
-	Timer timer_look_submit;
+	Timer timer_look_submit = null;
+	TimerTask_scan task_look_submit = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,18 +112,19 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		cancel.setOnTouchListener(this);
 
 	}
-
+	class TimerTask_scan extends TimerTask{
+		  @Override
+		  public void run() {
+			  requestTransmit();
+		  }
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
-		TimerTask task_look_submit = new TimerTask() {
-			@Override
-			public void run() {
-				requestTransmit();
-			}
-		};
-		timer_look_submit.schedule(task_look_submit, 0, CNAppDelegate.kScanTransmitinterval);
+		task_look_submit = new TimerTask_scan();
+		timer_look_submit = new Timer();
+		timer_look_submit.schedule(task_look_submit, 0, CNAppDelegate.kScanTransmitinterval*1000);
 	}
 	void requestTransmit(){
 		new ScanTransmitTask().execute("");
@@ -134,7 +136,15 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	protected void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-		timer_look_submit.cancel();
+		if(timer_look_submit != null){
+			timer_look_submit.cancel();
+			timer_look_submit = null;
+			if(task_look_submit != null){
+				task_look_submit.cancel();
+				task_look_submit = null;
+			}
+		}
+		
 	}
 
 	/**
@@ -274,6 +284,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","持棒选手交接棒参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.transmitRelay, request_params);
+		    Log.v("zc","持棒选手交接棒扫描返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -467,6 +478,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","取消交接棒参数是 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.cancelTransmit, request_params);
+		    Log.v("zc","取消交接棒返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {

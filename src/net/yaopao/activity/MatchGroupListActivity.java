@@ -40,35 +40,40 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	private TextView button_back,label_tname,button_personal,button_km;
 	FrameLayout scrollview = null;
 	
-	Timer timer_personal;
-	Timer timer_km;
+	Timer timer_personal = null;
+	Timer timer_km = null;
+	TimerTask_request_personal task_request_personal = null;
+	TimerTask_request_km task_request_km = null;
 	int tabIndex = 0;
 	List<ImageView> imageviewList = new ArrayList<ImageView>();
 	List<String> urlList = new ArrayList<String>();
 	LayoutInflater mInflater = null;
-	Resources r = getResources(); 
-	TimerTask task_request_personal = new TimerTask() {
+	Resources r; 
+	class TimerTask_request_personal extends TimerTask{
 		@Override
 		public void run() {
 			requestPersonal();
 		}
-	};
-	TimerTask task_request_km = new TimerTask() {
+	}
+	class TimerTask_request_km extends TimerTask{
 		@Override
 		public void run() {
 			requestKm();
 		}
-	};
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_score_list);
 		initinitSymbol();
+		r = getResources();
 		mInflater = this.getLayoutInflater();
 		init();
 		label_tname.setText(CNAppDelegate.matchDic.getString("groupname"));
-		timer_personal.schedule(task_request_personal, 0, CNAppDelegate.kMatchReportInterval);
+		task_request_personal = new TimerTask_request_personal();
+		timer_personal = new Timer();
+		timer_personal.schedule(task_request_personal, 0, CNAppDelegate.kMatchReportInterval*1000);
 //	    self.big_div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(4, 60+IOS7OFFSIZE, 260, 64)];
 //	    self.big_div.distance = 0;
 //	    self.big_div.color = @"red";
@@ -79,10 +84,10 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 //	    [self.view addSubview:self.image_km];needwy
 	}
 	void requestPersonal(){
-		
+		new RequestPersonal().execute("");
 	}
 	void requestKm(){
-		
+		new RequestKM().execute("");
 	}
 	void clearScrollview(){
 		scrollview.removeAllViews();
@@ -109,8 +114,23 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-		timer_personal.cancel();
-	    timer_km.cancel();
+		if(timer_personal!=null){
+			timer_personal.cancel();
+			timer_personal = null;
+			if(task_request_personal != null){
+				task_request_personal.cancel();
+				task_request_personal = null;
+			}
+		}
+		if(timer_km!=null){
+			timer_km.cancel();
+			timer_km = null;
+			if(task_request_km != null){
+				task_request_km.cancel();
+				task_request_km = null;
+			}
+		}
+		
 	}
 
 	/**
@@ -145,8 +165,17 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				button_personal.setBackgroundResource(R.color.blue_dark);
 				if(tabIndex == 0)return true;
 	            tabIndex = 0;
-	            timer_km.cancel();
-	            timer_personal.schedule(task_request_personal, 0, CNAppDelegate.kMatchReportInterval);
+	            if(timer_km != null){
+	            	timer_km.cancel();
+	            	timer_km = null;
+	            	if(task_request_km != null){
+	            		task_request_km.cancel();
+	            		task_request_km = null;
+	            	}
+	            }
+	            task_request_personal = new TimerTask_request_personal();
+	            timer_personal = new Timer();
+	            timer_personal.schedule(task_request_personal, 0, CNAppDelegate.kMatchReportInterval*1000);
 				break;
 			}
 			break;
@@ -160,8 +189,17 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				button_km.setBackgroundResource(R.color.blue_dark);
 				if(tabIndex == 1)return true;
 	            tabIndex = 1;
-	            timer_personal.cancel();
-	            timer_km.schedule(task_request_km, 0, CNAppDelegate.kMatchReportInterval);
+	            if(timer_personal!=null){
+	            	timer_personal.cancel();
+	            	timer_personal = null;
+	            	if(task_request_personal != null){
+	            		task_request_personal.cancel();
+	            		task_request_personal = null;
+	            	}
+	            }
+	            task_request_km = new TimerTask_request_km();
+	            timer_km = new Timer();
+	            timer_km.schedule(task_request_km, 0, CNAppDelegate.kMatchReportInterval*1000);
 				break;
 			}
 			break;
@@ -227,6 +265,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","按照人员查询成绩 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.listPersonal, request_params);
+		    Log.v("zc","按照人员查询成绩 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -305,6 +344,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","按照公里查询成绩 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.listKM, request_params);
+		    Log.v("zc","按照公里查询返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {

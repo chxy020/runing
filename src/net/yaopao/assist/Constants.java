@@ -60,7 +60,7 @@ public class Constants {
 	public static final String confirmTransmit = "/matchstart/confirmsuccession.htm";// 确认交棒
 	public static final String cancelTransmit = "/matchstart/cancelsuccession.htm";//取消交棒
 	public static final String listKM = "/matchstart/matchendkilometre.htm";// 按里程查看比赛数据
-	public static final String listPersonal = "/matchstart/cancelsuccession.htm";// 按个人查看比赛数据
+	public static final String listPersonal = "/matchstart/matchendshow.htm";// 按个人查看比赛数据
 	public static final String checkServerTime = "/matchstart/returntime.htm";// 与服务器同步时间
 	public static final String endMatch = "/matchstart/advancefinish.htm";// 提前完赛
 	

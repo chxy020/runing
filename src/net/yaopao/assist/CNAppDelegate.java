@@ -16,20 +16,22 @@ import net.yaopao.match.track.TrackData;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 //有关比赛的变量和方法byzc
 public class CNAppDelegate {
 	//一些常量
 	
 	//测试比赛用
-	public static final boolean istest = false;
+	public static final boolean istest = true;
 	public static int matchtestdatalength;
 	public static int testIndex= 0;
 	
-	public static final String kTrackName = "LongWan";//使用赛道
-	public static final String kStartTime = "2014-10-18 15:00:00";//比赛开始时间
+	public static final String kTrackName = "DaXingTest2";//使用赛道
+	public static final String kStartTime = "2014-10-12 15:00:00";//比赛开始时间
 	public static final int kDuringMinute = 24*60;//比赛持续时间
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
@@ -138,14 +140,17 @@ public class CNAppDelegate {
 		dic.put("match_km_target_personal", ""+CNAppDelegate.match_km_target_personal);
 		dic.put("match_km_start_time", ""+CNAppDelegate.match_km_start_time);
 		String historyJson = JSON.toJSONString(dic);
-		//needwy 
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putString("match_historydis", historyJson);
+		editor.commit();
 	}
 	public static String match_readHistoryPlist(){//读取preference
-		//needwy
-		return "";
+		return YaoPao01App.sharedPreferences.getString("match_historydis", "");
 	}
 	public static void match_deleteHistoryPlist(){//删除记录的preference
-		//needwy
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putString("match_historydis", "");
+		editor.commit();
 	}
 	public static void ForceGoMatchPage(String target){//强制跳转到某个界面
 		YaoPao01App.instance.ForceGoMatchPage(target);
@@ -172,8 +177,8 @@ public class CNAppDelegate {
 	        if(CNAppDelegate.isbaton == 1){//正在跑
 	            //通过plist文件判断是否是崩溃重进
 	            //needwy
-	        	boolean fileexist = true;
-	            if(!fileexist){//没有这个文件，则说明上次不是比赛中闪退的
+	        	String fileexist = CNAppDelegate.match_readHistoryPlist();
+	            if("".equals(fileexist)){//没有这个文件，则说明上次不是比赛中闪退的
 	                if(CNAppDelegate.isbaton == 1 && CNAppDelegate.match_totalDisTeam < 1){//如果是第一棒有个特殊条件才能启动，就是必须在出发区
 	                    if(CNAppDelegate.isInStartZone()){
 	                        CNAppDelegate.ForceGoMatchPage("matchRun_normal");
@@ -208,7 +213,19 @@ public class CNAppDelegate {
 	    }
 	}
 	public static boolean isInStartZone(){//判断是否在出发区
-		return true;
+		if(istest){
+			return true;
+		}else{
+			if(YaoPao01App.loc == null){
+				Log.v("zc","没定上位，不在出发区");
+				return false;
+			}else{
+				CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
+				LonLatEncryption lonLatEncryption = new LonLatEncryption();
+				CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
+				return CNAppDelegate.geosHandler.isInTheStartZone(encryptionPoint.getLon(),encryptionPoint.getLat());
+			}
+		}
 	}
 	//比赛网络请求响应的一个过滤器，判断两点：第一是否已经结束比赛，第二是否账号在其他设备登录
 	public static void matchRequestResponseFilter(String responseJson,String requestType,Context context){

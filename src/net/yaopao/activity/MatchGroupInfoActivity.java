@@ -26,6 +26,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -48,12 +49,13 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private RelativeLayout button_list;
 	private RelativeLayout button_message;
 	private RelativeLayout button_me;
-	private RelativeLayout button_relay;
+	private ImageView button_relay;
 	
 //	private ImageView button_relay;
 	
 	String from;
-	Timer timer_refresh_data = new Timer();
+	Timer timer_refresh_data = null;
+	TimerTask_request task_request;
 	Marker annotation;
 	String imagePath;
 	Bitmap avatarImage;
@@ -69,7 +71,9 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_watch);
-		from = getIntent().getExtras().getString("from");
+		if(getIntent().getExtras() != null){
+			from = getIntent().getExtras().getString("from");
+		}
 		mapView = (MapView) findViewById(R.id.match_watch_map);
 		mapView.onCreate(savedInstanceState);
 		mapView.setOnTouchListener(this);
@@ -83,7 +87,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	    	button_message.setVisibility(View.VISIBLE);
 			button_relay.setVisibility(View.VISIBLE);
 	    }
-	    if(from.equals("main")){
+	    if("main".equals(from)){
 	        button_back.setVisibility(View.VISIBLE);
 	    }else{
 	        button_back.setVisibility(View.GONE);
@@ -116,7 +120,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		button_message = (RelativeLayout) findViewById(R.id.match_watch_message);
 		button_me = (RelativeLayout) findViewById(R.id.match_watch_user);
 		
-		button_relay = (RelativeLayout) findViewById(R.id.main_start);
+		button_relay = (ImageView) findViewById(R.id.match_get_baton);
 		image_avatar = (ImageView) findViewById(R.id.match_watch_head);	
 		imageview_dot = (ImageView) findViewById(R.id.message_red_dot);
 		
@@ -187,13 +191,15 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	    }else{
 	    	imageview_dot.setVisibility(View.GONE);
 	    }
-		TimerTask task_request = new TimerTask() {
-			@Override
-			public void run() {
-				requestData();
-			}
-		};
-		timer_refresh_data.schedule(task_request, 0, CNAppDelegate.kMatchReportInterval);
+		task_request = new TimerTask_request();
+		timer_refresh_data = new Timer();
+		timer_refresh_data.schedule(task_request, 0, CNAppDelegate.kMatchReportInterval*1000);
+	}
+	class TimerTask_request extends TimerTask{
+		@Override
+		public void run() {
+			requestData();
+		}
 	}
 	void requestData(){
 		new RequestTask().execute("");
@@ -206,7 +212,15 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		super.onPause();
 		mapView.onPause();
 		MobclickAgent.onPause(this);
-		timer_refresh_data.cancel();
+		if(timer_refresh_data != null){
+			timer_refresh_data.cancel();
+			timer_refresh_data = null;
+			if(task_request != null){
+				task_request.cancel();
+				task_request = null;
+			}
+		}
+		
 	}
 
 	/**
@@ -247,9 +261,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Intent intent = new Intent(MatchGroupInfoActivity.this,
-						MatchGiveRelayActivity.class);
-				startActivity(intent);
+				Intent messageIntent = new Intent(this,WebViewActivity.class);
+				messageIntent.putExtra("net.yaopao.activity.PageUrl",
+							"message_index.html");
+				startActivity(messageIntent);
 				break;
 			}
 			break;
@@ -264,27 +279,32 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				break;
 			}
 			break;
-		case R.id.main_start:
+		case R.id.match_get_baton:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
-				CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
-				
-				int isInTakeOverZone;
 				if(CNAppDelegate.istest){
-					isInTakeOverZone = 0;
-				}else{
-					isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(encryptionPoint.getLon(),encryptionPoint.getLat());
-				}
-	            if(isInTakeOverZone != -1){
-	            	Intent intent = new Intent(MatchGroupInfoActivity.this,
+					Intent intent = new Intent(MatchGroupInfoActivity.this,
 	        				MatchNotRunTransmitRelayActivity.class);
 	        		startActivity(intent);
-	            }else{
-	                //needwy
-	            }
+				}else{
+					if(YaoPao01App.loc == null){
+						Toast.makeText(this, "没有定上位，请稍后重试", Toast.LENGTH_LONG).show();
+						return true;
+					}
+					CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
+					CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
+					int isInTakeOverZone;
+					isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(encryptionPoint.getLon(),encryptionPoint.getLat());
+		            if(isInTakeOverZone != -1){
+		            	Intent intent = new Intent(MatchGroupInfoActivity.this,
+		        				MatchNotRunTransmitRelayActivity.class);
+		        		startActivity(intent);
+		            }else{
+		                //needwy
+		            }
+				}
 				break;
 			}
 			break;
@@ -310,6 +330,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","查询跑步队员位置参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.smallMapPage, request_params);
+		    Log.v("zc","查询跑步队员位置返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {

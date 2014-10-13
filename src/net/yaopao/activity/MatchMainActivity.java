@@ -100,6 +100,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		batonV = (ImageView) findViewById(R.id.match_run_baton);
 		nameV = (TextView) findViewById(R.id.match_username);
 		teamNameV = (TextView) findViewById(R.id.match_team_name);
+		nextArea=(TextView)findViewById(R.id.match_next_area);
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
 		batonV.setOnTouchListener(this);
@@ -160,8 +161,15 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	    TimerTask task_one_point = new TimerTask() {
 			@Override
 			public void run() {
-				pushOnePoint();
+				runOnUiThread(new Runnable() { // UI thread
+					@Override
+					public void run() {
+						pushOnePoint();
+						
+					}
+				});
 			}
+			
 		};
 		CNAppDelegate.timer_one_point.schedule(task_one_point, CNAppDelegate.kMatchInterval*1000, CNAppDelegate.kMatchInterval*1000);
 		TimerTask task_secondplusplus = new TimerTask() {
@@ -234,12 +242,18 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	            }
 	            double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
 	            CNAppDelegate.match_totaldis = this_dis+CNAppDelegate.match_historydis;
-	            if(CNAppDelegate.match_totalDisTeam + CNAppDelegate.match_totaldis > CNAppDelegate.match_targetkm*CNAppDelegate.geosHandler.claimedLength){
+	            if(CNAppDelegate.match_totalDisTeam + CNAppDelegate.match_totaldis > CNAppDelegate.match_targetkm*CNAppDelegate.kkmInterval){
 	                //整公里上报
 	                oneKmReport(gpsPoint.getTime());
 	                //播报语音
 	                onekmvoice();
-	                CNAppDelegate.match_targetkm ++;
+	                new Handler().postDelayed(new Runnable(){  
+	        	        public void run() {  
+	        	        	//execute the task
+	        	        	CNAppDelegate.match_targetkm ++;
+	        	        }  
+	        	     }, 1000);
+	                
 	            }
 //	            self.big_div.distance = (kApp.match_totaldis+5)/1000.0;
 //	            [self.big_div fitToSize];needwy
@@ -251,7 +265,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	            }
 	            //距离下一交接区
 	            nextDis = CNAppDelegate.geosHandler.getDistanceToNextTakeOverZone(point2Dis);
-	            nextArea.setText(String.format("距离下一交接区还有:%0.2f公里", (nextDis+5)/1000.0));
+	            nextArea.setText(String.format("距离下一交接区还有:%.2f公里", (nextDis+5)/1000.0));
+	            
+	            
 	            
 	            //算积分
 	            if(CNAppDelegate.match_totaldis > 1000*CNAppDelegate.match_km_target_personal){
@@ -506,6 +522,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s&longitude=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,pointJson);
 		    Log.v("zc","上报点数据参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.matchReport, request_params);
+		    Log.v("zc","上报点数据返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -536,6 +553,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s&km=%d&uptime=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,CNAppDelegate.match_targetkm,timestr);
 		    Log.v("zc","整公里上报参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.matchOnekm, request_params);
+		    Log.v("zc","整公里上报返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -579,6 +597,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s&longitude=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,pointJson);
 		    Log.v("zc","结束比赛参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.endMatch, request_params);
+		    Log.v("zc","结束比赛返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {

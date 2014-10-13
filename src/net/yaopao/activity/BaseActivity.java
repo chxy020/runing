@@ -104,6 +104,7 @@ public class BaseActivity extends Activity {
 	        		        }else if("matchWatch".equals(target)){
 	        		        	//看比赛
 	        		        	 jump =new Intent(BaseActivity.this,MatchGroupInfoActivity.class);
+	        		        	 
 	        		        }
 	        		        else if("matchRun_normal".equals(target)){
 	        		        	//比赛跑步，正常进

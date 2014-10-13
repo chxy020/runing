@@ -89,7 +89,7 @@ public class YaoPao01App extends Application {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 
 		try {
-			CNAppDelegate.match_start_timestamp = sdf.parse(CNAppDelegate.kStartTime).getTime();
+			CNAppDelegate.match_start_timestamp = sdf.parse(CNAppDelegate.kStartTime).getTime()/1000;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

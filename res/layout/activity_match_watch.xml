@@ -290,17 +290,17 @@
             android:background="@color/black" />
            
             <ImageView
-                android:id="@+id/main_start"
+                android:id="@+id/match_get_baton"
                 android:layout_width="@dimen/main_start_hight"
                 android:layout_height="@dimen/main_start_hight"
                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin2"
                 android:background="@drawable/match_baton" />
             <TextView
-                android:layout_below="@id/main_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_below="@id/match_get_baton"
                 android:text="我要接棒"
                 android:textSize="@dimen/font_size3" />
         </RelativeLayout>

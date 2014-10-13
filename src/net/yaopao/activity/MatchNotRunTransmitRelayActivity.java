@@ -48,7 +48,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	private RelativeLayout view_run_user;
 	private RelativeLayout relay_main;
 	
-	private ImageView button_back;
+	private TextView button_back;
 	private ImageView image_gps;
 	
 	private ImageView relayAnim;
@@ -76,8 +76,10 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		view_run_user = (RelativeLayout) findViewById(R.id.relay_head_layout);
 		
 		image_gps = (ImageView) findViewById(R.id.relay_wait_gps_status);
-		button_back = (ImageView) findViewById(R.id.relay_wait_back);
+		button_back = (TextView) findViewById(R.id.relay_wait_back);
 		
+		
+		relayAnim = (ImageView) findViewById(R.id.relay_anim);
         animationDrawable = (AnimationDrawable) relayAnim.getDrawable();  
 		button_back.setOnTouchListener(this);
 	}
@@ -92,7 +94,8 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 				requestTransmit();
 			}
 		};
-		timer_transmit.schedule(task_request, 0, CNAppDelegate.kScanTransmitinterval);
+		timer_transmit = new Timer();
+		timer_transmit.schedule(task_request, 0, CNAppDelegate.kScanTransmitinterval*1000);
 	}
 	void requestTransmit(){
 		new RequestTask().execute("");
@@ -104,6 +107,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	protected void onPause() {
 		super.onPause();
 		timer_transmit.cancel();
+		timer_transmit = null;
 	}
 
 	private class RequestTask extends AsyncTask<String, Void, Boolean> {
@@ -130,6 +134,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 			if (result) {
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchNotRunTransmitRelayActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
+				Log.v("zc","我要接棒返回 is "+responseJson);
 				JSONArray array = resultDic.getJSONArray("list");
 			    if(array!= null&&array.size()<1){
 			        view_back.setVisibility(View.VISIBLE);
@@ -226,8 +231,10 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		case R.id.relay_wait_back:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_back.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_back.setBackgroundResource(R.color.blue_dark);
 				MatchNotRunTransmitRelayActivity.this.finish();
 				break;
 			}
