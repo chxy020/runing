@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
 		// 初始化数字符号
-		initinitSymbol();
+		initSymbol();
 		dialogTool = new DialogTool(this);
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnClickListener(this);
@@ -576,7 +576,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 
-	private void initinitSymbol() {
+	private void initSymbol() {
 		ImageView dot = (ImageView) this.findViewById(R.id.main_milage_dot);
 		ImageView min = (ImageView) this
 				.findViewById(R.id.match_recoding_speed_d1);
