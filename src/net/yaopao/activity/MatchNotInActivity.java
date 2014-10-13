@@ -18,7 +18,7 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 	
 	private TextView label_uname;
 	
-	private ImageView button_back;
+	private TextView button_back;
 	
 	private ImageView image_gps;
 	
@@ -35,7 +35,7 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 		
 		image_gps = (ImageView) findViewById(R.id.relay_wait_gps_status);
 		
-		button_back = (ImageView) findViewById(R.id.out_delay_tip_back);
+		button_back = (TextView) findViewById(R.id.out_delay_tip_back);
 		
 		button_back.setOnTouchListener(this);
 	}

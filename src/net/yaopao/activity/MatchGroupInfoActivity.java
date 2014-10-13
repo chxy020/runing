@@ -37,9 +37,11 @@ import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -409,6 +411,14 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 //	    self.annotation = [[MAPointAnnotation alloc] init];
 //	    self.annotation.coordinate = CLLocationCoordinate2DMake(self.lat, self.lon);
 //	    [self.mapView addAnnotation:self.annotation];needwy:lon,lat,avatarImage
+		if(annotation != null){
+			annotation.remove();
+		}
+		annotation = aMap.addMarker(new MarkerOptions()
+		.position(new LatLng(lat, lon))
+		.icon(BitmapDescriptorFactory.fromBitmap(avatarImage))
+		.anchor(0.5f, 0.5f));
+		aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(lat, lon)));
 	}
 	
 	void downloadImage(){
