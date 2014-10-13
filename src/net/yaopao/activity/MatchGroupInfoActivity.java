@@ -126,7 +126,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		label_pspeed = (TextView) findViewById(R.id.match_watch_pspeed);
 		label_avr_speed = (TextView) findViewById(R.id.match_watch_avg_speed);
 		
-		dot = (ImageView) this.findViewById(R.id.list_sport_dec1);
+		dot = (ImageView) this.findViewById(R.id.list_sport_dot);
 		dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
 		km =  (ImageView) this.findViewById(R.id.list_sport_km);
 		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
@@ -489,7 +489,14 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	}
 	private void initTime(long utime) {
 		int[] time = YaoPao01App.cal(utime);
-		label_time.setText(time[0] + ":" + time[1] + ":" +  time[2]);
+		int t1 = time[0] / 10;
+		int t2 = time[0] % 10;
+		int t3 = time[1] / 10;
+		int t4 = time[1] % 10;
+		int t5 = time[2] / 10;
+		int t6 = time[2] % 10;
+//		label_time.setText(time[0] + ":" + time[1] + ":" +  time[2]);
+		label_time.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":"	+ t5 + "" + t6);
 	}
 	private void initPspeed(int pspeed) {
 		int[] speed = YaoPao01App.cal(pspeed);

@@ -17,7 +17,7 @@ import android.widget.Toast;
    
 public class BaseActivity extends Activity { 
 	public static final String registerAction = "gps.action";
-	private boolean isJump=false;
+	public boolean isJump=false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
