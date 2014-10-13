@@ -266,8 +266,8 @@ public class CNAppDelegate {
 			CNAppDelegate.timer_secondplusplus = null;
 		}
 		if(CNAppDelegate.match_timer_report != null){
-			CNAppDelegate.match_timer_report = null;
 			CNAppDelegate.match_timer_report.cancel();
+			CNAppDelegate.match_timer_report = null;
 		}
 	}
 	public static CNGPSPoint4Match test_getOnePoint(){

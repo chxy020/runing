@@ -172,7 +172,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			}
 			break;
 		// 点击中间的头像
-		case R.id.relay_wait_head1:
+		case R.id.relay_wait_head_layout1:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
@@ -184,7 +184,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			}
 			break;
 		// 点击左侧的头像
-		case R.id.relay_wait_head2:
+		case R.id.relay_wait_head_layout2:
 
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
@@ -197,7 +197,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			}
 			break;
 		// 点击右侧头像
-		case R.id.relay_wait_head3:
+		case R.id.relay_wait_head_layout3:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
@@ -211,11 +211,11 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 
 		// 点击确认交棒
 		case R.id.relay_chosen_confirm:
-			
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				new ComfirmTransmitTask().execute("");
 				break;
 			}
 			break;
@@ -266,10 +266,9 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	    }else if(index == 3){
 	        imagePath = avatarurl3;
 	    }
-	    String imageURL = Constants.endpoints_img+imagePath;
 	    RequestImageTask requestTask = new RequestImageTask();
     	requestTask.index = index;
-    	requestTask.avatarUrl = imageURL;
+    	requestTask.avatarUrl = imagePath;
     	requestTask.execute("");
 	}
 	private class ScanTransmitTask extends AsyncTask<String, Void, Boolean> {
@@ -433,6 +432,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s&joinid=%s&longitude=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid,joinid,pointJson);
 		    Log.v("zc","确认交棒参数 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.confirmTransmit, request_params);
+		    Log.v("zc","确认交棒返回 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
