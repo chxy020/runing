@@ -31,7 +31,7 @@ public class CNAppDelegate {
 	public static int testIndex= 0;
 	
 	public static final String kTrackName = "DaXingTest2";//使用赛道
-	public static final String kStartTime = "2014-10-12 15:00:00";//比赛开始时间
+	public static final String kStartTime = "2014-10-13 13:50:00";//比赛开始时间
 	public static final int kDuringMinute = 24*60;//比赛持续时间
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
@@ -104,7 +104,7 @@ public class CNAppDelegate {
 		return System.currentTimeMillis()/1000+CNAppDelegate.deltaTime;
 	}
 	public static String getMatchStage(){
-	    long nowTimeSecond = CNAppDelegate.getNowTime();
+	    long nowTimeSecond = CNAppDelegate.getNowTimeDelta();
 	    if(nowTimeSecond < CNAppDelegate.match_before5min_timestamp){
 	        return "beforeMatch";
 	    }else if(nowTimeSecond >= CNAppDelegate.match_before5min_timestamp&&nowTimeSecond<CNAppDelegate.match_start_timestamp){

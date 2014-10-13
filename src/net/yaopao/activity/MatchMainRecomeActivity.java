@@ -65,6 +65,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.v("zc","进崩溃页面");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_recome_run);
@@ -217,7 +218,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	            }
 	            //距离下一交接区
 	            nextDis = CNAppDelegate.geosHandler.getDistanceToNextTakeOverZone(point2Dis);
-	            nextArea.setText(String.format("距离下一交接区还有:%0.2f公里", (nextDis+5)/1000.0));
+	            nextArea.setText(String.format("距离下一交接区还有:%.2f公里", (nextDis+5)/1000.0));
 	            
 	            //算积分
 	            if(CNAppDelegate.match_totaldis > 1000*CNAppDelegate.match_km_target_personal){
