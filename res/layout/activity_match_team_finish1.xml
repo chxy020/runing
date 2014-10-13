@@ -75,7 +75,6 @@
                 android:id="@+id/match_milage_num4"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="@dimen/main_num_height" 
-                android:background="@drawable/r_0"
                 />
 
             <ImageView
@@ -84,21 +83,18 @@
                 android:layout_height="@dimen/main_num_height"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
-                android:background="@drawable/r_dot"
                  />
 
             <ImageView
                 android:id="@+id/match_milage_dec1"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="@dimen/main_num_height" 
-                android:background="@drawable/r_0"
                 />
 
             <ImageView
                 android:id="@+id/match_milage_dec2"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="@dimen/main_num_height" 
-                android:background="@drawable/r_0"
                 />
 
             <ImageView
@@ -106,7 +102,7 @@
                 android:layout_width="@dimen/common_height"
                 android:layout_height="@dimen/main_num_height"
                 android:layout_marginLeft="@dimen/margin1" 
-                android:background="@drawable/r_km"/>
+                />
         </LinearLayout>
         
     </RelativeLayout>

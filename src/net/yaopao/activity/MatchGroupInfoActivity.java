@@ -3,6 +3,9 @@ package net.yaopao.activity;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -12,7 +15,6 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -63,7 +65,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	double lat;//最新位置
 	private LonLatEncryption lonLatEncryption;
 	
-	private ImageView image_avatar,imageview_dot;
+	private ImageView image_avatar,imageview_dot,d1V,d2V,d3V,d4V,d5V,d6V,dot,km;
 	private TextView label_uname,label_tName,button_back,label_date,label_time,label_pspeed,label_avr_speed;
 
 	@Override
@@ -97,14 +99,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	    if(Variables.avatar != null){
 	        image_avatar.setImageBitmap(Variables.avatar);
 	    }
-//	    self.div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(5, 200+IOS7OFFSIZE, 130, 32)];
-//	    self.div.distance = 0;
-//	    self.div.color = @"red";
-//	    [self.div fitToSizeLeft];
-//	    [self.view addSubview:self.div];
-//	    self.image_km = [[UIImageView alloc]initWithFrame:CGRectMake(self.div.frame.origin.x+self.div.frame.size.width, 200+IOS7OFFSIZE,26, 32)];
-//	    self.image_km.image = [UIImage imageNamed:@"redkm.png"];
-//	    [self.view addSubview:self.image_km];needwy
+	    initMileage(0);
 	    drawTrack();//画赛道
 	    drawTakeOverZone();//画接力区
 	}
@@ -132,6 +127,17 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		label_pspeed = (TextView) findViewById(R.id.match_watch_pspeed);
 		label_avr_speed = (TextView) findViewById(R.id.match_watch_avg_speed);
 		
+		dot = (ImageView) this.findViewById(R.id.list_sport_dec1);
+		dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+		km =  (ImageView) this.findViewById(R.id.list_sport_km);
+		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+		
+		d1V = (ImageView) this.findViewById(R.id.list_sport_num1);
+		d2V = (ImageView) this.findViewById(R.id.list_sport_num2);
+		d3V = (ImageView) this.findViewById(R.id.list_sport_num3);
+		d4V = (ImageView) this.findViewById(R.id.list_sport_num4);
+		d5V = (ImageView) this.findViewById(R.id.list_sport_dec1);
+		d6V = (ImageView) this.findViewById(R.id.list_sport_dec2);
 
 		button_list.setOnTouchListener(this);
 		button_message.setOnTouchListener(this);
@@ -359,23 +365,21 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				
 				double distance = resultDic.getDoubleValue("distancegr");
 			    
-//			    self.div.distance = (distance+5)/1000.0;
-//			    [self.div fitToSizeLeft];
-//			    self.image_km.frame = CGRectMake(self.div.frame.origin.x+self.div.frame.size.width, 200+IOS7OFFSIZE,26, 32);needwy
+				initMileage(distance);
 				
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
 				if(infoDic.isEmpty()){
 					return;
 				}
 				long time = infoDic.getLongValue("uptime");//毫秒
-//		        self.label_date.text = [CNUtil dateStringFromTimeStamp:time];needwy
+				Date date = new Date(time);
+				label_date.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+				
 		        int duringTime = (int)(time-CNAppDelegate.match_start_timestamp);//秒
-//		        self.label_time.text = [CNUtil duringTimeStringFromSecond:duringTime];needwy
+		        initTime(duringTime);
 		        if(distance>1){
 		            int speed_second = (int) (1000*(duringTime/distance));//秒
-//		            self.label_pspeed.text = [CNUtil pspeedStringFromSecond:speed_second];//needwy
-//		            float perspeed = [CNUtil speedFromPspeed:speed_second];
-//		            self.label_avr_speed.text = [NSString stringWithFormat:@"%0.2f",perspeed];//needwy
+		            initPspeed(speed_second);
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
@@ -458,5 +462,46 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	void disableAllButton(){
 	}
 	void enableAllButton(){
+	}
+	private void initMileage(double distance) {
+		d1V.setVisibility(View.GONE);
+		d2V.setVisibility(View.GONE);
+		d3V.setVisibility(View.GONE);
+		int d1 = (int) distance / 1000000;
+		int d2 = (int) (distance % 1000000) / 100000;
+		int d3 = (int) (distance % 100000) / 10000;
+		int d4 = (int) (distance % 10000) / 1000;
+		int d5 = (int) (distance % 1000) / 100;
+		int d6 = (int) (distance % 100) / 10;
+		if (d1 > 0) {
+			d1V.setVisibility(View.VISIBLE);
+		}
+		if (d2 > 0) {
+			d2V.setVisibility(View.VISIBLE);
+		}
+		if (d3 > 0) {
+			d3V.setVisibility(View.VISIBLE);
+		}
+		YaoPao01App.graphicTool.updateRedNum(
+				new int[] { d1, d2, d3, d4, d5, d6 }, new ImageView[] { d1V,
+						d2V, d3V, d4V, d5V, d6V });
+	}
+	private void initTime(long utime) {
+		int[] time = YaoPao01App.cal(utime/1000);
+		int t1 = time[0] / 10;
+		int t2 = time[0] % 10;
+		int t3 = time[1] / 10;
+		int t4 = time[1] % 10;
+		int t5 = time[2] / 10;
+		int t6 = time[2] % 10;
+		label_time.setText(time[0] + ":" + time[1] + ":" +  time[2]);
+	}
+	private void initPspeed(int pspeed) {
+		int[] speed = YaoPao01App.cal(pspeed);
+		int s1 = speed[1] / 10;
+		int s2 = speed[1] % 10;
+		int s3 = speed[2] / 10;
+		int s4 = speed[2] % 10;
+		label_pspeed.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 	}
 }

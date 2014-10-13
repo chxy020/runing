@@ -51,7 +51,11 @@
                 android:src="@drawable/avatar_default" 
                 android:visibility="gone"
                 />
-
+<ImageView
+                android:id="@+id/list_sport_num1"
+                android:layout_width="@dimen/list_num_width"
+                android:layout_height="@dimen/list_num_height"
+                android:background="@drawable/r_0" />
             <ImageView
                 android:id="@+id/list_sport_num2"
                 android:layout_width="@dimen/list_num_width"
@@ -65,13 +69,13 @@
                 android:background="@drawable/r_min" />
 
             <ImageView
-                android:id="@+id/list_sport_dec1"
+                android:id="@+id/list_sport_num3"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
                 android:background="@drawable/r_0" />
 
             <ImageView
-                android:id="@+id/list_sport_dec2"
+                android:id="@+id/list_sport_num4"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
                 android:background="@drawable/r_0" />

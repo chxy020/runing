@@ -57,6 +57,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	private ImageView s3V;
 	private ImageView s4V;
 	
+	private ImageView dotV;
+	private ImageView colon1V;
+	private ImageView colon2V;
+	private ImageView minV;
+	private ImageView secV;
+	
 	private LonLatEncryption lonLatEncryption;
 	double nextDis;
 	boolean isIn = false;
@@ -72,18 +78,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		lonLatEncryption = new LonLatEncryption();
 		initMatch();
 		initView();	
-		
+		initinitSymbol();
 		double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
 		CNAppDelegate.match_totaldis = this_dis+CNAppDelegate.match_historydis;
-//	    self.big_div.distance = (CNAppDelegate.match_totaldis+5)/1000.0;
-//	    [self.big_div fitToSize];
-//	    self.tiv.time = kApp.match_historySecond;
-//	    [self.tiv fitToSize];needwy
-	    
+	    initMileage(CNAppDelegate.match_totaldis+5);
 	    int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
-//	    self.siv.time = speed_second;
-//	    [self.siv fitToSize];needwy
-	    
+	    initPspeed(speed_second);
 	    nameV.setText(Variables.userinfo.getString("nickname"));
 		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
 	    if(Variables.avatar != null){
@@ -216,14 +216,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	        	        }  
 	        	     }, 1000);
 	            }
-//	            self.big_div.distance = (kApp.match_totaldis+5)/1000.0;
-//	            [self.big_div fitToSize];needwy
+	            initMileage(CNAppDelegate.match_totaldis+5);
 	            Log.v("zc","跑了多少米:"+CNAppDelegate.match_totaldis+5);
 	            //计算配速
 	            if(CNAppDelegate.match_totaldis > 1){
 	                int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
-//	                self.siv.time = speed_second;
-//	                [self.siv fitToSize];needwy
+	                initPspeed(speed_second);
 	            }
 	            //距离下一交接区
 	            nextDis = CNAppDelegate.geosHandler.getDistanceToNextTakeOverZone(point2Dis);
@@ -284,6 +282,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		CNAppDelegate.match_historySecond++;
 //	    self.tiv.time = kApp.match_historySecond;
 //	    [self.tiv fitToSize];needwy
+		initTime(CNAppDelegate.match_historySecond);
 	}
 	void matchReport(){
 		new ReportPointTask().execute("");
@@ -376,6 +375,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		s2V = (ImageView) findViewById(R.id.match_recome_recoding_speed2);
 		s3V = (ImageView) findViewById(R.id.match_recome_recoding_speed3);
 		s4V = (ImageView) findViewById(R.id.match_recome_recoding_speed4);
+		
+		dotV = (ImageView) findViewById(R.id.match_recoding_dis_d);
+		colon1V = (ImageView) findViewById(R.id.match_recome_recoding_time_d1);
+		colon2V = (ImageView) findViewById(R.id.match_recome_recoding_time_d2);
+		minV = (ImageView) findViewById(R.id.match_recome_recoding_speed_d1);
+		secV = (ImageView) findViewById(R.id.match_recome_recoding_speed_d2);
 		
 	}
 
@@ -581,4 +586,58 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
+	
+	private void initinitSymbol() {
+		dotV.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+				.get(R.drawable.w_dot));
+		minV.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+				.get(R.drawable.w_min));
+		secV.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+				.get(R.drawable.w_sec));
+		 colon1V.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_colon));
+		 colon2V.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_colon));
+		 minV.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+					.get(R.drawable.w_min));
+		 secV.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+				 .get(R.drawable.w_sec));
+		 
+	}
+	private void initMileage(double distance) {
+		// distance = 549254;
+		int d1 = (int) Variables.distance / 10000;
+		int d2 = (int) (Variables.distance % 10000) / 1000;
+		int d3 = (int) (Variables.distance % 1000) / 100;
+		int d4 = (int) (Variables.distance % 100) / 10;
+		if (d1 > 0) {
+			d1V.setVisibility(View.VISIBLE);
+		}
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1V,d2V,d3V,d4V});
+	}
+	// 初始化平均配速
+	private void initPspeed(int pspeed) {
+
+		int[] speed = YaoPao01App.cal(pspeed);
+
+		int s1 = speed[1] / 10;
+		int s2 = speed[1] % 10;
+		int s3 = speed[2] / 10;
+		int s4 = speed[2] % 10;
+
+		YaoPao01App.graphicTool.updateWhiteNum(new int[] { s1, s2, s3, s4 },
+				new ImageView[] { s1V, s2V, s3V, s4V });
+
+	}
+	
+		//初始化滑动页面-总时间
+		private void initTime(long total){
+			int[] time = YaoPao01App.cal(total);
+			int t1 = time[0] / 10;
+			int t2 = time[0] % 10;
+			int t3 = time[1] / 10;
+			int t4 = time[1] % 10;
+			int t5 = time[2] / 10;
+			int t6 = time[2] % 10;	
+			
+			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V,});
+		}
 }
