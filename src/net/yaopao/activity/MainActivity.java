@@ -7,6 +7,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.SyncTimeLoadingDialog;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import android.content.Context;
@@ -59,7 +60,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	long startRequestTime;
 	//接收自动登录发送的消息，关闭
 	public static Handler loginHandler;
-	private LoadingDialog dialog;
+	private LoadingDialog loadingDialog;
+	private SyncTimeLoadingDialog syncTimeloadingDialog;
+	private DialogTool dialogTool ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		headv = (ImageView) this.findViewById(R.id.main_head);
 		// 初始化数字符号
 		initinitSymbol();
-
+		dialogTool = new DialogTool(this);
 		recording = (LinearLayout) this.findViewById(R.id.main_fun_recording);
 		stateL.setOnClickListener(this);
 		recording.setOnClickListener(this);
@@ -83,8 +86,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		start.setOnTouchListener(this);
 		headv.setOnTouchListener(this);
 		if (Variables.gpsStatus == 2) {
-			DialogTool dialog = new DialogTool(this);
-			dialog.alertGpsTip2();
+//			DialogTool dialog = new DialogTool(this);
+			dialogTool.alertGpsTip2();
 			if (Variables.switchVoice == 0) {
 				YaoPao01App.palyOpenGps();
 			}
@@ -95,10 +98,10 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		loginHandler  = new Handler() {
 			public void handleMessage(Message msg) {
 				if (msg.what == 1) {
-					if (dialog!=null) {
-						initLayout();
-						dialog.dismiss();
-						
+					initLayout();
+					if (loadingDialog!=null) {
+						loadingDialog.dismiss();
+						prepare4match();
 					}
 				} 
 				super.handleMessage(msg);
@@ -137,7 +140,12 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
         }else{
             if(CNAppDelegate.isMatch == 1){
                 doRequest_checkServerTime();
-//                [CNAppDelegate popupWarningCheckTime];needwy
+//                [CNAppDelegate popupWarningCheckTime]; needwy
+                syncTimeloadingDialog = new SyncTimeLoadingDialog(this);
+                syncTimeloadingDialog.setCancelable(false);
+                syncTimeloadingDialog.show();
+//                alertNotInTakeOver();
+                
             }
         }
 	}
@@ -154,13 +162,15 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	// 检查用户是否在其他设备上登录
 	private void checkLogin() {
 		if (Variables.islogin == 3) {
-			DialogTool dialog = new DialogTool(this);
-			dialog.alertLoginOnOther();
+			// dialog = new DialogTool(this);
+			dialogTool.alertLoginOnOther();
 			Variables.islogin = 0;
 			return;
 		}else if(Variables.islogin == 2){
-			dialog = new LoadingDialog(this);
-			dialog.show();
+			loadingDialog = new LoadingDialog(this);
+			loadingDialog.setCancelable(false);
+			loadingDialog.show();
+			
 		}
 	}
 
@@ -261,6 +271,11 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+		if (dialogTool!=null) {
+			if (dialogTool.dialog!=null) {
+				dialogTool.dialog.dismiss();
+			}
+		}
 	}
 
 	private void initLayout() {
@@ -358,14 +373,14 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 					// 测试代码
 				} else {
 					if (Variables.gpsStatus == 2) {
-						DialogTool dialog = new DialogTool(MainActivity.this);
-						dialog.alertGpsTip2();
+//						DialogTool dialogTool = new DialogTool(MainActivity.this);
+						dialogTool.alertGpsTip2();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyOpenGps();
 						}
 					} else if (Variables.gpsStatus == 0) {
-						DialogTool dialog = new DialogTool(MainActivity.this);
-						dialog.alertGpsTip1();
+//						DialogTool dialog = new DialogTool(MainActivity.this);
+						dialogTool.alertGpsTip1();
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyWeekGps();
 						}
@@ -632,6 +647,19 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	
 	void CloseCheckTime(){
 		//needwy 关闭和服务器同步时间的弹框
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		if (syncTimeloadingDialog!=null) {
+			syncTimeloadingDialog.dismiss();
+		}
 		CNAppDelegate.whatShouldIdo();
+	}
+	//不在出发区弹框
+	private void alertNotInTakeOver(){
+		dialogTool.alertNotIntakeOver();
 	}
 }
