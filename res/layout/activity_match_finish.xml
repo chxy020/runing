@@ -25,7 +25,8 @@
             android:layout_height="@dimen/small_height"
             android:layout_marginTop="@dimen/margin1"
             android:layout_toRightOf="@id/match_head"
-            android:gravity="center"
+             android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
             android:text="关羽"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size2"
@@ -37,7 +38,8 @@
             android:layout_height="@dimen/small_height"
             android:layout_below="@id/match_username"
             android:layout_toRightOf="@id/match_head"
-            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
             android:text="所属跑队名称"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size7" />
@@ -69,55 +71,56 @@
         android:layout_above="@+id/match_bottom"
         android:layout_below="@id/match_top"
         android:background="@color/black" >
-<RelativeLayout
-        android:id="@+id/match_time"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/main_num_height"
-        android:layout_above="@+id/match_recoding_mileage_text">
-    <ImageView
-            android:id="@+id/match_recoding_dis1"
-            android:layout_toLeftOf="@+id/match_recoding_dis2"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-    <ImageView
-            android:id="@+id/match_recoding_dis2"
-            android:layout_toLeftOf="@+id/match_recoding_dis_d"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_dis_d"
-            android:layout_width="@dimen/match_dot_width"
-            android:layout_centerHorizontal="true"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_dot"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_dis3"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/match_recoding_dis_d"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_dis4"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/match_recoding_dis3"
-              android:background="@drawable/w_0"
-             />
-</RelativeLayout>
-         
+
+        <RelativeLayout
+            android:id="@+id/match_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_num_height"
+            android:layout_above="@+id/match_finish_mileage_text" >
+
+            <ImageView
+                android:id="@+id/match_finish_dis1"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/match_finish_dis2"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_dis2"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/match_finish_dis_d"
+                 />
+
+            <ImageView
+                android:id="@+id/match_finish_dis_d"
+                android:layout_width="@dimen/match_dot_width"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                 />
+
+            <ImageView
+                android:id="@+id/match_finish_dis3"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_dis_d"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_dis4"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_dis3"
+                 />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/match_recoding_mileage_text"
-            android:layout_width="match_parent"
+            android:id="@+id/match_finish_mileage_text"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/common_height"
             android:layout_above="@+id/line_under_recoding_mileage"
-            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
             android:text="距离（公里）"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size2" />
@@ -129,81 +132,80 @@
             android:layout_above="@+id/line_vertical"
             android:background="@color/white" >
         </View>
-<RelativeLayout 
-     android:id="@+id/match_recoding_time"
+
+        <RelativeLayout
+            android:id="@+id/match_finish_time"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
-            android:layout_above="@+id/match_recoding_time_text"
-    		android:layout_marginLeft="@dimen/margin6"
-    		android:layout_marginTop="@dimen/margin9"
-    		android:layout_marginBottom="@dimen/margin9"
-    >
-       <ImageView
-            android:id="@+id/match_recoding_time_h1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-            android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_time_h2"
-            android:layout_toRightOf="@id/match_recoding_time_h1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_time_d1"
-            android:layout_toRightOf="@id/match_recoding_time_h2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_colon"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_time_m1"
-            android:layout_toRightOf="@id/match_recoding_time_d1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_time_m2"
-            android:layout_toRightOf="@id/match_recoding_time_m1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-          <ImageView
-            android:id="@+id/match_recoding_time_d2"
-            android:layout_toRightOf="@id/match_recoding_time_m2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_colon"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_time_s1"
-              android:layout_toRightOf="@id/match_recoding_time_d2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_time_s2"
-                    android:layout_toRightOf="@id/match_recoding_time_s1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-    
-</RelativeLayout>
-     
+            android:layout_above="@+id/match_finish_time_text"
+            android:layout_marginBottom="@dimen/margin9"
+            android:layout_marginLeft="@dimen/margin6"
+            android:layout_marginTop="@dimen/margin9" >
+
+            <ImageView
+                android:id="@+id/match_finish_time_h1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_time_h2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_h1"
+                 />
+
+            <ImageView
+                android:id="@+id/match_finish_time_d1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_h2"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_time_m1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_d1"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_time_m2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_m1"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_time_d2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_m2"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_time_s1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_d2"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_time_s2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_time_s1"
+                />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/match_recoding_time_text"
+            android:id="@+id/match_finish_time_text"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/small_height"
-             android:layout_above="@+id/line_under_recoding_speed_text"
-            android:gravity="center"
+            android:layout_above="@+id/line_under_recoding_speed_text"
+            android:layout_alignParentLeft="true"
             android:text="时间"
+            android:gravity="center"
             android:textColor="@color/white" />
 
         <View
@@ -214,101 +216,89 @@
             android:layout_centerHorizontal="true"
             android:background="@color/white" >
         </View>
-        
-<RelativeLayout 
-     android:id="@+id/match_recoding_speed"
-             android:layout_width="@dimen/width_half"
+
+        <RelativeLayout
+            android:id="@+id/match_finish_speed"
+            android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
-            android:layout_above="@id/match_recoding_time_text"
-            android:layout_toRightOf="@id/line_vertical"
-            android:layout_marginTop="@dimen/margin9"
+            android:layout_above="@id/match_finish_time_text"
             android:layout_marginBottom="@dimen/margin9"
-    >
-             <ImageView
-            android:id="@+id/match_recoding_speed1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin8"
-            android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_speed2"
-            android:layout_toRightOf="@id/match_recoding_speed1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_speed_d1"
-            android:layout_toRightOf="@id/match_recoding_speed2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_min"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_speed3"
-            android:layout_toRightOf="@id/match_recoding_speed_d1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-        <ImageView
-            android:id="@+id/match_recoding_speed4"
-            android:layout_toRightOf="@id/match_recoding_speed3"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_0"
-             />
-          <ImageView
-            android:id="@+id/match_recoding_speed_d2"
-            android:layout_toRightOf="@id/match_recoding_speed4"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              android:background="@drawable/w_sec"
-             />
-</RelativeLayout>
-     
+            android:layout_marginTop="@dimen/margin9"
+            android:layout_toRightOf="@id/line_vertical" >
+
+            <ImageView
+                android:id="@+id/match_finish_speed1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin8"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_speed2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_speed1"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_speed_d1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_speed2"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_speed3"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_speed_d1"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_speed4"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_speed3"
+                />
+
+            <ImageView
+                android:id="@+id/match_finish_speed_d2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_finish_speed4"
+                />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/match_recoding_speed_text"
+            android:id="@+id/match_finish_speed_text"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/small_height"
             android:layout_above="@+id/line_under_recoding_speed_text"
-            android:layout_toRightOf="@id/line_vertical"
-            android:gravity="center"
+            android:layout_alignParentRight="true"
+             android:gravity="center"
             android:text="平均配速"
             android:textColor="@color/white" />
 
         <View
             android:id="@+id/line_under_recoding_speed_text"
-              android:layout_above="@+id/match_next_area"
             android:layout_width="fill_parent"
             android:layout_height="1px"
+            android:layout_above="@+id/match_next_area"
             android:background="@color/white" >
         </View>
 
-        <!-- <ProgressBar
-            android:id="@+id/recoding_process"
-            android:layout_above="@+id/match_next_area"
-            style="@style/ProgressBar_sport"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginLeft="@dimen/margin5"
-            android:layout_marginRight="@dimen/margin5"
-            android:layout_marginTop="@dimen/margin6"
-            android:visibility="visible" /> -->
 
         <TextView
             android:id="@+id/match_next_area"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/common_height"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin7"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="恭喜你 ，完成本阶段赛程"
-            android:textColor="@color/white" 
-            android:textSize="@dimen/font_size2"/>
-
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -318,13 +308,12 @@
         android:layout_alignParentBottom="true"
         android:background="@color/black" >
 
-       
-       <RelativeLayout
+        <RelativeLayout
             android:id="@+id/relay_wait_back"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
-            android:background="@color/blue_dark"
-              android:layout_marginTop="@dimen/margin7" >
+            android:layout_marginTop="@dimen/margin7"
+            android:background="@color/blue_dark" >
 
             <TextView
                 android:id="@+id/match_bcak"

@@ -39,12 +39,7 @@ public class MatchCountdownActivity extends BaseActivity  {
 		time3 = (ImageView) findViewById(R.id.match_countdown_3);
 		countdownTip = (TextView) findViewById(R.id.countdown_tip);
 		
-//	    self.niv = [[CNNumImageView alloc]initWithFrame:CGRectMake(-27.5, 180, 375, 120)];
-//	    [self.view addSubview:self.niv];
-//	    self.niv.num = self.startSecond;
-//	    self.niv.color = @"red";
-//	    [self.niv fitToSize];needwy
-
+		initTime();
 		
 	}
 
@@ -75,9 +70,7 @@ public class MatchCountdownActivity extends BaseActivity  {
 					    startSecond--;
 					    Log.v("zc","startSecond is "+startSecond);
 					    if(startSecond >= 0){
-//					        self.niv.num = self.startSecond;
-//					        self.niv.color = @"red";
-//					        [self.niv fitToSize];needwy
+					    	initTime();
 					    }
 					    if(startSecond <= 0){
 					        timer_countdown.cancel();
@@ -103,5 +96,20 @@ public class MatchCountdownActivity extends BaseActivity  {
 		MobclickAgent.onPause(this);
 	}
 	
+	private void initTime(){
+		
+		int t1 = startSecond/100;
+		int t2 = (startSecond%100)/10;
+		int t3 = startSecond%10;
+		if (t1>0) {
+			time1.setVisibility(View.VISIBLE);
+			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1},new ImageView[]{time1});
+		}
+		if (t2>0) {
+			time2.setVisibility(View.VISIBLE);
+			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t2},new ImageView[]{time2});
+		}
+		YaoPao01App.graphicTool.updateWhiteNum(new int[]{t3},new ImageView[]{time3});
+	}
 	
 }
