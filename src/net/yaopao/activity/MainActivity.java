@@ -140,11 +140,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
         }else{
             if(CNAppDelegate.isMatch == 1){
                 doRequest_checkServerTime();
-//                [CNAppDelegate popupWarningCheckTime]; needwy
                 syncTimeloadingDialog = new SyncTimeLoadingDialog(this);
                 syncTimeloadingDialog.setCancelable(false);
                 syncTimeloadingDialog.show();
-//                alertNotInTakeOver();
                 
             }
         }
@@ -266,6 +264,10 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		if(CNAppDelegate.loginSucceedAndNext){
 			prepare4match();
 		}
+		if(CNAppDelegate.canStartButNotInStartZone){
+			alertNotInTakeOver();
+		}
+		
 	}
 
 	public void onPause() {
@@ -648,17 +650,12 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	
 	
 	void CloseCheckTime(){
-		//needwy 关闭和服务器同步时间的弹框
-//		try {
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		if (syncTimeloadingDialog!=null) {
 			syncTimeloadingDialog.dismiss();
 		}
-		CNAppDelegate.whatShouldIdo();
+		if(CNAppDelegate.whatShouldIdo() == 100){
+			alertNotInTakeOver();
+		}
 	}
 	//不在出发区弹框
 	private void alertNotInTakeOver(){

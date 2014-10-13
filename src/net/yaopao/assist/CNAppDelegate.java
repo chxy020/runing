@@ -155,7 +155,7 @@ public class CNAppDelegate {
 	public static void ForceGoMatchPage(String target){//强制跳转到某个界面
 		YaoPao01App.instance.ForceGoMatchPage(target);
 	}
-	public static void whatShouldIdo(){//启动手机后应该干嘛
+	public static int whatShouldIdo(){//启动手机后应该干嘛
 		//先判断时间
 	    String matchstage = CNAppDelegate.getMatchStage();
 	    Log.v("zc","matchstage is"+matchstage);
@@ -184,7 +184,7 @@ public class CNAppDelegate {
 	                        CNAppDelegate.ForceGoMatchPage("matchRun_normal");
 	                    }else{
 	                    	CNAppDelegate.canStartButNotInStartZone = true;
-//	                        [CNAppDelegate popupWarningNotInStartZone];needwy
+	                    	return 100;
 	                    }
 	                }else{
 	                    CNAppDelegate.ForceGoMatchPage("matchRun_normal");
@@ -198,6 +198,7 @@ public class CNAppDelegate {
 	    }else{//赛后
 	        
 	    }
+	    return 1;
 	}
 	public static void saveMatchToRecord(){//把比赛记到记录里
 		YaoPao01App.db.saveOneSportMatch();

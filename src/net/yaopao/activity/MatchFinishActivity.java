@@ -84,7 +84,7 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 //	    [self.view addSubview:big_div];
 //	    
 //	    CNTimeImageView* tiv = [[CNTimeImageView alloc]initWithFrame:CGRectMake(10, 245+IOS7OFFSIZE, 140, 32)];
-//	    tiv.time = kApp.match_historySecond;
+//	    tiv.time = CNAppDelegate.match_historySecond;
 //	    tiv.color = @"white";
 //	    [tiv fitToSize];
 //	    [self.view addSubview:tiv];

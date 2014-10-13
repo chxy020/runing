@@ -85,7 +85,7 @@ public class MatchCountdownActivity extends BaseActivity  {
 					    		startActivity(intent);
 					        }else{//不在出发区
 					        	CNAppDelegate.canStartButNotInStartZone = true;
-//					            [CNAppDelegate popupWarningNotInStartZone];needwy
+					        	finish();
 					        }
 					    }
 						

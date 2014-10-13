@@ -80,6 +80,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	    
 //	    self.div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(4, 220+IOS7OFFSIZE, 260, 64)];
 //	    self.div.color = @"red";
+//	    self.div.distance = 0;
 //	    [self.div fitToSize];
 //	    [self.scrollview addSubview:self.div];
 //	    self.image_km = [[UIImageView alloc]initWithFrame:CGRectMake(div.frame.origin.x+div.frame.size.width, 220+IOS7OFFSIZE,52, 64)];
