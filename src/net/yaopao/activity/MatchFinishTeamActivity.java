@@ -64,6 +64,8 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 //	private TextView button_back,label_tname,button_personal,button_km;
 //	private ScrollView scrollview;
 	
+	private ImageView km,dot,d1V,d2V,d3V,d4V,d5V,d6V,pd1V,pd2V,pd3V,pd4V,pd5V,pd6V,pkm,pdot;
+	
 	FrameLayout view_list = null; 
 	List<ImageView> imageviewList = new ArrayList<ImageView>();
 	List<String> urlList = new ArrayList<String>();
@@ -77,15 +79,6 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		initViewPager();
 		label_tname.setText(CNAppDelegate.matchDic.getString("groupname"));
 	    label_tname2.setText(String.format("恭喜%s！", CNAppDelegate.matchDic.getString("groupname")));
-	    
-//	    self.div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(4, 220+IOS7OFFSIZE, 260, 64)];
-//	    self.div.color = @"red";
-//	    self.div.distance = 0;
-//	    [self.div fitToSize];
-//	    [self.scrollview addSubview:self.div];
-//	    self.image_km = [[UIImageView alloc]initWithFrame:CGRectMake(div.frame.origin.x+div.frame.size.width, 220+IOS7OFFSIZE,52, 64)];
-//	    self.image_km.image = [UIImage imageNamed:@"redkm.png"];
-//	    [self.scrollview addSubview:self.image_km];needwy
 	    
 	    displayLoading();
 	    new Handler().postDelayed(new Runnable(){  
@@ -167,14 +160,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		}
 		return true;
 	}
-	private void initMileage(int distance) {
-		// distance = 549254;
-		ImageView d1V = (ImageView) this.findViewById(R.id.match_milage_num1);
-		ImageView d2V = (ImageView) this.findViewById(R.id.match_milage_num2);
-		ImageView d3V = (ImageView) this.findViewById(R.id.match_milage_num3);
-		ImageView d4V = (ImageView) this.findViewById(R.id.match_milage_num4);
-		ImageView d5V = (ImageView) this.findViewById(R.id.match_milage_dec1);
-		ImageView d6V = (ImageView) this.findViewById(R.id.match_milage_dec2);
+	private void initMileage(double distance) {
 		d1V.setVisibility(View.GONE);
 		d2V.setVisibility(View.GONE);
 		d3V.setVisibility(View.GONE);
@@ -197,22 +183,28 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 				new int[] { d1, d2, d3, d4, d5, d6 }, new ImageView[] { d1V,
 						d2V, d3V, d4V, d5V, d6V });
 	}
-	private void initinitSymbol() {
-		ImageView dot = (ImageView) this.findViewById(R.id.match_milage_dot);
-//		ImageView min = (ImageView) this
-//				.findViewById(R.id.match_recoding_speed_d1);
-//		ImageView sec = (ImageView) this
-//				.findViewById(R.id.match_recoding_speed_d2);
-		ImageView km = (ImageView) this.findViewById(R.id.match_milage_km);
-		dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-				.get(R.drawable.r_dot));
-//		min.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-//				.get(R.drawable.w_min));
-//		sec.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-//				.get(R.drawable.w_sec));
-//		// colon.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_colon));
-		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-				.get(R.drawable.r_km));
+	private void initPersonalMileage(double distance) {
+		pd1V.setVisibility(View.GONE);
+		pd2V.setVisibility(View.GONE);
+		pd3V.setVisibility(View.GONE);
+		int d1 = (int) distance / 1000000;
+		int d2 = (int) (distance % 1000000) / 100000;
+		int d3 = (int) (distance % 100000) / 10000;
+		int d4 = (int) (distance % 10000) / 1000;
+		int d5 = (int) (distance % 1000) / 100;
+		int d6 = (int) (distance % 100) / 10;
+		if (d1 > 0) {
+			pd1V.setVisibility(View.VISIBLE);
+		}
+		if (d2 > 0) {
+			pd2V.setVisibility(View.VISIBLE);
+		}
+		if (d3 > 0) {
+			pd3V.setVisibility(View.VISIBLE);
+		}
+		YaoPao01App.graphicTool.updateRedNum(
+				new int[] { d1, d2, d3, d4, d5, d6 }, new ImageView[] { pd1V,
+						pd2V, pd3V,pd4V, pd5V, pd6V });
 	}
 	
 	/**
@@ -226,9 +218,23 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			
 			View team_finish1 = mInflater.inflate(R.layout.activity_match_team_finish1,null);
 			
+			dot = (ImageView) team_finish1.findViewById(R.id.match_milage_dot);
+			dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+			km =  (ImageView) team_finish1.findViewById(R.id.match_milage_km);
+			km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+			
+			d1V = (ImageView) team_finish1.findViewById(R.id.match_milage_num1);
+			d2V = (ImageView) team_finish1.findViewById(R.id.match_milage_num2);
+			d3V = (ImageView) team_finish1.findViewById(R.id.match_milage_num3);
+			d4V = (ImageView) team_finish1.findViewById(R.id.match_milage_num4);
+			d5V = (ImageView) team_finish1.findViewById(R.id.match_milage_dec1);
+			d6V = (ImageView) team_finish1.findViewById(R.id.match_milage_dec2);
+			initMileage(0);
+			
 			label_tname2 = (TextView) team_finish1.findViewById(R.id.congratulation_team);
 			
 			View team_finish2 = mInflater.inflate(R.layout.activity_match_team_finish2, null);
+			
 			view_list = (FrameLayout)team_finish2.findViewById(R.id.scrollview_List);
 			
 			// 初始化滑动的view
@@ -393,16 +399,27 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchFinishTeamActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
-//			    self.big_div.distance = distance;
-//			    self.big_div.color = @"red";
-//			    [self.big_div fitToSize];
-//			    self.image_km.frame = CGRectMake(self.big_div.frame.origin.x+self.big_div.frame.size.width, 60+IOS7OFFSIZE,52, 64);needwy
+			    initMileage(distance);
 			    
 			    JSONArray dataList = resultDic.getJSONArray("list");
 			    if(dataList!=null&&dataList.size()>0){
 			        for(int i=0;i<dataList.size();i++){
 			            JSONObject oneRecordDic = dataList.getJSONObject(i);//数值从oneRecordDic得到
 			            View view_one_record = mInflater.inflate(R.layout.match_list_personal_item,null);
+			            
+			            pdot = (ImageView) view_one_record.findViewById(R.id.list_sport_dot);
+						pdot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+						pkm =  (ImageView) view_one_record.findViewById(R.id.match_milage_km);
+						pkm.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+						
+						pd1V = (ImageView) view_one_record.findViewById(R.id.list_sport_num1);
+						pd2V = (ImageView) view_one_record.findViewById(R.id.list_sport_num2);
+						pd3V = (ImageView) view_one_record.findViewById(R.id.list_sport_num3);
+						pd4V = (ImageView) view_one_record.findViewById(R.id.list_sport_num4);
+						pd5V = (ImageView) view_one_record.findViewById(R.id.list_sport_dec1);
+						pd6V = (ImageView) view_one_record.findViewById(R.id.list_sport_dec2);
+						
+			            
 			            ImageView userAvatar = (ImageView)view_one_record.findViewById(R.id.match_watch_head);
 			            userAvatar.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
 			            String avatarUrl = oneRecordDic.getString("imgpath");
@@ -425,15 +442,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			            TextView label_name = (TextView)view_one_record.findViewById(R.id.username);
 			            label_name.setText(oneRecordDic.getString("nickname"));
 			            
-//			            double distance = [[oneRecordDic objectForKey:@"km"]doubleValue];
-//			            CNDistanceImageView* div = [[CNDistanceImageView alloc]initWithFrame:CGRectMake(160, 14, 130, 32)];
-//			            div.distance = (distance+5)/1000.0;
-//			            div.color = @"red";
-//			            [div fitToSize];
-//			            UIImageView* image_km_one = [[UIImageView alloc]initWithFrame:CGRectMake(div.frame.origin.x+div.frame.size.width, 14,26, 32)];
-//			            image_km_one.image = [UIImage imageNamed:@"redkm.png"];
-//			            [view_one_record addSubview:div];
-//			            [view_one_record addSubview:image_km_one];needwy
+			            initPersonalMileage(distance);
 			            
 			            int height = (int) r.getDimension(R.dimen.sport_set_height);
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, height); 

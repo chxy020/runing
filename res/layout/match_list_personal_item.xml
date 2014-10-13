@@ -45,7 +45,7 @@
             android:layout_margin="@dimen/margin1"
             android:src="@drawable/match_baton" />
             <ImageView
-                android:id="@+id/list_sport_num2"
+                android:id="@+id/list_sport_num1"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
                 android:background="@drawable/r_0" />
@@ -57,7 +57,12 @@
                 android:background="@drawable/r_0" />
 
             <ImageView
-                android:id="@+id/list_sport_num2"
+                android:id="@+id/list_sport_num3"
+                android:layout_width="@dimen/list_num_width"
+                android:layout_height="@dimen/list_num_height"
+                android:background="@drawable/r_0" />
+            <ImageView
+                android:id="@+id/list_sport_num4"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
                 android:background="@drawable/r_0" />
