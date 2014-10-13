@@ -25,8 +25,9 @@ public class MatchCountdownActivity extends BaseActivity  {
 	private ImageView time3;
 	private TextView  countdownTip;
 	
-	private int startSecond = 3;
-	Timer timer_countdown;
+	private int startSecond = (int) (CNAppDelegate.match_start_timestamp - CNAppDelegate.getNowTimeDelta());
+;
+	Timer timer_countdown = new Timer();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +73,13 @@ public class MatchCountdownActivity extends BaseActivity  {
 					        countdownTip.setText("已经进入出发区!");
 					    }
 					    startSecond--;
+					    Log.v("zc","startSecond is "+startSecond);
 					    if(startSecond >= 0){
 //					        self.niv.num = self.startSecond;
 //					        self.niv.color = @"red";
 //					        [self.niv fitToSize];needwy
 					    }
-					    if(startSecond == 0){
+					    if(startSecond <= 0){
 					        timer_countdown.cancel();
 					        timer_countdown = null;
 					        if(CNAppDelegate.isInStartZone()){//在出发区

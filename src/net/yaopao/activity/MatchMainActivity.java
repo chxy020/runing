@@ -66,6 +66,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.v("zc","进正常页面");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_run);
