@@ -245,13 +245,12 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				Toast.makeText(MatchGiveRelayActivity.this,"super ="+super.activityOnFront+" this= "+this.getClass().getSimpleName()+"v ="+Variables.activityOnFront, Toast.LENGTH_LONG).show();
-				quit();
+				//Toast.makeText(MatchGiveRelayActivity.this,"super ="+super.activityOnFront+" this= "+this.getClass().getSimpleName()+"v ="+Variables.activityOnFront, Toast.LENGTH_LONG).show();
+				quit1();
 				break;
 			}
 			break;
 			
-		//needwy 加上结束的按钮事件弹两次
 		}
 		return true;
 	}
@@ -565,13 +564,16 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			}
 		}
 	}
-	public void quit() {
+	public void quit1() {
 		new AlertDialog.Builder(MatchGiveRelayActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
-				.setMessage("确认提前结束比赛？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				.setMessage("结束跑队赛程意味着跑队比赛结束，成绩截止，其他队友也将无法继续参赛。您是否确认提前结束跑队的比赛？")
+				.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						
-						finishMatch();
+						//finishMatch();
+						quit2();
+						dialog.cancel();
 					}
 				})
 				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -580,7 +582,22 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 						dialog.cancel();
 					}
 				}).show();
-
+	}
+	public void quit2() {
+		new AlertDialog.Builder(MatchGiveRelayActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
+		.setMessage("请再次确认提前结束跑队的比赛？")
+		.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();				
+			}
+		})
+		.setNegativeButton("确认", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				finishMatch();
+			}
+		}).show();
 	}
 	
 	@Override
