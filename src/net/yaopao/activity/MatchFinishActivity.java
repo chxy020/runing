@@ -165,14 +165,17 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 	}
 	private void initMileage(double distance) {
 		// distance = 549254;
-		int d1 = (int) Variables.distance / 10000;
-		int d2 = (int) (Variables.distance % 10000) / 1000;
-		int d3 = (int) (Variables.distance % 1000) / 100;
-		int d4 = (int) (Variables.distance % 100) / 10;
+		int d1 = (int) distance / 10000;
+		int d2 = (int) (distance % 10000) / 1000;
+		int d3 = (int) (distance % 1000) / 100;
+		int d4 = (int) (distance % 100) / 10;
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
 		}
 		YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1V,d2V,d3V,d4V});
+		
+		
+		
 	}
 	// 初始化平均配速
 	private void initPspeed(int pspeed) {
