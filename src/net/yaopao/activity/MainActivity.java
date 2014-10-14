@@ -267,7 +267,11 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		if(CNAppDelegate.canStartButNotInStartZone){
 			alertNotInTakeOver();
 		}
-		//alertNotInTakeOver();
+		
+		//测试代码
+//		if(Variables.islogin==1){
+//			alertNotInTakeOver();
+//		}
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
 		

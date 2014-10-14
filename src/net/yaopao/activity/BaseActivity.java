@@ -92,6 +92,7 @@ public class BaseActivity extends Activity {
 	        		Log.v("jump", "jump activityOnFront ="+activityOnFront);
 	        		//if (isJump) {
 	        		if (activityOnFront.equals(Variables.activityOnFront)) {
+	        			//测试代码
 //	        			try {
 //							Thread.sleep(3000);
 //						} catch (InterruptedException e) {

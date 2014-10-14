@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 
@@ -63,6 +64,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_match_map);
 		mapView = (MapView) findViewById(R.id.match_map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写

@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -74,6 +75,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.v("zc","进正常页面");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_run);
 		lonLatEncryption = new LonLatEncryption();
