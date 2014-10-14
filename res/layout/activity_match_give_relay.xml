@@ -56,7 +56,9 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname1"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                    android:background="@drawable/mood5_h"
+                    
+                     />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname1"
@@ -257,7 +259,7 @@
             android:layout_width="@dimen/head_hight1"
             android:layout_height="@dimen/head_hight1"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/avatar_default" />
+            android:src="@drawable/avatar_default" />
 
         <TextView
             android:id="@+id/relay_nickname"
