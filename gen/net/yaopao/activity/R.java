@@ -503,7 +503,7 @@ public final class R {
         public static final int marker_avatar=0x7f0b01e5;
         public static final int marker_text=0x7f0b01e4;
         public static final int marker_title=0x7f0b01e3;
-        public static final int match_baton =0x7f0b009c;
+        public static final int match_baton=0x7f0b009c;
         public static final int match_bcak=0x7f0b0072;
         public static final int match_bottom=0x7f0b0054;
         public static final int match_countdown_1=0x7f0b0049;

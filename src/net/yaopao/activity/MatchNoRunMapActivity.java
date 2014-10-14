@@ -13,10 +13,10 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,9 +31,14 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
@@ -46,12 +51,14 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListener {
+public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListener, LocationSource ,AMapLocationListener{
 
 	private ImageView backV;
+	private ImageView match_map_loc ;
 	private MapView mapView;
 	private AMap aMap;
-	
+	private OnLocationChangedListener mListener;
+	private LocationManagerProxy mAMapLocationManager;
 	Timer timer_refresh_data;
 	TimerTask_reqeust task_request;
 	String imagePath;
@@ -89,7 +96,9 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	}
 	private void init() {
 		backV = (ImageView) findViewById(R.id.match_full_map_back);
+		match_map_loc = (ImageView) findViewById(R.id.match_map_loc);
 		backV.setOnTouchListener(this);
+		match_map_loc.setOnTouchListener(this);
 		loadingDialog= new LoadingDialog(this);
 		loadingDialog.setCancelable(false);
 		setUpMap();
@@ -171,6 +180,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 			});
 		}
 		aMap.getUiSettings().setZoomControlsEnabled(false);
+		aMap.setLocationSource(this);// 设置定位监听
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -236,6 +246,22 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 				break;
 			case MotionEvent.ACTION_UP:
 				finish();
+				break;
+			}
+			break;
+			
+		case R.id.match_map_loc:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				match_map_loc.setBackgroundResource(R.drawable.button_position_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				match_map_loc.setBackgroundResource(R.drawable.button_position);
+				Location myloc = aMap.getMyLocation();
+				if (myloc != null) {
+					aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(myloc.getLatitude(), myloc.getLongitude())));
+				}
+
 				break;
 			}
 			break;
@@ -394,5 +420,50 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// Toast.makeText(SportRecordActivity.this, "", duration)
 	}
 	return false;
+}
+@Override
+public void activate(OnLocationChangedListener listener) {
+	mListener = listener;
+	if (mAMapLocationManager == null) {
+		mAMapLocationManager = LocationManagerProxy.getInstance(this);
+		mAMapLocationManager.requestLocationUpdates(
+				LocationProviderProxy.AMapNetwork, 2000, 10, this);
+	}
+}
+
+@Override
+public void deactivate() {
+	mListener = null;
+	if (mAMapLocationManager != null) {
+		mAMapLocationManager.removeUpdates(this);
+		mAMapLocationManager.destory();
+	}
+	mAMapLocationManager = null;
+}
+@Override
+public void onLocationChanged(AMapLocation aLocation) {
+	if (mListener != null && aLocation != null) {
+		mListener.onLocationChanged(aLocation);
+	}
+}
+@Override
+public void onLocationChanged(Location arg0) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void onProviderDisabled(String arg0) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void onProviderEnabled(String arg0) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+	// TODO Auto-generated method stub
+	
 }
 }

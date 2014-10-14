@@ -12,6 +12,7 @@ import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.AMap.OnCameraChangeListener;
+import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.PolygonOptions;
@@ -47,6 +50,9 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private AMap aMap;
 	private MapView mapView;
 	private ImageView avatarV;
+	private ImageView match_map_loc;
+	private ImageView match_baton;
+	
 	private TextView nameV;
 	private TextView teamNameV;
 	private OnLocationChangedListener mListener;
@@ -67,7 +73,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	}
 	Timer timer_match_map = null;
 	TimerTask_drawLine task_drawLine = null;
-
+	private int isFollow = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -209,10 +215,26 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private void init() {
 		if (aMap == null) {
 			aMap = mapView.getMap();
+			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
+				@Override
+				public void onCameraChangeFinish(CameraPosition cameraPosition) {
+
+				}
+
+				@Override
+				public void onCameraChange(CameraPosition arg0) {
+					isFollow = 0;
+					Log.v("wymap", "移动地图，isfollow="+isFollow);
+				}
+			});
 			setUpMap();
 		}
 
 		backV = (ImageView) findViewById(R.id.match_map_back);
+		match_map_loc = (ImageView) findViewById(R.id.match_map_loc);
+		match_baton = (ImageView) findViewById(R.id.match_baton);
+		match_map_loc.setOnTouchListener(this);
+		match_baton.setOnTouchListener(this);
 		backV.setOnTouchListener(this);
 	}
 
@@ -294,7 +316,11 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	@Override
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
-			mListener.onLocationChanged(aLocation);// 显示系统小蓝点
+			mListener.onLocationChanged(aLocation);
+			if (isFollow == 1) {
+				aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aLocation.getLatitude(), aLocation.getLongitude())));
+			}
+			Log.v("wymap", "位置变化，isfollow="+isFollow);
 		}
 	}
 
@@ -343,6 +369,49 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 				backV.setBackgroundResource(R.drawable.button_back);
 				MatchMapActivity.this.finish();
 
+				break;
+			}
+			break;
+		case R.id.match_map_loc:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				match_map_loc.setBackgroundResource(R.drawable.button_position_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				match_map_loc.setBackgroundResource(R.drawable.button_position);
+				Location myloc = aMap.getMyLocation();
+				if (myloc != null) {
+					isFollow = 1;
+					aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(myloc.getLatitude(), myloc.getLongitude())));
+				}
+
+				break;
+			}
+			break;
+			
+		case R.id.match_baton:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				match_baton.setBackgroundResource(R.drawable.match_baton_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				match_baton.setBackgroundResource(R.drawable.match_baton);
+				CNGPSPoint4Match gpspoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
+				int isInTakeOverZone;
+				if(CNAppDelegate.istest){
+					isInTakeOverZone = 0;
+				}else{
+					isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(gpspoint.getLon(),gpspoint.getLat());
+				}
+				if(isInTakeOverZone != -1){
+					Intent intent = new Intent(MatchMapActivity.this,
+							MatchGiveRelayActivity.class);
+					startActivity(intent);
+	            }else{
+	            	Intent intent = new Intent(MatchMapActivity.this,
+	            			MatchGiveRelayActivity.class);
+					startActivity(intent);
+	            }
 				break;
 			}
 			break;

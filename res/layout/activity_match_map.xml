@@ -86,7 +86,7 @@
             android:background="@drawable/button_position" />
 
         <ImageView
-            android:id="@+id/match_baton "
+            android:id="@+id/match_baton"
             android:layout_width="@dimen/main_start_hight"
             android:layout_height="@dimen/main_start_hight"
             android:layout_alignParentBottom="true"

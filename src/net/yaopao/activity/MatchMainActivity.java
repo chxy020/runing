@@ -454,8 +454,10 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		case R.id.match_run_baton:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				batonV.setBackgroundResource(R.drawable.match_baton_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				batonV.setBackgroundResource(R.drawable.match_baton);
 				CNGPSPoint4Match gpspoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
 				int isInTakeOverZone;
 				if(CNAppDelegate.istest){
