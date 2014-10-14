@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -64,6 +65,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private ImageView colon2V;
 	private ImageView minV;
 	private ImageView secV;
+	
+	private RelativeLayout view_distance;
+	private RelativeLayout view_offtrack;
 	
 	private LonLatEncryption lonLatEncryption;
 	double nextDis;
@@ -115,6 +119,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		nameV = (TextView) findViewById(R.id.match_username);
 		teamNameV = (TextView) findViewById(R.id.match_team_name);
 		nextArea=(TextView)findViewById(R.id.match_next_area);
+		
+		view_distance=(RelativeLayout)findViewById(R.id.match_main_mileage);
+		view_offtrack=(RelativeLayout)findViewById(R.id.match_main_off_track);
 		
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
@@ -237,14 +244,18 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	    CNGPSPoint4Match gpsPoint = getOnePoint();
 	    boolean isInTheTracks = CNAppDelegate.geosHandler.isInTheTracks(gpsPoint.getLon(), gpsPoint.getLat());
 	    int timeFromLastInTrack = (int)(gpsPoint.getTime() - CNAppDelegate.match_time_last_in_track);
-	    if(isInTheTracks){//在赛道内
-//	        if(self.view_distance.hidden == YES){
-//	            self.view_distance.hidden = NO;
-//	        }
-//	        if(self.view_offtrack.hidden == NO){
-//	            [kApp.voiceHandler voiceOfapp:@"match_come_back" :nil];
-//	            self.view_offtrack.hidden = YES;
-//	        }needwy
+	    if(isInTheTracks){
+	    	//在赛道内
+	        if(view_distance.getVisibility() == View.GONE){
+	        	view_distance.setVisibility(View.VISIBLE);
+	        }
+	        if(view_offtrack.getVisibility() == View.VISIBLE){
+//	            [kApp.voiceHandler voiceOfapp:@"match_come_back" :nil];needwy
+	            view_offtrack.setVisibility(View.GONE);
+	        }
+	    	view_distance.setVisibility(View.VISIBLE);
+	    	view_offtrack.setVisibility(View.GONE);
+	    	
 	    	CNAppDelegate.match_time_last_in_track = gpsPoint.getTime();
 	    	GeometryLocation gl = CNAppDelegate.geosHandler.match(gpsPoint.getLon(), gpsPoint.getLat(), 0);
 	        double point2Dis = CNAppDelegate.geosHandler.getRunningDistance(gl);
@@ -317,13 +328,16 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	        }
 	    }else{//不在赛道内
 	        Log.v("zc","偏离赛道");
-//	        if(self.view_distance.hidden == NO){
-//	            self.view_distance.hidden = YES;
-//	        }
-//	        if(self.view_offtrack.hidden == YES){
-//	            self.view_offtrack.hidden = NO;
+	        if(view_distance.getVisibility() == View.VISIBLE){
+	        	view_distance.setVisibility(View.GONE);
+	        }
+	        if(view_offtrack.getVisibility() == View.GONE){
 //	            [kApp.voiceHandler voiceOfapp:@"match_off_track" :nil];
-//	        }//needwy
+	            view_offtrack.setVisibility(View.VISIBLE);
+	        }
+	        
+	        view_distance.setVisibility(View.GONE);
+	    	view_offtrack.setVisibility(View.VISIBLE);
 	        gpsPoint.setIsInTrack(0);
 	        if(timeFromLastInTrack >= CNAppDelegate.kBoundary2*60){//已经偏离了1个小时了
 	            Log.v("zc","偏离赛道1小时");
