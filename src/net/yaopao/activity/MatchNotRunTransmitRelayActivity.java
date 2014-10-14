@@ -49,7 +49,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	private RelativeLayout view_run_user;
 	private RelativeLayout relay_main;
 	
-	private TextView button_back;
+	private TextView button_back,relay_wait_desc;
 	private ImageView image_gps;
 	
 	private ImageView relayAnim;
@@ -71,7 +71,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	private void init() {
 		image_myavatar = (ImageView) findViewById(R.id.relay_wait_head);
 		label_name = (TextView) findViewById(R.id.relay_wait_nickname);
-		view_back = (RelativeLayout) findViewById(R.id.relay_wait_back_layout);
+		view_back = (RelativeLayout) findViewById(R.id.relay_wait_layout);
 		
 		image_run_user = (ImageView) findViewById(R.id.relay_head);
 		lable_run_user = (TextView) findViewById(R.id.relay_nickname);
@@ -79,6 +79,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		
 		image_gps = (ImageView) findViewById(R.id.relay_wait_gps_status);
 		button_back = (TextView) findViewById(R.id.relay_wait_back);
+		relay_wait_desc = (TextView) findViewById(R.id.relay_wait_desc);
 		
 		
 		relayAnim = (ImageView) findViewById(R.id.relay_anim);
@@ -255,7 +256,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//		[kApp.voiceHandler voiceOfapp:@"match_wait_get_relay" :nil];//needwy
+//		[kApp.voiceHandler voiceOfapp:@"match_wait_get_relay" :nil];//needwy 动画和语音
 		relayAnim.setVisibility(View.VISIBLE);
 		relay_main.setVisibility(View.GONE);
 		animationDrawable.start();

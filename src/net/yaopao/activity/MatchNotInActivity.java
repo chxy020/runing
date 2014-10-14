@@ -33,13 +33,19 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 		init();
 	}
 	private void init() {
-		label_uname = (TextView) findViewById(R.id.relay_wait_nickname);
+		label_uname = (TextView) findViewById(R.id.out_relay_nickname);
 		
-		imageview_avatar = (ImageView) findViewById(R.id.relay_wait_head);
+		imageview_avatar = (ImageView) findViewById(R.id.out_relay_head);
 		
-		image_gps = (ImageView) findViewById(R.id.relay_wait_gps_status);
+		image_gps = (ImageView) findViewById(R.id.out_relay_gps_status);
 		
-		button_back = (TextView) findViewById(R.id.out_delay_tip_back);
+		button_back = (TextView) findViewById(R.id.out_relay_tip_back);
+		
+		if (Variables.avatar!=null) {
+			imageview_avatar.setImageBitmap(Variables.avatar);
+		}
+		
+		label_uname.setText(Variables.userinfo.getString("nickname"));
 		
 		button_back.setOnTouchListener(this);
 	}
@@ -73,11 +79,14 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
-		case R.id.out_delay_tip_back:
+		case R.id.out_relay_tip_back:
+			
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_back.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_back.setBackgroundResource(R.color.blue_dark);
 				MatchNotInActivity.this.finish();
 				break;
 			}
