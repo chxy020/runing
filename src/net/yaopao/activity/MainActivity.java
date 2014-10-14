@@ -268,7 +268,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			alertNotInTakeOver();
 		}
 		//alertNotInTakeOver();
-		
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
 		
