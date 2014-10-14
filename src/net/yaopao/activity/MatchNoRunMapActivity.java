@@ -269,7 +269,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchNoRunMapActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
-				if(infoDic.isEmpty()){
+				if(infoDic == null || infoDic.isEmpty()){
 					return;
 				}
 			    lon = infoDic.getDoubleValue("slon");
