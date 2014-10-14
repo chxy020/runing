@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
@@ -19,7 +20,8 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 	
 	
 	private ImageView image_avatar,image_gps;
-	private TextView label_username,label_teamname,buton_back;
+	private TextView label_username,label_teamname;
+	private RelativeLayout buton_back;
 	
 
 	private ImageView d1V;
@@ -79,7 +81,7 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 		
 		label_username = (TextView) findViewById(R.id.match_username);
 		label_teamname = (TextView) findViewById(R.id.match_team_name);
-		buton_back = (TextView) findViewById(R.id.match_bcak);
+		buton_back = (RelativeLayout) findViewById(R.id.relay_wait_back);
 		buton_back.setOnTouchListener(this);
 
 		d1V = (ImageView) findViewById(R.id.match_finish_dis1);
@@ -114,11 +116,14 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
-		case R.id.match_bcak:
+		case R.id.relay_wait_back:
+			
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				buton_back.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				buton_back.setBackgroundResource(R.color.blue_dark);
 				if(CNAppDelegate.hasFinishTeamMatch){//比赛已经结束
 			        Intent intent = new Intent(MatchFinishActivity.this,
 	        				MatchFinishTeamActivity.class);
