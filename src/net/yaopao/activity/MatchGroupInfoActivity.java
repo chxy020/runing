@@ -24,8 +24,10 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -81,6 +83,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_watch);
 		if(getIntent().getExtras() != null){
@@ -550,7 +553,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		loadingDialog.show();
 	}
 	void hideLoading(){
-		loadingDialog.show();
+		loadingDialog.dismiss();
 	}
 	private void initMileage(double distance) {
 		d1V.setVisibility(View.GONE);
@@ -593,5 +596,13 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		label_pspeed.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
 }

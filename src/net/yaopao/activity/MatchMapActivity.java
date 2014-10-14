@@ -20,8 +20,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -44,6 +46,9 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 
 	private AMap aMap;
 	private MapView mapView;
+	private ImageView avatarV;
+	private TextView nameV;
+	private TextView teamNameV;
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
 	private ImageView backV;
@@ -66,9 +71,18 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_match_map);
 		mapView = (MapView) findViewById(R.id.match_map);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
+		nameV = (TextView) findViewById(R.id.match_map_username);
+		teamNameV = (TextView) findViewById(R.id.match_map_team);
+		avatarV = (ImageView) findViewById(R.id.match_map_head);
+		nameV.setText(Variables.userinfo.getString("nickname"));
+		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
+	    if(Variables.avatar != null){
+	    	avatarV.setImageBitmap(Variables.avatar);
+	    }
 		init();
 //		nameV.setText(Variables.userinfo.getString("nickname"));
 //		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
@@ -119,10 +133,10 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 			    .addAll(points)
 			    .fillColor(Color.argb(50, 0, 0, 1)).strokeColor(Color.TRANSPARENT).strokeWidth(0));
 	    }
-	    LatLng latlon1 = new LatLng(min_lat, min_lon);
-		LatLng latlon2 = new LatLng(max_lat, max_lon);
-		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+//	    LatLng latlon1 = new LatLng(min_lat, min_lon);
+//		LatLng latlon2 = new LatLng(max_lat, max_lon);
+//		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+//		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 		
 	}
 	void drawStratZone(){
@@ -335,13 +349,6 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		return true;
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
 
 /**
  * 设置一些amap的属性
@@ -354,5 +361,12 @@ private void setUpMap() {
 	aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 	aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 
+}
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+	if (keyCode == KeyEvent.KEYCODE_HOME) {
+		// Toast.makeText(SportRecordActivity.this, "", duration)
+	}
+	return false;
 }
 }

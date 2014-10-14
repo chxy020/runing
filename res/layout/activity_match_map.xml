@@ -34,7 +34,7 @@
             android:layout_marginTop="@dimen/margin1"
             android:layout_toRightOf="@id/match_map_head"
             android:gravity="center"
-            android:text="关羽"
+            android:text="--"
             android:textColor="@color/black"
             android:textSize="@dimen/font_size2"
             android:textStyle="bold" />

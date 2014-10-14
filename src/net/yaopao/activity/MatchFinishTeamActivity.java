@@ -27,9 +27,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -75,6 +77,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_team_finish);
 //		initinitSymbol();
@@ -382,10 +385,10 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 //void enableAllButton(){
 //}
 void displayLoading(){
-	//loadingDialog.show();
+	loadingDialog.show();
 }
 void hideLoading(){
-	//loadingDialog.show();
+	loadingDialog.dismiss();
 }
 	private class RequestPersonal extends AsyncTask<String, Void, Boolean> {
 		private String responseJson;
@@ -511,5 +514,13 @@ void hideLoading(){
 			return conn.getInputStream();
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
 }

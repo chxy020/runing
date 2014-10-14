@@ -3,8 +3,10 @@ package net.yaopao.activity;
 import net.yaopao.assist.Variables;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_match_not_in);
 		init();
 	}
@@ -83,5 +86,11 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 		return true;
 	}
 
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
+	}
  }

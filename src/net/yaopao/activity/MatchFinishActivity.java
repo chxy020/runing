@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_finish);
 		initView();
@@ -134,13 +136,6 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -205,5 +200,12 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 			int t6 = time[2] % 10;	
 			
 			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V,});
+		}
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_HOME) {
+				// Toast.makeText(SportRecordActivity.this, "", duration)
+			}
+			return false;
 		}
 }

@@ -19,9 +19,11 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -90,6 +92,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_score_list);
 		initinitSymbol();
@@ -538,7 +541,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		loadingDialog.show();
 	}
 	void hideLoading(){
-		loadingDialog.show();
+		loadingDialog.dismiss();
 	}
 	private void initTotalMileage(double distance) {
 		totalDis1.setVisibility(View.GONE);
@@ -598,5 +601,12 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			YaoPao01App.graphicTool.updateRedNum(new int[] { s1, s2, s3, s4 },
 					new ImageView[] { s1V, s2V, s3V, s4V });
 
+		}
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_HOME) {
+				// Toast.makeText(SportRecordActivity.this, "", duration)
+			}
+			return false;
 		}
 }

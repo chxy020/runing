@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -77,6 +78,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.v("zc","进正常页面");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_run);
 		lonLatEncryption = new LonLatEncryption();
@@ -599,13 +601,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	}
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -677,5 +672,13 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 			initPspeed(0);
 			initTime(0);
 			initinitSymbol();
+		}
+		
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_HOME) {
+				// Toast.makeText(SportRecordActivity.this, "", duration)
+			}
+			return false;
 		}
 }
