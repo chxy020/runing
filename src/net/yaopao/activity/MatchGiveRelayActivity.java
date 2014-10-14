@@ -134,6 +134,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
+		Log.v("zc","give:"+this.getClass().getSimpleName());
 	}
 	void requestTransmit(){
 		new ScanTransmitTask().execute("");
