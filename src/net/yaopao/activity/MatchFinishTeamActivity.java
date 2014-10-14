@@ -420,7 +420,7 @@ void hideLoading(){
 			hideLoading();
 			if (result) {
 				JSONObject resultDic = JSON.parseObject(responseJson);
-			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
+			    double distance = resultDic.getDoubleValue("distancegr")+5;
 			    initMileage(distance);
 			    
 			    JSONArray dataList = resultDic.getJSONArray("list");
@@ -465,7 +465,7 @@ void hideLoading(){
 			            TextView label_name = (TextView)view_one_record.findViewById(R.id.username);
 			            label_name.setText(oneRecordDic.getString("nickname"));
 			            
-			            initPersonalMileage(distance);
+			            initPersonalMileage(oneRecordDic.getDoubleValue("km")+5);
 			            
 			            int height = (int) r.getDimension(R.dimen.sport_set_height);
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, height); 
