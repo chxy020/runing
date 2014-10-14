@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import net.yaopao.assist.CNAppDelegate;
@@ -211,9 +212,11 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	    CNAppDelegate.match_save2plist();
 	    
 	    task_one_point = new TimerTask_one_point();
+	    CNAppDelegate.timer_one_point = new Timer();
 		CNAppDelegate.timer_one_point.schedule(task_one_point, CNAppDelegate.kMatchInterval*1000, CNAppDelegate.kMatchInterval*1000);
 		
 		task_secondplusplus = new TimerTask_secondplusplus();
+		CNAppDelegate.timer_secondplusplus = new Timer();
 		CNAppDelegate.timer_secondplusplus.schedule(task_secondplusplus, 1000, 1000);
 	    int delay = new Random().nextInt(10) + 1;
 	    Log.v("zc","delay is "+delay);
@@ -226,6 +229,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	}
 	void startReportGPS(){
 		task_report = new TimerTask_report();
+		CNAppDelegate.match_timer_report = new Timer();
 		CNAppDelegate.match_timer_report.schedule(task_report, CNAppDelegate.kMatchReportInterval*1000, CNAppDelegate.kMatchReportInterval*1000);
 	}
 	void pushOnePoint(){

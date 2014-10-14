@@ -490,6 +490,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		.anchor(0.5f, 0.5f));
 		aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(lat, lon)));
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+		aMap.invalidate();
 	}
 	
 	void downloadImage(){

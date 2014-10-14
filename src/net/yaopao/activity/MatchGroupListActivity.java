@@ -364,7 +364,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			            TextView label_name = (TextView)view_one_record.findViewById(R.id.username);
 			            label_name.setText(oneRecordDic.getString("nickname"));
 			            
-			            initPersonalMileage(resultDic.getDoubleValue("distancegr")+5);
+			            initPersonalMileage(oneRecordDic.getDoubleValue("km")+5);
 			            
 			            int height = (int) r.getDimension(R.dimen.sport_set_height);
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, height); 

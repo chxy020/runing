@@ -154,9 +154,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		CNAppDelegate.match_save2plist();
 		
 		task_one_point = new TimerTask_one_point();
+		CNAppDelegate.timer_one_point = new Timer();
 		CNAppDelegate.timer_one_point.schedule(task_one_point, CNAppDelegate.kMatchInterval*1000, CNAppDelegate.kMatchInterval*1000);
 		task_secondplusplus = new TimerTask_secondplusplus();
+		CNAppDelegate.timer_secondplusplus = new Timer();
 		CNAppDelegate.timer_secondplusplus.schedule(task_secondplusplus, 1000, 1000);
+		CNAppDelegate.match_timer_report = new Timer();
 		task_report = new TimerTask_report();
 		CNAppDelegate.match_timer_report.schedule(task_report, CNAppDelegate.kMatchReportInterval*1000, CNAppDelegate.kMatchReportInterval*1000); 
 	}

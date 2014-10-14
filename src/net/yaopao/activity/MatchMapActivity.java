@@ -199,6 +199,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	        points.add(new LatLng(newPoint.getLat(),newPoint.getLon()));
 	        aMap.addPolyline((new PolylineOptions()).addAll(points).color(Color.GREEN).width(13f));
 	        lastDrawPoint = newPoint;
+	        aMap.invalidate();
 	    }
 	    
 	}
