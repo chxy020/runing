@@ -5,6 +5,7 @@ import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,6 +63,7 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 	    
 	    double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
 	    double match_totaldis = this_dis+CNAppDelegate.match_historydis;
+	    Log.v("zc","这次跑了"+match_totaldis);
 	    int speed_second;
 	    if(match_totaldis < 1){
 	        speed_second = 0;
