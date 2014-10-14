@@ -113,6 +113,8 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 		super.onResume();
 		MobclickAgent.onResume(this);
 		initLayout();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 	public void onPause() {
 		super.onPause();

@@ -15,6 +15,7 @@ import java.util.List;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
+import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -483,6 +484,8 @@ public class SportListOneActivity extends BaseActivity {
 		super.onResume();
 		mapView.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	@Override

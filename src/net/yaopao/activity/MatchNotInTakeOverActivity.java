@@ -76,6 +76,8 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	@Override
 	protected void onResume() {
 		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 		TimerTask task_check = new TimerTask() {
 			@Override
 			public void run() {

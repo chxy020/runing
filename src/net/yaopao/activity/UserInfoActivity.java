@@ -142,6 +142,8 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 		super.onResume();
 		initLayout();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 	public void onPause() {
 		super.onPause();

@@ -213,6 +213,8 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		task_drawLine = new TimerTask_drawLine();
 		timer_match_map = new Timer();
 		timer_match_map.schedule(task_drawLine, 2000, CNAppDelegate.kMatchInterval*1000);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	/**

@@ -15,7 +15,6 @@ import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +32,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -128,6 +128,9 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		task_look_submit = new TimerTask_scan();
 		timer_look_submit = new Timer();
 		timer_look_submit.schedule(task_look_submit, 0, CNAppDelegate.kScanTransmitinterval*1000);
+		
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 	void requestTransmit(){
 		new ScanTransmitTask().execute("");
@@ -238,6 +241,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				Toast.makeText(MatchGiveRelayActivity.this,"super ="+super.activityOnFront+" this= "+this.getClass().getSimpleName()+"v ="+Variables.activityOnFront, Toast.LENGTH_LONG).show();
 				quit();
 				break;
 			}

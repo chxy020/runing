@@ -294,6 +294,8 @@ public class SportRecordActivity extends BaseActivity implements
 		}
 
 		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {

@@ -166,6 +166,8 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 	@Override
 	protected void onResume() {
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 		// if (distance!=null) {
 		distanceTxtV.setText(Variables.runtarDis + "km");
 		// }

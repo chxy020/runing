@@ -89,6 +89,8 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	@Override
 	protected void onResume() {
 		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 		TimerTask task_request = new TimerTask() {
 			@Override
 			public void run() {

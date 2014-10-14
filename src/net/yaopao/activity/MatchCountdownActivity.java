@@ -3,19 +3,15 @@ package net.yaopao.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.yaopao.activity.R.drawable;
 import net.yaopao.assist.CNAppDelegate;
-import android.app.Activity;
+import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -48,6 +44,8 @@ public class MatchCountdownActivity extends BaseActivity {
 
 	public void onResume() {
 		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 		MobclickAgent.onResume(this);
 		TimerTask task_countdown = new TimerTask() {
 			@Override
@@ -103,17 +101,20 @@ public class MatchCountdownActivity extends BaseActivity {
 			time1.setVisibility(View.VISIBLE);
 			YaoPao01App.graphicTool.updateRedNum(new int[] { t1 },
 					new ImageView[] { time1 });
-			if (t2 >= 0) {
-				time2.setVisibility(View.VISIBLE);
-				YaoPao01App.graphicTool.updateRedNum(new int[] { t2 },
-						new ImageView[] { time2 });
-			}
 		}
 
 		if (t2 > 0) {
 			time2.setVisibility(View.VISIBLE);
 			YaoPao01App.graphicTool.updateRedNum(new int[] { t2 },
 					new ImageView[] { time2 });
+		}
+		if (t1==0) {
+			time1.setVisibility(View.GONE);
+		}
+		if (t2==0) {
+			if (t1 == 0) {
+				time2.setVisibility(View.GONE);
+			}
 		}
 		YaoPao01App.graphicTool.updateRedNum(new int[] { t3 },
 				new ImageView[] { time3 });

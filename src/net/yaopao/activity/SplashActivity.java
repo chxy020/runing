@@ -203,6 +203,8 @@ public class SplashActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		
+		
 	}
 
 	public void onPause() {

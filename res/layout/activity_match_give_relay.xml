@@ -103,7 +103,8 @@
                 android:layout_height="@dimen/recording_List_main_height"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/margin2" >
+                android:layout_marginRight="@dimen/margin2"
+                 android:visibility="gone" >
 
                 <ImageView
                     android:id="@+id/relay_wait_head3"

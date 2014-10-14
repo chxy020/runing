@@ -85,7 +85,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		lonLatEncryption = new LonLatEncryption();
 		initMatch();
 		initView();	
-		initinitSymbol();
+		initStartPage();
 		double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
 		CNAppDelegate.match_totaldis = this_dis+CNAppDelegate.match_historydis;
 	    initMileage(CNAppDelegate.match_totaldis+5);
@@ -581,16 +581,18 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//			// DialogTool.quit(MainActivity.this);
+//		}
+//		return false;
+//	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {
@@ -654,5 +656,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 			int t6 = time[2] % 10;	
 			
 			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V,});
+		}
+		
+		private void initStartPage(){
+			initMileage(0);
+			initPspeed(0);
+			initTime(0);
+			initinitSymbol();
 		}
 }

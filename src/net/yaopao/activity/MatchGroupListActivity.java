@@ -10,7 +10,9 @@ import java.util.TimerTask;
 
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.Variables;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,16 +61,30 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	List<String> urlList = new ArrayList<String>();
 	LayoutInflater mInflater = null;
 	Resources r; 
+	private LoadingDialog loadingDialog;
 	class TimerTask_request_personal extends TimerTask{
 		@Override
 		public void run() {
-			requestPersonal();
+			
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					requestPersonal();
+					
+				}
+			});
 		}
 	}
 	class TimerTask_request_km extends TimerTask{
 		@Override
 		public void run() {
-			requestKm();
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					requestKm();
+					
+				}
+			});
 		}
 	}
 	@Override
@@ -87,9 +103,11 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		initTotalMileage(0);
 	}
 	void requestPersonal(){
+		displayLoading();
 		new RequestPersonal().execute("");
 	}
 	void requestKm(){
+		displayLoading();
 		new RequestKM().execute("");
 	}
 	void clearScrollview(){
@@ -118,11 +136,16 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		button_back.setOnTouchListener(this);
 		button_personal.setOnTouchListener(this);
 		button_km.setOnTouchListener(this);
+		
+		loadingDialog= new LoadingDialog(this);
+		loadingDialog.setCancelable(false);
 	}
 
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {
@@ -418,6 +441,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				                	requestTask.index = imageviewList.size();
 				                	requestTask.avatarUrl = avatarUrl;
 				                	requestTask.execute("");
+				                	displayLoading();
 			                    }
 			                }
 			                urlList.add(avatarUrl);
@@ -441,6 +465,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				                	requestTask.index = imageviewList.size();
 				                	requestTask.avatarUrl = avatarUrl;
 				                	requestTask.execute("");
+				                	displayLoading();
 			                    }
 			                }
 			                urlList.add(avatarUrl);
@@ -483,6 +508,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		}
 		@Override
 		protected void onPostExecute(Boolean result) {
+			hideLoading();
 			if(result){
 				imageviewList.get(index).setImageBitmap(image);
 			}
@@ -498,15 +524,21 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		}
 		return null;
 	}
+//	void displayLoading(){
+//	    disableAllButton();
+//	}
+//	void hideLoading(){
+//	    enableAllButton();
+//	}
+//	void disableAllButton(){
+//	}
+//	void enableAllButton(){
+//	}
 	void displayLoading(){
-	    disableAllButton();
+		loadingDialog.show();
 	}
 	void hideLoading(){
-	    enableAllButton();
-	}
-	void disableAllButton(){
-	}
-	void enableAllButton(){
+		loadingDialog.show();
 	}
 	private void initTotalMileage(double distance) {
 		totalDis1.setVisibility(View.GONE);

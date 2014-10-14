@@ -1,5 +1,6 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -44,6 +45,8 @@ public class MatchNotInActivity extends BaseActivity implements OnTouchListener 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	/**

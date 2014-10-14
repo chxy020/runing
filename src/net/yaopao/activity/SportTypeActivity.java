@@ -98,6 +98,8 @@ public class SportTypeActivity extends BaseActivity implements OnClickListener {
 		}
 
 		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 	public void onPause() {
 		super.onPause();
