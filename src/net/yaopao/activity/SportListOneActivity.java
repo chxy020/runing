@@ -251,6 +251,8 @@ public class SportListOneActivity extends BaseActivity {
 		}
 //		double gpsLat = 0;
 //		double gpsLon = 0;
+		max_lon = min_lon = Double.parseDouble(match_pointList[0].split(" ")[0]);
+        max_lat = min_lat = Double.parseDouble(match_pointList[0].split(" ")[1]);
 		for (i = 0; i < pointCount; i++) {
 			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
 			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
@@ -269,7 +271,9 @@ public class SportListOneActivity extends BaseActivity {
 					if (gpsLat > max_lat) {
 						max_lat = gpsLat;
 					}
-					points.add(new LatLng(gpsLat,gpsLon));
+					double lat2 = Double.parseDouble(match_pointList[n+j].split(" ")[1]);
+		            double lon2 = Double.parseDouble(match_pointList[n+j].split(" ")[0]);
+					points.add(new LatLng(lat2,lon2));
 				}
 				Log.v("wysport", "points =" + points);
 

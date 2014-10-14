@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
@@ -393,16 +395,14 @@ public class SportTrackMap extends BaseActivity{
 		}
 //		double gpsLat = 0;
 //		double gpsLon = 0;
+		max_lon = min_lon = Double.parseDouble(match_pointList[0].split(" ")[0]);
+        max_lat = min_lat = Double.parseDouble(match_pointList[0].split(" ")[1]);
 		for (i = 0; i < pointCount; i++) {
 			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
 			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
 			if (gpsLon < 0.01 || i == pointCount - 1) {
 				List<LatLng> points = new ArrayList<LatLng>();
 				for (j = 0; j < i - n; j++) {
-					if(i == 0 && j == 0){
-						max_lon = min_lon = gpsLon;
-		                max_lat = min_lat = gpsLat;
-					}
 					if(gpsLon < min_lon){
 		                min_lon = gpsLon;
 		            }
@@ -415,7 +415,9 @@ public class SportTrackMap extends BaseActivity{
 		            if(gpsLat > max_lat){
 		                max_lat = gpsLat;
 		            }
-					points.add(new LatLng(gpsLat,gpsLon));
+		            double lat2 = Double.parseDouble(match_pointList[n+j].split(" ")[1]);
+		            double lon2 = Double.parseDouble(match_pointList[n+j].split(" ")[0]);
+					points.add(new LatLng(lat2,lon2));
 				}
 				Log.v("wysport", "points =" + points);
 
