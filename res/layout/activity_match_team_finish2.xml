@@ -6,7 +6,8 @@
     <ScrollView
         android:id="@+id/view_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_height" >
 
         <FrameLayout
             android:id="@+id/scrollview_List"

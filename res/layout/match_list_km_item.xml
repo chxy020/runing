@@ -87,12 +87,12 @@
                  />
         </LinearLayout>
          
-    
-    </RelativeLayout>
-   <View
+    <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/match_watch_user"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/black" >
         </View>
+    </RelativeLayout>
+   
 </RelativeLayout>
