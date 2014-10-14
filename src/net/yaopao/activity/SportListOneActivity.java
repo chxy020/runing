@@ -256,6 +256,8 @@ public class SportListOneActivity extends BaseActivity {
 		for (i = 0; i < pointCount; i++) {
 			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
 			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
+			
+			Log.v("wysport", "gpsLat =" + gpsLat+" gpsLon="+gpsLon);
 			if (gpsLon < 0.01 || i == pointCount - 1) {
 				List<LatLng> points = new ArrayList<LatLng>();
 				for (j = 0; j < i - n; j++) {

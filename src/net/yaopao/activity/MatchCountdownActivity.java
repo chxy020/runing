@@ -38,18 +38,6 @@ public class MatchCountdownActivity extends BaseActivity {
 		time3 = (ImageView) findViewById(R.id.match_countdown_3);
 		countdownTip = (TextView) findViewById(R.id.countdown_tip);
 		initTime();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
-
-	public void onResume() {
-		super.onResume();
-		super.activityOnFront=this.getClass().getSimpleName();
-		Variables.activityOnFront=this.getClass().getSimpleName();
-		MobclickAgent.onResume(this);
 		TimerTask task_countdown = new TimerTask() {
 			@Override
 			public void run() {
@@ -88,6 +76,19 @@ public class MatchCountdownActivity extends BaseActivity {
 			}
 		};
 		timer_countdown.schedule(task_countdown, 1000, 1000);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	public void onResume() {
+		super.onResume();
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
+		MobclickAgent.onResume(this);
+		
 	}
 
 	public void onPause() {

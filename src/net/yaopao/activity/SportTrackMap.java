@@ -52,10 +52,10 @@ public class SportTrackMap extends BaseActivity{
 	public GpsPoint curPopPoint;
 	public GpsPoint lastPopPoint;
 
-	private SimpleDateFormat sdf1;
-	private SimpleDateFormat sdf2;
-	private SimpleDateFormat sdf3;
-	private SimpleDateFormat sdf4;
+//	private SimpleDateFormat sdf1;
+//	private SimpleDateFormat sdf2;
+//	private SimpleDateFormat sdf3;
+//	private SimpleDateFormat sdf4;
 	private DecimalFormat df;
 	private String title = "";
 	private TextView timeV;
@@ -98,10 +98,10 @@ public class SportTrackMap extends BaseActivity{
 				
 			}
 		});
-		sdf1 = new SimpleDateFormat("MM");
-		sdf2 = new SimpleDateFormat("dd");
-		sdf3 = new SimpleDateFormat("HH:mm");
-		sdf4 = new SimpleDateFormat("yyyy");
+//		sdf1 = new SimpleDateFormat("MM");
+//		sdf2 = new SimpleDateFormat("dd");
+//		sdf3 = new SimpleDateFormat("HH:mm");
+//		sdf4 = new SimpleDateFormat("yyyy");
 		df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
@@ -220,8 +220,7 @@ public class SportTrackMap extends BaseActivity{
 							GpsPoint onekm = lonLatEncryption.encrypt(crrPoint);
 							aMap.addMarker(new MarkerOptions()
 									.position(new LatLng(onekm.lat, onekm.lon))
-									.icon(BitmapDescriptorFactory
-											.fromBitmap(getViewBitmap(getView("第"+ (int)Math.floor(distance_add/1000)+ "公里", time_one_km / 1000 / 60+ "'" + (time_one_km / 1000)
+									.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView("第"+ (int)Math.floor(distance_add/1000)+ "公里", time_one_km / 1000 / 60+ "'" + (time_one_km / 1000)
 													% 60 + "\""))))
 									.anchor(0.5f, 0.5f));
 							targetDis += 1000;
