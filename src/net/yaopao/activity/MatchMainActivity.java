@@ -253,8 +253,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 //	            [kApp.voiceHandler voiceOfapp:@"match_come_back" :nil];needwy
 	            view_offtrack.setVisibility(View.GONE);
 	        }
-	    	view_distance.setVisibility(View.VISIBLE);
-	    	view_offtrack.setVisibility(View.GONE);
 	    	
 	    	CNAppDelegate.match_time_last_in_track = gpsPoint.getTime();
 	    	GeometryLocation gl = CNAppDelegate.geosHandler.match(gpsPoint.getLon(), gpsPoint.getLat(), 0);
@@ -335,9 +333,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 //	            [kApp.voiceHandler voiceOfapp:@"match_off_track" :nil];
 	            view_offtrack.setVisibility(View.VISIBLE);
 	        }
-	        
-	        view_distance.setVisibility(View.GONE);
-	    	view_offtrack.setVisibility(View.VISIBLE);
 	        gpsPoint.setIsInTrack(0);
 	        if(timeFromLastInTrack >= CNAppDelegate.kBoundary2*60){//已经偏离了1个小时了
 	            Log.v("zc","偏离赛道1小时");
@@ -485,7 +480,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 					startActivity(intent);
 	            }else{
 	            	Intent intent = new Intent(MatchMainActivity.this,
-	            			MatchGiveRelayActivity.class);
+	            			MatchNotInTakeOverActivity.class);
 					startActivity(intent);
 	            }
 				break;

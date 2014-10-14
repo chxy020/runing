@@ -26,13 +26,13 @@ public class CNAppDelegate {
 	//一些常量
 	
 	//测试比赛用
-	public static final boolean istest = true;
+	public static final boolean istest = false;
 	public static int matchtestdatalength;
 	public static int testIndex= 0; 
 	
 	public static final String kTrackName = "LunYang";//使用赛道
-	public static final String kStartTime = "2014-10-14 19:25:00";//比赛开始时间
-	public static final int kDuringMinute = 24*60;//比赛持续时间
+	public static final String kStartTime = "2014-10-14 20:42:00";//比赛开始时间
+	public static final int kDuringMinute = 60*24;//比赛持续时间
 
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
