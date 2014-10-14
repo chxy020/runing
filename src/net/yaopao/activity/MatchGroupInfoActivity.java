@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
@@ -50,6 +51,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private RelativeLayout button_list;
 	private RelativeLayout button_message;
 	private RelativeLayout button_me;
+	private RelativeLayout match_get_baton_layout;
 	private ImageView button_relay;
 	
 //	private ImageView button_relay;
@@ -66,6 +68,8 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	
 	private ImageView image_avatar,imageview_dot,d1V,d2V,d3V,d4V,d5V,d6V,dot,km;
 	private TextView label_uname,label_tName,button_back,label_date,label_time,label_pspeed,label_avr_speed;
+	
+	private LoadingDialog loadingDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +87,12 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		Log.v("zc","CNAppDelegate.hasFinishTeamMatch is "+CNAppDelegate.hasFinishTeamMatch);
 		if(CNAppDelegate.hasFinishTeamMatch){
 			button_message.setVisibility(View.GONE);
-			button_relay.setVisibility(View.GONE);
+//			button_relay.setVisibility(View.GONE);
+			match_get_baton_layout.setVisibility(View.GONE);
 	    }else{
 	    	button_message.setVisibility(View.VISIBLE);
-			button_relay.setVisibility(View.VISIBLE);
+//			button_relay.setVisibility(View.VISIBLE);
+	    	match_get_baton_layout.setVisibility(View.GONE);
 	    }
 	    if("main".equals(from)){
 	        button_back.setVisibility(View.VISIBLE);
@@ -113,6 +119,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		button_list = (RelativeLayout) findViewById(R.id.match_watch_score);
 		button_message = (RelativeLayout) findViewById(R.id.match_watch_message);
 		button_me = (RelativeLayout) findViewById(R.id.match_watch_user);
+		match_get_baton_layout = (RelativeLayout) findViewById(R.id.match_get_baton_layout);
 		
 		button_relay = (ImageView) findViewById(R.id.match_get_baton);
 		image_avatar = (ImageView) findViewById(R.id.match_watch_head);	
@@ -142,6 +149,9 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		button_message.setOnTouchListener(this);
 		button_me.setOnTouchListener(this);
 		button_relay.setOnTouchListener(this);
+		
+		loadingDialog= new LoadingDialog(this);
+		loadingDialog.setCancelable(false);
 	}
 
 	/**
@@ -199,6 +209,8 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		task_request = new TimerTask_request();
 		timer_refresh_data = new Timer();
 		timer_refresh_data.schedule(task_request, 0, CNAppDelegate.kMatchReportInterval*1000);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 	class TimerTask_request extends TimerTask{
 		@Override
@@ -454,15 +466,21 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		}
 		return null;
 	}
+//	void displayLoading(){
+//	    disableAllButton();
+//	}
+//	void hideLoading(){
+//	    enableAllButton();
+//	}
+//	void disableAllButton(){
+//	}
+//	void enableAllButton(){
+//	}
 	void displayLoading(){
-	    disableAllButton();
+		//loadingDialog.show();
 	}
 	void hideLoading(){
-	    enableAllButton();
-	}
-	void disableAllButton(){
-	}
-	void enableAllButton(){
+		//loadingDialog.show();
 	}
 	private void initMileage(double distance) {
 		d1V.setVisibility(View.GONE);

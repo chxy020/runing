@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.yaopao.assist.SportListAdapter;
+import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import net.yaopao.bean.SportBean;
 import net.yaopao.view.XListView;
@@ -651,6 +652,8 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {

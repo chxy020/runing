@@ -1,5 +1,6 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
+
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -46,6 +48,8 @@ public class MatchWebActivity extends BaseActivity {
 	protected void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	/**

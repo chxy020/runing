@@ -1,5 +1,7 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.Variables;
+
 import com.umeng.analytics.MobclickAgent;
 
 import android.annotation.SuppressLint;
@@ -81,6 +83,8 @@ public class ClauseActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {

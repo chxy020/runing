@@ -57,7 +57,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
-public class SportShareActivity extends Activity implements OnClickListener {
+public class SportShareActivity extends BaseActivity implements OnClickListener {
 	private TextView backV;
 	private TextView timeV;
 	private TextView pspeedV;
@@ -506,6 +506,8 @@ public class SportShareActivity extends Activity implements OnClickListener {
 		super.onResume();
 		mapView.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package net.yaopao.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -143,6 +144,8 @@ public class SportCountdownActivity extends BaseActivity implements OnTouchListe
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {

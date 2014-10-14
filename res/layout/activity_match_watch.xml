@@ -333,6 +333,7 @@
         android:background="@color/black" >
     </View>
            <RelativeLayout
+               android:id="@+id/match_get_baton_layout"
            android:layout_alignParentRight="true"
             android:layout_width="@dimen/width_half"
             android:layout_height="wrap_content"

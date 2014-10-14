@@ -10,7 +10,9 @@ import net.yaopao.activity.SportListActivity.MessageOnPageChangeListener;
 import net.yaopao.activity.SportListActivity.MessagePagerAdapter;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import android.app.Activity;
 import android.content.Intent;
@@ -66,6 +68,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	
 	private ImageView km,dot,d1V,d2V,d3V,d4V,d5V,d6V,pd1V,pd2V,pd3V,pd4V,pd5V,pd6V,pkm,pdot;
 	
+	private LoadingDialog loadingDialog;
 	FrameLayout view_list = null; 
 	List<ImageView> imageviewList = new ArrayList<ImageView>();
 	List<String> urlList = new ArrayList<String>();
@@ -94,6 +97,8 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	private void init() {
 		label_tname = (TextView) findViewById(R.id.match_score_list_title);
 		button_ok = (TextView) findViewById(R.id.match_fininsh_confirm);
+		loadingDialog= new LoadingDialog(this);
+		loadingDialog.setCancelable(false);
 //		label_tname = (TextView) findViewById(R.id.match_score_list_title);
 //		button_personal = (TextView) findViewById(R.id.match_score_list_personal);
 //		button_km = (TextView) findViewById(R.id.match_score_list_mileage);
@@ -107,6 +112,8 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {
@@ -363,16 +370,22 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			return POSITION_NONE;
 		}
 	}
-	void displayLoading(){
-	    disableAllButton();
-	}
-	void hideLoading(){
-	    enableAllButton();
-	}
-	void disableAllButton(){
-	}
-	void enableAllButton(){
-	}
+//	void displayLoading(){
+//    disableAllButton();
+//}
+//void hideLoading(){
+//    enableAllButton();
+//}
+//void disableAllButton(){
+//}
+//void enableAllButton(){
+//}
+void displayLoading(){
+	//loadingDialog.show();
+}
+void hideLoading(){
+	//loadingDialog.show();
+}
 	private class RequestPersonal extends AsyncTask<String, Void, Boolean> {
 		private String responseJson;
 

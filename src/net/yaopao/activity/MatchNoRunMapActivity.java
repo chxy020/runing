@@ -8,9 +8,9 @@ import java.util.TimerTask;
 
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,7 +48,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	double lat;//最新位置
 	Bitmap avatarImage;
 	Marker annotation;
-
+	private LoadingDialog loadingDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -72,6 +72,8 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	private void init() {
 		backV = (ImageView) findViewById(R.id.match_full_map_back);
 		backV.setOnTouchListener(this);
+		loadingDialog= new LoadingDialog(this);
+		loadingDialog.setCancelable(false);
 		setUpMap();
 	}
 	void drawTrack(){
@@ -120,6 +122,8 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		super.onResume();
 		mapView.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	/**
@@ -276,14 +280,20 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		}
 		return null;
 	}
-	void displayLoading(){
-	    disableAllButton();
-	}
-	void hideLoading(){
-	    enableAllButton();
-	}
-	void disableAllButton(){
-	}
-	void enableAllButton(){
-	}
+//	void displayLoading(){
+//    disableAllButton();
+//}
+//void hideLoading(){
+//    enableAllButton();
+//}
+//void disableAllButton(){
+//}
+//void enableAllButton(){
+//}
+void displayLoading(){
+	//loadingDialog.show();
+}
+void hideLoading(){
+	//loadingDialog.show();
+}
 }

@@ -17,7 +17,8 @@ import android.widget.Toast;
    
 public class BaseActivity extends Activity { 
 	public static final String registerAction = "gps.action";
-	public boolean isJump=false;
+	//public boolean isJump=false;
+	public String activityOnFront="";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class BaseActivity extends Activity {
         protected void onResume() {  
                 // TODO Auto-generated method stub  
                 super.onResume();  
-                isJump=true;
+               // isJump=true;
                    
                 if (!Variables.isActive) {  
                         //app 从后台唤醒，进入前台  
@@ -54,7 +55,7 @@ public class BaseActivity extends Activity {
         @Override
         protected void onPause() {
         	super.onPause();
-        	isJump=false;
+        	//isJump=false;
         }
    
         /** 
@@ -88,8 +89,16 @@ public class BaseActivity extends Activity {
 	        @Override  
 	        public void onReceive(Context context, Intent intent) {  
 	        	unregisterReceiver(this);
-	        		Log.v("jump", "start isjump ="+isJump);
-	        		if (isJump) {
+	        		Log.v("jump", "jump activityOnFront ="+activityOnFront);
+	        		//if (isJump) {
+	        		if (activityOnFront.equals(Variables.activityOnFront)) {
+//	        			try {
+//							Thread.sleep(3000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+	        			
 	        			String target =intent.getExtras().getString("action");
 	        			Log.v("jump", "jump +1");
 	        			Intent jump = null;
@@ -124,6 +133,7 @@ public class BaseActivity extends Activity {
 	        		        	 //jump =new Intent(BaseActivity.this,MatchFinishTeamActivity.class);
 	        		        }
 	        		     if (jump!=null) {
+	        		    	 jump.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        		    	 startActivity(jump);
 						}
 					}

@@ -570,16 +570,18 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//			// DialogTool.quit(MainActivity.this);
+//		}
+//		return false;
+//	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 	}
 
 	public void onPause() {
