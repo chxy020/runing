@@ -21,6 +21,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -191,5 +192,13 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 			}
 		}
 
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
  }

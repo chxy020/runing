@@ -655,4 +655,12 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 			initTime(0);
 			initinitSymbol();
 		}
+		
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_HOME) {
+				// Toast.makeText(SportRecordActivity.this, "", duration)
+			}
+			return false;
+		}
 }

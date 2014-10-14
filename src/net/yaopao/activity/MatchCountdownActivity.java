@@ -8,6 +8,7 @@ import net.yaopao.assist.Variables;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -120,6 +121,14 @@ public class MatchCountdownActivity extends BaseActivity {
 		}
 		YaoPao01App.graphicTool.updateRedNum(new int[] { t3 },
 				new ImageView[] { time3 });
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
 
 }

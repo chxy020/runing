@@ -25,6 +25,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -563,7 +564,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	}
 	public void quit() {
 		new AlertDialog.Builder(MatchGiveRelayActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
-				.setMessage("确认退出？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				.setMessage("确认提前结束比赛？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						finishMatch();
@@ -576,5 +577,13 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 					}
 				}).show();
 
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
 }

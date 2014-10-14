@@ -136,13 +136,6 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -207,5 +200,12 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 			int t6 = time[2] % 10;	
 			
 			YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V,});
+		}
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_HOME) {
+				// Toast.makeText(SportRecordActivity.this, "", duration)
+			}
+			return false;
 		}
 }

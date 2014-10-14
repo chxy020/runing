@@ -594,13 +594,6 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	}
 
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// DialogTool.quit(MainActivity.this);
-		}
-		return false;
-	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -672,5 +665,13 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 			initPspeed(0);
 			initTime(0);
 			initinitSymbol();
+		}
+		
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_HOME) {
+				// Toast.makeText(SportRecordActivity.this, "", duration)
+			}
+			return false;
 		}
 }

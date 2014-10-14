@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -479,10 +480,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 //	void enableAllButton(){
 //	}
 	void displayLoading(){
-		//loadingDialog.show();
+		loadingDialog.show();
 	}
 	void hideLoading(){
-		//loadingDialog.show();
+		loadingDialog.dismiss();
 	}
 	private void initMileage(double distance) {
 		d1V.setVisibility(View.GONE);
@@ -525,5 +526,13 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		label_pspeed.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
 }

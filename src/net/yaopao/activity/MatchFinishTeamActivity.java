@@ -27,6 +27,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -383,10 +384,10 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 //void enableAllButton(){
 //}
 void displayLoading(){
-	//loadingDialog.show();
+	loadingDialog.show();
 }
 void hideLoading(){
-	//loadingDialog.show();
+	loadingDialog.dismiss();
 }
 	private class RequestPersonal extends AsyncTask<String, Void, Boolean> {
 		private String responseJson;
@@ -510,5 +511,13 @@ void hideLoading(){
 			return conn.getInputStream();
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_HOME) {
+			// Toast.makeText(SportRecordActivity.this, "", duration)
+		}
+		return false;
 	}
 }
