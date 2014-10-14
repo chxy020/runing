@@ -95,7 +95,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	    }else{
 	    	button_message.setVisibility(View.VISIBLE);
 //			button_relay.setVisibility(View.VISIBLE);
-	    	match_get_baton_layout.setVisibility(View.GONE);
+	    	match_get_baton_layout.setVisibility(View.VISIBLE);
 	    }
 	    if("main".equals(from)){
 	        button_back.setVisibility(View.VISIBLE);
