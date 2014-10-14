@@ -324,6 +324,7 @@ public class DBManager {
 			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
 			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));
 			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
+			sport.setSportty(c.getInt(c.getColumnIndex("sportty")));
 			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
 			sport.setSportPhoPath(c.getString(c.getColumnIndex("sport_pho_path")));
 			sports.add(sport);

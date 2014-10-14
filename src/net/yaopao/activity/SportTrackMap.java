@@ -121,9 +121,24 @@ public class SportTrackMap extends BaseActivity{
 				oneSport.getRemarks(), oneSport.getUtime(),
 				oneSport.getPspeed(), oneSport.getPoints(),
 				oneSport.getAddtime());
-		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
-				GpsPoint.class);
+//		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
+//				GpsPoint.class);
 		
+		if (oneSport.sportty == 1) {
+			Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
+			String[] str = ((String)oneSport.getRuntra()).split(",");
+			drawRunTrack(str);
+
+		} else {
+			List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(), GpsPoint.class);
+			drawConmmenTrack(pointsArray);
+		}
+		
+		
+		
+	}
+
+	private void drawConmmenTrack(List<GpsPoint> pointsArray) {
 		if (pointsArray.size()==0) {
 			return;
 		}
@@ -216,13 +231,18 @@ public class SportTrackMap extends BaseActivity{
 			}if (i==(pointsArray.size()-1)) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(13f));
 			}
-			// 移动到中心
-			LatLng latlon1 = new LatLng(min_lat, min_lon);
-			LatLng latlon2 = new LatLng(max_lat, max_lon);
-			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+//			// 移动到中心
+//			LatLng latlon1 = new LatLng(min_lat, min_lon);
+//			LatLng latlon2 = new LatLng(max_lat, max_lon);
+//			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+//			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 			lastSportPoint= crrPoint;
 			}
+		// 移动到中心
+		LatLng latlon1 = new LatLng(min_lat, min_lon);
+		LatLng latlon2 = new LatLng(max_lat, max_lon);
+		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 	}
 
 	private void initSportData(double distance, int runty, int mind,
@@ -354,6 +374,62 @@ public class SportTrackMap extends BaseActivity{
 		return bitmap;
 	}
 
+	// 画比赛运动记录的轨迹
+	void drawRunTrack(String[] match_pointList) {
+		// 把CNAppDelegate.match_pointList画到地图上，如果遇到0,0则分段
+		Log.v("wysport", "match_pointList =" + match_pointList);
+		int j = 0;
+		int i = 0;
+		int n = 0;
+		
+		double min_lat = 0;
+		double max_lat = 0;
+		double min_lon = 0;
+		double max_lon = 0;
+		// int pointCount = CNAppDelegate.match_pointList.size();
+		int pointCount = match_pointList.length;
+		if (pointCount < 2) {
+			return;
+		}
+//		double gpsLat = 0;
+//		double gpsLon = 0;
+		for (i = 0; i < pointCount; i++) {
+			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
+			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
+			if (gpsLon < 0.01 || i == pointCount - 1) {
+				List<LatLng> points = new ArrayList<LatLng>();
+				for (j = 0; j < i - n; j++) {
+					if(i == 0 && j == 0){
+						max_lon = min_lon = gpsLon;
+		                max_lat = min_lat = gpsLat;
+					}
+					if(gpsLon < min_lon){
+		                min_lon = gpsLon;
+		            }
+		            if(gpsLat < min_lat){
+		                min_lat = gpsLat;
+		            }
+		            if(gpsLon > max_lon){
+		                max_lon = gpsLon;
+		            }
+		            if(gpsLat > max_lat){
+		                max_lat = gpsLat;
+		            }
+					points.add(new LatLng(gpsLat,gpsLon));
+				}
+				Log.v("wysport", "points =" + points);
+
+				aMap.addPolyline((new PolylineOptions()).addAll(points)
+						.color(Color.GREEN).width(13f));
+				n = i + 1;// n为下一个起点
+			}
+		}
+		 LatLng latlon1 = new LatLng(min_lat, min_lon);
+			LatLng latlon2 = new LatLng(max_lat, max_lon);
+			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+	}
+	
 //	@Override
 //	public boolean onTouch(View view, MotionEvent event) {
 //		int action = event.getAction();

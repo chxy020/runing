@@ -206,6 +206,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			if (!"".equals(sport.sport_pho_path)&&sport.sport_pho_path!=null) {
 				map.put("phoName", sport.sport_pho_path);
 			}
+				map.put("ismatch", sport.sportty+"");
 			map.put("id", sport.getId());
 			Log.v("db", "db id =" + sport.getId());
 			int[] speed = YaoPao01App.cal(sport.getPspeed());

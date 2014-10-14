@@ -11,6 +11,7 @@ import net.yaopao.activity.YaoPao01App;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,11 @@ public class SportListAdapter extends BaseAdapter {
 			if (listItems.get(position).get("way")!=null) {
 				wayV.setBackgroundResource((Integer) listItems.get(position).get("way"));
 			}
+			if ("1".equals(listItems.get(position).get("ismatch"))) {
+				mindV.setImageBitmap(getBitmap());
+				mindV.setVisibility(View.VISIBLE);
+			}
+			
 			if (listItems.get(position).get("hasPho")!=null&&!"".equals(listItems.get(position).get("hasPho"))) {
 				Log.v("wypho", "position = "+position+" ,has="+listItems.get(position).get("hasPho")+"-- is="+(1==(Integer)listItems.get(position).get("hasPho")));
 				if (1==(Integer)listItems.get(position).get("hasPho")) {
@@ -196,5 +202,25 @@ public class SportListAdapter extends BaseAdapter {
 			e.printStackTrace();
 		}
 		return bitmap;
+	}
+	
+	private Bitmap getBitmap() {
+		BitmapFactory.Options options = getBtmOptions();
+		return BitmapFactory.decodeResource(YaoPao01App.instance.getResources(), R.drawable.matchicon, options);
+	}
+
+	/**
+	 * 获取加载图片参数
+	 * 
+	 * @return Options
+	 */
+	private Options getBtmOptions() {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inSampleSize = 2;
+		options.inPreferredConfig = Bitmap.Config.RGB_565;// 16位图
+		options.inPurgeable = true;
+		options.inInputShareable = true;
+		return options;
+
 	}
 }
