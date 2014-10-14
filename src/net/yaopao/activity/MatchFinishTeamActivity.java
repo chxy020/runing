@@ -64,7 +64,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	
 	
 	private TextView button_ok,label_tname,label_tname2;
-	Resources r = getResources(); 
+	Resources r; 
 //	private TextView button_back,label_tname,button_personal,button_km;
 //	private ScrollView scrollview;
 	
@@ -80,6 +80,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_team_finish);
+		r = getResources(); 
 //		initinitSymbol();
 		init();
 		initViewPager();
@@ -103,6 +104,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		button_ok = (TextView) findViewById(R.id.match_fininsh_confirm);
 		loadingDialog= new LoadingDialog(this);
 		loadingDialog.setCancelable(false);
+		button_ok.setOnTouchListener(this);
 //		label_tname = (TextView) findViewById(R.id.match_score_list_title);
 //		button_personal = (TextView) findViewById(R.id.match_score_list_personal);
 //		button_km = (TextView) findViewById(R.id.match_score_list_mileage);
@@ -145,6 +147,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 			case MotionEvent.ACTION_UP:
 				Intent intent = new Intent(MatchFinishTeamActivity.this,
 						MainActivity.class);
+				startActivity(intent);
 				break;
 			}
 			break;
@@ -402,6 +405,7 @@ void hideLoading(){
 		    String request_params = String.format("uid=%s&mid=%s&gid=%s",CNAppDelegate.uid,CNAppDelegate.mid,CNAppDelegate.gid);
 		    Log.v("zc","按照人员查询成绩 is "+request_params);
 		    responseJson = NetworkHandler.httpPost(Constants.endpoints	+ Constants.listPersonal, request_params);
+		    Log.v("zc","按照人员查询成绩 is "+responseJson);
 			if (responseJson != null && !"".equals(responseJson)) {
 				return true;
 			} else {
@@ -413,7 +417,6 @@ void hideLoading(){
 		protected void onPostExecute(Boolean result) {
 			hideLoading();
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchFinishTeamActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
 			    initMileage(distance);

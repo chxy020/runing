@@ -251,18 +251,18 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	        if(timeFromLastInTrack < CNAppDelegate.kBoundary1*60){//小于十分钟
 	            if(point2Dis > CNAppDelegate.match_currentLapDis){
 	                if(point2Dis - CNAppDelegate.match_currentLapDis>CNAppDelegate.geosHandler.claimedLength/2){//大的很多，证明是往回跑，并且经过起点了
-	                	Log.v("zc","往回跑经过起点");
+//	                	Log.v("zc","往回跑经过起点");
 	                }else{//大的不多，正常向前跑
-	                    Log.v("zc","正常向前跑");
+//	                    Log.v("zc","正常向前跑");
 	                    CNAppDelegate.match_currentLapDis = point2Dis;
 	                }
 	            }else{
 	                if(CNAppDelegate.match_currentLapDis - point2Dis > CNAppDelegate.geosHandler.claimedLength/2){//小的太多，证明往前跑并且跨圈了
-	                    Log.v("zc","往前跑并且跨圈了");
+//	                    Log.v("zc","往前跑并且跨圈了");
 	                    CNAppDelegate.match_currentLapDis = point2Dis;
 	                    CNAppDelegate.match_countPass++;
 	                }else{//小的不是很多，证明往回跑了，什么都不干
-	                    Log.v("zc","往回跑，没过起点");
+//	                    Log.v("zc","往回跑，没过起点");
 	                }
 	            }
 	            double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
@@ -606,6 +606,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		MobclickAgent.onResume(this);
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
+		Log.v("zc","main:"+this.getClass().getSimpleName());
 	}
 
 	public void onPause() {

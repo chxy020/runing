@@ -466,8 +466,9 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			    if(imagePath == null){
 			    	addAnnotation();
 			    }else{
-			        Bitmap image = CNAppDelegate.avatarDic.get("imagePath");
+			        Bitmap image = CNAppDelegate.avatarDic.get(imagePath);
 			        if(image != null){//缓存中有
+			        	Log.v("zc","缓存中有");
 			        	avatarImage = image;
 			        	addAnnotation();
 			        }else{//下载
@@ -480,10 +481,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		}
 	}
 	void addAnnotation(){
-//		[self.mapView removeAnnotation:self.annotation];
-//	    self.annotation = [[MAPointAnnotation alloc] init];
-//	    self.annotation.coordinate = CLLocationCoordinate2DMake(self.lat, self.lon);
-//	    [self.mapView addAnnotation:self.annotation];needwy:lon,lat,avatarImage
 		if(annotation != null){
 			annotation.remove();
 		}
@@ -492,6 +489,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		.icon(BitmapDescriptorFactory.fromBitmap(avatarImage))
 		.anchor(0.5f, 0.5f));
 		aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(lat, lon)));
+		aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
 	}
 	
 	void downloadImage(){

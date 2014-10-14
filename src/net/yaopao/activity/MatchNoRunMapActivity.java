@@ -279,7 +279,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 			    if(imagePath == null){
 			    	addAnnotation();
 			    }else{
-			        Bitmap image = CNAppDelegate.avatarDic.get("imagePath");
+			        Bitmap image = CNAppDelegate.avatarDic.get(imagePath);
 			        if(image != null){//缓存中有
 			        	avatarImage = image;
 			        	addAnnotation();
@@ -300,6 +300,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		.position(new LatLng(lat, lon))
 		.icon(BitmapDescriptorFactory.fromBitmap(avatarImage))
 		.anchor(0.5f, 0.5f));
+		aMap.invalidate();
 	}
 	
 	void downloadImage(){

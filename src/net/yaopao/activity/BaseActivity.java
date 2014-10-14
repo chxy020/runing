@@ -91,6 +91,8 @@ public class BaseActivity extends Activity {
 	        	unregisterReceiver(this);
 	        		Log.v("jump", "jump activityOnFront ="+BaseActivity.this.activityOnFront);
 	        		//if (isJump) {
+	        		Log.v("zc","BaseActivity.this.activityOnFront is "+BaseActivity.this.activityOnFront);
+	        		Log.v("zc","Variables.activityOnFront is "+Variables.activityOnFront);
 	        		if (BaseActivity.this.activityOnFront.equals(Variables.activityOnFront)) {
 	        			//测试代码
 //	        			try {
@@ -126,12 +128,12 @@ public class BaseActivity extends Activity {
 	        		        }
 	        		        else if("finish".equals(target)){
 	        		        	//结束比赛
-	        		        //	 jump =new Intent(BaseActivity.this,MatchFinishActivity.class);
+	        		        	 jump =new Intent(BaseActivity.this,MatchFinishActivity.class);
 	        		        }
 	        		        
 	        		        else if("finishTeam".equals(target)){
 	        		        	//结束整队比赛
-	        		        	 //jump =new Intent(BaseActivity.this,MatchFinishTeamActivity.class);
+	        		        	 jump =new Intent(BaseActivity.this,MatchFinishTeamActivity.class);
 	        		        }
 	        		     if (jump!=null) {
 	        		    	 jump.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -162,7 +162,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 			        if(imagePath_runner == null){
 			            image_run_user.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
 			        }else{
-			            Bitmap image = CNAppDelegate.avatarDic.get("imagePath_runner");
+			            Bitmap image = CNAppDelegate.avatarDic.get(imagePath_runner);
 			            if(image != null){//缓存中有
 			                image_run_user.setImageBitmap(image);
 			            }else{//下载

@@ -28,10 +28,10 @@ public class CNAppDelegate {
 	//测试比赛用
 	public static final boolean istest = true;
 	public static int matchtestdatalength;
-	public static int testIndex= 0;
+	public static int testIndex= 0; 
 	
 	public static final String kTrackName = "LunYang";//使用赛道
-	public static final String kStartTime = "2014-10-14 10:00:00";//比赛开始时间
+	public static final String kStartTime = "2014-10-14 14:57:00";//比赛开始时间
 	public static final int kDuringMinute = 60*24;//比赛持续时间
 
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
