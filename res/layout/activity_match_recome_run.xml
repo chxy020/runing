@@ -69,44 +69,45 @@
         android:layout_above="@+id/match_recome_bottom"
         android:layout_below="@id/match_recome_top"
         android:background="@color/black" >
-<RelativeLayout
-        android:id="@+id/match_recome_time"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/main_num_height"
-        android:layout_above="@+id/match_recome_recoding_mileage_text">
-    <ImageView
-            android:id="@+id/match_recome_recoding_dis1"
-            android:layout_toLeftOf="@+id/match_recome_recoding_dis2"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-             />
-    <ImageView
-            android:id="@+id/match_recome_recoding_dis2"
-            android:layout_toLeftOf="@+id/match_recome_recoding_dis_d"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_dis_d"
-            android:layout_width="@dimen/match_dot_width"
-            android:layout_centerHorizontal="true"
-            android:layout_height="match_parent"
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_dis3"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/match_recome_recoding_dis_d"
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_dis4"
-            android:layout_width="@dimen/main_num_width"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/match_recome_recoding_dis3"
-             />
-</RelativeLayout>
-         
+
+        
+        <!--<RelativeLayout
+            android:id="@+id/match_recome_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_num_height"
+            android:layout_above="@+id/match_recome_recoding_mileage_text" >
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_dis1"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/match_recome_recoding_dis2"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_dis2"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/match_recome_recoding_dis_d" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_dis_d"
+                android:layout_width="@dimen/match_dot_width"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_dis3"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_dis_d" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_dis4"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_dis3" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/match_recome_recoding_mileage_text"
@@ -116,7 +117,101 @@
             android:gravity="center"
             android:text="距离（公里）"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size2" />
+            android:textSize="@dimen/font_size2" />-->
+        
+
+        <RelativeLayout
+            android:id="@+id/match_recome_mileage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/line_under_recoding_mileage"
+             >
+
+            <RelativeLayout
+                android:id="@+id/match_recome_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_num_height"
+                android:layout_above="@+id/match_recome_recoding_mileage_text"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal" >
+
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis1"
+                    android:layout_width="@dimen/main_num_width"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/match_recome_recoding_dis2"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis2"
+                    android:layout_width="@dimen/main_num_width"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/match_recome_recoding_dis_d" />
+
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis_d"
+                    android:layout_width="@dimen/match_dot_width"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
+
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis3"
+                    android:layout_width="@dimen/main_num_width"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/match_recome_recoding_dis_d" />
+
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis4"
+                    android:layout_width="@dimen/main_num_width"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/match_recome_recoding_dis3" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/match_recome_recoding_mileage_text"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:text="距离（公里）"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size2" />
+        </RelativeLayout>
+        
+               <!--偏离赛道  -->
+         <RelativeLayout
+            android:id="@+id/match_recome_off_track"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/line_under_recoding_mileage"
+            android:visibility="gone"
+            >
+            <TextView 
+                android:id="@+id/match_recome_t1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:text="您偏离了赛道！"
+                android:textColor="#CC0000"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin1"
+                android:layout_above="@+id/match_recome_t2"
+                android:textSize="@dimen/font_size4"
+                />
+            <TextView 
+                android:id="@+id/match_recome_t2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:text="请尽快返回赛道，否则可能会导致整个跑队赛程的结束。"
+                android:textColor="#CC0000"
+                android:gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/margin1"
+                android:layout_marginRight="@dimen/margin1"
+                android:layout_marginBottom="@dimen/margin6"
+                />
+             </RelativeLayout>
 
         <View
             android:id="@+id/line_under_recoding_mileage"
@@ -125,77 +220,69 @@
             android:layout_above="@+id/line_vertical"
             android:background="@color/white" >
         </View>
-<RelativeLayout 
-     android:id="@+id/match_recome_recoding_time"
+
+        <RelativeLayout
+            android:id="@+id/match_recome_recoding_time"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
             android:layout_above="@+id/match_recome_recoding_time_text"
-    		android:layout_marginLeft="@dimen/margin6"
-    		android:layout_marginTop="@dimen/margin9"
-    		android:layout_marginBottom="@dimen/margin9"
-    >
-       <ImageView
-            android:id="@+id/match_recome_recoding_time_h1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-            
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_time_h2"
-            android:layout_toRightOf="@id/match_recome_recoding_time_h1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_time_d1"
-            android:layout_toRightOf="@id/match_recome_recoding_time_h2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_time_m1"
-            android:layout_toRightOf="@id/match_recome_recoding_time_d1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_time_m2"
-            android:layout_toRightOf="@id/match_recome_recoding_time_m1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-          <ImageView
-            android:id="@+id/match_recome_recoding_time_d2"
-            android:layout_toRightOf="@id/match_recome_recoding_time_m2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_time_s1"
-              android:layout_toRightOf="@id/match_recome_recoding_time_d2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_time_s2"
-                    android:layout_toRightOf="@id/match_recome_recoding_time_s1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-    
-</RelativeLayout>
-     
+            android:layout_marginBottom="@dimen/margin9"
+            android:layout_marginLeft="@dimen/margin6"
+            android:layout_marginTop="@dimen/margin9" >
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_h1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_h2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_h1" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_d1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_h2" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_m1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_d1" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_m2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_m1" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_d2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_m2" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_s1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_d2" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_time_s2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_time_s1" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/match_recome_recoding_time_text"
             android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/small_height"
-             android:layout_above="@+id/line_under_recoding_speed_text"
+            android:layout_above="@+id/line_under_recoding_speed_text"
             android:gravity="center"
             android:text="时间"
             android:textColor="@color/white" />
@@ -208,58 +295,52 @@
             android:layout_centerHorizontal="true"
             android:background="@color/white" >
         </View>
-        
-<RelativeLayout 
-     android:id="@+id/match_recome_recoding_speed"
-             android:layout_width="@dimen/width_half"
+
+        <RelativeLayout
+            android:id="@+id/match_recome_recoding_speed"
+            android:layout_width="@dimen/width_half"
             android:layout_height="@dimen/font_size4"
             android:layout_above="@id/match_recome_recoding_time_text"
-            android:layout_toRightOf="@id/line_vertical"
-            android:layout_marginTop="@dimen/margin9"
             android:layout_marginBottom="@dimen/margin9"
-    >
-             <ImageView
-            android:id="@+id/match_recome_recoding_speed1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin8"
-            
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_speed2"
-            android:layout_toRightOf="@id/match_recome_recoding_speed1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_speed_d1"
-            android:layout_toRightOf="@id/match_recome_recoding_speed2"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_speed3"
-            android:layout_toRightOf="@id/match_recome_recoding_speed_d1"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-        <ImageView
-            android:id="@+id/match_recome_recoding_speed4"
-            android:layout_toRightOf="@id/match_recome_recoding_speed3"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-              
-             />
-          <ImageView
-            android:id="@+id/match_recome_recoding_speed_d2"
-            android:layout_toRightOf="@id/match_recome_recoding_speed4"
-            android:layout_width="@dimen/match_tnum_width"
-            android:layout_height="match_parent"
-             />
-</RelativeLayout>
-     
+            android:layout_marginTop="@dimen/margin9"
+            android:layout_toRightOf="@id/line_vertical" >
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_speed1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin8" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_speed2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_speed1" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_speed_d1"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_speed2" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_speed3"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_speed_d1" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_speed4"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_speed3" />
+
+            <ImageView
+                android:id="@+id/match_recome_recoding_speed_d2"
+                android:layout_width="@dimen/match_tnum_width"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/match_recome_recoding_speed4" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/match_recome_recoding_speed_text"
@@ -273,22 +354,12 @@
 
         <View
             android:id="@+id/line_under_recoding_speed_text"
-              android:layout_above="@+id/match_recome_next_area"
             android:layout_width="fill_parent"
             android:layout_height="1px"
+            android:layout_above="@+id/match_recome_next_area"
             android:background="@color/white" >
         </View>
 
-        <!-- <ProgressBar
-            android:id="@+id/recoding_process"
-            android:layout_above="@+id/match_next_area"
-            style="@style/ProgressBar_sport"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginLeft="@dimen/margin5"
-            android:layout_marginRight="@dimen/margin5"
-            android:layout_marginTop="@dimen/margin6"
-            android:visibility="visible" /> -->
 
         <TextView
             android:id="@+id/match_recome_next_area"
@@ -297,15 +368,15 @@
             android:layout_above="@+id/line_under_match_recome_next_area"
             android:gravity="center"
             android:text="距离下一交接区还有：--公里"
-            android:textColor="@color/white" 
-            android:textSize="@dimen/font_size2"/>
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size2" />
 
         <View
             android:id="@+id/line_under_match_recome_next_area"
             android:layout_width="fill_parent"
             android:layout_height="1px"
-            android:background="@color/white" 
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="@color/white" >
         </View>
     </RelativeLayout>
 

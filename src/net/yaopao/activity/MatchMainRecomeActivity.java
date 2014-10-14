@@ -30,6 +30,7 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -66,6 +67,9 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	private ImageView colon2V;
 	private ImageView minV;
 	private ImageView secV;
+	
+	private RelativeLayout view_distance;
+	private RelativeLayout view_offtrack;
 	
 	private LonLatEncryption lonLatEncryption;
 	double nextDis;
@@ -370,6 +374,8 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		teamNameV = (TextView) findViewById(R.id.match_recome_team_name);
 		nextArea = (TextView) findViewById(R.id.match_recome_next_area);
 		
+		view_distance=(RelativeLayout)findViewById(R.id.match_recome_mileage);
+		view_offtrack=(RelativeLayout)findViewById(R.id.match_recome_off_track);
 		
 		mapV.setOnTouchListener(this);
 		teamV.setOnTouchListener(this);
