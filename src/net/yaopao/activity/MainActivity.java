@@ -280,9 +280,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	public void onPause() {
-		if(!startDialogShowing){
-			super.onPause();
-		}
+		super.onPause();
 		MobclickAgent.onPause(this);
 		Log.v("zc","main.onpause");
 	}
