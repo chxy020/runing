@@ -517,6 +517,8 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		}
 	}
 	void finishMatch(){
+		super.activityOnFront=this.getClass().getSimpleName();
+		Variables.activityOnFront=this.getClass().getSimpleName();
 		CNAppDelegate.saveMatchToRecord();
 		CNAppDelegate.cancelMatchTimer();
 	    CNAppDelegate.match_deleteHistoryPlist();
@@ -567,6 +569,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 				.setMessage("确认提前结束比赛？").setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
+						
 						finishMatch();
 					}
 				})

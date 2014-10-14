@@ -89,9 +89,9 @@ public class BaseActivity extends Activity {
 	        @Override  
 	        public void onReceive(Context context, Intent intent) {  
 	        	unregisterReceiver(this);
-	        		Log.v("jump", "jump activityOnFront ="+activityOnFront);
+	        		Log.v("jump", "jump activityOnFront ="+BaseActivity.this.activityOnFront);
 	        		//if (isJump) {
-	        		if (activityOnFront.equals(Variables.activityOnFront)) {
+	        		if (BaseActivity.this.activityOnFront.equals(Variables.activityOnFront)) {
 	        			//测试代码
 //	        			try {
 //							Thread.sleep(3000);
