@@ -72,6 +72,8 @@
 <RelativeLayout
         android:id="@+id/match_time"
         android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
         android:layout_height="@dimen/main_num_height"
         android:layout_above="@+id/match_recoding_mileage_text">
     <ImageView

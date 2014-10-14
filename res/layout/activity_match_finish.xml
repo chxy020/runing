@@ -74,7 +74,9 @@
 
         <RelativeLayout
             android:id="@+id/match_time"
-            android:layout_width="match_parent"
+           android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
             android:layout_height="@dimen/main_num_height"
             android:layout_above="@+id/match_finish_mileage_text" >
 
@@ -83,6 +85,7 @@
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/match_finish_dis2"
+                android:visibility="gone"
                 />
 
             <ImageView
