@@ -79,7 +79,7 @@
             android:layout_toLeftOf="@+id/match_recoding_dis2"
             android:layout_width="@dimen/main_num_width"
             android:layout_height="match_parent"
-              
+            android:visibility="gone"
              />
     <ImageView
             android:id="@+id/match_recoding_dis2"

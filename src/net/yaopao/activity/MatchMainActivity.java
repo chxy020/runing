@@ -642,6 +642,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
 		}
+		
 		YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1V,d2V,d3V,d4V});
 	}
 	// 初始化平均配速

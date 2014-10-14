@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.yaopao.assist.CNAppDelegate;
+import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
@@ -87,7 +89,7 @@ public class SportListOneActivity extends BaseActivity {
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
 	private SimpleDateFormat sdf4;
-	//private DecimalFormat df;
+	// private DecimalFormat df;
 	String title = "";
 	int recordId = 0;
 
@@ -107,10 +109,10 @@ public class SportListOneActivity extends BaseActivity {
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
 		sdf4 = new SimpleDateFormat("yyyy");
-		
-//		df = (DecimalFormat) NumberFormat.getInstance();
-//		df.setMaximumFractionDigits(2);
-//		df.setRoundingMode(RoundingMode.DOWN);
+
+		// df = (DecimalFormat) NumberFormat.getInstance();
+		// df.setMaximumFractionDigits(2);
+		// df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
 
 	}
@@ -121,16 +123,17 @@ public class SportListOneActivity extends BaseActivity {
 		this.mListViews = new ArrayList<View>();
 		this.mInflater = this.getLayoutInflater();
 		mapLayout = mInflater.inflate(R.layout.sport_one_slider_map, null);
-		
-		if (oneSport.getSportpho()==1) {
+
+		if (oneSport.getSportpho() == 1) {
 			phoLayout = mInflater.inflate(R.layout.sport_one_slider_pho, null);
 			ImageView phoV = (ImageView) phoLayout.findViewById(R.id.one_pho_v);
 			phoV.setScaleType(ScaleType.CENTER_CROP);
-			phoV.setImageBitmap(getImg(Constants.sportPho +oneSport.getSportPhoPath()));
+			phoV.setImageBitmap(getImg(Constants.sportPho
+					+ oneSport.getSportPhoPath()));
 		}
-		
+
 		this.mListViews.add(mapLayout);
-		if (phoLayout!=null) {
+		if (phoLayout != null) {
 			this.mListViews.add(phoLayout);
 		}
 		this.mMessageAdapter = new MessagePagerAdapter(mListViews);
@@ -148,34 +151,35 @@ public class SportListOneActivity extends BaseActivity {
 		shareV = (TextView) findViewById(R.id.recording_one_share);
 		dateV = (TextView) findViewById(R.id.one_date);
 		desV = (TextView) findViewById(R.id.one_desc);
-		//disV = (TextView) findViewById(R.id.one_dis);
+		// disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
 		mindV = (ImageView) findViewById(R.id.one_mind);
 		wayV = (ImageView) findViewById(R.id.one_way);
 		backV = (TextView) findViewById(R.id.recording_one_back);
-		
-		 d1V = (ImageView) findViewById(R.id.list_sport_num1);
-		 d2V = (ImageView) findViewById(R.id.list_sport_num2);
-		 d3V = (ImageView) findViewById(R.id.list_sport_dec1);
-		 d4V = (ImageView) findViewById(R.id.list_sport_dec2);
-		 initinitSymbol();
-//		backV.setOnTouchListener(this);
+
+		d1V = (ImageView) findViewById(R.id.list_sport_num1);
+		d2V = (ImageView) findViewById(R.id.list_sport_num2);
+		d3V = (ImageView) findViewById(R.id.list_sport_dec1);
+		d4V = (ImageView) findViewById(R.id.list_sport_dec2);
+		initinitSymbol();
+		// backV.setOnTouchListener(this);
 		backV.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				 SportListOneActivity.this.finish();
-				
+				SportListOneActivity.this.finish();
+
 			}
 		});
-		
+
 		shareV.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				Intent myIntent = new Intent();
-				//分享页面
-				myIntent = new Intent(SportListOneActivity.this,SportShareActivity.class);
+				// 分享页面
+				myIntent = new Intent(SportListOneActivity.this,
+						SportShareActivity.class);
 				myIntent.putExtra("id", recordId + "");
 				startActivity(myIntent);
 			}
@@ -185,22 +189,9 @@ public class SportListOneActivity extends BaseActivity {
 
 	@SuppressLint("NewApi")
 	private void initMap() {
-
-		lonLatEncryption = new LonLatEncryption();
-//		Intent intent = getIntent();
-//		recordId = Integer.parseInt(intent.getStringExtra("id"));
-//		oneSport = YaoPao01App.db.queryForOne(recordId);
-		initSportData(oneSport.getDistance(), oneSport.getRunty(),
-				oneSport.getMind(), oneSport.getRunway(),
-				oneSport.getRemarks(), oneSport.getUtime(),
-				oneSport.getPspeed(), oneSport.getPoints(),
-				oneSport.getAddtime());
-		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
-				GpsPoint.class);
 		if (aMap == null) {
 			aMap = mapView.getMap();
 		}
-
 		aMap.getUiSettings().setZoomControlsEnabled(false);
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		aMap.getUiSettings().setScrollGesturesEnabled(false);
@@ -215,38 +206,121 @@ public class SportListOneActivity extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-		if (pointsArray.size()==0) {
+
+		lonLatEncryption = new LonLatEncryption();
+		// Intent intent = getIntent();
+		// recordId = Integer.parseInt(intent.getStringExtra("id"));
+		// oneSport = YaoPao01App.db.queryForOne(recordId);
+		initSportData(oneSport.getDistance(), oneSport.getRunty(),
+				oneSport.getMind(), oneSport.getRunway(),
+				oneSport.getRemarks(), oneSport.getUtime(),
+				oneSport.getPspeed(), oneSport.getPoints(),
+				oneSport.getAddtime());
+		
+		if (oneSport.sportty == 1) {
+			Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
+			String[] str = ((String)oneSport.getRuntra()).split(",");
+			drawRunTrack(str);
+
+		} else {
+			List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(), GpsPoint.class);
+			drawConmmenTrack(pointsArray);
+		}
+		
+
+		
+	}
+
+	// 画比赛运动记录的轨迹
+	void drawRunTrack(String[] match_pointList) {
+		// 把CNAppDelegate.match_pointList画到地图上，如果遇到0,0则分段
+		Log.v("wysport", "match_pointList =" + match_pointList);
+		int j = 0;
+		int i = 0;
+		int n = 0;
+		
+		double min_lon = 0;
+	    double min_lat = 0;
+	    double max_lon = 0;
+	    double max_lat = 0;
+		
+		// int pointCount = CNAppDelegate.match_pointList.size();
+		int pointCount = match_pointList.length;
+		if (pointCount < 2) {
 			return;
 		}
-		//从增量还原成全量
-				GpsPoint befor = null;
-				GpsPoint curr = null;
-				//YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
-				for (int i = 0; i < pointsArray.size(); i++) {
-					if (i==0) {
-						befor=pointsArray.get(0);
-						continue;
+//		double gpsLat = 0;
+//		double gpsLon = 0;
+		for (i = 0; i < pointCount; i++) {
+			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
+			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
+			if (gpsLon < 0.01 || i == pointCount - 1) {
+				List<LatLng> points = new ArrayList<LatLng>();
+				for (j = 0; j < i - n; j++) {
+					if (gpsLon < min_lon) {
+						min_lon = gpsLon;
 					}
-					befor =pointsArray.get(i-1);
-					curr = pointsArray.get(i);
-					curr.setLat(curr.lat+befor.lat);
-					curr.setLon(curr.lon+befor.lon);
-					curr.setTime(curr.time+befor.time);
-					pointsArray.set(i, curr);
+					if (gpsLat < min_lat) {
+						min_lat = gpsLat;
+					}
+					if (gpsLon > max_lon) {
+						max_lon = gpsLon;
+					}
+					if (gpsLat > max_lat) {
+						max_lat = gpsLat;
+					}
+					points.add(new LatLng(gpsLat,gpsLon));
 				}
-		//YaoPao01App.lts.writeFileToSD("track 全量数组: " +pointsArray, "uploadLocation");
+				Log.v("wysport", "points =" + points);
+
+				aMap.addPolyline((new PolylineOptions()).addAll(points)
+						.color(Color.GREEN).width(13f));
+				n = i + 1;// n为下一个起点
+			}
+		}
+		LatLng latlon1 = new LatLng(min_lat, min_lon);
+		LatLng latlon2 = new LatLng(max_lat, max_lon);
+		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+	}
+
+	// 画普通运动记录的轨迹
+	@SuppressLint("NewApi")
+	void drawConmmenTrack(List<GpsPoint> pointsArray) {
+		if (pointsArray.size() == 0) {
+			return;
+		}
+		// 从增量还原成全量
+		GpsPoint befor = null;
+		GpsPoint curr = null;
+		// YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray,
+		// "uploadLocation");
+		for (int i = 0; i < pointsArray.size(); i++) {
+			if (i == 0) {
+				befor = pointsArray.get(0);
+				continue;
+			}
+			befor = pointsArray.get(i - 1);
+			curr = pointsArray.get(i);
+			curr.setLat(curr.lat + befor.lat);
+			curr.setLon(curr.lon + befor.lon);
+			curr.setTime(curr.time + befor.time);
+			pointsArray.set(i, curr);
+		}
+		// YaoPao01App.lts.writeFileToSD("track 全量数组: " +pointsArray,
+		// "uploadLocation");
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(6);
 		df.setRoundingMode(RoundingMode.DOWN);
-		
+
 		String gpsStr = df.format(pointsArray.get(0).lon) + " "
 				+ df.format(pointsArray.get(0).lat);
 		for (int i = 1; i < pointsArray.size(); i++) {
 			gpsStr += "," + df.format(pointsArray.get(i).lon) + " "
 					+ df.format(pointsArray.get(i).lat);
 		}
-		
-		YaoPao01App.lts.writeFileToSD("运动记录: " +gpsStr, "gps");
+
+		YaoPao01App.lts.writeFileToSD("运动记录: " + gpsStr, "gps");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
@@ -259,18 +333,16 @@ public class SportListOneActivity extends BaseActivity {
 				.icon(BitmapDescriptorFactory
 						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
 		drawLine(pointsArray);
-		
-		
-
 	}
+
 	private void drawLine(List<GpsPoint> pointsArray) {
 		GpsPoint firstPoint = lonLatEncryption.encrypt(pointsArray.get(0));
 		double min_lat = firstPoint.lat;
 		double max_lat = firstPoint.lat;
 		double min_lon = firstPoint.lon;
 		double max_lon = firstPoint.lon;
-		List<LatLng> runPoints =new ArrayList<LatLng>();
-		GpsPoint crrPoint =null;
+		List<LatLng> runPoints = new ArrayList<LatLng>();
+		GpsPoint crrPoint = null;
 		// 先绘制黑色底线和灰色线
 		aMap.addPolyline((new PolylineOptions())
 				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
@@ -278,7 +350,7 @@ public class SportListOneActivity extends BaseActivity {
 				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
-			GpsPoint  encryptPoint = lonLatEncryption.encrypt(crrPoint);
+			GpsPoint encryptPoint = lonLatEncryption.encrypt(crrPoint);
 			if (encryptPoint.lon < min_lon) {
 				min_lon = encryptPoint.lon;
 			}
@@ -291,27 +363,33 @@ public class SportListOneActivity extends BaseActivity {
 			if (encryptPoint.lat > max_lat) {
 				max_lat = encryptPoint.lat;
 			}
-			if (crrPoint.status==0) {
-				LatLng latlon = new LatLng( lonLatEncryption.encrypt(crrPoint).lat, lonLatEncryption.encrypt(crrPoint).lon);
+			if (crrPoint.status == 0) {
+				LatLng latlon = new LatLng(
+						lonLatEncryption.encrypt(crrPoint).lat,
+						lonLatEncryption.encrypt(crrPoint).lon);
 				runPoints.add(latlon);
-			}else if(crrPoint.status==1){
-				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+			} else if (crrPoint.status == 1) {
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
+						.color(Color.GREEN).width(8f));
 				runPoints = new ArrayList<LatLng>();
-			}if (i==(pointsArray.size()-1)) {
-				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(8f));
+			}
+			if (i == (pointsArray.size() - 1)) {
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
+						.color(Color.GREEN).width(8f));
 			}
 			// 移动到中心
 			LatLng latlon1 = new LatLng(min_lat, min_lon);
 			LatLng latlon2 = new LatLng(max_lat, max_lon);
 			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
 			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
-			}
 		}
+	}
+
 	private void initSportData(double distance, int runty, int mind,
 			int runway, String remarks, int utime, int pspeed, int ponit,
 			long addtime) {
 
-		int[] time = YaoPao01App.cal(utime/1000);
+		int[] time = YaoPao01App.cal(utime / 1000);
 		int t1 = time[0] / 10;
 		int t2 = time[0] % 10;
 		int t3 = time[1] / 10;
@@ -320,15 +398,17 @@ public class SportListOneActivity extends BaseActivity {
 		int t6 = time[2] % 10;
 		Log.v("wysport", "utime =" + utime);
 
-	//	timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" + t6);
-			timeV.setText(time[0] + ":" + time[1] + ":" +  time[2]);
-		Log.v("wysport", "time =" + t1 + "" + t2 + ":" + t3 + "" + t4 + ":"	+ t5 + "" + t6);
+		// timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" +
+		// t6);
+		timeV.setText(time[0] + ":" + time[1] + ":" + time[2]);
+		Log.v("wysport", "time =" + t1 + "" + t2 + ":" + t3 + "" + t4 + ":"
+				+ t5 + "" + t6);
 		int[] speed = YaoPao01App.cal(pspeed);
 		int s1 = speed[1] / 10;
 		int s2 = speed[1] % 10;
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
-		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
+		pspeedV.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"");
 		ponitV.setText("+ " + ponit);
 		initDis(distance);
 		desV.setText(remarks);
@@ -339,10 +419,11 @@ public class SportListOneActivity extends BaseActivity {
 		initWay(runway);
 
 		SimpleDateFormat df = new SimpleDateFormat("M月d日");
-		
+
 		titleV.setText(df.format(date) + title);
 
 	}
+
 	private void initDis(double distance) {
 		int d1 = (int) (distance % 100000) / 10000;
 		int d2 = (int) (distance % 10000) / 1000;
@@ -351,16 +432,17 @@ public class SportListOneActivity extends BaseActivity {
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
 			update(d1, d1V);
-			YaoPao01App.graphicTool.updateRedNum(d1,d1V);
+			YaoPao01App.graphicTool.updateRedNum(d1, d1V);
 		}
-		
+
 		update(d2, d2V);
 		update(d3, d3V);
 		update(d4, d4V);
-		YaoPao01App.graphicTool.updateRedNum(new int[]{d2,d3,d4},new ImageView[]{d2V,d3V,d4V});
-		
-		
+		YaoPao01App.graphicTool.updateRedNum(new int[] { d2, d3, d4 },
+				new ImageView[] { d2V, d3V, d4V });
+
 	}
+
 	protected void update(int i, ImageView view) {
 		if (i > 9) {
 			i = i % 10;
@@ -401,7 +483,7 @@ public class SportListOneActivity extends BaseActivity {
 			break;
 		}
 	}
-	
+
 	private void initMind(int mind) {
 		switch (mind) {
 		case 1:
@@ -468,24 +550,24 @@ public class SportListOneActivity extends BaseActivity {
 		}
 	}
 
-//	@Override
-//	public boolean onTouch(View view, MotionEvent event) {
-//		int action = event.getAction();
-//		switch (view.getId()) {
-//		case R.id.recording_one_back:
-//			SportListOneActivity.this.finish();
-//			break;
-//		}
-//		return true;
-//	}
+	// @Override
+	// public boolean onTouch(View view, MotionEvent event) {
+	// int action = event.getAction();
+	// switch (view.getId()) {
+	// case R.id.recording_one_back:
+	// SportListOneActivity.this.finish();
+	// break;
+	// }
+	// return true;
+	// }
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
 		MobclickAgent.onResume(this);
-		super.activityOnFront=this.getClass().getSimpleName();
-		Variables.activityOnFront=this.getClass().getSimpleName();
+		super.activityOnFront = this.getClass().getSimpleName();
+		Variables.activityOnFront = this.getClass().getSimpleName();
 	}
 
 	@Override
@@ -618,7 +700,7 @@ public class SportListOneActivity extends BaseActivity {
 		Bitmap bitmap = view.getDrawingCache();
 		return bitmap;
 	}
-	
+
 	public Bitmap getImg(String path) {
 		Bitmap bitmap = null;
 		FileInputStream fis = null;
@@ -626,11 +708,11 @@ public class SportListOneActivity extends BaseActivity {
 			fis = new FileInputStream(path);
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = 2;
-			//options.inPreferredConfig = Bitmap.Config.RGB_565;
+			// options.inPreferredConfig = Bitmap.Config.RGB_565;
 			options.inPurgeable = true;
 			options.inInputShareable = true;
-			//bitmap = BitmapFactory.decodeStream(fis);
-			bitmap = BitmapFactory.decodeStream(fis,null,options);
+			// bitmap = BitmapFactory.decodeStream(fis);
+			bitmap = BitmapFactory.decodeStream(fis, null, options);
 			fis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -644,10 +726,13 @@ public class SportListOneActivity extends BaseActivity {
 		}
 		return bitmap;
 	}
-	 private void initinitSymbol() {
-		 ImageView dot=(ImageView) this.findViewById(R.id.list_sport_dot);
-		 ImageView km=(ImageView) this.findViewById(R.id.list_sport_km);
-				dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
-				km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+
+	private void initinitSymbol() {
+		ImageView dot = (ImageView) this.findViewById(R.id.list_sport_dot);
+		ImageView km = (ImageView) this.findViewById(R.id.list_sport_km);
+		dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+				.get(R.drawable.r_dot));
+		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
+				.get(R.drawable.r_km));
 	}
 }
