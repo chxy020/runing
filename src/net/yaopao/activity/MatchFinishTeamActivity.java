@@ -148,6 +148,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 				Intent intent = new Intent(MatchFinishTeamActivity.this,
 						MainActivity.class);
 				startActivity(intent);
+				finish();
 				break;
 			}
 			break;
