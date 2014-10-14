@@ -28,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
@@ -462,6 +463,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			    //needwy 将地图中心点移动到lon，lat，level=16 
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
 			    imagePath = runnerDic.getString("imgpath");
+			    //
 			    avatarImage =  BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null);
 			    if(imagePath == null){
 			    	addAnnotation();
@@ -486,7 +488,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		}
 		annotation = aMap.addMarker(new MarkerOptions()
 		.position(new LatLng(lat, lon))
-		.icon(BitmapDescriptorFactory.fromBitmap(avatarImage))
+		.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView(avatarImage))))		
 		.anchor(0.5f, 0.5f));
 		aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(lat, lon)));
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
@@ -602,5 +604,27 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			// Toast.makeText(SportRecordActivity.this, "", duration)
 		}
 		return false;
+	}
+	
+	/**
+	 * 把一个view转化成bitmap对象
+	 * */
+	public static Bitmap getViewBitmap(View view) {
+		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+		view.buildDrawingCache();
+		Bitmap bitmap = view.getDrawingCache();
+		return bitmap;
+	}
+	
+	/**
+	 * * 在view布局文件中中显示文字
+	 * */
+	public View getView(Bitmap avatar) {
+		View view = getLayoutInflater().inflate(R.layout.marker_avatar, null);
+		ImageView avatarInside = (ImageView) view.findViewById(R.id.marker_avatar);
+		avatarInside.setImageBitmap(avatar);
+		return view;
 	}
 }

@@ -105,6 +105,11 @@
     <!-- 气泡 -->
     <dimen name="marker_width">50dp</dimen>
     <dimen name="marker_height">70dp</dimen>
+    
+        <dimen name="marker_avatar_width">50dp</dimen>
+    <dimen name="marker_avatar_height">112dp</dimen>
+      <dimen name="marker_avatar_in_size">48dp</dimen>
+    
     <dimen name="marker_text_height">10dp</dimen>
     <dimen name="marker_margin1">1dp</dimen>
     <dimen name="marker_margin2">2dp</dimen>

@@ -106,6 +106,12 @@
     
     <dimen name="marker_width">45dp</dimen>
     <dimen name="marker_height">65dp</dimen>
+    
+    <dimen name="marker_avatar_width">40dp</dimen>
+    <dimen name="marker_avatar_height">90dp</dimen>
+      <dimen name="marker_avatar_in_size">38dp</dimen>
+    
+    
     <dimen name="marker_text_height">10dp</dimen>
     <dimen name="marker_margin1">1dp</dimen>
     <dimen name="marker_margin2">2dp</dimen>

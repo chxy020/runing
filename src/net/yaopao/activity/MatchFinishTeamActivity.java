@@ -184,6 +184,8 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+		
+		
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
 		}
