@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;  
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -136,8 +137,15 @@ public class BaseActivity extends Activity {
 	        		        	 jump =new Intent(BaseActivity.this,MatchFinishTeamActivity.class);
 	        		        }
 	        		     if (jump!=null) {
-	        		    	 jump.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        		    	 int sysVersion = VERSION.SDK_INT;
+	        		    	 Log.v("zc","sysVersion is "+sysVersion);
+	        		    	 if(sysVersion>=11){
+	        		    		 jump.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	        		    	 }else{
+	        		    		 jump.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        		    	 }
 	        		    	 startActivity(jump);
+	        		    	 finish();
 						}
 					}
 	        		
