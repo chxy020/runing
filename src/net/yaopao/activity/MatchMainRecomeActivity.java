@@ -8,6 +8,9 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.yaopao.activity.MatchMainActivity.TimerTask_one_point;
+import net.yaopao.activity.MatchMainActivity.TimerTask_report;
+import net.yaopao.activity.MatchMainActivity.TimerTask_secondplusplus;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.CNLonLat;
@@ -69,6 +72,10 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	boolean isIn = false;
 	int tryCount = 0;
 	long lastKMTime;
+	
+	TimerTask_one_point task_one_point = null;
+	TimerTask_secondplusplus task_secondplusplus = null;
+	TimerTask_report task_report = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,42 +118,46 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		CNAppDelegate.match_km_target_personal = dic.getIntValue("match_km_target_personal");
 		CNAppDelegate.match_km_start_time = dic.getIntValue("match_km_start_time");
 	}
+	class TimerTask_one_point extends TimerTask{
+		@Override
+		public void run() {
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					pushOnePoint();
+					
+				}
+			});
+		}
+	}
+	class TimerTask_secondplusplus extends TimerTask{
+		@Override
+		public void run() {
+
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					displayTime();
+					
+				}
+			});
+		}
+	}
+	class TimerTask_report extends TimerTask{
+		@Override
+		public void run() {
+			matchReport();
+		}
+	}
 	void startTimer(){
 		//先存一下，这个和ios不一样
 		CNAppDelegate.match_save2plist();
-	    TimerTask task_one_point = new TimerTask() {
-			@Override
-			public void run() {
-				runOnUiThread(new Runnable() { // UI thread
-					@Override
-					public void run() {
-						pushOnePoint();
-						
-					}
-				});
-			}
-		};
+		
+		task_one_point = new TimerTask_one_point();
 		CNAppDelegate.timer_one_point.schedule(task_one_point, CNAppDelegate.kMatchInterval*1000, CNAppDelegate.kMatchInterval*1000);
-		TimerTask task_secondplusplus = new TimerTask() {
-			@Override
-			public void run() {
-
-				runOnUiThread(new Runnable() { // UI thread
-					@Override
-					public void run() {
-						displayTime();
-						
-					}
-				});
-			}
-		};
+		task_secondplusplus = new TimerTask_secondplusplus();
 		CNAppDelegate.timer_secondplusplus.schedule(task_secondplusplus, 1000, 1000);
-		TimerTask task_report = new TimerTask() {
-			@Override
-			public void run() {
-				matchReport();
-			}
-		};
+		task_report = new TimerTask_report();
 		CNAppDelegate.match_timer_report.schedule(task_report, CNAppDelegate.kMatchReportInterval*1000, CNAppDelegate.kMatchReportInterval*1000); 
 	}
 	CNGPSPoint4Match getOnePoint() {

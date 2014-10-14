@@ -63,6 +63,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LoadingDialog loadingDialog;
 	private SyncTimeLoadingDialog syncTimeloadingDialog;
 	private DialogTool dialogTool ;
+	
+	private boolean startDialogShowing = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -278,13 +280,11 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	public void onPause() {
-		super.onPause();
-		MobclickAgent.onPause(this);
-		if (dialogTool!=null) {
-			if (dialogTool.dialog!=null) {
-				dialogTool.dialog.dismiss();
-			}
+		if(!startDialogShowing){
+			super.onPause();
 		}
+		MobclickAgent.onPause(this);
+		Log.v("zc","main.onpause");
 	}
 
 	private void initLayout() {
@@ -667,5 +667,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	//不在出发区弹框
 	private void alertNotInTakeOver(){
 		dialogTool.alertNotIntakeOver();
+		startDialogShowing = true;
 	}
 }

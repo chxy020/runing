@@ -70,6 +70,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	boolean isStart = false;
 	int tryCount = 0;
 	long lastKMTime;
+	TimerTask_one_point task_one_point = null;
+	TimerTask_secondplusplus task_secondplusplus = null;
+	TimerTask_report task_report = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +163,37 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		}
 		
 	}
+	class TimerTask_one_point extends TimerTask{
+		@Override
+		public void run() {
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					pushOnePoint();
+					
+				}
+			});
+		}
+	}
+	class TimerTask_secondplusplus extends TimerTask{
+		@Override
+		public void run() {
+
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					displayTime();
+					
+				}
+			});
+		}
+	}
+	class TimerTask_report extends TimerTask{
+		@Override
+		public void run() {
+			matchReport();
+		}
+	}
 	void startTimer(){
 		//正常进入数组必为空，先往数组里放一个点
 	    CNGPSPoint4Match gpsPoint = getOnePoint();
@@ -176,35 +210,13 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	    }
 	    CNAppDelegate.match_save2plist();
 	    
-	    TimerTask task_one_point = new TimerTask() {
-			@Override
-			public void run() {
-				runOnUiThread(new Runnable() { // UI thread
-					@Override
-					public void run() {
-						pushOnePoint();
-						
-					}
-				});
-			}
-			
-		};
+	    task_one_point = new TimerTask_one_point();
 		CNAppDelegate.timer_one_point.schedule(task_one_point, CNAppDelegate.kMatchInterval*1000, CNAppDelegate.kMatchInterval*1000);
-		TimerTask task_secondplusplus = new TimerTask() {
-			@Override
-			public void run() {
-
-				runOnUiThread(new Runnable() { // UI thread
-					@Override
-					public void run() {
-						displayTime();
-						
-					}
-				});
-			}
-		};
+		
+		task_secondplusplus = new TimerTask_secondplusplus();
 		CNAppDelegate.timer_secondplusplus.schedule(task_secondplusplus, 1000, 1000);
 	    int delay = new Random().nextInt(10) + 1;
+	    Log.v("zc","delay is "+delay);
 	    new Handler().postDelayed(new Runnable(){  
 	        public void run() {  
 	        	//execute the task
@@ -213,12 +225,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	     }, delay*1000);  
 	}
 	void startReportGPS(){
-		TimerTask task_report = new TimerTask() {
-			@Override
-			public void run() {
-				matchReport();
-			}
-		};
+		task_report = new TimerTask_report();
 		CNAppDelegate.match_timer_report.schedule(task_report, CNAppDelegate.kMatchReportInterval*1000, CNAppDelegate.kMatchReportInterval*1000);
 	}
 	void pushOnePoint(){

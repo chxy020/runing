@@ -67,13 +67,26 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 	class TimerTask_request_personal extends TimerTask{
 		@Override
 		public void run() {
-			requestPersonal();
+			
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					requestPersonal();
+					
+				}
+			});
 		}
 	}
 	class TimerTask_request_km extends TimerTask{
 		@Override
 		public void run() {
-			requestKm();
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					requestKm();
+					
+				}
+			});
 		}
 	}
 	@Override
@@ -93,9 +106,11 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		initTotalMileage(0);
 	}
 	void requestPersonal(){
+		displayLoading();
 		new RequestPersonal().execute("");
 	}
 	void requestKm(){
+		displayLoading();
 		new RequestKM().execute("");
 	}
 	void clearScrollview(){
@@ -429,6 +444,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				                	requestTask.index = imageviewList.size();
 				                	requestTask.avatarUrl = avatarUrl;
 				                	requestTask.execute("");
+				                	displayLoading();
 			                    }
 			                }
 			                urlList.add(avatarUrl);
@@ -452,6 +468,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				                	requestTask.index = imageviewList.size();
 				                	requestTask.avatarUrl = avatarUrl;
 				                	requestTask.execute("");
+				                	displayLoading();
 			                    }
 			                }
 			                urlList.add(avatarUrl);
@@ -494,6 +511,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		}
 		@Override
 		protected void onPostExecute(Boolean result) {
+			hideLoading();
 			if(result){
 				imageviewList.get(index).setImageBitmap(image);
 			}

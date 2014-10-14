@@ -95,6 +95,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 	     }, 10*1000); 
 	}
 	void requestPersonal(){
+		displayLoading();
 		new RequestPersonal().execute("");
 	}
 	private void init() {
@@ -450,6 +451,7 @@ void hideLoading(){
 			                	requestTask.index = i;
 			                	requestTask.avatarUrl = avatarUrl;
 			                	requestTask.execute("");
+			                	displayLoading();
 			                }
 			            }
 			            urlList.add(avatarUrl);
@@ -497,6 +499,7 @@ void hideLoading(){
 		}
 		@Override
 		protected void onPostExecute(Boolean result) {
+			hideLoading();
 			if(result){
 				imageviewList.get(index).setImageBitmap(image);
 			}

@@ -3,6 +3,8 @@ package net.yaopao.activity;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,6 +16,7 @@ import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +34,13 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.PolygonOptions;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -69,7 +77,13 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	class TimerTask_reqeust extends TimerTask{
 		@Override
 		public void run() {
-			requestData();
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					requestData();
+					
+				}
+			});
 		}
 	}
 	private void init() {
@@ -80,10 +94,55 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		setUpMap();
 	}
 	void drawTrack(){
-		
+		double min_lon = 0;
+	    double min_lat = 0;
+	    double max_lon = 0;
+	    double max_lat = 0;
+	    String[] tracklist = CNAppDelegate.match_stringTrackZone.split(":");
+	    for(int i=0;i<tracklist.length;i++){
+	    	String[] oneTrackStrlist = tracklist[i].split(", ");
+			List<LatLng> points = new ArrayList<LatLng>();
+			for(int j=0;j<oneTrackStrlist.length;j++){
+				String[] lonlat = oneTrackStrlist[j].split(" ");
+				double lon = Double.parseDouble(lonlat[0]);
+				double lat = Double.parseDouble(lonlat[1]);
+				if(i == 0 && j == 0){
+					max_lon = min_lon = lon;
+	                max_lat = min_lat = lat;
+				}
+				if(lon < min_lon){
+	                min_lon = lon;
+	            }
+	            if(lat < min_lat){
+	                min_lat = lat;
+	            }
+	            if(lon > max_lon){
+	                max_lon = lon;
+	            }
+	            if(lat > max_lat){
+	                max_lat = lat;
+	            }
+				points.add(new LatLng(lat, lon));
+			}
+			aMap.addPolygon(new PolygonOptions()
+			    .addAll(points)
+			    .fillColor(Color.argb(50, 0, 0, 1)).strokeColor(Color.TRANSPARENT).strokeWidth(0));
+	    }
+	    LatLng latlon1 = new LatLng(min_lat, min_lon);
+		LatLng latlon2 = new LatLng(max_lat, max_lon);
+		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
+		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 	}
 	void drawTakeOverZone(){
-		
+		String[] tracklist = CNAppDelegate.match_takeover_zone.split(", ");
+		List<LatLng> points = new ArrayList<LatLng>();
+		for(int i=0;i<tracklist.length;i++){
+			String[] lonlat = tracklist[i].split(" ");
+			points.add(new LatLng(Double.parseDouble(lonlat[1]), Double.parseDouble(lonlat[0])));
+		}
+		aMap.addPolygon(new PolygonOptions()
+		    .addAll(points)
+		    .fillColor(Color.argb(130, 255, 0, 0)).strokeColor(Color.TRANSPARENT).strokeWidth(0));
 	}
 	void requestData(){
 		displayLoading();
@@ -234,13 +293,17 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		}
 	}
 	void addAnnotation(){
-//		[self.mapView removeAnnotation:self.annotation];
-//	    self.annotation = [[MAPointAnnotation alloc] init];
-//	    self.annotation.coordinate = CLLocationCoordinate2DMake(self.lat, self.lon);
-//	    [self.mapView addAnnotation:self.annotation];needwy
+		if(annotation != null){
+			annotation.remove();
+		}
+		annotation = aMap.addMarker(new MarkerOptions()
+		.position(new LatLng(lat, lon))
+		.icon(BitmapDescriptorFactory.fromBitmap(avatarImage))
+		.anchor(0.5f, 0.5f));
 	}
 	
 	void downloadImage(){
+		displayLoading();
 		new RequestImageTask().execute("");
 	}
 	private class RequestImageTask extends AsyncTask<String, Void, Boolean> {
@@ -270,6 +333,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		}
 		@Override
 		protected void onPostExecute(Boolean result) {
+			hideLoading();
 			addAnnotation();
 		}
 	}
