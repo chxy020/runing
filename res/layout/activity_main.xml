@@ -48,7 +48,7 @@
             android:layout_marginLeft="@dimen/margin2"
             android:layout_marginRight="@dimen/margin2"
             android:layout_marginTop="@dimen/margin2"
-            android:background="@drawable/avatar_default" />
+            android:src="@drawable/avatar_default" />
 
         <LinearLayout
             android:id="@+id/main_user_info_detail"

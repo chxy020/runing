@@ -55,7 +55,7 @@
 				android:layout_marginTop="10dp"
 				android:layout_marginLeft="10dp"
 				android:layout_marginBottom="10dp"
-				android:background="@drawable/avatar_default" />
+				android:background="@drawable/avatar_default_s" />
 	
 			<TextView
 				android:id="@+id/sportText"

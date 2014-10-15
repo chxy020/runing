@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import u.aly.bt;
+
 import com.alibaba.fastjson.JSON;
 
 import net.yaopao.assist.CNAppDelegate;
@@ -34,6 +36,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -84,7 +88,7 @@ public class YaoPao01App extends Application {
 		Variables.ua = this.getOptVer() + ",a_0.9.1";
 		CNAppDelegate.geosHandler = new TrackData();
 		CNAppDelegate.geosHandler.read(CNAppDelegate.kTrackName+".properties");
-		
+		initDefultAvtar();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 
 		try {
@@ -108,7 +112,12 @@ public class YaoPao01App extends Application {
 		//注册广播  
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
         startJumpTimer();
+        
 	};
+
+	private void initDefultAvtar() {
+		 Variables.avatar_default=BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default_s);
+	}
 
 	private void initGPS() {
 		Log.v("wy", "initGPS");

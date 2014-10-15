@@ -116,6 +116,7 @@ public class Variables {
 	public static double stateIndex;//
 	public static int points;//积分
 	public static Bitmap avatar;//头像
+	public static Bitmap avatar_default;//默认头像
 	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
 	
 	public static int sportty=0;//跑步类型0-日常，1-比赛
