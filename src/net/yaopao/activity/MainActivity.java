@@ -121,8 +121,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		// YaoPao01App.matchOneKmTeam();
 		// YaoPao01App.matchRunningInTakeOver();
 		// YaoPao01App.matchRunningTransmitRelay();
-		 YaoPao01App.matchDeviateTrack();
-		 YaoPao01App.matchReturnTrack();
+//		 YaoPao01App.matchDeviateTrack();
+//		 YaoPao01App.matchReturnTrack();
 //		 YaoPao01App.matchWaitGetRelay();
 	}
 	void prepare4match(){//登陆成功准备比赛

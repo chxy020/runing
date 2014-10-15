@@ -26,19 +26,19 @@ public class CNAppDelegate {
 	//一些常量
 	
 	//测试比赛用
-	public static final boolean istest = false;
+	public static final boolean istest = true;
 	public static int matchtestdatalength;
 	public static int testIndex= 0; 
 	
 	public static final String kTrackName = "LunYang";//使用赛道
 	public static final String kStartTime = "2014-10-15 11:23:00";//比赛开始时间
-	public static final int kDuringMinute = 10;//比赛持续时间
+	public static final int kDuringMinute = 24*60;//比赛持续时间
 
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
 	public static final int kMatchInterval = 2;//两秒取一个点
-	public static final int kBoundary1 = 2;//偏离赛道界限1，10分钟
-	public static final int kBoundary2 = 5;//偏离赛道界限2，60分钟
+	public static final int kBoundary1 = 5;//偏离赛道界限1，10分钟
+	public static final int kBoundary2 = 10;//偏离赛道界限2，60分钟
 	public static final int kScanTransmitinterval = 10;//交接棒扫描间隔
 	public static final int kShortTime = 3000;//和服务器同步时间要小于
 	//一些变量
@@ -195,7 +195,7 @@ public class CNAppDelegate {
 	        	CNAppDelegate.ForceGoMatchPage("matchWatch");
 	        }
 	    }else{//赛后
-	        
+	    	Variables.sportStatus = 1;
 	    }
 	    return 1;
 	}
