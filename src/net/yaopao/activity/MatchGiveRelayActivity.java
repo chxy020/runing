@@ -13,10 +13,10 @@ import java.util.TimerTask;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,7 +34,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -63,7 +62,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	String avatarurl3;
 	Timer timer_look_submit = null;
 	TimerTask_scan task_look_submit = null;
-
+	LoadingDialog loadingdialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -107,6 +106,9 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		relay_wait_header_layout2 = (RelativeLayout) findViewById(R.id.relay_wait_header_layout2);
 		text_button = (RelativeLayout) findViewById(R.id.text_button);
 
+		loadingdialog = new LoadingDialog(this);
+		loadingdialog.setCancelable(false);
+		
 		label_back.setOnTouchListener(this);
 		view_user1.setOnTouchListener(this);
 		view_user2.setOnTouchListener(this);
@@ -225,6 +227,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				loadingdialog.show();
 				new ComfirmTransmitTask().execute("");
 				break;
 			}
@@ -465,6 +468,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 
 		@Override
 		protected void onPostExecute(Boolean result) {
+			loadingdialog.dismiss();
 			if (result) {
 				CNAppDelegate.isbaton = 0;
 				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchGiveRelayActivity.this);
