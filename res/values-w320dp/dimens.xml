@@ -10,6 +10,8 @@
     <dimen name="font_size8">10dp</dimen>
     <dimen name="font_size9">12dp</dimen>
     <dimen name="font_size10">23dp</dimen>
+    <dimen name="font_size_not_in_track1">30dp</dimen>
+    <dimen name="font_size_not_in_track2">20dp</dimen>
     <dimen name="margin1">6dp</dimen>
     <dimen name="margin2">20dp</dimen>
     <dimen name="margin3">40dp</dimen>
@@ -109,7 +111,7 @@
     
     <dimen name="marker_avatar_width">40dp</dimen>
     <dimen name="marker_avatar_height">90dp</dimen>
-      <dimen name="marker_avatar_in_size">38dp</dimen>
+      <dimen name="marker_avatar_in_size">36dp</dimen>
     
     
     <dimen name="marker_text_height">10dp</dimen>

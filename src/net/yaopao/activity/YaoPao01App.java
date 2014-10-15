@@ -41,10 +41,8 @@ import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
@@ -69,6 +67,7 @@ public class YaoPao01App extends Application {
 	public static GraphicTool graphicTool ;
 	
 	public static final String forceJumpAction = "Jump.action";//任意页面跳转到比赛页面的广播
+	public static final String gpsState = "gpsState";//gps状态的广播
 	
 	  //测试代码
 	Timer jumptimTimer = new Timer();
@@ -181,6 +180,8 @@ public class YaoPao01App extends Application {
 						}
 						rank = 4;
 					}
+					
+					
 
 					if (rank > 3) {
 						loc = location;
@@ -188,6 +189,8 @@ public class YaoPao01App extends Application {
 					} else {
 						Variables.gpsStatus = 0;
 					}
+					//发送gps状态广播
+					sendGpsState(rank);
 					
 					checkSomeSituation();
 					// lts.writeFileToSD("rank: " + rank, "uploadLocation");
@@ -208,6 +211,7 @@ public class YaoPao01App extends Application {
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000, 0, locationlisten);
 
 	}
+	
 	void checkSomeSituation(){
 	    //以下必须等待与服务器同步完时间再做
 		if(CNAppDelegate.canStartButNotInStartZone){
@@ -1157,5 +1161,10 @@ public class YaoPao01App extends Application {
 	        	//intent.putExtra("data", target);//这里添加页面初始化参数
 	        }
 	        sendBroadcast(intent);
+	    }
+	    public  void sendGpsState(int state){
+	    	Intent intent = new Intent(gpsState);
+	    	intent.putExtra("state", state);//这里的参数表明跳转到那个页面
+	    	sendBroadcast(intent);
 	    }
 }

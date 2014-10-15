@@ -17,8 +17,11 @@ import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
@@ -70,6 +73,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_give_relay);
 		init();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 	    if(Variables.avatar != null){
 	    	image_me.setImageBitmap(Variables.avatar);
 	    }
@@ -96,6 +100,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		button_user2 = (ImageView) findViewById(R.id.relay_wait_head2);
 		button_user3 = (ImageView) findViewById(R.id.relay_wait_head3);
 		button_user4 = (ImageView) findViewById(R.id.relay_chosen_head);
+		image_gps = (ImageView) findViewById(R.id.relay_wait_gps_status);
 		
 		view_user1 =  (RelativeLayout) findViewById(R.id.relay_wait_head_layout1);
 		view_user2 =  (RelativeLayout) findViewById(R.id.relay_wait_head_layout2);
@@ -619,4 +624,31 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		}
 		return false;
 	}
+	//gps状态接收广播
+    private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			unregisterReceiver(this);
+			int rank = intent.getExtras().getInt("state");
+			switch (rank) {
+			case 1:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			case 2:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+				break;
+			case 3:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+				break;
+			case 4:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+				break;
+
+			default:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			}
+		}
+	};		
 }

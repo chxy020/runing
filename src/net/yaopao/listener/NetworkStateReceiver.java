@@ -46,7 +46,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
 			Variables.network = 0;
 		} else {
 			Log.v("wy", "connect");
-//			Variables.network = 1;
+			Variables.network = 1;
 //			if (Variables.uid != 0) {
 //				new AutoLogin().execute("");
 //			}
