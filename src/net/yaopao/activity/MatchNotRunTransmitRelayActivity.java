@@ -267,6 +267,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		YaoPao01App.matchWaitGetRelay();
 		relayAnim.setVisibility(View.VISIBLE);
 		relay_main.setVisibility(View.GONE);
+		animationDrawable.stop();
 		animationDrawable.start();
 		relayAnim.setVisibility(View.GONE);    
 		relay_main.setVisibility(View.VISIBLE);

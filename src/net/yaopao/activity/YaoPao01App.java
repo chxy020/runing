@@ -206,6 +206,7 @@ public class YaoPao01App extends Application {
 
 				} else {
 					Variables.gpsStatus = 0;
+					sendGpsState(1);
 					if (SportRecordActivity.gpsV != null) {
 						SportRecordActivity.gpsV
 								.setBackgroundResource(R.drawable.gps_1);
@@ -1172,6 +1173,7 @@ public class YaoPao01App extends Application {
 	        sendBroadcast(intent);
 	    }
 	    public  void sendGpsState(int state){
+	    	Log.v("wymatch", "sendGpsState");
 	    	Intent intent = new Intent(gpsState);
 	    	intent.putExtra("state", state);//这里的参数表明跳转到那个页面
 	    	sendBroadcast(intent);
