@@ -148,6 +148,7 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 				Intent intent = new Intent(MatchFinishTeamActivity.this,
 						MainActivity.class);
 				startActivity(intent);
+				finish();
 				break;
 			}
 			break;
@@ -417,6 +418,7 @@ void hideLoading(){
 
 		@Override
 		protected void onPostExecute(Boolean result) {
+			Variables.sportStatus =1;
 			hideLoading();
 			if (result) {
 				JSONObject resultDic = JSON.parseObject(responseJson);

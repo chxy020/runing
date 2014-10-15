@@ -6,15 +6,14 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
@@ -24,11 +23,16 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 
 
@@ -59,10 +63,12 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	String imagePath_runner;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_match_wait_relay);
 		init();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 		label_name.setText(Variables.userinfo.getString("nickname"));
 	    if(Variables.avatar != null){
 	    	image_myavatar.setImageBitmap(Variables.avatar);
@@ -138,7 +144,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchNotRunTransmitRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.transmitRelay,MatchNotRunTransmitRelayActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				Log.v("zc","我要接棒返回 is "+responseJson);
 				JSONArray array = resultDic.getJSONArray("list");
@@ -179,6 +185,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	void startmatch(){
 		Intent intent = new Intent(this,MatchMainActivity.class);
 		startActivity(intent);
+		finish();
 	}
 	void downloadImage(){
         new RequestImageTask().execute("");
@@ -257,10 +264,11 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 //			e.printStackTrace();
 //		}
 //		[kApp.voiceHandler voiceOfapp:@"match_wait_get_relay" :nil];//needwy 动画和语音
+		YaoPao01App.matchWaitGetRelay();
 		relayAnim.setVisibility(View.VISIBLE);
 		relay_main.setVisibility(View.GONE);
 		animationDrawable.start();
-		relayAnim.setVisibility(View.GONE);
+		relayAnim.setVisibility(View.GONE);    
 		relay_main.setVisibility(View.VISIBLE);
 	}
 
@@ -271,4 +279,33 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		}
 		return false;
 	}
+	
+	//gps状态接收广播
+    private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			unregisterReceiver(this);
+			int rank = intent.getExtras().getInt("state");
+			switch (rank) {
+			case 1:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			case 2:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+				break;
+			case 3:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+				break;
+			case 4:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+				break;
+
+			default:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			}
+		}
+	};
+	
  }

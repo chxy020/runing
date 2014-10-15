@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.yaopao.activity.MatchMainActivity.TimerTask_one_point;
-import net.yaopao.activity.MatchMainActivity.TimerTask_report;
-import net.yaopao.activity.MatchMainActivity.TimerTask_secondplusplus;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.CNLonLat;
@@ -18,7 +14,11 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,9 +26,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +45,8 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	private TextView nextArea;
 	private ImageView teamV;
 	private ImageView batonV;
+	private ImageView image_gps;
+	
 	private ImageView d1V;
 	private ImageView d2V;
 	private ImageView d3V;
@@ -91,6 +93,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		lonLatEncryption = new LonLatEncryption();
 		initMatch();
 		initView();	
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 		initStartPage();
 		double this_dis = (CNAppDelegate.match_currentLapDis - CNAppDelegate.match_startdis)+CNAppDelegate.match_countPass*CNAppDelegate.geosHandler.claimedLength;
 		CNAppDelegate.match_totaldis = this_dis+CNAppDelegate.match_historydis;
@@ -197,6 +200,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	        }
 	        if(view_offtrack.getVisibility() == View.VISIBLE){
 //	            [kApp.voiceHandler voiceOfapp:@"match_come_back" :nil];needwy
+	        	YaoPao01App.matchReturnTrack();
 	            view_offtrack.setVisibility(View.GONE);
 	        }
 	    	CNAppDelegate.match_time_last_in_track = gpsPoint.getTime();
@@ -272,6 +276,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	        }
 	        if(view_offtrack.getVisibility() == View.GONE){
 //	            [kApp.voiceHandler voiceOfapp:@"match_off_track" :nil];
+	        	YaoPao01App.matchDeviateTrack();
 	            view_offtrack.setVisibility(View.VISIBLE);
 	        }
 	        gpsPoint.setIsInTrack(0);
@@ -288,7 +293,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 	        if(isIn == false){
 	            isIn = true;
 	            //播放语音
-//	            [kApp.voiceHandler voiceOfapp:@"match_running_in_take_over" :nil];needwy
+	            YaoPao01App.matchRunningInTakeOver();
 	        }
 	    }else{//不在交接区
 	        isIn = false;
@@ -321,6 +326,9 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
 //	        [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_targetkm] forKey:@"km"];
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
+	    	//用哪个数据
+	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_targetkm);
+	    //	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
 	    }else{//不在交接区
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
 //	        [voice_params setObject:[NSString stringWithFormat:@"%f",self.nextDis] forKey:@"distanceFromTakeOver"];
@@ -328,6 +336,9 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 //	        NSLog(@"self.nextDis is %f",self.nextDis);
 //	        NSLog(@"kApp.match_targetkm is %i",kApp.match_targetkm);
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
+	    	//用哪个数据
+	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_targetkm,(nextDis+5)/1000.0);
+	    	
 	    }
 	}
 	int score4speed(int minute){
@@ -371,6 +382,8 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		teamV = (ImageView) findViewById(R.id.match_recome_team);
 		avatarV = (ImageView) findViewById(R.id.match_recome_head);
 		batonV = (ImageView) findViewById(R.id.match_recome_run_baton);
+		image_gps = (ImageView) findViewById(R.id.match_recome_gps_status);
+		
 		nameV = (TextView) findViewById(R.id.match_recome_username);
 		teamNameV = (TextView) findViewById(R.id.match_recome_team_name);
 		nextArea = (TextView) findViewById(R.id.match_recome_next_area);
@@ -461,7 +474,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 					startActivity(intent);
 	            }else{
 	            	Intent intent = new Intent(MatchMainRecomeActivity.this,
-	            			MatchGiveRelayActivity.class);
+	            			MatchNotInTakeOverActivity.class);
 					startActivity(intent);
 	            }
 
@@ -541,7 +554,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		protected void onPostExecute(Boolean result) {
 			if (result) {
 				tryCount = 0;
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchMainRecomeActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchOnekm,MatchMainRecomeActivity.this);
 			} else {
 				if(tryCount < 4){
 			        oneKmReport(lastKMTime);
@@ -684,4 +697,32 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 			}
 			return false;
 		}
+		
+		//gps状态接收广播
+	    private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				unregisterReceiver(this);
+				int rank = intent.getExtras().getInt("state");
+				switch (rank) {
+				case 1:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+					break;
+				case 2:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+					break;
+				case 3:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+					break;
+				case 4:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+					break;
+
+				default:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+					break;
+				}
+			}
+		};	
 }

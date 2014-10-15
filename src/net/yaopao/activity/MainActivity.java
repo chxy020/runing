@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private SyncTimeLoadingDialog syncTimeloadingDialog;
 	private DialogTool dialogTool ;
 	
-	private boolean startDialogShowing = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,23 +116,14 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		/**
 		 * 测试代码 加载赛道数据，调用jts方法
 		 */
-		// LonLatEncryption lonLatEncryption = new LonLatEncryption();
-		// TrackData trackData = new TrackData();
-		// trackData.read("DaXingTest2.properties");
-		// GpsPoint point =new GpsPoint(116.321122,39.751262);
-		// boolean isInTrack =
-		// trackData.isInTheTracks(lonLatEncryption.encrypt(point).lon,lonLatEncryption.encrypt(point).lat);
-		// Log.v("wytrack",
-		// "isInTrack ="+isInTrack+" claimedLength="+trackData.claimedLength+" name"+trackData.name+" pgTracks"+trackData.pgTracks);
-		//
 
 		// YaoPao01App.matchOneKmAndNotInTakeOver();
 		// YaoPao01App.matchOneKmTeam();
 		// YaoPao01App.matchRunningInTakeOver();
 		// YaoPao01App.matchRunningTransmitRelay();
-		// YaoPao01App.matchDeviateTrack();
-		// YaoPao01App.matchReturnTrack();
-		// YaoPao01App.matchWaitGetRelay();
+//		 YaoPao01App.matchDeviateTrack();
+//		 YaoPao01App.matchReturnTrack();
+//		 YaoPao01App.matchWaitGetRelay();
 	}
 	void prepare4match(){//登陆成功准备比赛
 		CNAppDelegate.loginSucceedAndNext = false;
@@ -143,8 +133,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
             if(CNAppDelegate.isMatch == 1){
                 doRequest_checkServerTime();
                 syncTimeloadingDialog = new SyncTimeLoadingDialog(this);
-//              syncTimeloadingDialog.setCancelable(false);
+                syncTimeloadingDialog.setCancelable(false);
                 syncTimeloadingDialog.show();
+                Variables.sportStatus =0;
                 
             }
         }
@@ -168,7 +159,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			return;
 		}else if(Variables.islogin == 2){
 			loadingDialog = new LoadingDialog(this);
-			loadingDialog.setCancelable(false);
 			loadingDialog.show();
 			
 		}
@@ -321,7 +311,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	private void initMileage(DataBean data) {
-		distance = data.getDistance();
+		distance = data.getDistance()+5;
 		// distance = 549254;
 		ImageView d1V = (ImageView) this.findViewById(R.id.main_milage_num1);
 		ImageView d2V = (ImageView) this.findViewById(R.id.main_milage_num2);
@@ -354,10 +344,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	@Override
 	protected void onDestroy() {
-		if (head != null) {
-			head.recycle();
-			head = null;
-		}
 		super.onDestroy();
 	}
 
@@ -665,6 +651,5 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	//不在出发区弹框
 	private void alertNotInTakeOver(){
 		dialogTool.alertNotIntakeOver();
-		startDialogShowing = true;
 	}
 }

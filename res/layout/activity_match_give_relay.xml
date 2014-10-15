@@ -12,7 +12,7 @@
         android:layout_height="@dimen/small_height"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin1"
-        android:background="@drawable/gps_3" />
+        android:src="@drawable/gps_3" />
 
     <TextView
         android:id="@+id/relay_wait_gps"
@@ -47,7 +47,7 @@
                 android:layout_height="@dimen/recording_List_main_height"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" 
-                android:visibility="gone"
+                 android:visibility="gone"
                 >
 
                 <ImageView
@@ -56,7 +56,8 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname1"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                    
+                     />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname1"
@@ -84,7 +85,7 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname2"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                     />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname2"
@@ -112,7 +113,7 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname3"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                    />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname3"
@@ -133,7 +134,7 @@
             android:layout_centerHorizontal="true"
             android:layout_height="@dimen/common_height"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/margin2"
+            android:gravity="bottom"
             android:text="正在搜索接棒队员，请稍候..."
             android:textColor="@color/white"
             android:textSize="@dimen/font_size3"
@@ -257,7 +258,7 @@
             android:layout_width="@dimen/head_hight1"
             android:layout_height="@dimen/head_hight1"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/avatar_default" />
+            android:src="@drawable/avatar_default" />
 
         <TextView
             android:id="@+id/relay_nickname"

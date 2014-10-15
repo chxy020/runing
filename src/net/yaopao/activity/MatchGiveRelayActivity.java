@@ -13,12 +13,15 @@ import java.util.TimerTask;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
@@ -34,7 +37,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -63,7 +65,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	String avatarurl3;
 	Timer timer_look_submit = null;
 	TimerTask_scan task_look_submit = null;
-
+	LoadingDialog loadingdialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -71,6 +73,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_give_relay);
 		init();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 	    if(Variables.avatar != null){
 	    	image_me.setImageBitmap(Variables.avatar);
 	    }
@@ -97,6 +100,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		button_user2 = (ImageView) findViewById(R.id.relay_wait_head2);
 		button_user3 = (ImageView) findViewById(R.id.relay_wait_head3);
 		button_user4 = (ImageView) findViewById(R.id.relay_chosen_head);
+		image_gps = (ImageView) findViewById(R.id.relay_wait_gps_status);
 		
 		view_user1 =  (RelativeLayout) findViewById(R.id.relay_wait_head_layout1);
 		view_user2 =  (RelativeLayout) findViewById(R.id.relay_wait_head_layout2);
@@ -107,6 +111,9 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		relay_wait_header_layout2 = (RelativeLayout) findViewById(R.id.relay_wait_header_layout2);
 		text_button = (RelativeLayout) findViewById(R.id.text_button);
 
+		loadingdialog = new LoadingDialog(this);
+		loadingdialog.setCancelable(false);
+		
 		label_back.setOnTouchListener(this);
 		view_user1.setOnTouchListener(this);
 		view_user2.setOnTouchListener(this);
@@ -225,6 +232,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
+				loadingdialog.show();
 				new ComfirmTransmitTask().execute("");
 				break;
 			}
@@ -258,6 +266,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	private void headerLayout1Dismiss(Bitmap avatar,String name) {
 		relay_wait_header_layout1.setVisibility(View.GONE);
 		relay_wait_header_layout2.setVisibility(View.VISIBLE);
+		label_test.setVisibility(View.GONE);
 		text_button.setVisibility(View.GONE);
 		if (avatar!=null) {
 			button_user4.setImageBitmap(avatar);
@@ -268,6 +277,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 
 	private void headerLayout2Dismiss() {
 		relay_wait_header_layout1.setVisibility(View.VISIBLE);
+		text_button.setVisibility(View.VISIBLE);
 		label_test.setVisibility(View.VISIBLE);
 		relay_wait_header_layout2.setVisibility(View.GONE);
 	}
@@ -315,13 +325,14 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGiveRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.transmitRelay,MatchGiveRelayActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				JSONArray array = resultDic.getJSONArray("list");
 			    if(array.size()<1){
 			        label_test.setText("正在搜索接棒队员，请稍候...");
 			    }else{
 			        label_test.setText(String.format("搜索到%d个人", array.size()));
+			        
 			        
 			        view_user1.setVisibility(View.GONE);
 			        view_user2.setVisibility(View.GONE);
@@ -462,9 +473,10 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 
 		@Override
 		protected void onPostExecute(Boolean result) {
+			loadingdialog.dismiss();
 			if (result) {
 				CNAppDelegate.isbaton = 0;
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchGiveRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.confirmTransmit,MatchGiveRelayActivity.this);
 				if(timer_look_submit != null){
 					timer_look_submit.cancel();
 					timer_look_submit = null;
@@ -478,8 +490,13 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 //			    [voice_params setObject:[NSString stringWithFormat:@"%f",kApp.match_totaldis] forKey:@"distance"];
 //			    [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_historySecond] forKey:@"second"];
 //			    [kApp.voiceHandler voiceOfapp:@"match_running_transmit_relay" :voice_params];//needwy
+				
+				int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
+				YaoPao01App.matchRunningTransmitRelay(CNAppDelegate.match_totaldis,CNAppDelegate.match_historySecond,speed_second);
+				
 			    Intent intent = new Intent(MatchGiveRelayActivity.this,MatchFinishActivity.class);
 				startActivity(intent);
+				finish();
 			} else {
 				
 			}
@@ -512,7 +529,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGiveRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.cancelTransmit,MatchGiveRelayActivity.this);
 			}
 		}
 	}
@@ -607,4 +624,31 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		}
 		return false;
 	}
+	//gps状态接收广播
+    private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			unregisterReceiver(this);
+			int rank = intent.getExtras().getInt("state");
+			switch (rank) {
+			case 1:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			case 2:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+				break;
+			case 3:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+				break;
+			case 4:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+				break;
+
+			default:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			}
+		}
+	};		
 }

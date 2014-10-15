@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.alibaba.fastjson.JSON;
-
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.CNLonLat;
@@ -16,7 +14,13 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,10 +28,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
 
 
 
@@ -36,26 +44,23 @@ import android.widget.TextView;
 public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchListener {
 	
 	private ImageView imageview_avatar;
-	
 	private TextView label_uname;
-	
 	private TextView relay_end;
-	
-	
-	private ImageView button_back;
-	
+	private TextView button_back;
 	private ImageView image_gps;
-	
 	Timer checkInTakeOver;
+	TimerTask_check task_check;
 	private LonLatEncryption lonLatEncryption;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_match_not_in_take_over);
 		lonLatEncryption = new LonLatEncryption();
 		init();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 		if(Variables.avatar != null){
 			imageview_avatar.setImageBitmap(Variables.avatar);
 	    }
@@ -69,9 +74,10 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		
 		image_gps = (ImageView) findViewById(R.id.relay_gps_status);
 		
-		button_back = (ImageView) findViewById(R.id.out_delay_tip_back);
+		button_back = (TextView) findViewById(R.id.out_delay_tip_back);
 		
 		button_back.setOnTouchListener(this);
+		relay_end.setOnTouchListener(this);
 	}
 
 
@@ -80,27 +86,33 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		super.onResume();
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
-		TimerTask task_check = new TimerTask() {
-			@Override
-			public void run() {
+		checkInTakeOver = new Timer();
+		task_check = new TimerTask_check();
+		
+		checkInTakeOver.schedule(task_check, 1000, 1000);
+	}
+	class TimerTask_check extends TimerTask{
+		@Override
+		public void run() {
 
-				runOnUiThread(new Runnable() { // UI thread
-					@Override
-					public void run() {
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					if (YaoPao01App.loc != null) {
 						CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
 						CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
 					    int isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(encryptionPoint.getLon(),encryptionPoint.getLat());
 					    if(isInTakeOverZone != -1){
-					        finish();
 					        Intent intent = new Intent(MatchNotInTakeOverActivity.this,
 			        				MatchGiveRelayActivity.class);
 					        startActivity(intent);
+					        finish();
 					    }
 					}
-				});
-			}
-		};
-		checkInTakeOver.schedule(task_check, 1000, 1000);
+					
+				}
+			});
+		}
 	}
 
 	/**
@@ -109,7 +121,15 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	@Override
 	protected void onPause() {
 		super.onPause();
-		checkInTakeOver.cancel();
+		if(checkInTakeOver!=null){
+			checkInTakeOver.cancel();
+			checkInTakeOver = null;
+			if(task_check!=null){
+				task_check.cancel();
+				task_check = null;
+			}
+		}
+		
 	}
 
 
@@ -139,8 +159,7 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				//提前结束处理
-				//needwy
+				quit1();
 				break;
 			}
 			break;
@@ -193,7 +212,40 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		}
 
 	}
-	
+	public void quit1() {
+		new AlertDialog.Builder(MatchNotInTakeOverActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
+				.setMessage("结束跑队赛程意味着跑队比赛结束，成绩截止，其他队友也将无法继续参赛。您是否确认提前结束跑队的比赛？")
+				.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+						quit2();
+						dialog.cancel();
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				}).show();
+	}
+	public void quit2() {
+		new AlertDialog.Builder(MatchNotInTakeOverActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
+		.setMessage("请再次确认提前结束跑队的比赛？")
+		.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();				
+			}
+		})
+		.setNegativeButton("确认", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				finishMatch();
+			}
+		}).show();
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_HOME) {
@@ -201,4 +253,32 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		}
 		return false;
 	}
+	
+	//gps状态接收广播
+    private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			unregisterReceiver(this);
+			int rank = intent.getExtras().getInt("state");
+			switch (rank) {
+			case 1:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			case 2:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+				break;
+			case 3:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+				break;
+			case 4:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+				break;
+
+			default:
+				image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+				break;
+			}
+		}
+	};
  }

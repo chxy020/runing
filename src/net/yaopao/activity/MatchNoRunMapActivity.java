@@ -13,6 +13,10 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,10 +27,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
@@ -55,6 +59,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 
 	private ImageView backV;
 	private ImageView match_map_loc ;
+	private ImageView image_gps;
 	private MapView mapView;
 	private AMap aMap;
 	private OnLocationChangedListener mListener;
@@ -76,6 +81,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		mapView = (MapView) findViewById(R.id.match_full_map);
 		mapView.onCreate(savedInstanceState);
 		init();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 		drawTrack();//画赛道
 		drawTakeOverZone();//画接力区
 		task_request = new TimerTask_reqeust();
@@ -96,6 +102,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 	}
 	private void init() {
 		backV = (ImageView) findViewById(R.id.match_full_map_back);
+		image_gps = (ImageView) findViewById(R.id.match_map_gps_status);
 		match_map_loc = (ImageView) findViewById(R.id.match_map_loc);
 		backV.setOnTouchListener(this);
 		match_map_loc.setOnTouchListener(this);
@@ -292,7 +299,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		protected void onPostExecute(Boolean result) {
 			hideLoading();
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchNoRunMapActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.smallMapPage,MatchNoRunMapActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
 				if(infoDic == null || infoDic.isEmpty()){
@@ -466,4 +473,33 @@ public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 	// TODO Auto-generated method stub
 	
 }
+
+
+//gps状态接收广播
+private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		unregisterReceiver(this);
+		int rank = intent.getExtras().getInt("state");
+		switch (rank) {
+		case 1:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+			break;
+		case 2:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+			break;
+		case 3:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+			break;
+		case 4:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+			break;
+
+		default:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+			break;
+		}
+	}
+};
 }

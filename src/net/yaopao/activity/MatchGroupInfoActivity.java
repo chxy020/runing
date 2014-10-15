@@ -1,22 +1,26 @@
 package net.yaopao.activity;
 
 import java.io.InputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,6 +31,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
@@ -35,7 +40,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps2d.AMap;
@@ -107,6 +111,14 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	    }
 	    if("main".equals(from)){
 	        button_back.setVisibility(View.VISIBLE);
+	        button_back.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					MatchGroupInfoActivity.this.finish();
+					
+				}
+			});
 	    }else{
 	        button_back.setVisibility(View.GONE);
 	    }
@@ -425,7 +437,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		protected void onPostExecute(Boolean result) {
 			hideLoading();
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupInfoActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.smallMapPage,MatchGroupInfoActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				if(resultDic.getJSONObject("announcement")!=null&&!resultDic.getJSONObject("announcement").isEmpty()){
 		            JSONObject messageDic = resultDic.getJSONObject("announcement");
@@ -440,7 +452,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				
 				double distance = resultDic.getDoubleValue("distancegr");
 			    
-				initMileage(distance);
+				initMileage(distance+5);
 				
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
 				if(infoDic.isEmpty()){
@@ -456,7 +468,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		        if(distance>1){
 		            int speed_second = (int) (1000*(duringTime/distance));//秒
 		            initPspeed(speed_second);
-		            
+		            initavgSpeed(speed_second);
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
@@ -598,11 +610,23 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		int s4 = speed[2] % 10;
 		label_pspeed.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 	}
+	@SuppressLint("NewApi")
+	private void initavgSpeed(int pspeed) {
+		
+		double avgSpeed =(float)pspeed/3600.0;
+		DecimalFormat  df = (DecimalFormat) NumberFormat.getInstance();
+		df.setMaximumFractionDigits(2);
+		df.setRoundingMode(RoundingMode.UP);
+		label_avr_speed.setText(df.format(avgSpeed)+" km/h");
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_HOME) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// Toast.makeText(SportRecordActivity.this, "", duration)
+			if (!"main".equals(from)) {
+				DialogTool.quit(MatchGroupInfoActivity.this);
+			}
 		}
 		return false;
 	}
