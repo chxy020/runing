@@ -344,10 +344,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	@Override
 	protected void onDestroy() {
-		if (head != null) {
-			head.recycle();
-			head = null;
-		}
 		super.onDestroy();
 	}
 

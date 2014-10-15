@@ -570,7 +570,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		protected void onPostExecute(Boolean result) {
 			if (result) {
 				tryCount = 0;
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchMainActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchOnekm,MatchMainActivity.this);
 			} else {
 				if(tryCount < 4){
 			        oneKmReport(lastKMTime);

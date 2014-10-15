@@ -549,7 +549,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		protected void onPostExecute(Boolean result) {
 			if (result) {
 				tryCount = 0;
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchMainRecomeActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchOnekm,MatchMainRecomeActivity.this);
 			} else {
 				if(tryCount < 4){
 			        oneKmReport(lastKMTime);

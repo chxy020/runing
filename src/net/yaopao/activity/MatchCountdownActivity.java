@@ -24,7 +24,7 @@ public class MatchCountdownActivity extends BaseActivity {
 	private TextView countdownTip;
 
 	private int startSecond = (int) (CNAppDelegate.match_start_timestamp - CNAppDelegate
-			.getNowTimeDelta());;
+			.getNowTimeDelta());
 	Timer timer_countdown = new Timer();
 
 	@Override

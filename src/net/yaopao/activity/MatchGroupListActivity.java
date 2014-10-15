@@ -317,7 +317,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		protected void onPostExecute(Boolean result) {
 			hideLoading();
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupListActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.listPersonal,MatchGroupListActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				clearScrollview();
 			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
@@ -399,7 +399,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		protected void onPostExecute(Boolean result) {
 			hideLoading();
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupListActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.listKM,MatchGroupListActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				clearScrollview();
 				double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
