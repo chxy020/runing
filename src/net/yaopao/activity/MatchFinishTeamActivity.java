@@ -417,6 +417,7 @@ void hideLoading(){
 
 		@Override
 		protected void onPostExecute(Boolean result) {
+			Variables.sportStatus =1;
 			hideLoading();
 			if (result) {
 				JSONObject resultDic = JSON.parseObject(responseJson);

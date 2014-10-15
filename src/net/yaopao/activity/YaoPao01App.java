@@ -1108,6 +1108,7 @@ public class YaoPao01App extends Application {
 	        public void onReceive(Context context, Intent intent) {  
 	        	if ("unregister".equals(intent.getExtras().getString("data"))) {
 	        		  if (Variables.sportStatus!=0) {
+	        			  Log.v("wysport", "退到后台不在运动状态，也不是比赛状态，关闭gps定位");
 							if(locationManager!=null){
 								locationManager.removeUpdates(locationlisten);
 								locationlisten=null;
@@ -1116,7 +1117,9 @@ public class YaoPao01App extends Application {
 						}
 	        		
 				}else if("register".equals(intent.getExtras().getString("data"))){
+					
 					 if (Variables.sportStatus!=0) {
+						 Log.v("wysport", "重新进入不在运动状态，也不是比赛状态，注册gps定位");
 							initGPS();
 						}
 				}

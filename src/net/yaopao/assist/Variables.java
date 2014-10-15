@@ -73,7 +73,7 @@ public class Variables {
 	
 	public static boolean isActive = true;// 应用是否在前台
 	
-	public static int sportStatus = 1; // 0-运动状态，1-暂停状态,2-未运动
+	public static int sportStatus = 1; // 0-运动状态，1-暂停状态,2-未运动；处于比赛期间，此值一直为0
 
 	public static int switchTime = 0; // 0-开，1-关
 	
@@ -136,6 +136,7 @@ public class Variables {
 	}
 	
 	public static String activityOnFront="";
+	
 	
 	public static boolean isTest=true;//是否是测试客户端
 

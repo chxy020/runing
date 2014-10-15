@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private SyncTimeLoadingDialog syncTimeloadingDialog;
 	private DialogTool dialogTool ;
 	
-	private boolean startDialogShowing = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +121,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		// YaoPao01App.matchOneKmTeam();
 		// YaoPao01App.matchRunningInTakeOver();
 		// YaoPao01App.matchRunningTransmitRelay();
-		// YaoPao01App.matchDeviateTrack();
-		// YaoPao01App.matchReturnTrack();
-		// YaoPao01App.matchWaitGetRelay();
+		 YaoPao01App.matchDeviateTrack();
+		 YaoPao01App.matchReturnTrack();
+//		 YaoPao01App.matchWaitGetRelay();
 	}
 	void prepare4match(){//登陆成功准备比赛
 		CNAppDelegate.loginSucceedAndNext = false;
@@ -134,8 +133,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
             if(CNAppDelegate.isMatch == 1){
                 doRequest_checkServerTime();
                 syncTimeloadingDialog = new SyncTimeLoadingDialog(this);
-//              syncTimeloadingDialog.setCancelable(false);
+                syncTimeloadingDialog.setCancelable(false);
                 syncTimeloadingDialog.show();
+                Variables.sportStatus =0;
                 
             }
         }
@@ -159,7 +159,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			return;
 		}else if(Variables.islogin == 2){
 			loadingDialog = new LoadingDialog(this);
-			loadingDialog.setCancelable(false);
 			loadingDialog.show();
 			
 		}
@@ -656,6 +655,5 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	//不在出发区弹框
 	private void alertNotInTakeOver(){
 		dialogTool.alertNotIntakeOver();
-		startDialogShowing = true;
 	}
 }
