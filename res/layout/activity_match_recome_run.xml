@@ -48,7 +48,7 @@
             android:layout_height="@dimen/small_height"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin1"
-            android:background="@drawable/gps_4" />
+            android:src="@drawable/gps_4" />
 
         <TextView
             android:id="@+id/match_recome_gps"

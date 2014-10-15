@@ -5,25 +5,24 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.yaopao.activity.MatchGroupInfoActivity.TimerTask_request;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
-import net.yaopao.assist.GpsPoint;
-import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,13 +31,12 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.PolygonOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
@@ -53,6 +51,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	private ImageView avatarV;
 	private ImageView match_map_loc;
 	private ImageView match_baton;
+	private ImageView image_gps;
 	
 	private TextView nameV;
 	private TextView teamNameV;
@@ -92,6 +91,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	    	avatarV.setImageBitmap(Variables.avatar);
 	    }
 		init();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 //		nameV.setText(Variables.userinfo.getString("nickname"));
 //		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
 //	    if(Variables.avatar != null){
@@ -235,6 +235,8 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 		backV = (ImageView) findViewById(R.id.match_map_back);
 		match_map_loc = (ImageView) findViewById(R.id.match_map_loc);
 		match_baton = (ImageView) findViewById(R.id.match_baton);
+		image_gps = (ImageView) findViewById(R.id.match_map_gps_status);
+		
 		match_map_loc.setOnTouchListener(this);
 		match_baton.setOnTouchListener(this);
 		backV.setOnTouchListener(this);
@@ -441,4 +443,32 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 	}
 	return false;
 }
+
+//gps状态接收广播
+private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		unregisterReceiver(this);
+		int rank = intent.getExtras().getInt("state");
+		switch (rank) {
+		case 1:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+			break;
+		case 2:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+			break;
+		case 3:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+			break;
+		case 4:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+			break;
+
+		default:
+			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+			break;
+		}
+	}
+};
 }

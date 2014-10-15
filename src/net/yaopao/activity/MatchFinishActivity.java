@@ -3,7 +3,12 @@ package net.yaopao.activity;
 
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Variables;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.a.ca;
 import com.umeng.analytics.MobclickAgent;
 public class MatchFinishActivity extends BaseActivity implements OnTouchListener {
 	
@@ -56,7 +62,9 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_finish);
 		initView();
+		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
 		initinitSymbol();
+		
 	    if(Variables.avatar != null){
 	    	image_avatar.setImageBitmap(Variables.avatar);
 	    }
@@ -218,4 +226,31 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 			}
 			return false;
 		}
+		//gps状态接收广播
+	    private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				unregisterReceiver(this);
+				int rank = intent.getExtras().getInt("state");
+				switch (rank) {
+				case 1:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+					break;
+				case 2:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_2));
+					break;
+				case 3:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_3));
+					break;
+				case 4:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_4));
+					break;
+
+				default:
+					image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));
+					break;
+				}
+			}
+		};		
 }

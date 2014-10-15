@@ -468,7 +468,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		        if(distance>1){
 		            int speed_second = (int) (1000*(duringTime/distance));//秒
 		            initPspeed(speed_second);
-		            initavgSpeed(distance,duringTime);
+		            initavgSpeed(speed_second);
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
@@ -611,9 +611,9 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		label_pspeed.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 	}
 	@SuppressLint("NewApi")
-	private void initavgSpeed(double dis,int time) {
-		double avgSpeed =((dis+5)/time)*3.6;
+	private void initavgSpeed(int pspeed) {
 		
+		double avgSpeed =(float)pspeed/3600.0;
 		DecimalFormat  df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.UP);
