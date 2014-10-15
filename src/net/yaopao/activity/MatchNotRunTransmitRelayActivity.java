@@ -144,7 +144,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchNotRunTransmitRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.transmitRelay,MatchNotRunTransmitRelayActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				Log.v("zc","我要接棒返回 is "+responseJson);
 				JSONArray array = resultDic.getJSONArray("list");
@@ -185,6 +185,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	void startmatch(){
 		Intent intent = new Intent(this,MatchMainActivity.class);
 		startActivity(intent);
+		finish();
 	}
 	void downloadImage(){
         new RequestImageTask().execute("");

@@ -121,8 +121,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		// YaoPao01App.matchOneKmTeam();
 		// YaoPao01App.matchRunningInTakeOver();
 		// YaoPao01App.matchRunningTransmitRelay();
-		 YaoPao01App.matchDeviateTrack();
-		 YaoPao01App.matchReturnTrack();
+//		 YaoPao01App.matchDeviateTrack();
+//		 YaoPao01App.matchReturnTrack();
 //		 YaoPao01App.matchWaitGetRelay();
 	}
 	void prepare4match(){//登陆成功准备比赛
@@ -311,7 +311,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	private void initMileage(DataBean data) {
-		distance = data.getDistance();
+		distance = data.getDistance()+5;
 		// distance = 549254;
 		ImageView d1V = (ImageView) this.findViewById(R.id.main_milage_num1);
 		ImageView d2V = (ImageView) this.findViewById(R.id.main_milage_num2);
@@ -344,10 +344,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	@Override
 	protected void onDestroy() {
-		if (head != null) {
-			head.recycle();
-			head = null;
-		}
 		super.onDestroy();
 	}
 

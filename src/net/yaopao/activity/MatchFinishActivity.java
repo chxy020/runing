@@ -138,9 +138,11 @@ public class MatchFinishActivity extends BaseActivity implements OnTouchListener
 			        Intent intent = new Intent(MatchFinishActivity.this,
 	        				MatchFinishTeamActivity.class);
 	        		startActivity(intent);
+	        		finish();
 			    }else{
 			        Intent intent = new Intent(MatchFinishActivity.this,MatchGroupInfoActivity.class);
 	        		startActivity(intent);
+	        		finish();
 			    }
 				break;
 			}

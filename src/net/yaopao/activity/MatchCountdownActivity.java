@@ -24,7 +24,7 @@ public class MatchCountdownActivity extends BaseActivity {
 	private TextView countdownTip;
 
 	private int startSecond = (int) (CNAppDelegate.match_start_timestamp - CNAppDelegate
-			.getNowTimeDelta());;
+			.getNowTimeDelta());
 	Timer timer_countdown = new Timer();
 
 	@Override
@@ -65,12 +65,14 @@ public class MatchCountdownActivity extends BaseActivity {
 										MatchCountdownActivity.this,
 										MatchMainActivity.class);
 								startActivity(intent);
+								finish();
 							} else {// 不在出发区
 								CNAppDelegate.canStartButNotInStartZone = true;
 								Intent intent = new Intent(
 										MatchCountdownActivity.this,
 										MainActivity.class);
 								startActivity(intent);
+								finish();
 							}
 						}
 

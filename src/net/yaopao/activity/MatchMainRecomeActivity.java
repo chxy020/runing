@@ -327,7 +327,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 //	        [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_targetkm] forKey:@"km"];
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
 	    	//用哪个数据
-	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_totalDisTeam);
+	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_targetkm);
 	    //	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
 	    }else{//不在交接区
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
@@ -337,7 +337,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 //	        NSLog(@"kApp.match_targetkm is %i",kApp.match_targetkm);
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
 	    	//用哪个数据
-	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
+	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_targetkm,(nextDis+5)/1000.0);
 	    	
 	    }
 	}
@@ -474,7 +474,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 					startActivity(intent);
 	            }else{
 	            	Intent intent = new Intent(MatchMainRecomeActivity.this,
-	            			MatchGiveRelayActivity.class);
+	            			MatchNotInTakeOverActivity.class);
 					startActivity(intent);
 	            }
 
@@ -554,7 +554,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		protected void onPostExecute(Boolean result) {
 			if (result) {
 				tryCount = 0;
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchMainRecomeActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchOnekm,MatchMainRecomeActivity.this);
 			} else {
 				if(tryCount < 4){
 			        oneKmReport(lastKMTime);

@@ -9,14 +9,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.assist.CNAppDelegate;
-import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;

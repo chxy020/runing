@@ -437,7 +437,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		protected void onPostExecute(Boolean result) {
 			hideLoading();
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGroupInfoActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.smallMapPage,MatchGroupInfoActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				if(resultDic.getJSONObject("announcement")!=null&&!resultDic.getJSONObject("announcement").isEmpty()){
 		            JSONObject messageDic = resultDic.getJSONObject("announcement");
@@ -452,7 +452,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				
 				double distance = resultDic.getDoubleValue("distancegr");
 			    
-				initMileage(distance);
+				initMileage(distance+5);
 				
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
 				if(infoDic.isEmpty()){

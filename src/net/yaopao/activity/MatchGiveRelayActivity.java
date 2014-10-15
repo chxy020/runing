@@ -325,7 +325,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGiveRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.transmitRelay,MatchGiveRelayActivity.this);
 				JSONObject resultDic = JSON.parseObject(responseJson);
 				JSONArray array = resultDic.getJSONArray("list");
 			    if(array.size()<1){
@@ -476,7 +476,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			loadingdialog.dismiss();
 			if (result) {
 				CNAppDelegate.isbaton = 0;
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.endMatch,MatchGiveRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.confirmTransmit,MatchGiveRelayActivity.this);
 				if(timer_look_submit != null){
 					timer_look_submit.cancel();
 					timer_look_submit = null;
@@ -496,6 +496,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 				
 			    Intent intent = new Intent(MatchGiveRelayActivity.this,MatchFinishActivity.class);
 				startActivity(intent);
+				finish();
 			} else {
 				
 			}
@@ -528,7 +529,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.matchReport,MatchGiveRelayActivity.this);
+				CNAppDelegate.matchRequestResponseFilter(responseJson,Constants.cancelTransmit,MatchGiveRelayActivity.this);
 			}
 		}
 	}
