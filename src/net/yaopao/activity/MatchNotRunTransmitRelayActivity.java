@@ -257,10 +257,11 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 //			e.printStackTrace();
 //		}
 //		[kApp.voiceHandler voiceOfapp:@"match_wait_get_relay" :nil];//needwy 动画和语音
+		YaoPao01App.matchWaitGetRelay();
 		relayAnim.setVisibility(View.VISIBLE);
 		relay_main.setVisibility(View.GONE);
 		animationDrawable.start();
-		relayAnim.setVisibility(View.GONE);
+		relayAnim.setVisibility(View.GONE);    
 		relay_main.setVisibility(View.VISIBLE);
 	}
 

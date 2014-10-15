@@ -258,6 +258,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 	private void headerLayout1Dismiss(Bitmap avatar,String name) {
 		relay_wait_header_layout1.setVisibility(View.GONE);
 		relay_wait_header_layout2.setVisibility(View.VISIBLE);
+		label_test.setVisibility(View.GONE);
 		text_button.setVisibility(View.GONE);
 		if (avatar!=null) {
 			button_user4.setImageBitmap(avatar);
@@ -268,6 +269,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 
 	private void headerLayout2Dismiss() {
 		relay_wait_header_layout1.setVisibility(View.VISIBLE);
+		text_button.setVisibility(View.VISIBLE);
 		label_test.setVisibility(View.VISIBLE);
 		relay_wait_header_layout2.setVisibility(View.GONE);
 	}
@@ -322,6 +324,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			        label_test.setText("正在搜索接棒队员，请稍候...");
 			    }else{
 			        label_test.setText(String.format("搜索到%d个人", array.size()));
+			        
 			        
 			        view_user1.setVisibility(View.GONE);
 			        view_user2.setVisibility(View.GONE);
@@ -478,6 +481,10 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 //			    [voice_params setObject:[NSString stringWithFormat:@"%f",kApp.match_totaldis] forKey:@"distance"];
 //			    [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_historySecond] forKey:@"second"];
 //			    [kApp.voiceHandler voiceOfapp:@"match_running_transmit_relay" :voice_params];//needwy
+				
+				int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
+				YaoPao01App.matchRunningTransmitRelay(CNAppDelegate.match_totaldis,CNAppDelegate.match_historySecond,speed_second);
+				
 			    Intent intent = new Intent(MatchGiveRelayActivity.this,MatchFinishActivity.class);
 				startActivity(intent);
 			} else {

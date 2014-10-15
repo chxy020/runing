@@ -250,7 +250,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	        	view_distance.setVisibility(View.VISIBLE);
 	        }
 	        if(view_offtrack.getVisibility() == View.VISIBLE){
-//	            [kApp.voiceHandler voiceOfapp:@"match_come_back" :nil];needwy
+	        	YaoPao01App.matchReturnTrack();
 	            view_offtrack.setVisibility(View.GONE);
 	        }
 	    	
@@ -331,6 +331,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	        }
 	        if(view_offtrack.getVisibility() == View.GONE){
 //	            [kApp.voiceHandler voiceOfapp:@"match_off_track" :nil];
+	        	YaoPao01App.matchDeviateTrack();
 	            view_offtrack.setVisibility(View.VISIBLE);
 	        }
 	        gpsPoint.setIsInTrack(0);
@@ -347,7 +348,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	        if(isIn == false){
 	            isIn = true;
 	            //播放语音
-//	            [kApp.voiceHandler voiceOfapp:@"match_running_in_take_over" :nil];needwy
+	            YaoPao01App.matchRunningInTakeOver();
 	        }
 	    }else{//不在交接区
 	        isIn = false;
@@ -379,6 +380,9 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
 //	        [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_targetkm] forKey:@"km"];
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
+	    	//用哪个数据
+	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_totalDisTeam);
+//	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
 	    }else{//不在交接区
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
 //	        [voice_params setObject:[NSString stringWithFormat:@"%f",self.nextDis] forKey:@"distanceFromTakeOver"];
@@ -386,6 +390,8 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 //	        NSLog(@"self.nextDis is %f",self.nextDis);
 //	        NSLog(@"kApp.match_targetkm is %i",kApp.match_targetkm);
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
+	    	////用哪个数据
+	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
 	    }
 	}
 	int score4speed(int minute){
