@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
@@ -27,6 +28,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
@@ -107,6 +109,14 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	    }
 	    if("main".equals(from)){
 	        button_back.setVisibility(View.VISIBLE);
+	        button_back.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					MatchGroupInfoActivity.this.finish();
+					
+				}
+			});
 	    }else{
 	        button_back.setVisibility(View.GONE);
 	    }
@@ -601,8 +611,11 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_HOME) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// Toast.makeText(SportRecordActivity.this, "", duration)
+			if (!"main".equals(from)) {
+				DialogTool.quit(MatchGroupInfoActivity.this);
+			}
 		}
 		return false;
 	}

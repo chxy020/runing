@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_match_not_in_take_over);
@@ -74,6 +76,7 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		button_back = (ImageView) findViewById(R.id.out_delay_tip_back);
 		
 		button_back.setOnTouchListener(this);
+		relay_end.setOnTouchListener(this);
 	}
 
 
