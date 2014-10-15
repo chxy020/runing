@@ -427,8 +427,8 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
  */
 private void setUpMap() {
 	aMap.getUiSettings().setZoomControlsEnabled(false);
-	aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-	aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+	aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+//	aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 	aMap.setLocationSource(this);// 设置定位监听
 	aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 	aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示

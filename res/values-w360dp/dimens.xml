@@ -27,6 +27,8 @@
     <dimen name="font_size7">15dp</dimen>
     <dimen name="font_size8">12dp</dimen>
     <dimen name="font_size9">15dp</dimen>
+       <dimen name="font_size_not_in_track1">35dp</dimen>
+    <dimen name="font_size_not_in_track2">25dp</dimen>
        <dimen name="font_size10">28dp</dimen>
     <dimen name="countdown_tnum_width">80dp</dimen>
     <dimen name="userInfo_headArrow_marginTop">38dp</dimen>
@@ -108,7 +110,7 @@
     
         <dimen name="marker_avatar_width">50dp</dimen>
     <dimen name="marker_avatar_height">112dp</dimen>
-      <dimen name="marker_avatar_in_size">48dp</dimen>
+      <dimen name="marker_avatar_in_size">46dp</dimen>
     
     <dimen name="marker_text_height">10dp</dimen>
     <dimen name="marker_margin1">1dp</dimen>

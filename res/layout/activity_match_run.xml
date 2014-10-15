@@ -136,12 +136,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/line_under_recoding_mileage"
-            android:visibility="gone" 
+            android:visibility="gone"
             >
             <TextView 
                 android:id="@+id/match_main_t1"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/common_height"
+                android:layout_height="wrap_content"
                 android:text="您偏离了赛道！"
                 android:textColor="#CC0000"
                 android:layout_centerHorizontal="true"
@@ -149,12 +149,12 @@
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_marginRight="@dimen/margin1"
                 android:layout_above="@+id/match_main_t2"
-                android:textSize="@dimen/font_size4"
+                android:textSize="@dimen/font_size_not_in_track1"
                 />
             <TextView 
                 android:id="@+id/match_main_t2"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/common_height"
+                android:layout_height="wrap_content"
                 android:text="请尽快返回赛道，否则可能会导致整个跑队赛程的结束。"
                 android:textColor="#CC0000"
                 android:gravity="center_horizontal"
@@ -162,6 +162,7 @@
                 android:layout_marginLeft="@dimen/margin1"
                 android:layout_marginRight="@dimen/margin1"
                 android:layout_marginBottom="@dimen/margin6"
+                android:textSize="@dimen/font_size_not_in_track2"
                 />
              </RelativeLayout>
 

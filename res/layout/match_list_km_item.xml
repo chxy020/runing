@@ -64,7 +64,7 @@
 
             <ImageView
                 android:id="@+id/list_sport_min"
-                android:layout_width="@dimen/list_dot_width"
+                android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
                 />
 
@@ -82,7 +82,7 @@
 
             <ImageView
                 android:id="@+id/list_sport_sec"
-                android:layout_width="@dimen/list_dot_width"
+                android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
                  />
         </LinearLayout>

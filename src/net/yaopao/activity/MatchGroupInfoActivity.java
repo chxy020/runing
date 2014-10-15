@@ -1,15 +1,17 @@
 package net.yaopao.activity;
 
 import java.io.InputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
@@ -18,6 +20,7 @@ import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,7 +40,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps2d.AMap;
@@ -466,7 +468,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		        if(distance>1){
 		            int speed_second = (int) (1000*(duringTime/distance));//秒
 		            initPspeed(speed_second);
-		            
+		            initavgSpeed(distance,duringTime);
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
@@ -607,6 +609,15 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		int s3 = speed[2] / 10;
 		int s4 = speed[2] % 10;
 		label_pspeed.setText(s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
+	}
+	@SuppressLint("NewApi")
+	private void initavgSpeed(double dis,int time) {
+		double avgSpeed =((dis+5)/time)*3.6;
+		
+		DecimalFormat  df = (DecimalFormat) NumberFormat.getInstance();
+		df.setMaximumFractionDigits(2);
+		df.setRoundingMode(RoundingMode.UP);
+		label_avr_speed.setText(df.format(avgSpeed)+" km/h");
 	}
 	
 	@Override
