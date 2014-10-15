@@ -148,8 +148,10 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		case R.id.out_delay_tip_back:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_back.setBackgroundResource(R.color.blue_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_back.setBackgroundResource(R.color.blue_dark);
 				MatchNotInTakeOverActivity.this.finish();
 				break;
 			}

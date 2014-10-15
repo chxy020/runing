@@ -250,8 +250,10 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		case R.id.match_full_map_back:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				backV.setBackgroundResource(R.drawable.button_back_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				backV.setBackgroundResource(R.drawable.button_back);
 				finish();
 				break;
 			}
