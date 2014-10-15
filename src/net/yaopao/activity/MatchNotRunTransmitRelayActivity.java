@@ -167,7 +167,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 			        lable_run_user.setText(run_user_dic.getString("nickname"));
 			        imagePath_runner = run_user_dic.getString("imgpath");
 			        if(imagePath_runner == null){
-			            image_run_user.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			            image_run_user.setImageBitmap(Variables.avatar_default);
 			        }else{
 			            Bitmap image = CNAppDelegate.avatarDic.get(imagePath_runner);
 			            if(image != null){//缓存中有

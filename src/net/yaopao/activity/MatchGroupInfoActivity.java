@@ -476,7 +476,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
 			    imagePath = runnerDic.getString("imgpath");
 			    //
-			    avatarImage =  BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null);
+			    avatarImage =  Variables.avatar_default;
 			    if(imagePath == null){
 			    	addAnnotation();
 			    }else{

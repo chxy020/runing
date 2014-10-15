@@ -344,7 +344,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 			        joinid1 = run_user_dic.getString("uid");
 			        avatarurl1 = run_user_dic.getString("imgpath");
 			        if(avatarurl1 == null){
-			            button_user1.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			            button_user1.setImageBitmap(Variables.avatar_default);
 			        }else{
 			            Bitmap image = CNAppDelegate.avatarDic.get(avatarurl1);
 			            if(image != null){//缓存中有
@@ -360,7 +360,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 				        joinid2 = run_user_dic.getString("uid");
 				        avatarurl2 = run_user_dic.getString("imgpath");
 				        if(avatarurl2 == null){
-				            button_user2.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+				            button_user2.setImageBitmap(Variables.avatar_default);
 				        }else{
 				            Bitmap image = CNAppDelegate.avatarDic.get(avatarurl2);
 				            if(image != null){//缓存中有
@@ -377,7 +377,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 				        joinid3 = run_user_dic.getString("uid");
 				        avatarurl3 = run_user_dic.getString("imgpath");
 				        if(avatarurl3 == null){
-				            button_user3.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+				            button_user3.setImageBitmap(Variables.avatar_default);
 				        }else{
 				            Bitmap image = CNAppDelegate.avatarDic.get(avatarurl3);
 				            if(image != null){//缓存中有
