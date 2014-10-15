@@ -445,7 +445,7 @@ void hideLoading(){
 						
 			            
 			            ImageView userAvatar = (ImageView)view_one_record.findViewById(R.id.match_watch_head);
-			            userAvatar.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			            userAvatar.setImageBitmap(Variables.avatar_default);
 			            String avatarUrl = oneRecordDic.getString("imgpath");
 			            if(avatarUrl == null){
 			                avatarUrl = "";

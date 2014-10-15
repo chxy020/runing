@@ -311,7 +311,7 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 			    lat = infoDic.getDoubleValue("slat");
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
 			    imagePath = runnerDic.getString("imgpath");
-			    avatarImage =  BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null);
+			    avatarImage =  Variables.avatar_default;
 			    if(imagePath == null){
 			    	addAnnotation();
 			    }else{
@@ -332,9 +332,16 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		if(annotation != null){
 			annotation.remove();
 		}
+		Bitmap popBitmap = CNAppDelegate.avatarDic.get(imagePath+"pop");
+		if(popBitmap == null){//缓存中没有
+			popBitmap = getViewBitmap(getView(avatarImage));
+			CNAppDelegate.avatarDic.put(imagePath+"pop", popBitmap);
+		}else{
+			Log.v("zc","缓存已经存在气泡图片");
+		}
 		annotation = aMap.addMarker(new MarkerOptions()
 		.position(new LatLng(lat, lon))
-		.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView(avatarImage))))
+		.icon(BitmapDescriptorFactory.fromBitmap(popBitmap))
 		.anchor(0.5f, 0.5f));
 		aMap.invalidate();
 	}

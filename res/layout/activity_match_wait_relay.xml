@@ -6,12 +6,12 @@
     android:background="@color/black"
     android:theme="@android:style/Theme.NoTitleBar" >
 
-    <ImageView
+    <!-- <ImageView
         android:id="@+id/relay_anim"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/match_relay_animation"
-        android:visibility="gone" />
+        android:visibility="gone" /> -->
 
     <RelativeLayout
         android:id="@+id/relay_main"

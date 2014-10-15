@@ -344,7 +344,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 						pd6V = (ImageView) view_one_record.findViewById(R.id.list_sport_dec2);
 			            
 			            ImageView userAvatar = (ImageView)view_one_record.findViewById(R.id.match_watch_head);
-			            userAvatar.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			            userAvatar.setImageBitmap(Variables.avatar_default);
 			            String avatarUrl = oneRecordDic.getString("imgpath");
 			            if(avatarUrl == null){
 			                avatarUrl = "";
@@ -432,7 +432,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			            	JSONObject dic = array.getJSONObject(0);
 			                ImageView userAvatar = (ImageView)view_one_record.findViewById(R.id.match_list_head1);
 			                userAvatar.setVisibility(View.VISIBLE);
-			                userAvatar.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			                userAvatar.setImageBitmap(Variables.avatar_default);
 			                String avatarUrl = dic.getString("imgpath");
 			                if(avatarUrl == null){
 			                    avatarUrl = "";
@@ -456,7 +456,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			            	JSONObject dic = array.getJSONObject(1);
 			                ImageView userAvatar = (ImageView)view_one_record.findViewById(R.id.match_list_head2);
 			                userAvatar.setVisibility(View.VISIBLE);
-			                userAvatar.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.avatar_default, null));
+			                userAvatar.setImageBitmap(Variables.avatar_default);
 			                String avatarUrl = dic.getString("imgpath");
 			                if(avatarUrl == null){
 			                    avatarUrl = "";
