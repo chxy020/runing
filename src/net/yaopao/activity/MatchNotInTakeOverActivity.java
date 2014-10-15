@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 
@@ -42,11 +43,12 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	private TextView relay_end;
 	
 	
-	private ImageView button_back;
+	private TextView button_back;
 	
 	private ImageView image_gps;
 	
 	Timer checkInTakeOver;
+	TimerTask_check task_check;
 	private LonLatEncryption lonLatEncryption;
 	
 	@Override
@@ -69,7 +71,7 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		
 		image_gps = (ImageView) findViewById(R.id.relay_gps_status);
 		
-		button_back = (ImageView) findViewById(R.id.out_delay_tip_back);
+		button_back = (TextView) findViewById(R.id.out_delay_tip_back);
 		
 		button_back.setOnTouchListener(this);
 	}
@@ -80,13 +82,19 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		super.onResume();
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
-		TimerTask task_check = new TimerTask() {
-			@Override
-			public void run() {
+		checkInTakeOver = new Timer();
+		task_check = new TimerTask_check();
+		
+		checkInTakeOver.schedule(task_check, 1000, 1000);
+	}
+	class TimerTask_check extends TimerTask{
+		@Override
+		public void run() {
 
-				runOnUiThread(new Runnable() { // UI thread
-					@Override
-					public void run() {
+			runOnUiThread(new Runnable() { // UI thread
+				@Override
+				public void run() {
+					if (YaoPao01App.loc != null) {
 						CNLonLat wgs84Point = new CNLonLat(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude());
 						CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
 					    int isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(encryptionPoint.getLon(),encryptionPoint.getLat());
@@ -97,10 +105,10 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 					        startActivity(intent);
 					    }
 					}
-				});
-			}
-		};
-		checkInTakeOver.schedule(task_check, 1000, 1000);
+					
+				}
+			});
+		}
 	}
 
 	/**
@@ -109,7 +117,15 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 	@Override
 	protected void onPause() {
 		super.onPause();
-		checkInTakeOver.cancel();
+		if(checkInTakeOver!=null){
+			checkInTakeOver.cancel();
+			checkInTakeOver = null;
+			if(task_check!=null){
+				task_check.cancel();
+				task_check = null;
+			}
+		}
+		
 	}
 
 

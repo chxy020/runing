@@ -461,7 +461,7 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 					startActivity(intent);
 	            }else{
 	            	Intent intent = new Intent(MatchMainRecomeActivity.this,
-	            			MatchGiveRelayActivity.class);
+	            			MatchNotInTakeOverActivity.class);
 					startActivity(intent);
 	            }
 
