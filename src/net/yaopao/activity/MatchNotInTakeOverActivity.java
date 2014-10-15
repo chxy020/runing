@@ -40,16 +40,10 @@ import android.widget.Toast;
 public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchListener {
 	
 	private ImageView imageview_avatar;
-	
 	private TextView label_uname;
-	
 	private TextView relay_end;
-	
-	
 	private TextView button_back;
-	
 	private ImageView image_gps;
-	
 	Timer checkInTakeOver;
 	TimerTask_check task_check;
 	private LonLatEncryption lonLatEncryption;

@@ -381,7 +381,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 //	        [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_targetkm] forKey:@"km"];
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
 	    	//用哪个数据
-	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_totalDisTeam);
+	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_targetkm);
 //	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
 	    }else{//不在交接区
 //	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
@@ -391,7 +391,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 //	        NSLog(@"kApp.match_targetkm is %i",kApp.match_targetkm);
 //	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
 	    	////用哪个数据
-	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
+	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_targetkm,(nextDis+5)/1000.0);
 	    }
 	}
 	int score4speed(int minute){
