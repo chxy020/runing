@@ -487,6 +487,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 				
 			    Intent intent = new Intent(MatchGiveRelayActivity.this,MatchFinishActivity.class);
 				startActivity(intent);
+				finish();
 			} else {
 				
 			}

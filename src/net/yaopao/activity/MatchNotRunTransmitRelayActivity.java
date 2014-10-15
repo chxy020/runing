@@ -179,6 +179,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	void startmatch(){
 		Intent intent = new Intent(this,MatchMainActivity.class);
 		startActivity(intent);
+		finish();
 	}
 	void downloadImage(){
         new RequestImageTask().execute("");

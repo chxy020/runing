@@ -101,10 +101,10 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 						CNLonLat encryptionPoint = lonLatEncryption.encrypt(wgs84Point);
 					    int isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(encryptionPoint.getLon(),encryptionPoint.getLat());
 					    if(isInTakeOverZone != -1){
-					        finish();
 					        Intent intent = new Intent(MatchNotInTakeOverActivity.this,
 			        				MatchGiveRelayActivity.class);
 					        startActivity(intent);
+					        finish();
 					    }
 					}
 					

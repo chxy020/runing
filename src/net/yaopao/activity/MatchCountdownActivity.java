@@ -65,12 +65,14 @@ public class MatchCountdownActivity extends BaseActivity {
 										MatchCountdownActivity.this,
 										MatchMainActivity.class);
 								startActivity(intent);
+								finish();
 							} else {// 不在出发区
 								CNAppDelegate.canStartButNotInStartZone = true;
 								Intent intent = new Intent(
 										MatchCountdownActivity.this,
 										MainActivity.class);
 								startActivity(intent);
+								finish();
 							}
 						}
 
