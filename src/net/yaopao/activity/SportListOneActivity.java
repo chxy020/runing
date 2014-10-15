@@ -85,10 +85,10 @@ public class SportListOneActivity extends BaseActivity {
 	private LonLatEncryption lonLatEncryption;
 	public GpsPoint lastDrawPoint;
 
-	private SimpleDateFormat sdf1;
-	private SimpleDateFormat sdf2;
-	private SimpleDateFormat sdf3;
-	private SimpleDateFormat sdf4;
+//	private SimpleDateFormat sdf1;
+//	private SimpleDateFormat sdf2;
+//	private SimpleDateFormat sdf3;
+//	private SimpleDateFormat sdf4;
 	// private DecimalFormat df;
 	String title = "";
 	int recordId = 0;
@@ -105,10 +105,10 @@ public class SportListOneActivity extends BaseActivity {
 		initViewPager();
 		mapView = (MapView) mapLayout.findViewById(R.id.one_map);
 		mapView.onCreate(savedInstanceState);
-		sdf1 = new SimpleDateFormat("MM");
-		sdf2 = new SimpleDateFormat("dd");
-		sdf3 = new SimpleDateFormat("HH:mm");
-		sdf4 = new SimpleDateFormat("yyyy");
+//		sdf1 = new SimpleDateFormat("MM");
+//		sdf2 = new SimpleDateFormat("dd");
+//		sdf3 = new SimpleDateFormat("HH:mm");
+//		sdf4 = new SimpleDateFormat("yyyy");
 
 		// df = (DecimalFormat) NumberFormat.getInstance();
 		// df.setMaximumFractionDigits(2);
@@ -404,9 +404,8 @@ public class SportListOneActivity extends BaseActivity {
 		int t6 = time[2] % 10;
 		Log.v("wysport", "utime =" + utime);
 
-		// timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" +
-		// t6);
-		timeV.setText(time[0] + ":" + time[1] + ":" + time[2]);
+		 timeV.setText(t1 + "" + t2 + ":" + t3 + "" + t4 + ":" + t5 + "" + t6);
+//		timeV.setText(time[0] + ":" + time[1] + ":" + time[2]);
 		Log.v("wysport", "time =" + t1 + "" + t2 + ":" + t3 + "" + t4 + ":"
 				+ t5 + "" + t6);
 		int[] speed = YaoPao01App.cal(pspeed);
