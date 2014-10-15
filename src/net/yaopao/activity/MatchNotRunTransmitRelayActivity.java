@@ -56,8 +56,8 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	private TextView button_back,relay_wait_desc;
 	private ImageView image_gps;
 	
-	private ImageView relayAnim;
-	private AnimationDrawable animationDrawable;  
+//	private ImageView relayAnim;
+//	private AnimationDrawable animationDrawable;  
 	
 	Timer timer_transmit;
 	String imagePath_runner;
@@ -88,9 +88,9 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 		relay_wait_desc = (TextView) findViewById(R.id.relay_wait_desc);
 		
 		
-		relayAnim = (ImageView) findViewById(R.id.relay_anim);
+//		relayAnim = (ImageView) findViewById(R.id.relay_anim);
 		relay_main = (RelativeLayout)findViewById(R.id.relay_main);
-        animationDrawable = (AnimationDrawable) relayAnim.getDrawable();  
+//        animationDrawable = (AnimationDrawable) relayAnim.getDrawable();  
 		button_back.setOnTouchListener(this);
 	}
 
@@ -154,7 +154,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 			        JSONObject longitude = resultDic.getJSONObject("longitude");
 			        if(longitude!=null&&!longitude.isEmpty()){//被确认接棒
 			        	CNAppDelegate.match_totalDisTeam = longitude.getDoubleValue("distancegr");
-			            startAnimation();
+//			            startAnimation();
 			            startmatch();
 			        }else{//没有搜索到人
 			            view_back.setVisibility(View.VISIBLE);
@@ -264,12 +264,12 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 //			e.printStackTrace();
 //		}
 //		[kApp.voiceHandler voiceOfapp:@"match_wait_get_relay" :nil];//needwy 动画和语音
-		YaoPao01App.matchWaitGetRelay();
-		relayAnim.setVisibility(View.VISIBLE);
-		relay_main.setVisibility(View.GONE);
-		animationDrawable.start();
-		relayAnim.setVisibility(View.GONE);    
-		relay_main.setVisibility(View.VISIBLE);
+//		YaoPao01App.matchWaitGetRelay();
+//		relayAnim.setVisibility(View.VISIBLE);
+//		relay_main.setVisibility(View.GONE);
+//		animationDrawable.start();
+//		relayAnim.setVisibility(View.GONE);    
+//		relay_main.setVisibility(View.VISIBLE);
 	}
 
 	@Override

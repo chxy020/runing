@@ -330,9 +330,16 @@ public class MatchNoRunMapActivity extends BaseActivity implements OnTouchListen
 		if(annotation != null){
 			annotation.remove();
 		}
+		Bitmap popBitmap = CNAppDelegate.avatarDic.get(imagePath+"pop");
+		if(popBitmap == null){//缓存中没有
+			popBitmap = getViewBitmap(getView(avatarImage));
+			CNAppDelegate.avatarDic.put(imagePath+"pop", popBitmap);
+		}else{
+			Log.v("zc","缓存已经存在气泡图片");
+		}
 		annotation = aMap.addMarker(new MarkerOptions()
 		.position(new LatLng(lat, lon))
-		.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView(avatarImage))))
+		.icon(BitmapDescriptorFactory.fromBitmap(popBitmap))
 		.anchor(0.5f, 0.5f));
 		aMap.invalidate();
 	}

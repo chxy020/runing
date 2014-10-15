@@ -84,6 +84,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private TextView label_uname,label_tName,button_back,label_date,label_time,label_pspeed,label_avr_speed;
 	
 	private LoadingDialog loadingDialog;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -498,9 +499,16 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		if(annotation != null){
 			annotation.remove();
 		}
+		Bitmap popBitmap = CNAppDelegate.avatarDic.get(imagePath+"pop");
+		if(popBitmap == null){//缓存中没有
+			popBitmap = getViewBitmap(getView(avatarImage));
+			CNAppDelegate.avatarDic.put(imagePath+"pop", popBitmap);
+		}else{
+			Log.v("zc","缓存已经存在气泡图片");
+		}
 		annotation = aMap.addMarker(new MarkerOptions()
 		.position(new LatLng(lat, lon))
-		.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView(avatarImage))))		
+		.icon(BitmapDescriptorFactory.fromBitmap(popBitmap))		
 		.anchor(0.5f, 0.5f));
 		aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(lat, lon)));
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
@@ -647,6 +655,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	 * * 在view布局文件中中显示文字
 	 * */
 	public View getView(Bitmap avatar) {
+		Log.v("zc","getview!!!");
 		View view = getLayoutInflater().inflate(R.layout.marker_avatar, null);
 		ImageView avatarInside = (ImageView) view.findViewById(R.id.marker_avatar);
 		avatarInside.setImageBitmap(avatar);

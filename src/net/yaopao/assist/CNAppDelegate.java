@@ -32,7 +32,7 @@ public class CNAppDelegate {
 	
 	public static final String kTrackName = "LunYang";//使用赛道
 	public static final String kStartTime = "2014-10-15 16:20:00";//比赛开始时间
-	public static final int kDuringMinute = 1000;//比赛持续时间
+	public static final int kDuringMinute = 24*60;//比赛持续时间
 
 
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
