@@ -452,7 +452,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				
 				double distance = resultDic.getDoubleValue("distancegr");
 			    
-				initMileage(distance);
+				initMileage(distance+5);
 				
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
 				if(infoDic.isEmpty()){

@@ -311,7 +311,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	private void initMileage(DataBean data) {
-		distance = data.getDistance();
+		distance = data.getDistance()+5;
 		// distance = 549254;
 		ImageView d1V = (ImageView) this.findViewById(R.id.main_milage_num1);
 		ImageView d2V = (ImageView) this.findViewById(R.id.main_milage_num2);
