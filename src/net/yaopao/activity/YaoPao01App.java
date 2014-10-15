@@ -949,32 +949,62 @@ public class YaoPao01App extends Application {
 		/**
 		 * 获取团队已完成公里数
 		 */
-		public static String getTeamCompletedMileage(){
-			return ",";
+		public static String getTeamCompletedMileage(double distance){
+			List<Integer> dis = voice.voiceOfDouble(distance);
+			String disStr = "";
+			for (int i = 0; i < dis.size(); i++) {
+				disStr += dis.get(i) + ",";
+			}
+				return disStr;
 			}
 		/**
 		 * 获取个人已完成公里数
 		 */
-		public static String getPersonnalCompletedMileage(){
-			return ",";
+		public static String getPersonnalCompletedMileage(double distance){
+			double cdis =Double.parseDouble(df.format((double) ((distance+5) / 1000)));
+			List<Integer> dis = voice.voiceOfDouble(cdis);
+			String disStr = "";
+			for (int i = 0; i < dis.size(); i++) {
+				disStr += dis.get(i) + ",";
+			}
+				return disStr;
+			
 		}
 		/**
 		 * 获取个人已完成用时
 		 */
-		public static String getPersonnalCompletedTime(){
-			return ",";
+		public static String getPersonnalCompletedTime(int match_historySecond){
+			// 获取用时语音代码
+			int[] times = YaoPao01App.cal(match_historySecond);
+			List<Integer> time = voice.voiceOfTime(times[0], times[1], times[2]);
+			String timeStr = "";
+			for (int i = 0; i < time.size(); i++) {
+				timeStr += time.get(i) + ",";
+			}
+			return timeStr;
 		}
 		/**
 		 * 获取个人已完成配速
 		 */
-		public static String getPersonnalPspeed(){
-			return ",";
+		public static String getPersonnalPspeed(int pspeed){
+			int[] speeds = YaoPao01App.cal(pspeed);
+			List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
+			String speedStr = "";
+			for (int i = 0; i < speed.size(); i++) {
+				speedStr += speed.get(i) + ",";
+			}
+			return speedStr;
 		}
 		/**
 		 * 距交接区距离
 		 */
-		public static String getDisToTakeOver(){
-			return ",";
+		public static String getDisToTakeOver(double toTakeOverDis){
+			List<Integer> dis = voice.voiceOfDouble(toTakeOverDis);
+			String disStr = "";
+			for (int i = 0; i < dis.size(); i++) {
+				disStr += dis.get(i) + ",";
+			}
+				return disStr;
 			}
 		
 		/**
@@ -982,10 +1012,10 @@ public class YaoPao01App extends Application {
 		 * 2，团队成绩至整公里数时；
 		 * 3，尚未到达交接区时；
 		 */
-		public static void matchOneKmAndNotInTakeOver() {
+		public static void matchOneKmAndNotInTakeOver(double dis,double toTakeOverDis) {
 			StringBuffer ids = new StringBuffer();
 			//你的团队已完成XX公里，距离下一交接区还有XX公里。
-			ids.append("131101,").append(getTeamCompletedMileage()).append("110041,131102,").append(getDisToTakeOver()).append("110041");
+			ids.append("131101,").append(getTeamCompletedMileage(dis)).append("110041,131102,").append(getDisToTakeOver(toTakeOverDis)).append("110041");
 			Log.v("wyvoice", "你的团队已完成XX公里，距离下一交接区还有XX公里 ids =" + ids);
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
@@ -994,10 +1024,10 @@ public class YaoPao01App extends Application {
 		 * 2，团队成绩至整公里数时；
 		 * 3，到达交接区时；
 		 */
-		public static void matchOneKmTeam() {
+		public static void matchOneKmTeam(double dis) {
 			StringBuffer ids = new StringBuffer();
 			//你的团队已完成XX公里。
-			ids.append("131101,").append(getTeamCompletedMileage()).append("110041");
+			ids.append("131101,").append(getTeamCompletedMileage(dis)).append("110041");
 			Log.v("wyvoice", "你的团队已完成XX公里。 ids =" + ids);
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}
@@ -1013,7 +1043,7 @@ public class YaoPao01App extends Application {
 		 * 1，持棒队员；
 		 * 2，把接力棒交给队友后；
 		 */
-		public static void matchRunningTransmitRelay() {
+		public static void matchRunningTransmitRelay(double dis,int time,int pspeed) {
 			StringBuffer ids = new StringBuffer();
 //			
 //			 [voiceArray addObject:@"131104"];
@@ -1030,8 +1060,8 @@ public class YaoPao01App extends Application {
 			//接力棒已交给队友。你已完成XX公里，用时XX分XX秒，平均速度每公里XX分XX秒。恭喜你！完成了本阶段赛程。
 //			ids.append("131104,120221,").append("110041,120212,").append("120213,").append("120103,131105");
 //			Log.v("wyvoice", "接力棒已交给队友。你已完成XX公里，用时XX分XX秒，平均速度每公里XX分XX秒。恭喜你！完成了本阶段赛程。 ids =" + ids);
-			ids.append("131104,120221,").append(getPersonnalCompletedMileage()).append("110041,120212,").
-			append(getPersonnalCompletedTime()).append("120213,").append(getPersonnalPspeed()).append("120103,131105");
+			ids.append("131104,120221,").append(getPersonnalCompletedMileage(dis)).append("110041,120212,").
+			append(getPersonnalCompletedTime(time)).append("120213,").append(getPersonnalPspeed(pspeed)).append("120103,131105");
 			Log.v("wyvoice", "接力棒已交给队友。你已完成XX公里，用时XX分XX秒，平均速度每公里XX分XX秒。恭喜你！完成了本阶段赛程。 ids =" + ids);
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
 		}

@@ -117,15 +117,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		/**
 		 * 测试代码 加载赛道数据，调用jts方法
 		 */
-		// LonLatEncryption lonLatEncryption = new LonLatEncryption();
-		// TrackData trackData = new TrackData();
-		// trackData.read("DaXingTest2.properties");
-		// GpsPoint point =new GpsPoint(116.321122,39.751262);
-		// boolean isInTrack =
-		// trackData.isInTheTracks(lonLatEncryption.encrypt(point).lon,lonLatEncryption.encrypt(point).lat);
-		// Log.v("wytrack",
-		// "isInTrack ="+isInTrack+" claimedLength="+trackData.claimedLength+" name"+trackData.name+" pgTracks"+trackData.pgTracks);
-		//
 
 		// YaoPao01App.matchOneKmAndNotInTakeOver();
 		// YaoPao01App.matchOneKmTeam();

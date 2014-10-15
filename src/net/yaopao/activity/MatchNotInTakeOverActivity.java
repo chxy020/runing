@@ -16,6 +16,8 @@ import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.AsyncTask;
@@ -139,8 +141,7 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				//提前结束处理
-				//needwy
+				quit1();
 				break;
 			}
 			break;
@@ -193,7 +194,40 @@ public class MatchNotInTakeOverActivity extends BaseActivity implements OnTouchL
 		}
 
 	}
-	
+	public void quit1() {
+		new AlertDialog.Builder(MatchNotInTakeOverActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
+				.setMessage("结束跑队赛程意味着跑队比赛结束，成绩截止，其他队友也将无法继续参赛。您是否确认提前结束跑队的比赛？")
+				.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						
+						quit2();
+						dialog.cancel();
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				}).show();
+	}
+	public void quit2() {
+		new AlertDialog.Builder(MatchNotInTakeOverActivity.this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s)
+		.setMessage("请再次确认提前结束跑队的比赛？")
+		.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();				
+			}
+		})
+		.setNegativeButton("确认", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				finishMatch();
+			}
+		}).show();
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_HOME) {
