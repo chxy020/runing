@@ -53,7 +53,7 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname1"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                    android:background="@drawable/avatar_default_s" />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname1"
@@ -79,7 +79,7 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname2"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                    android:background="@drawable/avatar_default_s" />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname2"
@@ -106,7 +106,7 @@
                     android:layout_height="@dimen/head_hight1"
                     android:layout_above="@+id/relay_wait_nickname3"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/avatar_default" />
+                    android:background="@drawable/avatar_default_s" />
 
                 <TextView
                     android:id="@+id/relay_wait_nickname3"
@@ -186,7 +186,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
-            android:background="@drawable/avatar_default" />
+            android:background="@drawable/avatar_default_s" />
 
         <TextView
             android:id="@+id/relay_chosen_nickname"
@@ -402,7 +402,7 @@
             android:layout_width="@dimen/head_hight1"
             android:layout_height="@dimen/head_hight1"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/avatar_default" />
+            android:background="@drawable/avatar_default_s" />
 
         <TextView
             android:id="@+id/relay_nickname"

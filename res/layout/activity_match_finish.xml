@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin1"
-            android:background="@drawable/avatar_default" />
+            android:background="@drawable/avatar_default_s" />
 
         <TextView
             android:id="@+id/match_username"

@@ -94,7 +94,7 @@
                     android:layout_width="@dimen/head_hight1"
                     android:layout_height="@dimen/head_hight1"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/avatar_default" />
+                    android:background="@drawable/avatar_default_s" />
 
                 <ImageView
                     android:id="@+id/head_arrow"
