@@ -463,8 +463,10 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		case R.id.match_team:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				teamV.setBackgroundResource(R.drawable.match_team_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				teamV.setBackgroundResource(R.drawable.match_team);
 				Intent intent = new Intent(MatchMainActivity.this,
 						MatchGroupListActivity.class);
 				startActivity(intent);

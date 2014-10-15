@@ -342,8 +342,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		case R.id.match_watch_score:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_list.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_list.setBackgroundResource(R.color.white);
 				Intent intent = new Intent(MatchGroupInfoActivity.this,
 						MatchGroupListActivity.class);
 				startActivity(intent);
@@ -353,8 +355,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		case R.id.match_watch_message:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_message.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_message.setBackgroundResource(R.color.white);
 				Intent messageIntent = new Intent(this,WebViewActivity.class);
 				messageIntent.putExtra("net.yaopao.activity.PageUrl",
 							"message_index.html");
@@ -365,8 +369,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		case R.id.match_watch_user:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_me.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_me.setBackgroundResource(R.color.white);
 				Intent recIntent = new Intent(MatchGroupInfoActivity.this,
 						SportListActivity.class);
 				startActivity(recIntent);
@@ -376,8 +382,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		case R.id.match_get_baton:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_relay.setBackgroundResource(R.drawable.match_baton_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_relay.setBackgroundResource(R.drawable.match_baton);
 				if(CNAppDelegate.istest){
 					Intent intent = new Intent(MatchGroupInfoActivity.this,
 	        				MatchNotRunTransmitRelayActivity.class);

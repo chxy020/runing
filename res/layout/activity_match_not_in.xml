@@ -12,7 +12,7 @@
         android:layout_height="@dimen/small_height"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin1"
-        android:src="@drawable/gps_3" />
+        android:src="@drawable/gps_1" />
 
     <TextView
         android:id="@+id/out_relay_gps"

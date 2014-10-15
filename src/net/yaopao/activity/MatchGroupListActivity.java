@@ -189,8 +189,10 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			//返回
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				button_back.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				button_back.setBackgroundResource(R.color.red);
 				finish();
 				break;
 			}

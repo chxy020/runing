@@ -451,6 +451,7 @@ private BroadcastReceiver gpsStateReceiver = new BroadcastReceiver() {
 	public void onReceive(Context context, Intent intent) {
 		unregisterReceiver(this);
 		int rank = intent.getExtras().getInt("state");
+		Log.v("wymatch", "gpsStateReceiver ="+rank );
 		switch (rank) {
 		case 1:
 			image_gps.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gps_1));

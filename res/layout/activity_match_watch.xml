@@ -44,15 +44,6 @@
             android:layout_height="match_parent" />
 
 
-        <!-- <TextView
-            android:layout_width="@dimen/recording_List_main_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:text="15.21 km"
-            android:textSize="@dimen/font_size3"
-            android:textStyle="bold" /> -->
          <LinearLayout
 		            android:id="@+id/list_sport_distance"
 		            android:layout_width="wrap_content"
@@ -242,14 +233,9 @@
             android:gravity="center_vertical"
             android:textSize="@dimen/font_size2"
             />
+        
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/match_watch_user"
-        android:background="@color/black" >
-    </View>
   
  <RelativeLayout
         android:id="@+id/match_watch_score"
@@ -274,12 +260,6 @@
             />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@id/match_watch_score"
-        android:background="@color/black" >
-    </View>
  <RelativeLayout
         android:id="@+id/match_watch_message"
         android:layout_width="match_parent"
@@ -309,23 +289,20 @@
                 android:layout_marginRight="@dimen/margin2"
                 android:layout_marginTop="@dimen/margin9"
                 android:background="@drawable/dot_b" />
-<!--         <ImageView
-            android:id="@+id/match_watch_baton_icon"
-            android:layout_width="@dimen/common_height"
-            android:layout_height="@dimen/common_height"
-            android:layout_margin="@dimen/margin1"
-            android:background="@drawable/match_baton" />
-
-        <TextView
-            android:layout_toRightOf="@id/match_watch_baton_icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="我要接棒" 
-            android:gravity="center_vertical"
-            android:textSize="@dimen/font_size2"
-            /> -->
     </RelativeLayout>
-
+ <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/match_watch_user"
+        android:background="@color/black" >
+    </View>
+ 
+ <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/match_watch_score"
+        android:background="@color/black" >
+    </View>
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
@@ -352,7 +329,7 @@
                 android:layout_height="@dimen/main_start_hight"
                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin2"
-                android:background="@drawable/match_baton" />
+                android:src="@drawable/match_baton" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

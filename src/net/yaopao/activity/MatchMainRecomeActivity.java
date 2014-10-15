@@ -447,8 +447,10 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		case R.id.match_recome_team:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				teamV.setBackgroundResource(R.drawable.match_team_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				teamV.setBackgroundResource(R.drawable.match_team);
 				Intent intent = new Intent(MatchMainRecomeActivity.this,
 						MatchGroupListActivity.class);
 				startActivity(intent);
@@ -459,8 +461,10 @@ public class MatchMainRecomeActivity extends BaseActivity implements OnTouchList
 		case R.id.match_recome_run_baton:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
+				batonV.setBackgroundResource(R.drawable.match_baton_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				batonV.setBackgroundResource(R.drawable.match_baton);
 				CNGPSPoint4Match gpspoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
 				int isInTakeOverZone;
 				if(CNAppDelegate.istest){

@@ -41,8 +41,6 @@ public class SplashActivity extends Activity {
 			//测试代码
 			Constants.endpoints=Constants.endpoints1;
 			Constants.endpoints_img=Constants.endpoints2;
-			int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-			Toast.makeText(this, "Max memory is " + maxMemory + "KB", Toast.LENGTH_LONG).show();
 			//测试代码
 			
 //			Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );

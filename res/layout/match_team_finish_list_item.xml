@@ -14,7 +14,7 @@
             android:layout_height="@dimen/common_height"
             android:layout_margin="@dimen/margin1"
             android:layout_centerVertical="true"
-            android:background="@drawable/avatar_default_s" />
+            android:src="@drawable/avatar_default_s" />
 
         <TextView
             android:id="@+id/username"
@@ -43,43 +43,43 @@
                 android:id="@+id/list_sport_num2"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_0" />
+                />
 
             <ImageView
                 android:id="@+id/list_sport_num2"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_0" />
+                 />
 
             <ImageView
                 android:id="@+id/list_sport_num2"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_0" />
+                />
 
             <ImageView
                 android:id="@+id/list_sport_dot"
                 android:layout_width="@dimen/list_dot_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_dot" />
+                android:src="@drawable/r_dot" />
 
             <ImageView
                 android:id="@+id/list_sport_dec1"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_0" />
+                />
 
             <ImageView
                 android:id="@+id/list_sport_dec2"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_0" />
+                />
 
             <ImageView
                 android:id="@+id/match_milage_km"
                 android:layout_width="@dimen/list_km_width"
                 android:layout_height="@dimen/list_num_height"
-                android:background="@drawable/r_km" />
+                android:src="@drawable/r_km" />
         </LinearLayout>
     </RelativeLayout>
      <View
