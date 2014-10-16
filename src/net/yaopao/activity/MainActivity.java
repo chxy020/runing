@@ -316,11 +316,23 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			d1V.setVisibility(View.VISIBLE);
+//		}
+//		if (d2 > 0) {
+//			d2V.setVisibility(View.VISIBLE);
+//		}
+//		if (d3 > 0) {
+//			d3V.setVisibility(View.VISIBLE);
+//		}
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
+			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
 			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE); 
 		}
 		if (d3 > 0) {
 			d3V.setVisibility(View.VISIBLE);

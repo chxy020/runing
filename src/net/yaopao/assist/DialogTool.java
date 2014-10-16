@@ -156,14 +156,14 @@ public class DialogTool implements OnTouchListener {
 //		LayoutInflater inflater = LayoutInflater.from(context);
 		final View dialogView = inflater.inflate(R.layout.tip_dialog1, null);
 		final TextView cancel = (TextView) dialogView.findViewById(R.id.tip_cancle);
-
+		dialog.setContentView(dialogView);
 
 
 //		Window dialogWindow = dialog.getWindow();
 //		WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-//		p.height = (int) (d.getHeight() * 0.9); //
-//		p.width = (int) (d.getWidth() * 0.7); //
-//		dialogWindow.setAttributes(p);
+		p.height = (int) (d.getHeight() * 0.9); //
+		p.width = (int) (d.getWidth() * 0.7); //
+		dialogWindow.setAttributes(p);
 
 		dialog.show();
 		cancel.setOnTouchListener(new OnTouchListener() {

@@ -39,20 +39,20 @@ public class SplashActivity extends Activity {
 		MobclickAgent.updateOnlineConfig(this);
 	
 			//测试代码
-//			Constants.endpoints=Constants.endpoints1;
-//			Constants.endpoints_img=Constants.endpoints2;
+			Constants.endpoints=Constants.endpoints1;
+			Constants.endpoints_img=Constants.endpoints2;
 			//测试代码
 			
-			Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
-			Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
-			Log.v("wyuser", "在线参数1="+Constants.endpoints);
-			Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
-			if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
-				Constants.endpoints=Constants.endpoints1;
-				Constants.endpoints_img=Constants.endpoints2;
-			}else{
-				Constants.endpoints+="chSports";
-			}
+//			Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
+//			Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
+//			Log.v("wyuser", "在线参数1="+Constants.endpoints);
+//			Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
+//			if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
+//				Constants.endpoints=Constants.endpoints1;
+//				Constants.endpoints_img=Constants.endpoints2;
+//			}else{
+//				Constants.endpoints+="chSports";
+//			}
 
 		
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
