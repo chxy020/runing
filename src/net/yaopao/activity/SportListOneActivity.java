@@ -317,7 +317,7 @@ public class SportListOneActivity extends BaseActivity {
 				Log.v("wysport", "points =" + points);
 
 				aMap.addPolyline((new PolylineOptions()).addAll(points)
-						.color(Color.GREEN).width(13f));
+						.color(Color.GREEN).width(11f));
 				n = i + 1;// n为下一个起点
 			}
 		}
@@ -388,9 +388,9 @@ public class SportListOneActivity extends BaseActivity {
 		GpsPoint crrPoint = null;
 		// 先绘制黑色底线和灰色线
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(10f));
+				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(13f));
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(8f));
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(11f));
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
 			GpsPoint encryptPoint = lonLatEncryption.encrypt(crrPoint);
@@ -416,12 +416,12 @@ public class SportListOneActivity extends BaseActivity {
 				runPoints.add(latlon);
 			} else if (crrPoint.status == 1) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
-						.color(Color.GREEN).width(8f));
+						.color(Color.GREEN).width(11f));
 				runPoints = new ArrayList<LatLng>();
 			}
 			if (i == (pointsArray.size() - 1)) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
-						.color(Color.GREEN).width(8f));
+						.color(Color.GREEN).width(11f));
 			}
 			// 移动到中心
 			LatLng latlon1 = new LatLng(min_lat, min_lon);

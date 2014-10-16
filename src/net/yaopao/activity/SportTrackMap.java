@@ -183,9 +183,9 @@ public class SportTrackMap extends BaseActivity{
 		GpsPoint crrPoint =null;
 		// 先绘制黑色底线和灰色线
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(15f));
+				.addAll(initPoints(pointsArray)).color(Color.BLACK).width(13f));
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(13f));
+				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(11f));
 		lastSportPoint = pointsArray.get(0);
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
@@ -224,10 +224,10 @@ public class SportTrackMap extends BaseActivity{
 							time_one_km = 0;
 						}
 			}else if(crrPoint.status==1){
-				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(13f));
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(11f));
 				runPoints = new ArrayList<LatLng>();
 			}if (i==(pointsArray.size()-1)) {
-				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(13f));
+				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(11f));
 			}
 //			// 移动到中心
 //			LatLng latlon1 = new LatLng(min_lat, min_lon);
