@@ -295,18 +295,21 @@ public class SportListOneActivity extends BaseActivity {
 			if (gpsLon < 0.01 || i == pointCount - 1) {
 				List<LatLng> points = new ArrayList<LatLng>();
 				for (j = 0; j < i - n; j++) {
-					if (gpsLon < min_lon) {
-						min_lon = gpsLon;
+					if(gpsLon > 0.01){
+						if (gpsLon < min_lon) {
+							min_lon = gpsLon;
+						}
+						if (gpsLat < min_lat) {
+							min_lat = gpsLat;
+						}
+						if (gpsLon > max_lon) {
+							max_lon = gpsLon;
+						}
+						if (gpsLat > max_lat) {
+							max_lat = gpsLat;
+						}
 					}
-					if (gpsLat < min_lat) {
-						min_lat = gpsLat;
-					}
-					if (gpsLon > max_lon) {
-						max_lon = gpsLon;
-					}
-					if (gpsLat > max_lat) {
-						max_lat = gpsLat;
-					}
+					
 					double lat2 = Double.parseDouble(match_pointList[n+j].split(" ")[1]);
 		            double lon2 = Double.parseDouble(match_pointList[n+j].split(" ")[0]);
 					points.add(new LatLng(lat2,lon2));
@@ -391,18 +394,21 @@ public class SportListOneActivity extends BaseActivity {
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
 			GpsPoint encryptPoint = lonLatEncryption.encrypt(crrPoint);
-			if (encryptPoint.lon < min_lon) {
-				min_lon = encryptPoint.lon;
+			if(encryptPoint.lon > 0.01){
+				if (encryptPoint.lon < min_lon) {
+					min_lon = encryptPoint.lon;
+				}
+				if (encryptPoint.lat < min_lat) {
+					min_lat = encryptPoint.lat;
+				}
+				if (encryptPoint.lon > max_lon) {
+					max_lon = encryptPoint.lon;
+				}
+				if (encryptPoint.lat > max_lat) {
+					max_lat = encryptPoint.lat;
+				}
 			}
-			if (encryptPoint.lat < min_lat) {
-				min_lat = encryptPoint.lat;
-			}
-			if (encryptPoint.lon > max_lon) {
-				max_lon = encryptPoint.lon;
-			}
-			if (encryptPoint.lat > max_lat) {
-				max_lat = encryptPoint.lat;
-			}
+			
 			if (crrPoint.status == 0) {
 				LatLng latlon = new LatLng(
 						lonLatEncryption.encrypt(crrPoint).lat,
