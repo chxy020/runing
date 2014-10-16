@@ -30,7 +30,7 @@ public class CNAppDelegate {
 	public static int matchtestdatalength;
 	public static int testIndex= 0; 
 	
-	public static final String kTrackName = "LongWan";//使用赛道
+	public static final String kTrackName = "Olympics";//使用赛道
 	public static final String kStartTime = "2014-10-16 10:30:00";//比赛开始时间
 	public static final int kDuringMinute = 60*24;//比赛持续时间
 
