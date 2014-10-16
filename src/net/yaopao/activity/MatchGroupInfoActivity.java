@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
@@ -22,9 +23,11 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,12 +43,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.LocationSource.OnLocationChangedListener;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
@@ -58,15 +68,23 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListener,
-		OnMapClickListener {
+public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListener,OnMapClickListener,LocationSource ,AMapLocationListener {
 	private MapView mapView;
 	private AMap aMap;
 	private RelativeLayout button_list;
 	private RelativeLayout button_message;
 	private RelativeLayout button_me;
 	private RelativeLayout match_get_baton_layout;
-	private ImageView button_relay;
+	private RelativeLayout mapContainer;
+	private RelativeLayout titleBar;
+	private RelativeLayout bottombar;
+	private ImageView button_relay; 
+	private ImageView backV;
+	private ImageView match_map_loc ;
+	private OnLocationChangedListener mListener;
+	private LocationManagerProxy mAMapLocationManager;
+	
+	Resources resource; 
 	
 //	private ImageView button_relay;
 	
@@ -95,6 +113,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		if(getIntent().getExtras() != null){
 			from = getIntent().getExtras().getString("from");
 		}
+		resource = getResources();
 		mapView = (MapView) findViewById(R.id.match_watch_map);
 		mapView.onCreate(savedInstanceState);
 		mapView.setOnTouchListener(this);
@@ -189,6 +208,14 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		button_message = (RelativeLayout) findViewById(R.id.match_watch_message);
 		button_me = (RelativeLayout) findViewById(R.id.match_watch_user);
 		match_get_baton_layout = (RelativeLayout) findViewById(R.id.match_get_baton_layout);
+		mapContainer = (RelativeLayout)findViewById(R.id.match_watch_map_layout);
+		titleBar = (RelativeLayout)findViewById(R.id.match_watch_top_bar);
+		bottombar = (RelativeLayout)findViewById(R.id.match_bottom);
+		
+		backV = (ImageView) findViewById(R.id.match_full_map_back);
+		match_map_loc = (ImageView) findViewById(R.id.match_map_loc);
+		backV.setOnTouchListener(this);
+		match_map_loc.setOnTouchListener(this);
 		
 		button_relay = (ImageView) findViewById(R.id.match_get_baton);
 		image_avatar = (ImageView) findViewById(R.id.match_watch_head);	
@@ -227,7 +254,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	 * 设置一些amap的属性
 	 */
 	private void setUpMap() {
-		if (aMap == null) {
 			aMap = mapView.getMap();
 			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 
@@ -243,7 +269,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 
 				}
 			});
-		}
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -255,9 +280,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 
 			@Override
 			public void onMapClick(LatLng arg0) {
-				Intent intent = new Intent(MatchGroupInfoActivity.this,
-						MatchNoRunMapActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(MatchGroupInfoActivity.this,
+//						MatchNoRunMapActivity.class);
+//				startActivity(intent);
+				displaymap("big");
 			}
 		});
 	}
@@ -339,6 +365,31 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
+		case R.id.match_full_map_back:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				displaymap("small");
+				break;
+			}
+			break;
+			
+		case R.id.match_map_loc:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				match_map_loc.setBackgroundResource(R.drawable.button_position_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				match_map_loc.setBackgroundResource(R.drawable.button_position);
+				Location myloc = aMap.getMyLocation();
+				if (myloc != null) {
+					aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(myloc.getLatitude(), myloc.getLongitude())));
+				}
+
+				break;
+			}
+			break;
 		case R.id.match_watch_score:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
@@ -482,6 +533,8 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
 			    //needwy 将地图中心点移动到lon，lat，level=16 
+			    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16));
+			    
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
 			    imagePath = runnerDic.getString("imgpath");
 			    //
@@ -668,5 +721,83 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		ImageView avatarInside = (ImageView) view.findViewById(R.id.marker_avatar);
 		avatarInside.setImageBitmap(avatar);
 		return view;
+	}
+	public void displaymap(String type){
+		if(type.equals("big")){
+			titleBar.setVisibility(View.GONE);
+			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mapContainer.getLayoutParams();   //取控件aaa当前的布局参数
+			layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;    
+			layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT; //当控件的高强制设成365象素
+			mapContainer.setLayoutParams(layoutParams);
+			bottombar.setVisibility(View.VISIBLE);
+			//needwy设置地图是否可缩放，点击等
+			setBigMap();
+		}else if(type.equals("small")){
+			titleBar.setVisibility(View.VISIBLE);
+			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mapContainer.getLayoutParams();   //取控件aaa当前的布局参数
+			layoutParams.height = (int) resource.getDimension(R.dimen.recording_save_pho_height);
+			Log.v("zc","height="+layoutParams.height);
+			layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT; //当控件的高强制设成365象素
+			mapContainer.setLayoutParams(layoutParams);
+			bottombar.setVisibility(View.GONE);
+			//needwy设置地图是否可缩放，点击等
+			setUpMap();
+		}
+	}
+	
+	private void setBigMap() {
+		aMap.setOnMapClickListener(null);
+		aMap.getUiSettings().setZoomControlsEnabled(false);
+		aMap.setLocationSource(this);// 设置定位监听
+		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+		aMap.getUiSettings().setScrollGesturesEnabled(true);
+		aMap.getUiSettings().setZoomGesturesEnabled(true);
+
+	}
+	@Override
+	public void activate(OnLocationChangedListener listener) {
+		mListener = listener;
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(this);
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 2000, 10, this);
+		}
+	}
+
+	@Override
+	public void deactivate() {
+		mListener = null;
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+	@Override
+	public void onLocationChanged(AMapLocation aLocation) {
+		if (mListener != null && aLocation != null) {
+			mListener.onLocationChanged(aLocation);
+		}
+	}
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -541,8 +541,8 @@ public final class R {
         public static final int match_finish_time_s1=0x7f0b0065;
         public static final int match_finish_time_s2=0x7f0b0066;
         public static final int match_finish_time_text=0x7f0b005e;
-        public static final int match_full_map=0x7f0b0133;
-        public static final int match_full_map_back=0x7f0b0134;
+        public static final int match_full_map=0x7f0b0134;
+        public static final int match_full_map_back=0x7f0b0133;
         public static final int match_get_baton=0x7f0b0132;
         public static final int match_get_baton_layout=0x7f0b0131;
         public static final int match_gps=0x7f0b0052;
