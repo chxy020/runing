@@ -139,6 +139,6 @@ public class Variables {
 	public static String activityOnFront="";
 	
 	
-	public static boolean isTest=true;//是否是测试客户端
+	public static boolean isTest=false;//是否是测试客户端
 
 }
