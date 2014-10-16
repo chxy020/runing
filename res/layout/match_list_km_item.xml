@@ -26,11 +26,6 @@
             android:layout_marginRight="@dimen/margin1"
             android:gravity="center" >
 
-            <ImageView
-                android:id="@+id/list_sport_num1"
-                android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/match_list_head2"
