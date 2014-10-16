@@ -26,20 +26,20 @@ public class CNAppDelegate {
 	//一些常量
 	
 	//测试比赛用
-	public static final boolean istest = true;
+	public static final boolean istest = false;
 	public static int matchtestdatalength;
 	public static int testIndex= 0; 
 	
-	public static final String kTrackName = "Olympics";//使用赛道
-	public static final String kStartTime = "2014-10-16 10:30:00";//比赛开始时间
-	public static final int kDuringMinute = 60*24;//比赛持续时间
+	public static final String kTrackName = "LunYang2";//使用赛道
+	public static final String kStartTime = "2014-10-16 16:30:00";//比赛开始时间
+	public static final int kDuringMinute = 40;//比赛持续时间
 
 
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间
 	public static final int kkmInterval = 1000;//每1000米上报整公里
 	public static final int kMatchInterval = 2;//两秒取一个点
-	public static final int kBoundary1 = 10;//偏离赛道界限1，10分钟
-	public static final int kBoundary2 = 60;//偏离赛道界限2，60分钟
+	public static final int kBoundary1 = 5;//偏离赛道界限1，10分钟
+	public static final int kBoundary2 = 10;//偏离赛道界限2，60分钟
 	public static final int kScanTransmitinterval = 10;//交接棒扫描间隔
 	public static final int kShortTime = 3000;//和服务器同步时间要小于
 	//一些变量
