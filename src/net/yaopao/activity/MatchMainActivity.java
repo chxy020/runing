@@ -52,6 +52,8 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	private ImageView d2V;
 	private ImageView d3V;
 	private ImageView d4V;
+	private ImageView d5V;
+	private ImageView d6V;
 
 	private ImageView t1V;
 	private ImageView t2V;
@@ -138,6 +140,8 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 		d2V = (ImageView) findViewById(R.id.match_recoding_dis2);
 		d3V = (ImageView) findViewById(R.id.match_recoding_dis3);
 		d4V = (ImageView) findViewById(R.id.match_recoding_dis4);
+		d5V = (ImageView) findViewById(R.id.match_recoding_dis5);
+		d6V = (ImageView) findViewById(R.id.match_recoding_dis6);
 
 		t1V = (ImageView) findViewById(R.id.match_recoding_time_h1);
 		t2V = (ImageView) findViewById(R.id.match_recoding_time_h2);
@@ -301,6 +305,7 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	            }
 //	            self.big_div.distance = (kApp.match_totaldis+5)/1000.0;
 	            Log.v("zc","跑了多少米:"+CNAppDelegate.match_totaldis+5);
+	          
 	            initMileage(CNAppDelegate.match_totaldis+5);
 	            //计算配速
 	            if(CNAppDelegate.match_totaldis > 1){
@@ -659,17 +664,52 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 				 .get(R.drawable.w_sec));
 		 
 	}
+//	private void initMileage(double distance) {
+//		// distance = 549254;
+//		int d1 = (int) (distance % 100000) / 10000;
+//		int d2 = (int) (distance % 10000) / 1000;
+//		int d3 = (int) (distance % 1000) / 100;
+//		int d4 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			d1V.setVisibility(View.VISIBLE);
+//		}
+//		
+//		YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1V,d2V,d3V,d4V});
+//	}
 	private void initMileage(double distance) {
-		// distance = 549254;
-		int d1 = (int) (distance % 100000) / 10000;
-		int d2 = (int) (distance % 10000) / 1000;
-		int d3 = (int) (distance % 1000) / 100;
-		int d4 = (int) (distance % 100) / 10;
+		d1V.setVisibility(View.GONE);
+		d2V.setVisibility(View.GONE);
+		d3V.setVisibility(View.GONE);
+		int d1 = (int) distance / 1000000;
+		int d2 = (int) (distance % 1000000) / 100000;
+		int d3 = (int) (distance % 100000) / 10000;
+		int d4 = (int) (distance % 10000) / 1000;
+		int d5 = (int) (distance % 1000) / 100;
+		int d6 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			d1V.setVisibility(View.VISIBLE);
+//		}
+//		if (d2 > 0) {
+//			d2V.setVisibility(View.VISIBLE);
+//		}
+//		if (d3 > 0) {
+//			d3V.setVisibility(View.VISIBLE);
+//		}
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
+			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE);
 		}
-		
-		YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1V,d2V,d3V,d4V});
+		if (d2 > 0) {
+			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE); 
+		}
+		if (d3 > 0) {
+			d3V.setVisibility(View.VISIBLE);
+		}
+		YaoPao01App.graphicTool.updateWhiteNum(
+				new int[] { d1, d2, d3, d4, d5, d6 }, new ImageView[] { d1V,
+						d2V, d3V, d4V, d5V, d6V });
 	}
 	// 初始化平均配速
 	private void initPspeed(int pspeed) {

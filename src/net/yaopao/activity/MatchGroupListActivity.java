@@ -324,7 +324,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				clearScrollview();
 			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
 			    initTotalMileage(resultDic.getDoubleValue("distancegr")+5);
-			    
+				
 			    JSONArray dataList = resultDic.getJSONArray("list");
 			    if(dataList!=null&&dataList.size()>0){
 			        for(int i=0;i<dataList.size();i++){
@@ -367,7 +367,6 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			            label_name.setText(oneRecordDic.getString("nickname"));
 			            
 			            initPersonalMileage(oneRecordDic.getDoubleValue("km")+5);
-			            
 			            int height = (int) r.getDimension(R.dimen.sport_set_height);
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, height); 
 						lp.setMargins(0,height*i,0,0);

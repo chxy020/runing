@@ -440,7 +440,6 @@ void hideLoading(){
 				JSONObject resultDic = JSON.parseObject(responseJson);
 			    double distance = resultDic.getDoubleValue("distancegr")+5;
 			    initMileage(distance);
-			    
 			    JSONArray dataList = resultDic.getJSONArray("list");
 			    if(dataList!=null&&dataList.size()>0){
 			        for(int i=0;i<dataList.size();i++){
