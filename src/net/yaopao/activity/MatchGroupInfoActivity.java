@@ -22,9 +22,11 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,7 +68,15 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private RelativeLayout button_message;
 	private RelativeLayout button_me;
 	private RelativeLayout match_get_baton_layout;
-	private ImageView button_relay;
+	private RelativeLayout mapContainer;
+	private RelativeLayout titleBar;
+	private RelativeLayout bottombar;
+	private ImageView button_relay; 
+	private ImageView backV;
+	private ImageView match_map_loc ;
+	
+	
+	Resources resource; 
 	
 //	private ImageView button_relay;
 	
@@ -95,6 +105,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		if(getIntent().getExtras() != null){
 			from = getIntent().getExtras().getString("from");
 		}
+		resource = getResources();
 		mapView = (MapView) findViewById(R.id.match_watch_map);
 		mapView.onCreate(savedInstanceState);
 		mapView.setOnTouchListener(this);
@@ -189,6 +200,14 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		button_message = (RelativeLayout) findViewById(R.id.match_watch_message);
 		button_me = (RelativeLayout) findViewById(R.id.match_watch_user);
 		match_get_baton_layout = (RelativeLayout) findViewById(R.id.match_get_baton_layout);
+		mapContainer = (RelativeLayout)findViewById(R.id.match_watch_map_layout);
+		titleBar = (RelativeLayout)findViewById(R.id.match_watch_top_bar);
+		bottombar = (RelativeLayout)findViewById(R.id.match_bottom);
+		
+		backV = (ImageView) findViewById(R.id.match_full_map_back);
+		match_map_loc = (ImageView) findViewById(R.id.match_map_loc);
+		backV.setOnTouchListener(this);
+		match_map_loc.setOnTouchListener(this);
 		
 		button_relay = (ImageView) findViewById(R.id.match_get_baton);
 		image_avatar = (ImageView) findViewById(R.id.match_watch_head);	
@@ -255,9 +274,10 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 
 			@Override
 			public void onMapClick(LatLng arg0) {
-				Intent intent = new Intent(MatchGroupInfoActivity.this,
-						MatchNoRunMapActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(MatchGroupInfoActivity.this,
+//						MatchNoRunMapActivity.class);
+//				startActivity(intent);
+				displaymap("big");
 			}
 		});
 	}
@@ -339,6 +359,31 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	public boolean onTouch(View view, MotionEvent event) {
 		int action = event.getAction();
 		switch (view.getId()) {
+		case R.id.match_full_map_back:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_UP:
+				displaymap("small");
+				break;
+			}
+			break;
+			
+		case R.id.match_map_loc:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				match_map_loc.setBackgroundResource(R.drawable.button_position_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				match_map_loc.setBackgroundResource(R.drawable.button_position);
+				Location myloc = aMap.getMyLocation();
+				if (myloc != null) {
+					aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(myloc.getLatitude(), myloc.getLongitude())));
+				}
+
+				break;
+			}
+			break;
 		case R.id.match_watch_score:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
@@ -668,5 +713,25 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		ImageView avatarInside = (ImageView) view.findViewById(R.id.marker_avatar);
 		avatarInside.setImageBitmap(avatar);
 		return view;
+	}
+	public void displaymap(String type){
+		if(type.equals("big")){
+			titleBar.setVisibility(View.GONE);
+			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mapContainer.getLayoutParams();   //取控件aaa当前的布局参数
+			layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;    
+			layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT; //当控件的高强制设成365象素
+			mapContainer.setLayoutParams(layoutParams);
+			bottombar.setVisibility(View.VISIBLE);
+			//needwy设置地图是否可缩放，点击等
+		}else if(type.equals("small")){
+			titleBar.setVisibility(View.VISIBLE);
+			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mapContainer.getLayoutParams();   //取控件aaa当前的布局参数
+			layoutParams.height = (int) resource.getDimension(R.dimen.recording_save_pho_height);
+			Log.v("zc","height="+layoutParams.height);
+			layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT; //当控件的高强制设成365象素
+			mapContainer.setLayoutParams(layoutParams);
+			bottombar.setVisibility(View.GONE);
+			//needwy设置地图是否可缩放，点击等
+		}
 	}
 }

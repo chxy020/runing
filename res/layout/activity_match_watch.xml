@@ -339,5 +339,31 @@
                 android:textSize="@dimen/font_size3" />
         </RelativeLayout>
     </RelativeLayout>
+	<RelativeLayout
+        android:id="@+id/match_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/match_bottom_height"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+         >
 
+        <ImageView
+            android:id="@+id/match_map_loc"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/margin2"
+            android:background="@drawable/button_position" />
+
+
+        <ImageView
+            android:id="@+id/match_full_map_back"
+            android:layout_width="@dimen/sport_set_height"
+            android:layout_height="@dimen/sport_set_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin2"
+            android:background="@drawable/button_back" />
+    </RelativeLayout>
 </RelativeLayout>
