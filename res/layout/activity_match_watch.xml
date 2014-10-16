@@ -285,10 +285,9 @@
             android:id="@+id/message_red_dot"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:layout_marginLeft="@dimen/margin1"
-                android:layout_marginRight="@dimen/margin2"
-                android:layout_marginTop="@dimen/margin9"
-                android:background="@drawable/dot_b" />
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_mseeage_dot"
+                android:background="@drawable/dot_r" />
     </RelativeLayout>
  <View
         android:layout_width="match_parent"
@@ -312,7 +311,7 @@
            <RelativeLayout
                android:id="@+id/match_get_baton_layout"
            android:layout_alignParentRight="true"
-            android:layout_width="@dimen/width_half"
+            android:layout_width="@dimen/width_half_less"
             android:layout_height="wrap_content"
             android:orientation="vertical" 
             android:background="@color/white"

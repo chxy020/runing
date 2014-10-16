@@ -6,6 +6,7 @@
     <dimen name="medium_hight">120dp</dimen>
     <dimen name="head_hight1">90dp</dimen>
     <dimen name="width_half">180dp</dimen>
+        <dimen name="width_half_less">160dp</dimen>   
     <dimen name="margin1">10dp</dimen>
     <dimen name="margin2">20dp</dimen>
     <dimen name="margin3">45dp</dimen>
@@ -18,6 +19,7 @@
     <dimen name="margin10">60dp</dimen>
     <dimen name="margin11">160dp</dimen>
     <dimen name="margin12">120dp</dimen>
+       <dimen name="margin_mseeage_dot">160dp</dimen>
     <dimen name="font_size1">9dp</dimen>
     <dimen name="font_size2">18dp</dimen>
     <dimen name="font_size3">20dp</dimen>
