@@ -251,8 +251,42 @@ public class SportListOneActivity extends BaseActivity {
 		}
 //		double gpsLat = 0;
 //		double gpsLon = 0;
+		double slat= Double.parseDouble(match_pointList[0].split(" ")[1]);
+        double slon = Double.parseDouble(match_pointList[0].split(" ")[0]);
+        double elat= Double.parseDouble(match_pointList[match_pointList.length-1].split(" ")[1]);
+        double elon = Double.parseDouble(match_pointList[match_pointList.length-1].split(" ")[0]);
+		aMap.addMarker(new MarkerOptions()
+				.position(new LatLng(elat, elon))
+				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
+				.anchor(0.5f, 0.5f));
+		aMap.addMarker(new MarkerOptions()
+				.position(new LatLng(slat,slon))
+				.icon(BitmapDescriptorFactory
+						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
+		 //先画黑边
+		for (i = 0; i < pointCount; i++) {
+			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
+			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
+			if (gpsLon < 0.01 || i == pointCount - 1) {
+				List<LatLng> points = new ArrayList<LatLng>();
+				for (j = 0; j < i - n; j++) {
+		            double lat2 = Double.parseDouble(match_pointList[n+j].split(" ")[1]);
+		            double lon2 = Double.parseDouble(match_pointList[n+j].split(" ")[0]);
+					points.add(new LatLng(lat2,lon2));
+				}
+				Log.v("wysport", "points =" + points);
+
+				aMap.addPolyline((new PolylineOptions()).addAll(points)
+						.color(Color.BLACK).width(13f));
+				n = i + 1;// n为下一个起点
+			}
+		}
 		max_lon = min_lon = Double.parseDouble(match_pointList[0].split(" ")[0]);
         max_lat = min_lat = Double.parseDouble(match_pointList[0].split(" ")[1]);
+        
+        j = 0;
+		 i = 0;
+		 n = 0;
 		for (i = 0; i < pointCount; i++) {
 			double gpsLat =Double.parseDouble(match_pointList[i].split(" ")[1]);
 			double gpsLon =Double.parseDouble(match_pointList[i].split(" ")[0]);
