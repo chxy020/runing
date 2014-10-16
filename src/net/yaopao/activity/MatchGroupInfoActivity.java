@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNLonLat;
 import net.yaopao.assist.Constants;
@@ -42,12 +43,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.LocationSource.OnLocationChangedListener;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
@@ -60,8 +68,7 @@ import com.umeng.analytics.MobclickAgent;
 
 /**
  */
-public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListener,
-		OnMapClickListener {
+public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListener,OnMapClickListener,LocationSource ,AMapLocationListener {
 	private MapView mapView;
 	private AMap aMap;
 	private RelativeLayout button_list;
@@ -74,7 +81,8 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private ImageView button_relay; 
 	private ImageView backV;
 	private ImageView match_map_loc ;
-	
+	private OnLocationChangedListener mListener;
+	private LocationManagerProxy mAMapLocationManager;
 	
 	Resources resource; 
 	
@@ -246,7 +254,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	 * 设置一些amap的属性
 	 */
 	private void setUpMap() {
-		if (aMap == null) {
 			aMap = mapView.getMap();
 			aMap.setOnCameraChangeListener(new OnCameraChangeListener() {
 
@@ -262,7 +269,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 
 				}
 			});
-		}
 		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -527,6 +533,8 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
 			    //needwy 将地图中心点移动到lon，lat，level=16 
+			    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16));
+			    
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
 			    imagePath = runnerDic.getString("imgpath");
 			    //
@@ -723,6 +731,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			mapContainer.setLayoutParams(layoutParams);
 			bottombar.setVisibility(View.VISIBLE);
 			//needwy设置地图是否可缩放，点击等
+			setBigMap();
 		}else if(type.equals("small")){
 			titleBar.setVisibility(View.VISIBLE);
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mapContainer.getLayoutParams();   //取控件aaa当前的布局参数
@@ -732,6 +741,63 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			mapContainer.setLayoutParams(layoutParams);
 			bottombar.setVisibility(View.GONE);
 			//needwy设置地图是否可缩放，点击等
+			setUpMap();
 		}
+	}
+	
+	private void setBigMap() {
+		aMap.setOnMapClickListener(null);
+		aMap.getUiSettings().setZoomControlsEnabled(false);
+		aMap.setLocationSource(this);// 设置定位监听
+		aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+		aMap.getUiSettings().setScrollGesturesEnabled(true);
+		aMap.getUiSettings().setZoomGesturesEnabled(true);
+
+	}
+	@Override
+	public void activate(OnLocationChangedListener listener) {
+		mListener = listener;
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(this);
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 2000, 10, this);
+		}
+	}
+
+	@Override
+	public void deactivate() {
+		mListener = null;
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+	@Override
+	public void onLocationChanged(AMapLocation aLocation) {
+		if (mListener != null && aLocation != null) {
+			mListener.onLocationChanged(aLocation);
+		}
+	}
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

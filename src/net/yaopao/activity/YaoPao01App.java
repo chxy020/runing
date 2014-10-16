@@ -74,8 +74,8 @@ public class YaoPao01App extends Application {
 	public static final String gpsState = "gpsState";//gps状态的广播
 	
 	  //测试代码
-	Timer jumptimTimer = new Timer();
-	int jumpTime = 15;
+//	Timer jumptimTimer = new Timer();
+//	int jumpTime = 15;
 	  //测试代码
 	
 	@SuppressLint("NewApi")
@@ -111,7 +111,7 @@ public class YaoPao01App extends Application {
 		graphicTool = new  GraphicTool(getResources());
 		//注册广播  
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
-        startJumpTimer();
+      //  startJumpTimer();
         
 	};
 
@@ -1140,20 +1140,20 @@ public class YaoPao01App extends Application {
 	        }  
 	    };  
 	    //测试代码
-	    TimerTask jumpTask = new TimerTask() {
-			
-			@Override
-			public void run() {
-				jumpTime--;
-				if(jumpTime==0){
-					//sendForceJumpBraodcast("");
-				}
-			}
-		};
-		
-		 public void startJumpTimer(){
-			 jumptimTimer.schedule(jumpTask,  0, 1000);
-		 }
+//	    TimerTask jumpTask = new TimerTask() {
+//			
+//			@Override
+//			public void run() {
+//				jumpTime--;
+//				if(jumpTime==0){
+//					//sendForceJumpBraodcast("");
+//				}
+//			}
+//		};
+//		
+//		 public void startJumpTimer(){
+//			 jumptimTimer.schedule(jumpTask,  0, 1000);
+//		 }
 		  //测试代码
 	    
 	    

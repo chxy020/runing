@@ -112,18 +112,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		checkLogin();
 		this.initView();
 		
-
-		/**
-		 * 测试代码 加载赛道数据，调用jts方法
-		 */
-
-		// YaoPao01App.matchOneKmAndNotInTakeOver();
-		// YaoPao01App.matchOneKmTeam();
-		// YaoPao01App.matchRunningInTakeOver();
-		// YaoPao01App.matchRunningTransmitRelay();
-//		 YaoPao01App.matchDeviateTrack();
-//		 YaoPao01App.matchReturnTrack();
-//		 YaoPao01App.matchWaitGetRelay();
 	}
 	void prepare4match(){//登陆成功准备比赛
 		CNAppDelegate.loginSucceedAndNext = false;
