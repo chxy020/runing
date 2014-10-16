@@ -185,6 +185,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 	void startmatch(){
 		Intent intent = new Intent(this,MatchMainActivity.class);
 		startActivity(intent);
+		CNAppDelegate.isbaton = 1;
 		finish();
 	}
 	void downloadImage(){
