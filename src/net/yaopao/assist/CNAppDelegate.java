@@ -31,7 +31,7 @@ public class CNAppDelegate {
 	public static int testIndex= 0; 
 	
 	public static final String kTrackName = "LunYang2";//使用赛道
-	public static final String kStartTime = "2014-10-16 16:30:00";//比赛开始时间
+	public static final String kStartTime = "2014-10-16 17:00:00";//比赛开始时间
 	public static final int kDuringMinute = 40;//比赛持续时间
 
 

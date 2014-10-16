@@ -26,11 +26,13 @@
             android:layout_marginRight="@dimen/margin1"
             android:gravity="center" >
 
-            <ImageView
+            <!--
+                 <ImageView
                 android:id="@+id/list_sport_num1"
                 android:layout_width="@dimen/list_num_width"
                 android:layout_height="@dimen/list_num_height"
-                android:visibility="gone" />
+                android:src="@drawable/r_0"
+                 />         -->
 
             <ImageView
                 android:id="@+id/match_list_head2"
@@ -38,9 +40,8 @@
                 android:layout_height="@dimen/common_height"
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/margin1"
-                android:src="@drawable/avatar_default_s" 
-                android:visibility="gone"
-                />
+                android:src="@drawable/avatar_default_s"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/match_list_head1"
@@ -48,51 +49,46 @@
                 android:layout_height="@dimen/common_height"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin7"
-                android:src="@drawable/avatar_default_s" 
-                android:visibility="gone"
-                />
-<ImageView
+                android:src="@drawable/avatar_default_s"
+                android:visibility="gone" />
+
+            <ImageView
                 android:id="@+id/list_sport_num1"
                 android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                />
+                android:layout_height="@dimen/list_num_height" />
+
             <ImageView
                 android:id="@+id/list_sport_num2"
                 android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                />
+                android:layout_height="@dimen/list_num_height" />
 
             <ImageView
                 android:id="@+id/list_sport_min"
                 android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                />
+                android:layout_height="@dimen/list_num_height" />
 
             <ImageView
                 android:id="@+id/list_sport_num3"
                 android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                />
+                android:layout_height="@dimen/list_num_height" />
 
             <ImageView
                 android:id="@+id/list_sport_num4"
                 android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                />
+                android:layout_height="@dimen/list_num_height" />
 
             <ImageView
                 android:id="@+id/list_sport_sec"
                 android:layout_width="@dimen/list_num_width"
-                android:layout_height="@dimen/list_num_height"
-                 />
+                android:layout_height="@dimen/list_num_height" />
         </LinearLayout>
-         
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/black" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black" >
         </View>
     </RelativeLayout>
-   
+
 </RelativeLayout>
