@@ -683,6 +683,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private void initavgSpeed(int pspeed) {
 		
 		double avgSpeed =(float)pspeed/3600.0;
+		avgSpeed =1.0/avgSpeed;
 		DecimalFormat  df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.UP);
