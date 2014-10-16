@@ -189,9 +189,12 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
+			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
 			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE); 
 		}
 		if (d3 > 0) {
 			d3V.setVisibility(View.VISIBLE);
@@ -210,11 +213,24 @@ public class MatchFinishTeamActivity extends BaseActivity implements OnTouchList
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			pd1V.setVisibility(View.VISIBLE);
+//		}
+//		if (d2 > 0) {
+//			pd2V.setVisibility(View.VISIBLE);
+//		}
+//		if (d3 > 0) {
+//			pd3V.setVisibility(View.VISIBLE);
+//		}
+
 		if (d1 > 0) {
 			pd1V.setVisibility(View.VISIBLE);
+			pd2V.setVisibility(View.VISIBLE);
+			pd3V.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
 			pd2V.setVisibility(View.VISIBLE);
+			pd3V.setVisibility(View.VISIBLE); 
 		}
 		if (d3 > 0) {
 			pd3V.setVisibility(View.VISIBLE);
@@ -424,7 +440,6 @@ void hideLoading(){
 				JSONObject resultDic = JSON.parseObject(responseJson);
 			    double distance = resultDic.getDoubleValue("distancegr")+5;
 			    initMileage(distance);
-			    
 			    JSONArray dataList = resultDic.getJSONArray("list");
 			    if(dataList!=null&&dataList.size()>0){
 			        for(int i=0;i<dataList.size();i++){

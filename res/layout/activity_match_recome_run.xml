@@ -127,8 +127,8 @@
             android:layout_above="@+id/line_under_recoding_mileage"
              >
 
-            <RelativeLayout
-                android:id="@+id/match_recome_time"
+            <LinearLayout
+                android:id="@+id/match_recome_dis_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_num_height"
                 android:layout_above="@+id/match_recome_recoding_mileage_text"
@@ -139,14 +139,25 @@
                     android:id="@+id/match_recome_recoding_dis1"
                     android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/match_recome_recoding_dis2"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/match_recome_recoding_dis2"
                     android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/match_recome_recoding_dis_d" />
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis3"
+                    android:layout_width="@dimen/main_num_width"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                     />
+                <ImageView
+                    android:id="@+id/match_recome_recoding_dis4"
+                    android:layout_width="@dimen/main_num_width"
+                    android:layout_height="match_parent"
+                    />
 
                 <ImageView
                     android:id="@+id/match_recome_recoding_dis_d"
@@ -155,17 +166,17 @@
                     android:layout_centerHorizontal="true" />
 
                 <ImageView
-                    android:id="@+id/match_recome_recoding_dis3"
+                    android:id="@+id/match_recome_recoding_dis5"
                     android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/match_recome_recoding_dis_d" />
+                    />
 
                 <ImageView
-                    android:id="@+id/match_recome_recoding_dis4"
+                    android:id="@+id/match_recome_recoding_dis6"
                     android:layout_width="@dimen/main_num_width"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/match_recome_recoding_dis3" />
-            </RelativeLayout>
+                    />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/match_recome_recoding_mileage_text"

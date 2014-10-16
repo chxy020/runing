@@ -72,8 +72,8 @@
         android:layout_below="@id/match_top"
         android:background="@color/black" >
 
-        <RelativeLayout
-            android:id="@+id/match_time"
+        <LinearLayout
+            android:id="@+id/match_finish_dis_layout"
            android:layout_width="match_parent"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
@@ -84,7 +84,6 @@
                 android:id="@+id/match_finish_dis1"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/match_finish_dis2"
                 android:visibility="gone"
                 />
 
@@ -92,7 +91,18 @@
                 android:id="@+id/match_finish_dis2"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/match_finish_dis_d"
+                 android:visibility="gone"
+                 />
+            <ImageView
+                android:id="@+id/match_finish_dis3"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                 />
+            <ImageView
+                android:id="@+id/match_finish_dis4"
+                android:layout_width="@dimen/main_num_width"
+                android:layout_height="match_parent"
                  />
 
             <ImageView
@@ -103,19 +113,18 @@
                  />
 
             <ImageView
-                android:id="@+id/match_finish_dis3"
+                android:id="@+id/match_finish_dis5"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@id/match_finish_dis_d"
+                
                 />
 
             <ImageView
-                android:id="@+id/match_finish_dis4"
+                android:id="@+id/match_finish_dis6"
                 android:layout_width="@dimen/main_num_width"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@id/match_finish_dis3"
                  />
-        </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/match_finish_mileage_text"

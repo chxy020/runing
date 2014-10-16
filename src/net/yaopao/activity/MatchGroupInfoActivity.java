@@ -513,7 +513,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 				double distance = resultDic.getDoubleValue("distancegr");
 			    
 				initMileage(distance+5);
-				
 				JSONObject infoDic = resultDic.getJSONObject("longitude");
 				if(infoDic.isEmpty()){
 					return;
@@ -647,11 +646,23 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			d1V.setVisibility(View.VISIBLE);
+//		}
+//		if (d2 > 0) {
+//			d2V.setVisibility(View.VISIBLE);
+//		}
+//		if (d3 > 0) {
+//			d3V.setVisibility(View.VISIBLE);
+//		}
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
+			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
 			d2V.setVisibility(View.VISIBLE);
+			d3V.setVisibility(View.VISIBLE); 
 		}
 		if (d3 > 0) {
 			d3V.setVisibility(View.VISIBLE);
@@ -683,6 +694,7 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 	private void initavgSpeed(int pspeed) {
 		
 		double avgSpeed =(float)pspeed/3600.0;
+		avgSpeed =1.0/avgSpeed;
 		DecimalFormat  df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.UP);

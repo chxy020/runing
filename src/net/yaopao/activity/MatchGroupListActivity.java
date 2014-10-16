@@ -324,7 +324,7 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 				clearScrollview();
 			    double distance = (resultDic.getDoubleValue("distancegr")+5)/1000.0;
 			    initTotalMileage(resultDic.getDoubleValue("distancegr")+5);
-			    
+				
 			    JSONArray dataList = resultDic.getJSONArray("list");
 			    if(dataList!=null&&dataList.size()>0){
 			        for(int i=0;i<dataList.size();i++){
@@ -367,7 +367,6 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 			            label_name.setText(oneRecordDic.getString("nickname"));
 			            
 			            initPersonalMileage(oneRecordDic.getDoubleValue("km")+5);
-			            
 			            int height = (int) r.getDimension(R.dimen.sport_set_height);
 						FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, height); 
 						lp.setMargins(0,height*i,0,0);
@@ -555,11 +554,23 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			totalDis1.setVisibility(View.VISIBLE);
+//		}
+//		if (d2 > 0) {
+//			totalDis2.setVisibility(View.VISIBLE);
+//		}
+//		if (d3 > 0) {
+//			totalDis3.setVisibility(View.VISIBLE);
+//		}
 		if (d1 > 0) {
 			totalDis1.setVisibility(View.VISIBLE);
+			totalDis2.setVisibility(View.VISIBLE);
+			totalDis3.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
 			totalDis2.setVisibility(View.VISIBLE);
+			totalDis3.setVisibility(View.VISIBLE); 
 		}
 		if (d3 > 0) {
 			totalDis3.setVisibility(View.VISIBLE);
@@ -577,11 +588,24 @@ public class MatchGroupListActivity extends BaseActivity implements OnTouchListe
 		int d4 = (int) (distance % 10000) / 1000;
 		int d5 = (int) (distance % 1000) / 100;
 		int d6 = (int) (distance % 100) / 10;
+//		if (d1 > 0) {
+//			pd1V.setVisibility(View.VISIBLE);
+//		}
+//		if (d2 > 0) {
+//			pd2V.setVisibility(View.VISIBLE);
+//		}
+//		if (d3 > 0) {
+//			pd3V.setVisibility(View.VISIBLE);
+//		}
+		
 		if (d1 > 0) {
 			pd1V.setVisibility(View.VISIBLE);
+			pd2V.setVisibility(View.VISIBLE);
+			pd3V.setVisibility(View.VISIBLE);
 		}
 		if (d2 > 0) {
 			pd2V.setVisibility(View.VISIBLE);
+			pd3V.setVisibility(View.VISIBLE); 
 		}
 		if (d3 > 0) {
 			pd3V.setVisibility(View.VISIBLE);

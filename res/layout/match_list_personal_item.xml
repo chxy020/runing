@@ -32,7 +32,6 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin1"
             android:gravity="center" >
-
         <ImageView
             android:id="@+id/match_list_baton"
             android:layout_width="@dimen/common_height"

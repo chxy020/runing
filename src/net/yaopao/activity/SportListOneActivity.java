@@ -436,13 +436,13 @@ public class SportListOneActivity extends BaseActivity {
 		int d4 = (int) (distance % 100) / 10;
 		if (d1 > 0) {
 			d1V.setVisibility(View.VISIBLE);
-			update(d1, d1V);
+//			update(d1, d1V);
 			YaoPao01App.graphicTool.updateRedNum(d1, d1V);
 		}
 
-		update(d2, d2V);
-		update(d3, d3V);
-		update(d4, d4V);
+//		update(d2, d2V);
+//		update(d3, d3V);
+//		update(d4, d4V);
 		YaoPao01App.graphicTool.updateRedNum(new int[] { d2, d3, d4 },
 				new ImageView[] { d2V, d3V, d4V });
 
