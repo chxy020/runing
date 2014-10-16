@@ -154,7 +154,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 			        JSONObject longitude = resultDic.getJSONObject("longitude");
 			        if(longitude!=null&&!longitude.isEmpty()){//被确认接棒
 			        	CNAppDelegate.match_totalDisTeam = longitude.getDoubleValue("distancegr");
-//			            startAnimation();
+			            startAnimation();
 			            startmatch();
 			        }else{//没有搜索到人
 			            view_back.setVisibility(View.VISIBLE);
@@ -264,7 +264,7 @@ public class MatchNotRunTransmitRelayActivity extends BaseActivity implements On
 //			e.printStackTrace();
 //		}
 //		[kApp.voiceHandler voiceOfapp:@"match_wait_get_relay" :nil];//needwy 动画和语音
-//		YaoPao01App.matchWaitGetRelay();
+		YaoPao01App.matchWaitGetRelay();
 //		relayAnim.setVisibility(View.VISIBLE);
 //		relay_main.setVisibility(View.GONE);
 //		animationDrawable.start();

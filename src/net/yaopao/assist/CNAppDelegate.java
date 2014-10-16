@@ -30,9 +30,9 @@ public class CNAppDelegate {
 	public static int matchtestdatalength;
 	public static int testIndex= 0; 
 	
-	public static final String kTrackName = "LunYang2";//使用赛道
-	public static final String kStartTime = "2014-10-16 17:00:00";//比赛开始时间
-	public static final int kDuringMinute = 40;//比赛持续时间
+	public static final String kTrackName = "Olympics";//使用赛道
+	public static final String kStartTime = "2014-10-16 17:40:00";//比赛开始时间
+	public static final int kDuringMinute = 60;//比赛持续时间
 
 
 	public static final int kMatchReportInterval = 30;//gps上报时间以及观众刷新时间

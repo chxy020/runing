@@ -413,7 +413,7 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 					startActivity(intent);
 	            }else{
 	            	Intent intent = new Intent(MatchMapActivity.this,
-	            			MatchGiveRelayActivity.class);
+	            			MatchNotInTakeOverActivity.class);
 					startActivity(intent);
 	            }
 				break;
