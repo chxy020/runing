@@ -357,18 +357,21 @@ public class SportListOneActivity extends BaseActivity {
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
 			GpsPoint encryptPoint = lonLatEncryption.encrypt(crrPoint);
-			if (encryptPoint.lon < min_lon) {
-				min_lon = encryptPoint.lon;
+			if(encryptPoint.lon > 0.01){
+				if (encryptPoint.lon < min_lon) {
+					min_lon = encryptPoint.lon;
+				}
+				if (encryptPoint.lat < min_lat) {
+					min_lat = encryptPoint.lat;
+				}
+				if (encryptPoint.lon > max_lon) {
+					max_lon = encryptPoint.lon;
+				}
+				if (encryptPoint.lat > max_lat) {
+					max_lat = encryptPoint.lat;
+				}
 			}
-			if (encryptPoint.lat < min_lat) {
-				min_lat = encryptPoint.lat;
-			}
-			if (encryptPoint.lon > max_lon) {
-				max_lon = encryptPoint.lon;
-			}
-			if (encryptPoint.lat > max_lat) {
-				max_lat = encryptPoint.lat;
-			}
+			
 			if (crrPoint.status == 0) {
 				LatLng latlon = new LatLng(
 						lonLatEncryption.encrypt(crrPoint).lat,
