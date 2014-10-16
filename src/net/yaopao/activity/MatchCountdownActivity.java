@@ -108,6 +108,7 @@ public class MatchCountdownActivity extends BaseActivity {
 		int t3 = startSecond % 10;
 		if (t1 > 0) {
 			time1.setVisibility(View.VISIBLE);
+			time2.setVisibility(View.VISIBLE);
 			YaoPao01App.graphicTool.updateRedNum(new int[] { t1 },
 					new ImageView[] { time1 });
 		}
