@@ -199,8 +199,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		phoneNumStr = phoneNumV.getText().toString().trim();
 		Log.v("wy", "phone=" + phoneNumStr);
 		if (phoneNumStr != null && !"".equals(phoneNumStr)) {
-			Pattern p = Pattern
-					.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+			Pattern p = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d");
 			Matcher m = p.matcher(phoneNumStr);
 			if (m.matches()) {
 				return true;
