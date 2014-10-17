@@ -58,8 +58,14 @@ public class GraphicTool  {
 	private Options getBtmOptions() {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 2;
-		options.inPreferredConfig = Bitmap.Config.RGB_565;// 16位图
-		options.inPurgeable = true;
+//		ALPHA_8        代表8位Alpha位图
+//		ARGB_4444      代表16位ARGB位图
+//		ARGB_8888     代表32位ARGB位图
+//		RGB_565         代表8位RGB位图
+		
+//		options.inPreferredConfig = Bitmap.Config.RGB_565;
+		options.inPreferredConfig = Bitmap.Config.ARGB_4444;// 16位图
+		options.inPurgeable = true;//存储空间不足时，允许回收bitmap所占用内存
 		options.inInputShareable = true;
 		return options;
 

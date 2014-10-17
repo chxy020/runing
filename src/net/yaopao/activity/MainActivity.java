@@ -13,6 +13,7 @@ import net.yaopao.bean.DataBean;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -539,24 +540,18 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 			break;
 		case R.id.main_setting:
-			Intent settingIntent = new Intent(MainActivity.this,
-					MainSettingActivity.class);
+			Intent settingIntent = new Intent(MainActivity.this,MainSettingActivity.class);
 			startActivity(settingIntent);
 			break;
 		case R.id.main_message_layout:
 			Intent messageIntent = null;
 			if (Variables.islogin == 1) {
-				messageIntent = new Intent(MainActivity.this,
-						WebViewActivity.class);
-				messageIntent.putExtra("net.yaopao.activity.PageUrl",
-						"message_index.html");
+				messageIntent = new Intent(MainActivity.this,WebViewActivity.class);
+				messageIntent.putExtra("net.yaopao.activity.PageUrl","message_index.html");
 
 			} else {
-				Toast.makeText(MainActivity.this,
-						"您必须注册并登录，才会收到系统消息，所以现在没有系统消息哦", Toast.LENGTH_LONG)
-						.show();
-				messageIntent = new Intent(MainActivity.this,
-						RegisterActivity.class);
+				Toast.makeText(MainActivity.this,"您必须注册并登录，才会收到系统消息，所以现在没有系统消息哦", Toast.LENGTH_LONG).show();
+				messageIntent = new Intent(MainActivity.this,RegisterActivity.class);
 			}
 			startActivity(messageIntent);
 			break;
@@ -569,20 +564,16 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	private void initSymbol() {
 		ImageView dot = (ImageView) this.findViewById(R.id.main_milage_dot);
-		ImageView min = (ImageView) this
-				.findViewById(R.id.match_recoding_speed_d1);
-		ImageView sec = (ImageView) this
-				.findViewById(R.id.match_recoding_speed_d2);
-		ImageView km = (ImageView) this.findViewById(R.id.main_milage_km);
-		dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-				.get(R.drawable.r_dot));
-		min.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-				.get(R.drawable.w_min));
-		sec.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-				.get(R.drawable.w_sec));
+		ImageView min = (ImageView) this.findViewById(R.id.match_recoding_speed_d1);
+		ImageView sec = (ImageView) this.findViewById(R.id.match_recoding_speed_d2);
+		ImageView km  = (ImageView) this.findViewById(R.id.main_milage_km);
+		
+		dot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
+		min.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_min));
+		sec.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_sec));
 		// colon.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.w_colon));
-		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap
-				.get(R.drawable.r_km));
+		km.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
+		
 	}
 	
 	
