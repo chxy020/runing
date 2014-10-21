@@ -1,4 +1,4 @@
-/**
+﻿/**
  * <pre>
  * UserInfoManager登录信息管理
  * PageManager页面功能管理
@@ -55,7 +55,6 @@ PageManager.prototype = {
 		Base.pageBack(-1);
 	},
 	pageMove:function(evt){
-		evt.preventDefault();
 		this.moved = true;
 	},
 	
@@ -117,14 +116,8 @@ PageManager.prototype = {
 	*/
 	initiScroll:function(){
 		if(this.iScrollY == null){
-			this.iScrollY = new IScroll('#wrapper', {
-				scrollbars: true,
-				mouseWheel: true,
-				click: true,
-				tap: true,
-				interactiveScrollbars: true,
-				shrinkScrollbars: 'scale',
-				fadeScrollbars: true
+			this.iScroll = new iScroll('wrapper',{
+				vScrollbar : false
 			});
 		}
 		else{
@@ -257,8 +250,8 @@ PageManager.prototype = {
 
 			$("#memberList").html(ul.join(''));
 
-			$("#memberList > li").onbind("touchstart",this.btnDown,this);
-			$("#memberList > li").onbind("touchend",this.itemUp,this);
+			$("#memberList > li").rebind("touchstart",this.btnDown,this);
+			$("#memberList > li").rebind("touchend",this.itemUp,this);
 			this.initiScroll();
 		}
 	},
