@@ -405,8 +405,12 @@
                 <ImageView
                     android:layout_width="@dimen/common_height"
                     android:layout_height="@dimen/common_height"
-                    android:layout_margin="@dimen/margin1"
-                    android:background="@drawable/match_24" />
+                    android:layout_marginTop="@dimen/margin1"
+                    android:layout_marginLeft="@dimen/margin1"
+                    android:layout_marginBottom="@dimen/margin1"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/match_24"
+                     />
 
                 <TextView
                     android:layout_width="match_parent"
