@@ -59,6 +59,10 @@ public class SportTrackMap extends BaseActivity{
 	private TextView pspeedV;
 	private TextView ponitsV;
 	private TextView dateV;
+	private TextView date1V;
+	private TextView date2V;
+	private TextView date3V;
+	private TextView date4V;
 	private TextView titleV;
 	private TextView disV;
 	private ImageView typeV;
@@ -84,6 +88,10 @@ public class SportTrackMap extends BaseActivity{
 		ponitsV = (TextView) findViewById(R.id.full_points);
 //		titleV = (TextView) findViewById(R.id.full_title);
 		dateV = (TextView) findViewById(R.id.full_date);
+		date1V = (TextView) findViewById(R.id.full_date1);
+		date2V = (TextView) findViewById(R.id.full_date2);
+		date3V = (TextView) findViewById(R.id.full_date3);
+		date4V = (TextView) findViewById(R.id.full_date4);
 		disV = (TextView) findViewById(R.id.full_dis);
 		typeV = (ImageView) findViewById(R.id.full_type);
 //		backV.setOnTouchListener(this);
@@ -269,7 +277,10 @@ public class SportTrackMap extends BaseActivity{
 		disV.setText(df.format(distance / 1000) + " km");
 		Date date = new Date(addtime);
 		dateV.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
-
+		date1V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date2V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date3V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date4V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
 		initType(runty);
 		
 		SimpleDateFormat df = new SimpleDateFormat("M月d日");

@@ -109,8 +109,8 @@ public class SportRecordActivity extends BaseActivity implements
 	private double sprortDis = 0;// 累计距离，暂停后计算距离要加上此距离
 
 	// 测试代码
-//	 public static double lon = 116.395823;
-//	 public static double lat = 39.839016;
+	 public static double testlon = 116.395823;
+	 public static double testlat = 39.839016;
 
 	// 以上测试代码
 
@@ -413,27 +413,29 @@ public class SportRecordActivity extends BaseActivity implements
 
 	public static GpsPoint getOnePoint() {
 		GpsPoint point = null;
-		if (YaoPao01App.loc != null) {
-			point = new GpsPoint();
-			point.lon = YaoPao01App.loc.getLongitude();
-			point.lat = YaoPao01App.loc.getLatitude();
-			point.time = YaoPao01App.loc.getTime();
-			point.altitude = YaoPao01App.loc.getAltitude();
-			point.course = YaoPao01App.loc.getBearing();
-			point.speed = YaoPao01App.loc.getSpeed();
-			point.status = Variables.sportStatus;
+		if (Variables.isTest) {
+			// 测试代码
+			 Random random1 = new Random();
+			 testlat = testlat + random1.nextFloat() / 1000;
+			 testlon = testlon + random1.nextFloat() / 1000;
+			 Log.v("wysport", "lat =" + random1.nextFloat() / 1000 + " lon="
+			 + random1.nextFloat() / 1000);
+			  point = new GpsPoint(testlon, testlat, Variables.sportStatus,
+			 new Date().getTime());
+			// 测试代码
+		}else{
+			if (YaoPao01App.loc != null) {
+				point = new GpsPoint();
+				point.lon = YaoPao01App.loc.getLongitude();
+				point.lat = YaoPao01App.loc.getLatitude();
+				point.time = YaoPao01App.loc.getTime();
+				point.altitude = YaoPao01App.loc.getAltitude();
+				point.course = YaoPao01App.loc.getBearing();
+				point.speed = YaoPao01App.loc.getSpeed();
+				point.status = Variables.sportStatus;
+			}
 		}
-		// 测试代码
-//		 Random random1 = new Random();
-//		 lat = lat + random1.nextFloat() / 1000;
-//		 lon = lon + random1.nextFloat() / 1000;
-//		 Log.v("wysport", "lat =" + random1.nextFloat() / 1000 + " lon="
-//		 + random1.nextFloat() / 1000);
-//		 GpsPoint point = new GpsPoint(lon, lat, Variables.sportStatus,
-//		 new Date().getTime());
-		// 测试代码
 		return point;
-
 	}
 
 	public boolean pushOnePoint() {

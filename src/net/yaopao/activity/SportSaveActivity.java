@@ -200,7 +200,10 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_UP:
-				showSetPhotoDialog();
+				if (phoButton.getVisibility()==View.VISIBLE) {
+					showSetPhotoDialog();
+				}
+				
 				break;
 			}
 			break;

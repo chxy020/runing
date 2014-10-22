@@ -44,7 +44,8 @@
         android:id="@+id/one_map_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/one_map_height"
-        android:layout_below="@id/recording_one_top_bar" >
+        android:layout_below="@id/recording_one_top_bar" 
+        >
 
         <!-- <com.amap.api.maps2d.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,6 +62,14 @@
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_margin="@dimen/margin1"
+            />
+        <ImageView
+            android:id="@+id/one_watermark"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_margin="@dimen/margin1"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/logo"
             />
 <!-- 
         <TextView
@@ -128,7 +137,58 @@
 	                android:layout_centerInParent="true"/>
 		</RelativeLayout>
 
+       
         <TextView
+            android:id="@+id/one_date1"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2px"
+            android:layout_marginBottom="1px"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            android:textSize="@dimen/font_size1"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/one_date2"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+             android:layout_marginBottom="1px"
+            android:textSize="@dimen/font_size1"
+             android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/one_date3"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="2px"
+            android:layout_marginRight="1px"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            android:textSize="@dimen/font_size1"
+             android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/one_date4"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            android:textSize="@dimen/font_size1"
+              android:layout_marginRight="1px"
+             android:textColor="@color/white"
+            android:textStyle="bold" />
+         <TextView
             android:id="@+id/one_date"
             android:layout_width="@dimen/one_date_width"
             android:layout_height="@dimen/small_height"
@@ -137,6 +197,7 @@
             android:gravity="center"
             android:text="0年0月0日 周一  0:0"
             android:textSize="@dimen/font_size1"
+            android:layout_margin="1px"
             android:textStyle="bold" />
     </RelativeLayout>
 

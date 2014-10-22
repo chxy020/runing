@@ -412,7 +412,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="24小时接力赛"
+                    android:text="安吉物流健康跑"
                     android:textSize="@dimen/font_size3" />
             </LinearLayout>
         </LinearLayout>

@@ -61,6 +61,12 @@ public class SportListOneActivity extends BaseActivity {
 	private TextView desV;
 	private TextView titleV;
 	private TextView shareV;
+	
+	private TextView date1V;
+	private TextView date2V;
+	private TextView date3V;
+	private TextView date4V;
+	
 	private ImageView typeV;
 	private ImageView mindV;
 	private ImageView wayV;
@@ -150,6 +156,10 @@ public class SportListOneActivity extends BaseActivity {
 		titleV = (TextView) findViewById(R.id.recording_one_title);
 		shareV = (TextView) findViewById(R.id.recording_one_share);
 		dateV = (TextView) findViewById(R.id.one_date);
+		date1V = (TextView) findViewById(R.id.one_date1);
+		date2V = (TextView) findViewById(R.id.one_date2);
+		date3V = (TextView) findViewById(R.id.one_date3);
+		date4V = (TextView) findViewById(R.id.one_date4);
 		desV = (TextView) findViewById(R.id.one_desc);
 		// disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
@@ -459,6 +469,10 @@ public class SportListOneActivity extends BaseActivity {
 		desV.setText(remarks);
 		Date date = new Date(addtime);
 		dateV.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date1V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date2V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date3V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
+		date4V.setText(DateFormat.getDateInstance(DateFormat.FULL).format(date));
 		initType(runty);
 		initMind(mind);
 		initWay(runway);

@@ -67,7 +67,67 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/margin1"
             />
+<ImageView
+            android:id="@+id/full_watermark"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_margin="@dimen/margin1"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/logo"
+            />
 
+
+        <TextView
+            android:id="@+id/full_date1"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2px"
+            android:layout_marginBottom="1px"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            
+            android:textSize="@dimen/font_size8"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/full_date2"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            android:textSize="@dimen/font_size8"
+             android:layout_marginBottom="1px"
+             android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/full_date3"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            android:textSize="@dimen/font_size8"
+              android:layout_marginBottom="2px"
+            android:layout_marginRight="1px"
+             android:textColor="@color/white"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/full_date4"
+            android:layout_width="@dimen/one_date_width"
+            android:layout_height="@dimen/small_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="0年0月0日 周一  0:0"
+            android:textSize="@dimen/font_size8"
+             android:layout_marginRight="1px"
+             android:textColor="@color/white"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/full_date"
             android:layout_width="@dimen/full_date_width"
