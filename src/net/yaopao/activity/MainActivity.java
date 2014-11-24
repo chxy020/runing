@@ -13,7 +13,6 @@ import net.yaopao.bean.DataBean;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -502,43 +501,48 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			break;
 
 		case R.id.main_fun_macth:
-			// 24小时比赛跳转页面判定,chenxy add
-			// 先判断比赛是否开始了,没开始都进web页面,
-			// 如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
-			
-			
-//			if(CNAppDelegate.match_isLogin == 0){//如果没登录，进宣宇界面
-//                gotoJSPage();
-//            }else{//登录了
-//                String matchstage = CNAppDelegate.getMatchStage();
-//                if(matchstage.equals("beforeMatch")){//赛前5分钟还要之前
-//                    gotoJSPage();
-//                }else if(matchstage.equals("closeToMatch")){//赛前5分钟到比赛正式开始
-//                    if(CNAppDelegate.isMatch == 1){//参赛
-//                        shouldStartButNot();
-//                    }else{
-//                        gotoJSPage();
-//                    }
-//                }else if(matchstage.equals("isMatching")){//正式比赛时间
-//                    if(CNAppDelegate.isMatch == 1){//参赛
-//                        if(CNAppDelegate.hasFinishTeamMatch){//提前结束比赛了
-//                            gotoScorePage();
-//                        }else{
-//                            shouldStartButNot();
-//                        }
-//                    }else{
-//                        gotoJSPage();
-//                    }
-//                }else{//赛后
-//                    if(CNAppDelegate.isMatch == 1){//参赛
-//                        gotoScorePage();
-//                    }else{
-//                        gotoJSPage();
-//                    }
-//                }
-//            }
 
-			if (Variables.isTest) {
+			 /* 24小时接力赛
+			 * 
+			 *24小时比赛跳转页面判定,chenxy add
+			 *先判断比赛是否开始了,没开始都进web页面,
+			 *如果比赛开始了/结束了,登录了进本地比赛页面,没登录进web页面
+			 *
+			 * if(CNAppDelegate.match_isLogin == 0){//如果没登录，进宣宇界面
+                gotoJSPage();
+            }else{//登录了
+                String matchstage = CNAppDelegate.getMatchStage();
+                if(matchstage.equals("beforeMatch")){//赛前5分钟还要之前
+                    gotoJSPage();
+                }else if(matchstage.equals("closeToMatch")){//赛前5分钟到比赛正式开始
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        shouldStartButNot();
+                    }else{
+                        gotoJSPage();
+                    }
+                }else if(matchstage.equals("isMatching")){//正式比赛时间
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        if(CNAppDelegate.hasFinishTeamMatch){//提前结束比赛了
+                            gotoScorePage();
+                        }else{
+                            shouldStartButNot();
+                        }
+                    }else{
+                        gotoJSPage();
+                    }
+                }else{//赛后
+                    if(CNAppDelegate.isMatch == 1){//参赛
+                        gotoScorePage();
+                    }else{
+                        gotoJSPage();
+                    }
+                }
+            }*/
+
+			
+			/* 直接调转到跑步页面
+			 * 
+			 * if (Variables.isTest) {
 				// 测试代码
 				Intent mainIntent = new Intent(MainActivity.this,
 						SportSetActivity.class);
@@ -546,13 +550,11 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				// 测试代码
 			} else {
 				if (Variables.gpsStatus == 2) {
-//					DialogTool dialogTool = new DialogTool(MainActivity.this);
 					dialogTool.alertGpsTip2();
 					if (Variables.switchVoice == 0) {
 						YaoPao01App.palyOpenGps();
 					}
 				} else if (Variables.gpsStatus == 0) {
-//					DialogTool dialog = new DialogTool(MainActivity.this);
 					dialogTool.alertGpsTip1();
 					if (Variables.switchVoice == 0) {
 						YaoPao01App.palyWeekGps();
@@ -563,7 +565,15 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 							SportSetActivity.class);
 					startActivity(mainIntent);
 				}
-			}
+			}*/
+			
+			/**
+			 * 跳转到页面
+			 */
+			 Intent intent= new Intent(MainActivity.this,MatchWebActivity.class);
+			 intent.putExtra("url", "http://image.yaopao.net/html/redirect.html");
+			 startActivity(intent);
+		    
 			break;
 		case R.id.main_setting:
 			Intent settingIntent = new Intent(MainActivity.this,MainSettingActivity.class);

@@ -1,29 +1,28 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.Variables;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.umeng.analytics.MobclickAgent;
 
 /**
  */
 public class MatchWebActivity extends BaseActivity {
-
+	private LoadingDialog loadingDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_match_web);
+		loadingDialog = new LoadingDialog(this);
+		
 		init();
 	}
 
@@ -41,10 +40,33 @@ public class MatchWebActivity extends BaseActivity {
 		//自适应屏幕
 		web.getSettings().setLoadWithOverviewMode(true);
 
-		web.loadUrl("http://www.yaopao.net/html/ssxx.html");  
-	     
-	     
+//		web.loadUrl("http://www.yaopao.net/html/ssxx.html"); 
+		String url =getIntent().getStringExtra("url");
+		 
+		loadingDialog.show();
+		web.setWebViewClient(new WebViewClient() {  
+		
+		/*shouldOverrideUrlLoading方法指明了在loadUrl的时候，程序应该有怎样的行为。 
+	             如果是返回false，则url由当前的webview载入， 
+	             如果是true，则交给当前程序来决定如何处理。*/  
+	    @Override  
+	    public boolean shouldOverrideUrlLoading(WebView view, String url) {  
+	          return super.shouldOverrideUrlLoading(view, url); 
+//	           return false;  //都可以得到自己处理链接响应的问题  
+//	           return true;//则交给当前程序来处理，但是当前程序没有处理，所有页面不会显示。  
+	    }  
+	    @Override
+        public void onPageFinished(WebView view,String url)
+        {
+	    	if (loadingDialog!=null&&loadingDialog.isShowing()) {
+	    		loadingDialog.dismiss();
+			}
+        }
+	}); 
+		web.loadUrl(url);  
 	}
+	
+	
 
 	@Override
 	protected void onResume() {
