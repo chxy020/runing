@@ -63,7 +63,6 @@ public class DBManager {
 			curr.setTime(curr.time-befor.time);
 			befor=SportRecordActivity.points.get(i);
 			SportRecordActivity.points.set(i, curr);
-			
 		}
 		//YaoPao01App.lts.writeFileToSD("db 还算之后数组: " +SportRecordActivity.points, "uploadLocation");
 		Log.d("wysport", "DBManager SportRecordActivity.points="+SportRecordActivity.points);

@@ -1,6 +1,7 @@
 package net.yaopao.activity;
 
 
+import zc.manager.RunManager;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
@@ -111,7 +112,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		
 		checkLogin();
 		this.initView();
-		
 	}
 	void prepare4match(){//登陆成功准备比赛
 		CNAppDelegate.loginSucceedAndNext = false;
@@ -124,7 +124,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
                 syncTimeloadingDialog.setCancelable(false);
                 syncTimeloadingDialog.show();
                 Variables.sportStatus =0;
-                
             }
         }
 	}

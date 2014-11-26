@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import zc.manager.RunManager;
+
 import com.alibaba.fastjson.JSON;
 
 import net.yaopao.assist.CNAppDelegate;
@@ -67,6 +69,8 @@ public class YaoPao01App extends Application {
 	
 	public static final String forceJumpAction = "Jump.action";//任意页面跳转到比赛页面的广播
 	public static final String gpsState = "gpsState";//gps状态的广播
+	
+	public static RunManager runManager;
 	
 	  //测试代码
 //	Timer jumptimTimer = new Timer();
