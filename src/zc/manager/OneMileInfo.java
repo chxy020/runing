@@ -1,15 +1,12 @@
 package zc.manager;
 
-/**
- * @author zhangchi
- * 整公里的一些数据
- */
-public class OneKMInfo {
-	private int number;//第几公里
+public class OneMileInfo {
+	
+	private int number;//第几英里
 	private double lon;
 	private double lat;
-	private int during;//跑完这个公里一共用的时间（加上之前的，是从运动开始算起）
-	private int pace;//每公里配速
+	private int during;//跑完这个英里一共用的时间（加上之前的，是从运动开始算起）
+	private int pace;//每英里配速
 	public int getNumber() {
 		return number;
 	}
@@ -40,7 +37,7 @@ public class OneKMInfo {
 	public void setPace(int pace) {
 		this.pace = pace;
 	}
-	public OneKMInfo(int number, double lon, double lat, int during, int pace) {
+	public OneMileInfo(int number, double lon, double lat, int during, int pace) {
 		super();
 		this.number = number;
 		this.lon = lon;
@@ -48,14 +45,11 @@ public class OneKMInfo {
 		this.during = during;
 		this.pace = pace;
 	}
-	public OneKMInfo(int number, double lon, double lat, int pace) {
+	public OneMileInfo(int number, double lon, double lat, int pace) {
 		super();
 		this.number = number;
 		this.lon = lon;
 		this.lat = lat;
 		this.pace = pace;
 	}
-	
-	
-	
 }

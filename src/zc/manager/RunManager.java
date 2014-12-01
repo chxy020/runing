@@ -9,10 +9,8 @@ import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.model.LatLng;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import net.yaopao.activity.YaoPao01App;
-import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.Variables;
 
 
@@ -43,7 +41,6 @@ public class RunManager {
 	private int targetType;//设定的目标类型：1-自由；2-距离；3-时间
 	private int targetValue;//设定的目标对应的值，毫秒或者米 
 	
-	private int gpsIntervalSec;//取gps时间间隔，初始化的时候赋值，以后自己更新自己
 	private Timer timerUpdate;//取一个gps，更新数据的timer
 	private TimerTask timerTask;
 	
@@ -51,6 +48,8 @@ public class RunManager {
 	private long startPauseTimeStamp;//开始暂停时间戳
 	private int pauseSecond;//总的暂停时间（毫秒）
 	private int targetKM;//下一个要到达的公里数，为了计算整公里的数据
+	private int targetMile;//下一个要到达的英里数，为了计算整英里的数据
+	private int target5Minute;//下一个要到达的5分钟数，为了计算整5分钟的数据
 	
 	//下面这些变量是在timer中每次根据新的gps刷新值,外部可以访问
 	public double distance;//个人距离(米)
@@ -63,9 +62,9 @@ public class RunManager {
 	
 	public List<OneKMInfo> dataKm;//每公里的数据记录
 	// 这个对象应该包括，每公里的位置、配速、步数、消耗的卡路里⋯⋯
-	public List<Object> dataMile;//每公里的数据记录
+	public List<OneMileInfo> dataMile;//每公里的数据记录
 	// 这个对象应该包括，每英里的位置、配速、步数、消耗的卡路里⋯⋯
-	public List<Object> data5Min;//每5分钟的数据记录
+	public List<FiveMinuteInfo> data5Min;//每5分钟的数据记录
 	// 这个对象应该包括，位置、跑过的公里数、配速、步数、消耗的卡路里⋯⋯
     public List<ZCGPSPoint> GPSList;//gps序列,每个点有状态，运动/暂停，赛道内/赛道外
 	
@@ -84,11 +83,20 @@ public class RunManager {
 		}
 	}
 	/**
-	 * 默认构造函数，则创建一个平时跑步的实例manager
+	 * 单单创建一个实例，需要使用manager的数据结构
+	 */
+	public RunManager(){
+		this.GPSList = new ArrayList<ZCGPSPoint>();
+		this.dataKm = new ArrayList<OneKMInfo>();
+		this.dataMile = new ArrayList<OneMileInfo>();
+		this.data5Min = new ArrayList<FiveMinuteInfo>();
+	}
+	/**
+	 * 创建一个平时跑步的实例manager
 	 * @param second 取gps点的时间间隔（秒）
 	 * @param howToMove 跑步、步行or骑车
 	 * @param targetType 设定的目标类型
-	 * @param targetValue 目标值毫秒或者米
+	 * @param targetValue 目标值毫秒或者米,自由运动的话为0
 	 */
 	public RunManager(int second,int howToMove,int targetType,int targetValue){
 		//判断gps模块是否有数据
@@ -105,6 +113,8 @@ public class RunManager {
 		//初始化变量
 		this.GPSList = new ArrayList<ZCGPSPoint>();
 		this.dataKm = new ArrayList<OneKMInfo>();
+		this.dataMile = new ArrayList<OneMileInfo>();
+		this.data5Min = new ArrayList<FiveMinuteInfo>();
 		this.distance = 0;
 		this.paceKm = 0;
 		this.paceMile = 0;
@@ -112,6 +122,8 @@ public class RunManager {
 		this.averSpeedMile = 0;
 		this.score = 0;
 		this.targetKM = 1;
+		this.targetMile = 1;
+		this.target5Minute = 1;
 		
 		//根据second启动timer。
 		timerTask = new TimerTaskEveryday();
@@ -144,6 +156,25 @@ public class RunManager {
 	public void setFeeling(int feeling) {
 		this.feeling = feeling;
 	}
+	
+	public int getTargetValue() {
+		return targetValue;
+	}
+	public void setTargetValue(int targetValue) {
+		this.targetValue = targetValue;
+	}
+	public int getTargetType() {
+		return targetType;
+	}
+	public void setTargetType(int targetType) {
+		this.targetType = targetType;
+	}
+	public int getRunStatus() {
+		return runStatus;
+	}
+	public void setRunStatus(int runStatus) {
+		this.runStatus = runStatus;
+	}
 	/**
 	 * 结束一次运动
 	 */
@@ -173,7 +204,7 @@ public class RunManager {
 		
 	}
 	/**
-	 * 返回总的运动时间
+	 * 返回总的运动时间毫秒
 	 * @return
 	 */
 	public int during(){
@@ -182,7 +213,7 @@ public class RunManager {
 	}
 	/**
 	 * 改变运动状态
-	 * @param status 状态
+	 * @param status 状态1-运动，2-暂停
 	 */
 	public void changeRunStatus(int status){
 		if(this.runType == 1){//如果是日常跑步，计算pauseSecond；
@@ -199,9 +230,15 @@ public class RunManager {
 	private ZCGPSPoint getOnePoint(){
 		if(Variables.isTest){
 			testnum ++ ;
-			return new ZCGPSPoint(116.390053,39.968191+0.001*testnum,this.runStatus,System.currentTimeMillis());
+			return new ZCGPSPoint(116.390053,39.968191+0.001*testnum,this.runStatus,System.currentTimeMillis(),0,0,0);
 		}else{
-			return new ZCGPSPoint(YaoPao01App.loc.getLongitude(),YaoPao01App.loc.getLatitude(),this.runStatus,System.currentTimeMillis());
+			return new ZCGPSPoint(YaoPao01App.loc.getLongitude(),
+								  YaoPao01App.loc.getLatitude(),
+								  this.runStatus,
+								  System.currentTimeMillis(),
+								  (int)YaoPao01App.loc.getBearing(),
+								  (int)YaoPao01App.loc.getAltitude(),
+								  (int)YaoPao01App.loc.getSpeed());
 		}
 	}
 	private void updateDate(){
@@ -217,7 +254,6 @@ public class RunManager {
 	        if(gpsPoint.getStatus() == lastPoint.getStatus()){//两点状态一样
 	            //不保存这个点，算一下配速和进度条
 	            if(gpsPoint.getStatus() == 1){//运动中，计算
-//	                kApp.totalSecond = kApp.alreadySecond + (int)([CNUtil getNowTime] - kApp.startTime);
 	                
 	                //计算一下平均配速：
 	            	if(this.distance < 1){//距离太短
@@ -229,7 +265,6 @@ public class RunManager {
 	            lastPoint.setTime(gpsPoint.getTime());//就不入数组了，而是更新时间
 	        }else{//两点状态不一样，要计算配速、进度条和距离
 	            if(gpsPoint.getStatus() == 1){//运动中，计算
-//	                kApp.totalSecond = kApp.alreadySecond + (int)([CNUtil getNowTime] - kApp.startTime);
 	                //计算一下平均配速：
 	                this.paceKm = (int)(during()/distance);
 	                this.distance += meter;
@@ -238,7 +273,6 @@ public class RunManager {
 	        }
 	    }else{
 	        if(gpsPoint.getStatus() == 1){
-//	            kApp.totalSecond = kApp.alreadySecond + (int)([CNUtil getNowTime] - kApp.startTime);
 	            //计算一下平均配速：
 	        	this.distance += meter;
 	        	this.paceKm = (int)(during()/distance);
@@ -284,6 +318,26 @@ public class RunManager {
 			dataKm.add(new OneKMInfo(targetKM,gpsPoint.getLon(),gpsPoint.getLat(),during(),thisKmDuring/1000));
 			this.targetKM++;
 		}
+		if(this.distance > this.targetMile*1609.344){//刚到达整英里
+			int thisMileDuring = 0;
+			if(this.dataMile.isEmpty()){
+				thisMileDuring = during();
+			}else{
+				thisMileDuring = during() - dataMile.get(dataMile.size()-1).getDuring();
+			}
+			dataMile.add(new OneMileInfo(targetMile,gpsPoint.getLon(),gpsPoint.getLat(),during(),thisMileDuring/1000));
+			this.targetMile++;
+		}
+		if(this.during() > this.target5Minute*5*60*1000){//刚到达整5分钟
+			double thisDistance = 0;
+			if(this.data5Min.isEmpty()){
+				thisDistance = this.distance;
+			}else{
+				thisDistance = this.distance - data5Min.get(data5Min.size()-1).getTotal_distance();
+			}
+			data5Min.add(new FiveMinuteInfo(target5Minute,gpsPoint.getLon(),gpsPoint.getLat(),thisDistance,(int)(300000/thisDistance)));
+			this.target5Minute++;
+		}
 		Log.v("zc","lon:"+gpsPoint.getLon()+" lat:"+gpsPoint.getLat());
 		Log.v("zc","distance:"+this.distance);
 		Log.v("zc","paceKm:"+this.paceKm);
@@ -325,5 +379,18 @@ public class RunManager {
 	        return 3;
 	    }
 	    return 0;
+	}
+	/**
+	 * @return
+	 * 返回已经完成的进度值
+	 */
+	public int completeValue(){
+		if(this.targetType == 1){//自由
+			return 0;
+		}else if(this.targetType == 2){//距离
+			return (int)this.distance;
+		}else if(this.targetType == 3){//时间
+			return (int)this.during();
+		}else return 0;
 	}
 }

@@ -235,7 +235,7 @@ private String getGoalTimeStr(int time){
 					SportSetActivity.this.finish();
 				} else {
 					startIntent = new Intent(SportSetActivity.this,
-							SportRecordActivity.class);
+							SportRecordActivityURM.class);
 					startActivity(startIntent);
 					SportSetActivity.this.finish();
 				}

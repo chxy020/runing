@@ -82,6 +82,9 @@
             android:name="net.yaopao.activity.SportRecordActivity"
             android:screenOrientation="portrait" />
          <activity
+            android:name="net.yaopao.activity.SportRecordActivityURM"
+            android:screenOrientation="portrait" />
+         <activity
             android:name="net.yaopao.activity.MapActivity"
             android:screenOrientation="portrait" />
          <activity
