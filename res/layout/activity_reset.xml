@@ -11,15 +11,14 @@
 
         <TextView
             android:id="@+id/reset_title"
-             android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:text="重设密码"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size2" 
-            />
+            android:textSize="@dimen/font_size2" />
 
         <TextView
             android:id="@+id/reset_goback"
@@ -35,9 +34,49 @@
         android:id="@+id/reset_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/reg_margin_top"
         android:layout_below="@id/reset_top_bar"
+        android:layout_marginTop="@dimen/reg_margin_top"
         android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_height"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="请确认你的国家或地区并输入手机号"
+            android:textSize="@dimen/font_size3" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_marginBottom="@dimen/margin1"
+            android:layout_marginLeft="@dimen/margin1"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="国家或地区"
+                android:textSize="@dimen/font_size3" />
+ <ImageView
+                    android:id="@+id/country_arrow"
+                    android:layout_width="@dimen/small_height"
+                    android:layout_height="@dimen/small_height"
+                    android:background="@drawable/ic_slider" 
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"/>
+            <TextView
+                android:id="@+id/reset_country"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:gravity="center"
+                   android:layout_toLeftOf="@id/country_arrow"
+                android:text="中国"
+                android:textSize="@dimen/font_size3" />
+        </RelativeLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -49,19 +88,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
-             <ImageView
+
+            <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
-                android:background="@drawable/acount"></ImageView>
+                android:background="@drawable/acount" >
+            </ImageView>
+
+            <TextView
+                android:id="@+id/reset_country_num"
+                android:layout_width="@dimen/reg_conutry_width"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="+86"
+                android:textSize="@dimen/font_size3" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:background="#000000" >
+            </View>
 
             <EditText
                 android:id="@+id/reset_phoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height"
+                android:layout_marginLeft="@dimen/margin1"
                 android:background="@null"
-                android:hint="手机号，11位数字" >
+                android:hint="请填写手机号码" >
 
                 <requestFocus />
             </EditText>
@@ -146,8 +202,6 @@
             android:gravity="center"
             android:text="确定"
             android:textColor="@color/white" />
-
-        
     </LinearLayout>
 
 </RelativeLayout>

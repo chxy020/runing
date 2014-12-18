@@ -1,7 +1,10 @@
 package net.yaopao.activity;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
@@ -131,8 +134,9 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 		weigthData = user.getString("weight");
 		weigthData = weigthData == null||"".equals(weigthData) ? "70kg" : weigthData;
 		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
+		readCountryData();
 	}
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -175,7 +179,23 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 				heightV.setText(user.getString("height"));
 				signV.setText(user.getString("signature"));
 				headv.setImageBitmap(Variables.avatar);
-				phoneV.setText(user.getString("phone"));
+				if (Variables.countryData!=null) {
+					String country =user.getString("country");
+					if ("中国".equals(country)){
+						phoneV.setText("+86 "+user.getString("phone"));
+					}else {
+						String code=Variables.countryData.get(country);
+						if (code!=null&&!"".equals(code)) {
+							phoneV.setText(Variables.countryData.get(country)+" "+user.getString("phone"));
+						}else {
+							phoneV.setText(user.getString("phone"));
+						}
+					}
+					
+				}else {
+					phoneV.setText(user.getString("phone"));
+				}
+				
 				birthdayV.setText(user.getString("birthday"));
 				if ("M".equals(user.getString("gender"))) {
 					gender = "M";
@@ -642,4 +662,21 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 		}
 		return true;
 	}
+	//读取国家或地区对应的区号
+		void readCountryData(){
+				      try { 
+			                InputStreamReader inputReader = new InputStreamReader( getResources().getAssets().open("country.txt") ); 
+			                BufferedReader bufReader = new BufferedReader(inputReader);
+			                String line="";
+			                String[] data=null;
+			                Variables.countryData=new HashMap<String, String>();
+			                while((line = bufReader.readLine()) != null){
+			                   	data =line.split(",");
+				                Variables.countryData.put(data[3], data[0]);
+			                }
+			             
+			            } catch (Exception e) { 
+			                e.printStackTrace(); 
+			            }		
+		}
 }

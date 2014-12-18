@@ -53,7 +53,7 @@ public class NetworkHandler extends Activity {
 			httpRequest.setEntity(new StringEntity(param, "utf-8"));
 			httpRequest.addHeader("Accept", "text/json");
 			httpRequest.addHeader("X-PID", Variables.pid);
-			httpRequest.addHeader("User-Agent", Variables.ua);
+			httpRequest.addHeader("ua", Variables.ua);
 			Log.v("wyuser","url="+url+ " X-PID="+Variables.pid+" User-Agent="+Variables.ua);
 			HttpClient httpclient = getHttpClient();
 			HttpResponse httpResponse = httpclient.execute(httpRequest);

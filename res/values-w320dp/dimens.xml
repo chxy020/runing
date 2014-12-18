@@ -37,6 +37,7 @@
     <dimen name="width_half_less">150dp</dimen>   
     <dimen name="reg_margin_top">60dp</dimen>
     <dimen name="reg_margin_edit">40dp</dimen>
+    <dimen name="reg_conutry_width">60dp</dimen>
     <dimen name="login_margin_edit">40dp</dimen>
     <dimen name="reg_code_width">120dp</dimen>
     <dimen name="edit_img_size">20dp</dimen>

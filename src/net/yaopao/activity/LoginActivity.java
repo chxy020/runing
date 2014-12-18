@@ -3,6 +3,9 @@ package net.yaopao.activity;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,25 +16,30 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import net.yaopao.sms.CountryActivity;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
+import cn.smssdk.gui.CountryPage;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -53,6 +61,26 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 	private LoadingDialog dialog;
 	private int loginStatus;
 	private boolean service=true;//是否同意服务条款
+	
+	public TextView getCodeV;
+	public EditText codeV;
+	public String codeStr;
+	public TextView setCountryV;
+	public TextView countryCodeV;
+	private String currentCode;//当前国家或区域区号
+	private String currentId;//当前国家或区域id
+	private String currentCountry;
+	private boolean isVerified=false;
+	// 国家号码规则
+	private HashMap<String, String> countryRules;
+//	private Dialog pd;
+	public  Handler updateDataHandler;
+	public  EventHandler eh;
+	private String code;// 验证码
+	private Timer timer;// 计时器
+	private int time = 60;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -66,6 +94,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 //			Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
 			dialog.alertLoginOnOther();
 		}
+		initSMS();
 		initLayout();
 	}
 
@@ -80,6 +109,20 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		serviceV = (TextView) this.findViewById(R.id.term_of_service);
 		serviceV.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 		serviceSelectV = (ImageView) this.findViewById(R.id.term_of_service_select);
+		
+		getCodeV = (TextView) this.findViewById(R.id.login_get_code);
+		setCountryV =(TextView) this.findViewById(R.id.login_country);
+		countryCodeV =(TextView) this.findViewById(R.id.login_country_num);
+		setCountryV.setText(currentCountry);
+		countryCodeV.setText("+"+currentCode);
+//		pd = CommonDialog.ProgressDialog(LoginActivity.this);
+		
+		codeV = (EditText) this.findViewById(R.id.login_veri_code);
+		codeV.setInputType(InputType.TYPE_CLASS_NUMBER);
+		
+		getCodeV.setOnTouchListener(this);
+		setCountryV.setOnTouchListener(this);
+		
 		dialog = new LoadingDialog(this);
 		goBack.setOnTouchListener(this);
 		to_reset.setOnTouchListener(this);
@@ -87,6 +130,42 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		login.setOnTouchListener(this);
 		serviceV.setOnTouchListener(this);
 		serviceSelectV.setOnTouchListener(this);
+		
+		
+	}
+	private void initSMS() {
+		SMSSDK.initSDK(this, Constants.SMS_KEY,Constants.SMS_SECRET);
+		currentCode = Constants.SMS_CN_CODE;
+		currentCountry = Constants.SMS_DEF_CONUTRY;
+		currentId=Constants.SMS_CN_ID;
+		updateDataHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				if (msg.what == 0) {
+					String [] data = (String[]) msg.obj;
+					
+					currentCode=data[0];
+					currentCountry=data[1];
+					currentId=data[2];
+					setCountryV.setText(currentCountry);
+					countryCodeV.setText("+"+currentCode);
+				} 
+				super.handleMessage(msg);
+			}
+		};
+		 eh=new EventHandler(){
+			@Override
+			public void afterEvent(int event, int result, Object data) {
+				
+				Message msg = new Message();
+				msg.arg1 = event;
+				msg.arg2 = result;
+				msg.obj = data;
+				handler.sendMessage(msg);
+			}
+			
+		};
+		SMSSDK.registerEventHandler(eh);
+		
 	}
 
 	@Override
@@ -102,6 +181,26 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 			case MotionEvent.ACTION_UP:
 				goBack.setBackgroundResource(R.color.red);
 				LoginActivity.this.finish();
+				break;
+			}
+			break;
+		case R.id.login_country:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				setCountryV.setBackgroundResource(R.color.white_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				setCountryV.setBackgroundResource(R.color.white);
+//				SMSSDK.getSupportedCountries();
+				CountryActivity ca = new CountryActivity();
+				ca.country=currentCountry;
+				ca.code=currentCode;
+				ca.handler=updateDataHandler;
+				//国家列表
+				CountryPage countryPage = new CountryPage();
+				countryPage.setCountryId(currentId);
+				countryPage.setCountryRuls(countryRules);
+				countryPage.showForResult(this, null, ca);
 				break;
 			}
 			break;
@@ -143,12 +242,27 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 				login.setBackgroundResource(R.color.blue_dark);
 				if (service) {
 					if (verifyParam()) {
-						dialog.show();
-						new loginAsyncTask().execute("");
+
+						if (isVerified) {
+							new loginAsyncTask().execute("");
+						} else {
+							if (!TextUtils.isEmpty(codeV.getText().toString())) {
+								SMSSDK.submitVerificationCode(currentCode,
+										phoneNumV.getText().toString(), codeV
+												.getText().toString());
+								if (dialog != null && !dialog.isShowing()) {
+									dialog.show();
+								}
+							} else {
+								Toast.makeText(this, "验证码不能为空", 1).show();
+							}
+						}
 					}
-					}else{
-						Toast.makeText(LoginActivity.this, "您需要同意要跑服务协议才能进行后续操作",Toast.LENGTH_LONG).show();
-					}
+//					new loginAsyncTask().execute("");
+				} else {
+					Toast.makeText(LoginActivity.this, "您需要同意要跑服务协议才能进行后续操作",
+							Toast.LENGTH_LONG).show();
+				}
 				
 				break;
 			}
@@ -178,6 +292,34 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 				break;
 			}
 			break;
+		case R.id.login_get_code:
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				getCodeV.setBackgroundResource(R.color.blue_h);
+				break;
+			case MotionEvent.ACTION_UP:
+				getCodeV.setBackgroundResource(R.color.blue_dark);
+//				Log.v("wy", "点击了获取验证码按钮");
+//				if (verifyPhone()) {
+//					new verifyCodAsyncTask().execute("");
+//				}
+				
+				//请求发送短信验证码
+				if(!TextUtils.isEmpty(phoneNumV.getText().toString())){
+					SMSSDK.getVerificationCode(currentCode,phoneNumV.getText().toString());
+					phoneNumStr=phoneNumV.getText().toString();
+					
+					if (dialog != null && !dialog.isShowing()) {
+						dialog.show();
+					}
+
+				}else {
+					Toast.makeText(this, "电话不能为空", 1).show();
+				}
+
+				break;
+			}
+			break;
 		}
 		return true;
 	}
@@ -192,22 +334,32 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		return true;
 	}
 
+//	public boolean verifyPhone() {
+//		if (Variables.isTest) {
+//			return true;
+//		}
+//		phoneNumStr = phoneNumV.getText().toString().trim();
+//		Log.v("wy", "phone=" + phoneNumStr);
+//		if (phoneNumStr != null && !"".equals(phoneNumStr)) {
+//			Pattern p = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d");
+//			Matcher m = p.matcher(phoneNumStr);
+//			if (m.matches()) {
+//				return true;
+//			} else {
+//				Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
+//				return false;
+//			}
+//
+//		} else {
+//			Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
+//			return false;
+//		}
+//	}
 	public boolean verifyPhone() {
-		if (Variables.isTest) {
-			return true;
-		}
 		phoneNumStr = phoneNumV.getText().toString().trim();
 		Log.v("wy", "phone=" + phoneNumStr);
 		if (phoneNumStr != null && !"".equals(phoneNumStr)) {
-			Pattern p = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d");
-			Matcher m = p.matcher(phoneNumStr);
-			if (m.matches()) {
 				return true;
-			} else {
-				Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
-				return false;
-			}
-
 		} else {
 			Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
 			return false;
@@ -244,8 +396,8 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		protected Boolean doInBackground(String... params) {
 			pwdStr = pwdV.getText().toString().trim();
 			phoneNumStr = phoneNumV.getText().toString().trim();
-			loginJson = NetworkHandler.httpPost(Constants.endpoints1+ Constants.login, "phone=" + phoneNumStr + "&passwd="	+ pwdStr);
-			Log.v("wyuser", "登录请求参数==" + Constants.endpoints	+ Constants.login+" phone=" + phoneNumStr + "&passwd="+ pwdStr);
+			loginJson = NetworkHandler.httpPost(Constants.endpoints1+ Constants.login, "phone=" + phoneNumStr + "&passwd="	+ pwdStr+ "&country=" + currentCountry);
+			Log.v("wyuser", "登录请求参数==" + Constants.endpoints	+ Constants.login+" phone=" + phoneNumStr + "&passwd="+ pwdStr+ "&country=" + currentCountry);
 			Log.v("wyuser", "登录请求返回loginJson=" + loginJson);
 			Log.e("", "chxy loginJson=" + loginJson);
 			if (loginJson != null && !"".equals(loginJson)) {
@@ -362,6 +514,80 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 		MobclickAgent.onPause(this);
 	}
 	
+	Handler handler=new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			int event = msg.arg1;
+			int result = msg.arg2;
+			Object data = msg.obj;
+			Log.e("event", "event="+event);
+			if (result == SMSSDK.RESULT_COMPLETE) {
+				//短信注册成功后，返回MainActivity,然后提示新好友
+				if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//提交验证码成功
+					if (dialog != null && dialog.isShowing()) {
+						dialog.dismiss();
+					}
+//					Toast.makeText(getApplicationContext(), "提交验证码成功", Toast.LENGTH_SHORT).show();
+					isVerified=true;
+					
+					DataTool.setIsPhoneVerfied(1);
+					new loginAsyncTask().execute("");
+				} else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+					if (dialog != null && dialog.isShowing()) {
+						dialog.dismiss();
+					}
+					isVerified=false;
+					startVerifyTimer();
+					Toast.makeText(getApplicationContext(), "验证码已经发送", Toast.LENGTH_SHORT).show();
+				
+				}
+			} else {
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				// 根据服务器返回的网络错误，给toast提示
+				try {
+					((Throwable) data).printStackTrace();
+					Throwable throwable = (Throwable) data;
 
+					JSONObject object = JSONObject.parseObject(throwable.getMessage());
+					String des = object.getString("detail");
+					if (!TextUtils.isEmpty(des)) {
+						Toast.makeText(LoginActivity.this, des, Toast.LENGTH_SHORT).show();
+						return;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
+	};
+	Handler timerHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			if (msg.what == 0) {
+				getCodeV.setEnabled(true);
+				getCodeV.setText("获取验证码");
+				timer.cancel();
+			} else {
+				getCodeV.setText(msg.what + "秒");
+			}
+		};
+	};
 
+	private void startVerifyTimer(){
+		time = 60;
+		getCodeV.setEnabled(false);
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				timerHandler.sendEmptyMessage(time--);
+			}
+		}, 0, 1000);
+	}
 }

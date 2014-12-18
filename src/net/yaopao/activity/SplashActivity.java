@@ -1,14 +1,11 @@
 package net.yaopao.activity;
 
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
 
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
@@ -17,6 +14,7 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,7 +23,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
-import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 /**
  * 显示起始画面
@@ -58,28 +60,47 @@ public class SplashActivity extends Activity {
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
 		setContentView(R.layout.splash);
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				Intent mainIntent = new Intent(SplashActivity.this,
-						MainActivity.class);
-				SplashActivity.this.startActivity(mainIntent);
-				SplashActivity.this.finish();
-			}
-		}, Constants.SPLASH_DISPLAY_LENGHT);
+
 		// 利用开头动画这几秒时间可以初始化变量和自动登录
+		
 		Variables.uid = DataTool.getUid();
 		
 		if (NetworkHandler.isNetworkAvailable(this)) {
 			Variables.network = 1;
 			if (Variables.uid != 0) {
-				new AutoLogin().execute("");
+				if (DataTool.getIsPhoneVerfied()==1) {
+					new AutoLogin().execute("");
+					startForward(Constants.SPLASH_DISPLAY_LENGHT,this,MainActivity.class);
+				}else if (DataTool.getIsPhoneVerfied()==0) {
+					//跳转到手机验证页面，验证成功后自动登录
+					startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,VerifyPhoneActivity.class);
+				}
+			}else {
+				startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
 			}
-
-		} else {
-			//Toast.makeText(this, "请检查网络", Toast.LENGTH_LONG).show();
+		}else {
+			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
 		}
-		 Log.v("wynet", "Variables.network0000="+Variables.network);
+		
+		 Log.v("wynet", "Variables.network="+Variables.network);
 		initSportParam();
+		
+	
+//		if (Variables.uid != 0) {
+//			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,VerifyPhoneActivity.class);
+//		}else {
+//			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
+//		}
+	}
+	
+	void startForward(int length,Context thisActivity,final Class activity){
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+		Intent mainIntent = new Intent(SplashActivity.this,	activity);
+		SplashActivity.this.startActivity(mainIntent);
+		SplashActivity.this.finish();
+			}
+		},length);
 	}
 
 	@Override

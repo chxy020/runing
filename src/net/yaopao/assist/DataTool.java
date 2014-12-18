@@ -61,6 +61,16 @@ public class DataTool {
 		editor.commit();
 	}
 	
+	// 区分是否需要验证手机标志 0-未验证，1-已验证
+	public static int getIsPhoneVerfied() {
+		return YaoPao01App.sharedPreferences.getInt("isPhoneVerfied", 0);
+	}
+	public static void setIsPhoneVerfied(int isPhoneVerfied) {
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putInt("isPhoneVerfied", isPhoneVerfied);
+		editor.commit();
+	}
+	
 	
 //	public static void initUserInfo(JSONObject rt,String rtjson) {
 //		JSONObject userInfo= rt.getJSONObject("userinfo");

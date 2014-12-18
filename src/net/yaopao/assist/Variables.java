@@ -1,10 +1,11 @@
 package net.yaopao.assist;
 
 import java.util.Date;
-
-import com.alibaba.fastjson.JSONObject;
+import java.util.Map;
 
 import android.graphics.Bitmap;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author dell 供全局使用的一些变量
@@ -137,6 +138,8 @@ public class Variables {
 	}
 	
 	public static String activityOnFront="";
+	
+	public static Map<String,String> countryData;
 	
 	
 	public static boolean isTest=false;//是否是测试客户端

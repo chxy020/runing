@@ -8,10 +8,13 @@ import android.os.Environment;
  */
 public class Constants {
 
-	public static final int SPLASH_DISPLAY_LENGHT = 4000; // 延迟四秒
+	public static final String  VERSION = "a_1.0.5"; // 延迟四秒
+	public static final int SPLASH_DISPLAY_LENGHT_SHORT = 1000; // 延迟四秒
+	public static final int SPLASH_DISPLAY_LENGHT = 3000; // 延迟四秒
 	public static final int RET_CAMERA = 101;
 	public static final int RET_GALLERY = 102;
 	public static final int RET_CROP = 103;
+	
 	public static final String IMAGE_UNSPECIFIED = "image/*";
 	public static final String avatarPath = Environment.getExternalStorageDirectory().toString() + "/YaoPao/";
 	public static final String avatarName = "avatar.jpg";
@@ -19,6 +22,14 @@ public class Constants {
 	public static final String tempImage = "temp.jpg";
 	public static final String sportPho = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/";
 	public static final String sportPho_s = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/small/";
+	
+	//mob sms 
+	public static final String SMS_KEY = "328a52117e94";
+	public static final String SMS_SECRET = "7833f56c649d87aeb53fe434a72bb86e";
+	public static final String SMS_CN_CODE = "86";
+	public static final String SMS_DEF_CONUTRY = "中国";
+	public static final String SMS_CN_ID = "42";
+	
 
 	public static  String endpoints = "";// 线上服务地址
 	public static  String endpoints_img = "";// 图片下载地址

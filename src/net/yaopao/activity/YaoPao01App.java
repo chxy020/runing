@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.smssdk.SMSSDK;
+
 import com.alibaba.fastjson.JSON;
 
 import net.yaopao.assist.CNAppDelegate;
@@ -80,7 +82,7 @@ public class YaoPao01App extends Application {
 		db = new DBManager(this);
 		Log.v("wy", "app");
 		Variables.pid = getImeiCode();
-		Variables.ua = this.getOptVer() + ",a_0.9.1";
+		Variables.ua = this.getOptVer() + ","+Constants.VERSION;
 		CNAppDelegate.geosHandler = new TrackData();
 		CNAppDelegate.geosHandler.read(CNAppDelegate.kTrackName+".properties");
 		initDefultAvtar();
@@ -106,8 +108,7 @@ public class YaoPao01App extends Application {
 		graphicTool = new  GraphicTool(getResources());
 		//注册广播  
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
-      //  startJumpTimer();
-        
+        //  startJumpTimer();
 	};
 
 	private void initDefultAvtar() {

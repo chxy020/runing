@@ -4,37 +4,37 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:id="@+id/reg_top_bar"
+        android:id="@+id/verify_top_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_height"
         android:background="@color/red" >
 
         <TextView
-            android:id="@+id/reg_title"
+            android:id="@+id/verify_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="手机号注册"
+            android:text="验证手机"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size2" />
 
         <TextView
-            android:id="@+id/reg_goback"
+            android:id="@+id/verify_goback"
             android:layout_width="@dimen/common_height"
             android:layout_height="@dimen/common_height"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:text="返回"
+            android:text="取消"
             android:textColor="@color/white" />
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/reg_edit"
+        android:id="@+id/verify_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/reg_top_bar"
+        android:layout_below="@id/verify_top_bar"
         android:layout_marginTop="@dimen/reg_margin_top"
         android:orientation="vertical" >
 
@@ -51,6 +51,7 @@
             android:layout_height="@dimen/common_height"
             android:layout_marginBottom="@dimen/margin1"
             android:layout_marginLeft="@dimen/margin1"
+            
             >
 
             <TextView
@@ -62,7 +63,7 @@
                 android:text="国家或地区"
                 android:textSize="@dimen/font_size3" />
 
-           
+            
               <ImageView
                     android:id="@+id/country_arrow"
                     android:layout_width="@dimen/small_height"
@@ -70,9 +71,8 @@
                     android:background="@drawable/ic_slider" 
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"/>
-              
-               <TextView
-                android:id="@+id/reg_country"
+            <TextView
+                android:id="@+id/verify_country"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/common_height"
                 android:layout_toLeftOf="@id/country_arrow"
@@ -95,11 +95,13 @@
             <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
+                android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
-                android:background="@drawable/acount" />
+                android:background="@drawable/acount" >
+            </ImageView>
 
             <TextView
-                android:id="@+id/reg_country_num"
+                android:id="@+id/verify_country_num"
                 android:layout_width="@dimen/reg_conutry_width"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -113,43 +115,18 @@
             </View>
 
             <EditText
-                android:id="@+id/reg_phoneNum"
+                android:id="@+id/verify_phoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height"
-                android:background="@null"
-                android:hint="请填写手机号码" 
                 android:layout_marginLeft="@dimen/margin1"
-                >
-				
+                android:background="@null"
+                android:hint="请填写手机号码" >
+
                 <requestFocus />
             </EditText>
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="#000000" >
-        </View>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="@dimen/edit_img_size"
-                android:layout_height="@dimen/edit_img_size"
-                android:layout_margin="@dimen/edit_img_margin"
-                android:background="@drawable/pwd" />
-
-            <EditText
-                android:id="@+id/reg_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/common_height"
-                android:background="@null"
-                android:hint="设置密码，6-16位字母或数字"
-                android:password="true" />
-        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -163,16 +140,17 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/reg_get_code"
+                android:id="@+id/verify_get_code"
                 android:layout_width="@dimen/reg_code_width"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
                 android:background="@color/blue_dark"
                 android:gravity="center"
                 android:text="获取验证码"
                 android:textColor="@color/white" />
 
             <EditText
-                android:id="@+id/reg_veri_code"
+                android:id="@+id/verify_veri_code"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height"
                 android:background="@null"
@@ -190,43 +168,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/reg_edit"
+        android:layout_below="@id/verify_edit"
         android:layout_marginTop="@dimen/reg_margin_edit"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/reg_go"
+            android:id="@+id/verify_go"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
             android:background="@color/blue_dark"
             android:gravity="center"
-            android:text="注册"
+            android:text="确定"
             android:textColor="@color/white" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/reg_go" >
-
-            <TextView
-                android:id="@+id/term_of_service"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/common_height"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="我已同意要跑服务协议"
-                android:textColor="@color/text" />
-
-            <ImageView
-                android:id="@+id/term_of_service_select"
-                android:layout_width="@dimen/small_height"
-                android:layout_height="@dimen/small_height"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin5"
-                android:layout_toLeftOf="@id/term_of_service"
-                android:background="@drawable/service_checked"
-                android:padding="@dimen/margin5" />
-        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>
