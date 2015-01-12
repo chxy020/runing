@@ -66,6 +66,8 @@ public class Variables {
 //	public static String matchState = "1";
 		
 	
+	public static int gpsLevel = 1;
+
 	public static int network = 0;// 0-网络不可用，1-网络可用
 
 	public static int gpsStatus = 0;// 0-gps不可用，1-gps可用，2-未开启
@@ -140,6 +142,10 @@ public class Variables {
 	public static String activityOnFront="";
 	
 	public static Map<String,String> countryData;
+	
+	//验证码获取倒计时
+	public static int verifyTime=60;
+	
 	
 	
 	public static boolean isTest=false;//是否是测试客户端

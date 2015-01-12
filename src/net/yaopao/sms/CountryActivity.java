@@ -5,7 +5,6 @@ package net.yaopao.sms;
 import java.util.HashMap;
 
 import android.os.Handler;
-import net.yaopao.activity.RegisterActivity;
 import cn.smssdk.SMSSDK;
 import cn.smssdk.framework.FakeActivity;
 

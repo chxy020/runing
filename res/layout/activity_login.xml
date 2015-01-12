@@ -48,10 +48,11 @@
             />
 
         <RelativeLayout
+            android:id="@+id/country_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
             android:layout_marginBottom="@dimen/margin1"
-            android:layout_marginLeft="@dimen/margin1"
+           
              >
 
             <TextView
@@ -60,6 +61,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:gravity="center"
+                 android:layout_marginLeft="@dimen/margin1"
                 android:text="国家或地区"
                 android:textSize="@dimen/font_size3" />
 

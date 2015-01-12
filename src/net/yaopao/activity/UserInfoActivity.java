@@ -181,12 +181,13 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 				headv.setImageBitmap(Variables.avatar);
 				if (Variables.countryData!=null) {
 					String country =user.getString("country");
+					
 					if ("中国".equals(country)){
 						phoneV.setText("+86 "+user.getString("phone"));
 					}else {
 						String code=Variables.countryData.get(country);
 						if (code!=null&&!"".equals(code)) {
-							phoneV.setText(Variables.countryData.get(country)+" "+user.getString("phone"));
+							phoneV.setText("+"+Variables.countryData.get(country)+" "+user.getString("phone"));
 						}else {
 							phoneV.setText(user.getString("phone"));
 						}
@@ -671,8 +672,10 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 			                String[] data=null;
 			                Variables.countryData=new HashMap<String, String>();
 			                while((line = bufReader.readLine()) != null){
+			                	Log.v("wyuser", "line = "+line);
 			                   	data =line.split(",");
-				                Variables.countryData.put(data[3], data[0]);
+				                Variables.countryData.put(data[2], data[0]);
+				                
 			                }
 			             
 			            } catch (Exception e) { 

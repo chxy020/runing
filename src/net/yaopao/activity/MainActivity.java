@@ -371,18 +371,24 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyOpenGps();
 						}
-					} else if (Variables.gpsStatus == 0) {
-//						DialogTool dialog = new DialogTool(MainActivity.this);
-						dialogTool.alertGpsTip1();
-						if (Variables.switchVoice == 0) {
-							YaoPao01App.palyWeekGps();
-						}
-
-					} else if (Variables.gpsStatus == 1) {
+					}else{
 						Intent mainIntent = new Intent(MainActivity.this,
 								SportSetActivity.class);
 						startActivity(mainIntent);
 					}
+					
+//					else if (Variables.gpsStatus == 0) {
+////						DialogTool dialog = new DialogTool(MainActivity.this);
+//						dialogTool.alertGpsTip1();
+//						if (Variables.switchVoice == 0) {
+//							YaoPao01App.palyWeekGps();
+//						}
+//
+//					} else if (Variables.gpsStatus == 1) {
+//						Intent mainIntent = new Intent(MainActivity.this,
+//								SportSetActivity.class);
+//						startActivity(mainIntent);
+//					}
 				}
 				break;
 			}

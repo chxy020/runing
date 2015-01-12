@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.smssdk.SMSSDK;
 
@@ -44,6 +46,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
@@ -69,6 +72,9 @@ public class YaoPao01App extends Application {
 	
 	public static final String forceJumpAction = "Jump.action";//任意页面跳转到比赛页面的广播
 	public static final String gpsState = "gpsState";//gps状态的广播
+	
+	public static final String verifyCode = "verifyCode";// verifyCode再次放松剩余时间的广播
+	private Timer vcodeTimer;
 	
 	  //测试代码
 //	Timer jumptimTimer = new Timer();
@@ -109,6 +115,7 @@ public class YaoPao01App extends Application {
 		//注册广播  
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
         //  startJumpTimer();
+        SMSSDK.initSDK(this, Constants.SMS_KEY,Constants.SMS_SECRET);
 	};
 
 	private void initDefultAvtar() {
@@ -188,7 +195,7 @@ public class YaoPao01App extends Application {
 					
 					
 
-					if (rank > 3) {
+					if (rank >= 4) {
 						loc = location;
 						Variables.gpsStatus = 1;
 					} else {
@@ -1174,4 +1181,28 @@ public class YaoPao01App extends Application {
 	    	intent.putExtra("state", state);//这里的参数表明跳转到那个页面
 	    	sendBroadcast(intent);
 	    }
+	    
+	    public void sendTimerBroadcast() {
+	    	if (Variables.verifyTime<60) {
+				return;
+			}
+			vcodeTimer = new Timer();
+			vcodeTimer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					timerHandler.sendEmptyMessage(--Variables.verifyTime);
+					sendBroadcast(new Intent(verifyCode));
+				}
+			}, 0, 1000);
+			
+		}
+
+		Handler timerHandler = new Handler() {
+			public void handleMessage(android.os.Message msg) {
+//				Toast.makeText(YaoPao01App.this, msg.what+"======="+Variables.verifyTime, 0).show();
+				if (msg.what <= 0) {
+					vcodeTimer.cancel();
+				}
+			};
+		};
 }

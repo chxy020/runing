@@ -228,6 +228,7 @@ private String getGoalTimeStr(int time){
 		case R.id.sport_set_start:
 				YaoPao01App.db.saveSportParam();
 				Intent startIntent = new Intent();
+				Variables.gpsLevel=4;
 				if (Variables.switchTime == 0) {
 					startIntent = new Intent(SportSetActivity.this,
 							SportCountdownActivity.class);

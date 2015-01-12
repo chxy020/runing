@@ -47,30 +47,29 @@
             android:textSize="@dimen/font_size3" />
 
         <RelativeLayout
+            android:id="@+id/country_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_height"
-            android:layout_marginBottom="@dimen/margin1"
-            android:layout_marginLeft="@dimen/margin1"
-            
-            >
+            android:layout_marginBottom="@dimen/margin1" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/common_height"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/margin1"
                 android:gravity="center"
                 android:text="国家或地区"
                 android:textSize="@dimen/font_size3" />
 
-            
-              <ImageView
-                    android:id="@+id/country_arrow"
-                    android:layout_width="@dimen/small_height"
-                    android:layout_height="@dimen/small_height"
-                    android:background="@drawable/ic_slider" 
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"/>
+            <ImageView
+                android:id="@+id/country_arrow"
+                android:layout_width="@dimen/small_height"
+                android:layout_height="@dimen/small_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_slider" />
+
             <TextView
                 android:id="@+id/verify_country"
                 android:layout_width="wrap_content"
@@ -125,8 +124,6 @@
                 <requestFocus />
             </EditText>
         </LinearLayout>
-
-
 
         <View
             android:layout_width="fill_parent"

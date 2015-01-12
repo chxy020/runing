@@ -123,6 +123,7 @@ public class DialogTool implements OnTouchListener {
 					}
 					//计算距离积分
 					YaoPao01App.calDisPoints(context,handler);
+					Variables.gpsLevel=1;
 					break;
 				default:
 					break;

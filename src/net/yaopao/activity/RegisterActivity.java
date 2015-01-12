@@ -1,8 +1,6 @@
 package net.yaopao.activity;
 
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,9 +11,10 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.sms.CountryActivity;
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,11 +30,11 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-import cn.smssdk.gui.CommonDialog;
 import cn.smssdk.gui.CountryPage;
 
 import com.alibaba.fastjson.JSON;
@@ -46,6 +45,7 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 	public TextView reg;
 	public TextView getCodeV;
 	public TextView serviceV;
+	private RelativeLayout countryL;
 	public ImageView serviceSelectV;
 
 	public EditText phoneNumV;
@@ -60,7 +60,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 	public String regJson;
 	public String verifyCodeJson;
 	public boolean service = true;// 是否同意服务条款
-	private boolean ready;
 	private LoadingDialog dialog;
 	
 	private String currentCode;// 当前国家或区域区号
@@ -68,28 +67,25 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 	private String currentCountry;
 	// 国家号码规则
 	private HashMap<String, String> countryRules;
-//	private Dialog pd;
 	public Handler updateDataHandler;
 	private boolean isVerified = false;
-
-	private String code;// 验证码
-	private Timer timer;// 计时器
-	private int time = 60;
+	private boolean ready;
+	public  EventHandler eh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		SMSSDK.initSDK(this, Constants.SMS_KEY, Constants.SMS_SECRET);
+		
+		registerReceiver(leftTimeReceiver, new IntentFilter(YaoPao01App.verifyCode));
+		
 		currentCode = Constants.SMS_CN_CODE;
 		currentCountry = Constants.SMS_DEF_CONUTRY;
 		currentId = Constants.SMS_CN_ID;
 
-		// IntentFilter filter = new IntentFilter(ResetPwdActivity.closeAction);
-		// registerReceiver(broadcastReceiver, filter);
 		initLayout();
-
+		
 		updateDataHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				if (msg.what == 0) {
@@ -104,7 +100,8 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				super.handleMessage(msg);
 			}
 		};
-		EventHandler eh = new EventHandler() {
+		  
+		eh = new EventHandler() {
 
 			@Override
 			public void afterEvent(int event, int result, Object data) {
@@ -118,12 +115,15 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 
 		};
 		SMSSDK.registerEventHandler(eh);
-
+		ready = true;
 	}
 
 	private void initLayout() {
 		goBack = (TextView) this.findViewById(R.id.reg_goback);
 		getCodeV = (TextView) this.findViewById(R.id.reg_get_code);
+		if (Variables.verifyTime<60) {
+			getCodeV.setEnabled(false);
+		}
 		reg = (TextView) this.findViewById(R.id.reg_go);
 		phoneNumV = (EditText) this.findViewById(R.id.reg_phoneNum);
 		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -138,7 +138,7 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		countryCodeV = (TextView) this.findViewById(R.id.reg_country_num);
 		setCountryV.setText(currentCountry);
 		countryCodeV.setText("+" + currentCode);
-//		pd = CommonDialog.ProgressDialog(RegisterActivity.this);
+		countryL=(RelativeLayout) this.findViewById(R.id.country_layout);
 		dialog = new LoadingDialog(this);
 		getCodeV.setOnTouchListener(this);
 		goBack.setOnTouchListener(this);
@@ -156,32 +156,9 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		if (!verifyPwd()) {
 			return false;
 		}
-		if (!verifyCode()) {
-			return false;
-		}
 		return true;
 	}
 
-//	public boolean verifyPhone() {
-//		phoneNumStr = phoneNumV.getText().toString().trim();
-//		Log.v("wy", "phone=" + phoneNumStr);
-//		if (phoneNumStr != null && !"".equals(phoneNumStr)) {
-//			// Pattern p = Pattern
-//			// .compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-//			Pattern p = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d");
-//			Matcher m = p.matcher(phoneNumStr);
-//			if (m.matches()) {
-//				return true;
-//			} else {
-//				Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
-//				return false;
-//			}
-//
-//		} else {
-//			Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
-//			return false;
-//		}
-//	}
 	
 	public boolean verifyPhone() {
 		phoneNumStr = phoneNumV.getText().toString().trim();
@@ -213,23 +190,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		}
 	}
 
-	public boolean verifyCode() {
-		codeStr = codeV.getText().toString().trim();
-		Log.v("wy", "codeStr=" + codeStr);
-		if (codeStr != null && !"".equals(codeStr)) {
-			Pattern p = Pattern.compile("^[0-9]{4,}$");
-			Matcher m = p.matcher(codeStr);
-			if (m.matches()) {
-				return true;
-			} else {
-				Toast.makeText(this, "请输入正确的验证码", Toast.LENGTH_LONG).show();
-				return false;
-			}
-		} else {
-			Toast.makeText(this, "请输入正确的验证密码", Toast.LENGTH_LONG).show();
-			return false;
-		}
-	}
 
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
@@ -254,11 +214,10 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		case R.id.reg_country:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				setCountryV.setBackgroundResource(R.color.white_h);
+				countryL.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				setCountryV.setBackgroundResource(R.color.white);
-				// SMSSDK.getSupportedCountries();
+				countryL.setBackgroundResource(R.color.white);
 				CountryActivity ca = new CountryActivity();
 				ca.country = currentCountry;
 				ca.code = currentCode;
@@ -281,22 +240,20 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				reg.setBackgroundResource(R.color.blue_dark);
 				if (service) {
 					if (verifyParam()) {
-//						 new regAsyncTask().execute("");
 						if (isVerified) {
 							new regAsyncTask().execute("");
 						}else {
 							if (!TextUtils.isEmpty(codeV.getText().toString())) {
-								SMSSDK.submitVerificationCode(currentCode, phoneNumV
-										.getText().toString(), codeV.getText()
-										.toString());
+								SMSSDK.submitVerificationCode(currentCode, phoneNumV.getText().toString(), codeV.getText().toString());
 								if (dialog != null && !dialog.isShowing()) {
 									dialog.show();
 								}
 							} else {
-								Toast.makeText(this, "验证码不能为空", 1).show();
+								Toast.makeText(this, "请输入正确的验证码", 1).show();
 							}
 						}
 					}
+//					new regAsyncTask().execute("");
 				} else {
 					Toast.makeText(RegisterActivity.this,
 							"您需要同意要跑服务协议才能进行后续操作", Toast.LENGTH_LONG).show();
@@ -311,10 +268,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				getCodeV.setBackgroundResource(R.color.blue_dark);
-				// Log.v("wy", "点击了获取验证码按钮");
-				// if (verifyPhone()) {
-				// new verifyCodAsyncTask().execute("");
-				// }
 				// 请求发送短信验证码
 				if (!TextUtils.isEmpty(phoneNumV.getText().toString())) {
 					SMSSDK.getVerificationCode(currentCode, phoneNumV.getText()
@@ -325,8 +278,11 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 						dialog.show();
 					}
 				} else {
-					Toast.makeText(this, "电话不能为空", 1).show();
+					Toast.makeText(this, "请输入正确的手机号码", 1).show();
 				}
+				
+//				getCodeV.setEnabled(false);
+//				YaoPao01App.instance.sendTimerBroadcast();
 				break;
 			}
 			break;
@@ -386,9 +342,11 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 				return false;
 			}
 		}
-
 		@Override
 		protected void onPostExecute(Boolean result) {
+			if (dialog != null && dialog.isShowing()) {
+				dialog.dismiss();
+			}
 			if (result) {
 				Log.v("wy", regJson);
 				JSONObject rt = JSON.parseObject(regJson);
@@ -412,67 +370,17 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 					startActivity(myIntent);
 					RegisterActivity.this.finish();
 
-				} else if (rtCode == -1) {
-					Toast.makeText(RegisterActivity.this, "手机号码已被注册",
-							Toast.LENGTH_LONG).show();
-				} else if (rtCode == -2) {
-					Toast.makeText(RegisterActivity.this, "验证码错误",
-							Toast.LENGTH_LONG).show();
-				} else {
-					Toast.makeText(RegisterActivity.this, "注册失败，请稍后重试",
-							Toast.LENGTH_LONG).show();
+				}else {
+					Toast.makeText(RegisterActivity.this,  rt.getJSONObject("state").getString("desc"),	Toast.LENGTH_LONG).show();
 				}
 
 			} else {
-				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试",
+				Toast.makeText(RegisterActivity.this, "注册失败，请稍后重试",
 						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
 
-	private class verifyCodAsyncTask extends AsyncTask<String, Void, Boolean> {
-
-		@Override
-		protected void onPreExecute() {
-			// 最先执行的就是这个。
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-
-			verifyCodeJson = NetworkHandler.httpPost(Constants.endpoints
-					+ Constants.vcode, "phone=" + phoneNumStr);
-			Log.v("wyuser", "Constants.endpoints+ Constants.vcode = "
-					+ "&phone=" + phoneNumStr);
-			Log.v("wyuser", "verifyCodeJson = " + verifyCodeJson);
-			if (verifyCodeJson != null && !"".equals(verifyCodeJson)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (result) {
-				JSONObject rt = JSON.parseObject(verifyCodeJson);
-				int rtCode = rt.getJSONObject("state").getInteger("code");
-				if (rtCode == 0) {
-					Toast.makeText(RegisterActivity.this, "验证码已发送，请查收短信",
-							Toast.LENGTH_LONG).show();
-				} else if (rtCode == -1) {
-					Toast.makeText(RegisterActivity.this, "手机号码已经注册过，请直接登录",
-							Toast.LENGTH_LONG).show();
-				} else {
-					Toast.makeText(RegisterActivity.this, "验证码获取失败，请稍后重试",
-							Toast.LENGTH_LONG).show();
-				}
-			} else {
-				Toast.makeText(RegisterActivity.this, "网络异常，请稍后重试",
-						Toast.LENGTH_LONG).show();
-			}
-		}
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -482,17 +390,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		}
 	}
 
-	// 如果重置密码成功，关闭此页面
-	// BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-	//
-	// @Override
-	// public void onReceive(Context context, Intent intent) {
-	// if ("close".equals(intent.getExtras().getString("data"))) {
-	// unregisterReceiver(this); // 不写也能关闭，但是会报错
-	// RegisterActivity.this.finish();
-	// }
-	// }
-	// };
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -504,7 +401,13 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-
+	protected void onDestroy() {
+		if (ready) {
+			// 销毁回调监听接口
+			SMSSDK.unregisterEventHandler(eh);
+		}
+		super.onDestroy();
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -529,9 +432,6 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 			if (result == SMSSDK.RESULT_COMPLETE) {
 				// 短信注册成功后，返回MainActivity,然后提示新好友
 				if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {// 提交验证码成功
-					if (dialog != null && dialog.isShowing()) {
-						dialog.dismiss();
-					}
 					
 					isVerified = true;
 					DataTool.setIsPhoneVerfied(1);
@@ -544,7 +444,9 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 					Toast.makeText(getApplicationContext(), "验证码已经发送",
 							Toast.LENGTH_SHORT).show();
 					isVerified = false;
-					startVerifyTimer();
+//					startVerifyTimer();
+					getCodeV.setEnabled(false);
+					YaoPao01App.instance.sendTimerBroadcast();
 				}
 			} else {
 				if (dialog != null && dialog.isShowing()) {
@@ -572,28 +474,20 @@ public class RegisterActivity extends BaseActivity implements OnTouchListener {
 
 	};
 
-	Handler timerHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			if (msg.what == 0) {
+	
+	//接收verifyCode再次发送剩余时间的
+    private BroadcastReceiver leftTimeReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (Variables.verifyTime>0) {
+				getCodeV.setText(Variables.verifyTime+ "秒");
+			}else {
+				Variables.verifyTime = 60;
 				getCodeV.setEnabled(true);
 				getCodeV.setText("获取验证码");
-				timer.cancel();
-			} else {
-				getCodeV.setText(msg.what + "秒");
 			}
-		};
-	};
-	
-	private void startVerifyTimer(){
-		time = 60;
-		getCodeV.setEnabled(false);
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				timerHandler.sendEmptyMessage(time--);
-			}
-		}, 0, 1000);
-	}
+			
+		}
+	};	
 }

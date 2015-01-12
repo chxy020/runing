@@ -17,7 +17,10 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.sms.CountryActivity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +35,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.smssdk.EventHandler;
@@ -51,7 +55,7 @@ public class VerifyPhoneActivity extends BaseActivity implements
 
 	public EditText codeV;
 	public EditText phoneNumV;
-
+	private RelativeLayout countryL;
 	public TextView setCountryV;
 	public TextView countryCodeV;
 	private String currentCode;// 当前国家或区域区号
@@ -59,29 +63,30 @@ public class VerifyPhoneActivity extends BaseActivity implements
 	private String currentCountry;
 	// 国家号码规则
 	private HashMap<String, String> countryRules;
-//	private Dialog pd;
+	// private Dialog pd;
 	private LoadingDialog dialog;
 	public Handler updateDataHandler;
 	public EventHandler eh;
 
 	public String phoneNumStr;
 	public String codeStr;
-
-	private String code;// 验证码
-	private Timer timer;// 计时器
-	private int time = 60;
+	private boolean ready;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_verify_phone);
+
+		registerReceiver(leftTimeReceiver, new IntentFilter(
+				YaoPao01App.verifyCode));
+
 		initSMS();
 		initLayout();
 	}
 
 	private void initSMS() {
-		SMSSDK.initSDK(this, Constants.SMS_KEY, Constants.SMS_SECRET);
+
 		currentCode = Constants.SMS_CN_CODE;
 		currentCountry = Constants.SMS_DEF_CONUTRY;
 		currentId = Constants.SMS_CN_ID;
@@ -112,7 +117,7 @@ public class VerifyPhoneActivity extends BaseActivity implements
 
 		};
 		SMSSDK.registerEventHandler(eh);
-
+		ready = true;
 	}
 
 	private void initLayout() {
@@ -120,13 +125,16 @@ public class VerifyPhoneActivity extends BaseActivity implements
 		phoneNumV = (EditText) this.findViewById(R.id.verify_phoneNum);
 		phoneNumV.setInputType(InputType.TYPE_CLASS_NUMBER);
 		getCodeV = (TextView) this.findViewById(R.id.verify_get_code);
+		if (Variables.verifyTime < 60) {
+			getCodeV.setEnabled(false);
+		}
 		verifyV = (TextView) this.findViewById(R.id.verify_go);
 
 		setCountryV = (TextView) this.findViewById(R.id.verify_country);
 		countryCodeV = (TextView) this.findViewById(R.id.verify_country_num);
 		setCountryV.setText(currentCountry);
 		countryCodeV.setText("+" + currentCode);
-//		pd = CommonDialog.ProgressDialog(VerifyPhoneActivity.this);
+		countryL = (RelativeLayout) this.findViewById(R.id.country_layout);
 		dialog = new LoadingDialog(this);
 
 		codeV = (EditText) this.findViewById(R.id.verify_veri_code);
@@ -149,8 +157,8 @@ public class VerifyPhoneActivity extends BaseActivity implements
 				break;
 			case MotionEvent.ACTION_UP:
 				goBack.setBackgroundResource(R.color.red);
-				Variables.uid =0;
-				 DataTool.setUid(0);
+				Variables.uid = 0;
+				DataTool.setUid(0);
 				Intent intent = new Intent(VerifyPhoneActivity.this,
 						MainActivity.class);
 				startActivity(intent);
@@ -161,11 +169,10 @@ public class VerifyPhoneActivity extends BaseActivity implements
 		case R.id.verify_country:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
-				setCountryV.setBackgroundResource(R.color.white_h);
+				countryL.setBackgroundResource(R.color.white_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				setCountryV.setBackgroundResource(R.color.white);
-				// SMSSDK.getSupportedCountries();
+				countryL.setBackgroundResource(R.color.white);
 				CountryActivity ca = new CountryActivity();
 				ca.country = currentCountry;
 				ca.code = currentCode;
@@ -188,18 +195,24 @@ public class VerifyPhoneActivity extends BaseActivity implements
 				if (verifyPhone()) {
 					if (!TextUtils.isEmpty(codeV.getText().toString())) {
 						SMSSDK.submitVerificationCode(currentCode, phoneNumV
-								.getText().toString(), codeV.getText().toString());
+								.getText().toString(), codeV.getText()
+								.toString());
 						if (dialog != null && !dialog.isShowing()) {
 							dialog.show();
 						}
 					} else {
-						Toast.makeText(this, "请输入正确的手机号码", 1).show();
+						Toast.makeText(this, "请输入正确的验证码", 1).show();
 					}
-				}else{
-					
 				}
-		
-
+				// if (dialog != null && dialog.isShowing()) {
+				// dialog.dismiss();
+				// }
+				// DataTool.setIsPhoneVerfied(1);
+				// new AutoLogin().execute("");
+				// Intent mainIntent = new Intent(VerifyPhoneActivity.this,
+				// MainActivity.class);
+				// VerifyPhoneActivity.this.startActivity(mainIntent);
+				// VerifyPhoneActivity.this.finish();
 			}
 			break;
 
@@ -210,10 +223,6 @@ public class VerifyPhoneActivity extends BaseActivity implements
 				break;
 			case MotionEvent.ACTION_UP:
 				getCodeV.setBackgroundResource(R.color.blue_dark);
-				// Log.v("wy", "点击了获取验证码按钮");
-				// if (verifyPhone()) {
-				// new verifyCodAsyncTask().execute("");
-				// }
 
 				// 请求发送短信验证码
 				if (!TextUtils.isEmpty(phoneNumV.getText().toString())) {
@@ -226,25 +235,28 @@ public class VerifyPhoneActivity extends BaseActivity implements
 					}
 
 				} else {
-					Toast.makeText(this, "电话不能为空", 1).show();
+					Toast.makeText(this, "请输入正确的手机号码", 1).show();
 				}
-
+				// getCodeV.setEnabled(false);
+				// YaoPao01App.instance.sendTimerBroadcast();
 				break;
 			}
 			break;
 		}
 		return true;
 	}
+
 	public boolean verifyPhone() {
 		phoneNumStr = phoneNumV.getText().toString().trim();
 		Log.v("wy", "phone=" + phoneNumStr);
 		if (phoneNumStr != null && !"".equals(phoneNumStr)) {
-				return true;
+			return true;
 		} else {
 			Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_LONG).show();
 			return false;
 		}
 	}
+
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
@@ -255,6 +267,14 @@ public class VerifyPhoneActivity extends BaseActivity implements
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+
+	protected void onDestroy() {
+		if (ready) {
+			// 销毁回调监听接口
+			SMSSDK.unregisterEventHandler(eh);
+		}
+		super.onDestroy();
 	}
 
 	/**
@@ -279,6 +299,8 @@ public class VerifyPhoneActivity extends BaseActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			Variables.uid = 0;
+			DataTool.setUid(0);
 			Intent myIntent = new Intent();
 			myIntent = new Intent(VerifyPhoneActivity.this, MainActivity.class);
 			startActivity(myIntent);
@@ -311,7 +333,8 @@ public class VerifyPhoneActivity extends BaseActivity implements
 					if (dialog != null && dialog.isShowing()) {
 						dialog.dismiss();
 					}
-					startVerifyTimer();
+					getCodeV.setEnabled(false);
+					YaoPao01App.instance.sendTimerBroadcast();
 					Toast.makeText(getApplicationContext(), "验证码已经发送",
 							Toast.LENGTH_SHORT).show();
 				}
@@ -339,17 +362,6 @@ public class VerifyPhoneActivity extends BaseActivity implements
 
 		}
 
-	};
-	Handler timerHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			if (msg.what == 0) {
-				getCodeV.setEnabled(true);
-				getCodeV.setText("获取验证码");
-				timer.cancel();
-			} else {
-				getCodeV.setText(msg.what + "秒");
-			}
-		};
 	};
 
 	private class AutoLogin extends AsyncTask<String, Void, Boolean> {
@@ -433,22 +445,25 @@ public class VerifyPhoneActivity extends BaseActivity implements
 
 			} else {
 				Variables.islogin = 0;
-				// Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
-				// Toast.LENGTH_LONG).show();
+				Toast.makeText(YaoPao01App.getAppContext(), "验证失败，请稍后重试",
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
-	
-	private void startVerifyTimer(){
-		time = 60;
-		getCodeV.setEnabled(false);
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
 
-			@Override
-			public void run() {
-				timerHandler.sendEmptyMessage(time--);
+	// 接收verifyCode再次发送剩余时间的
+	private BroadcastReceiver leftTimeReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (Variables.verifyTime > 0) {
+				getCodeV.setText(Variables.verifyTime + "秒");
+			} else {
+				Variables.verifyTime = 60;
+				getCodeV.setEnabled(true);
+				getCodeV.setText("获取验证码");
 			}
-		}, 0, 1000);
-	}
+
+		}
+	};
 }
