@@ -1,8 +1,5 @@
 package net.yaopao.activity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.yaopao.assist.Variables;
 import net.yaopao.widget.ArrayWheelAdapter;
 import net.yaopao.widget.NumericWheelAdapter;
@@ -15,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,11 +28,7 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 	private ViewFlipper viewfipper;
 	private Button btn_submit, btn_cancel;
 	private String distance;
-	private int curD1;
-	private int curD2;
-	private DistanceNumericAdapter1 distanceAdapter1;
-	private DistanceNumericAdapter2 distanceAdapter2;
-	private WheelView distanceV1, distanceV2;
+	private WheelView distanceV1;
 	private TextView distanceV;
 	private int distanceKm = 0;
 	private Integer[] distanceArray = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,25,30,35,40,42,45,50,55,60,65,70,75,80,85,90,95,100};
@@ -44,7 +36,8 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 	public SelectDistance(Activity context, final Handler handler,int distanceData) {
 		super(context);
 		mContext = context;
-		this.distance = Variables.runtarDis + "";
+//		this.distance = Variables.runtarDis + "";
+		this.distance = Variables.runTargetDis/1000 + "";
 		
 		this.distanceKm = distanceData;
 		
@@ -57,7 +50,6 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 				LayoutParams.WRAP_CONTENT));
 
 		distanceV1 = (WheelView) mMenuView.findViewById(R.id.user_distance1);
-		//distanceV2 = (WheelView) mMenuView.findViewById(R.id.user_distance2);
 		btn_submit = (Button) mMenuView.findViewById(R.id.user_distance_submit);
 		btn_cancel = (Button) mMenuView.findViewById(R.id.user_distance_cancel);
 		btn_submit.setOnClickListener(new OnClickListener() {
@@ -82,23 +74,6 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 		
 		updateDistance(distanceV1,true);
 		distanceV1.addChangingListener(listener);
-		/*
-		if (distance != null && distance.contains(".")) {
-			String str[] = distance.split("\\.");
-			curD1 = Integer.parseInt(str[0]);
-			curD2 = Integer.parseInt(str[1]);
-		}
-		distanceAdapter1 = new DistanceNumericAdapter1(context, 0, 99, curD1);
-		distanceAdapter2 = new DistanceNumericAdapter2(context, 0, 9, curD2);
-
-		distanceV1.setViewAdapter(distanceAdapter1);
-		distanceV2.setViewAdapter(distanceAdapter2);
-		distanceV1.setCurrentItem(curD1);
-		distanceV2.setCurrentItem(curD2);
-		distanceV1.addChangingListener(listener);
-		distanceV2.addChangingListener(listener);
-		updateDistance(distanceV1, distanceV2);
-		*/
 		
 		viewfipper.addView(mMenuView);
 		viewfipper.setFlipInterval(6000000);
@@ -132,20 +107,6 @@ public class SelectDistance extends PopupWindow implements OnClickListener {
 		int disId = this.distanceArray[dis];
 		distance = disId + "";
 		distanceV.setText(km);
-		//int curWeight = view.getCurrentItem() + 15;
-		//int curWeightNumber = number.getCurrentItem();
-		//weight = curWeight + "." + curWeightNumber + "kg";
-		//view1.setViewAdapter(distanceAdapter1);
-		//String curDistance = view1.getCurrentItem() + ".";
-		//view1.setCurrentItem(view1.getCurrentItem(), true);
-/*
-		distanceAdapter2 = new DistanceNumericAdapter2(mContext, 0, 9, curD2);
-		view2.setViewAdapter(distanceAdapter2);
-		curDistance += view2.getCurrentItem() + "";
-		view2.setCurrentItem(view2.getCurrentItem(), true);
-		distance = curDistance;
-		distanceV.setText(distance + " 千米");
-		*/
 	}
 	
 	/**

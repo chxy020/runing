@@ -11,6 +11,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
+import net.yaopao.engine.manager.RunManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -81,6 +82,7 @@ public class SplashActivity extends Activity {
 		}
 		
 		 Log.v("wynet", "Variables.network="+Variables.network);
+		 //初始化引擎 
 		initSportParam();
 		
 	
@@ -230,22 +232,20 @@ public class SplashActivity extends Activity {
 	}
 	/**
 	 * 初始化运动参数
-	 * 
+	 * 这里的初始化数据是用户上一次运动设置的运动参数
 	 */
 	private void initSportParam() {
+		
 		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
-		if (param.getTargetdis()!=0) {
-			Variables.runtarDis=param.getTargetdis();
-		}
-		if (param.getTargettime()!=0) {
-			Variables.runtarTime=param.getTargettime();
-		}
-		if (param.getTypeIndex()!=0) {
-			Variables.runty=param.getTypeIndex();
-		}
+		
 		Variables.switchTime=param.getCountDown();
 		Variables.switchVoice=param.getVioce();
-		Variables.runtar =param.getTargetIndex();
+		Variables.runTargetType=param.getTargetIndex()==0?1:param.getTargetIndex();
+		Variables.runType=param.getTypeIndex()==0?1:param.getTypeIndex();
+		Variables.runTargetDis=param.getTargetdis()==0?5000:param.getTargetdis();
+		Variables.runTargetTime=param.getTargettime()==0?1800000:param.getTargettime();
+		
+		
 		
 	}
 }

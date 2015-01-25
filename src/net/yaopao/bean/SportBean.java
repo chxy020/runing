@@ -34,8 +34,8 @@ public class SportBean {
 	private String hspeed;// 时速
 	private int points;//积分
 	public  int sportty;//跑步类型0-日常，1-比赛
-	public  int sportpho;//跑步是否拍照0-无，1-有
-	public  String sport_pho_path;//跑步拍照图片名称
+	public  String clientImagePaths;//跑步拍照图片路径
+	public  String clientImagePathsSmall;//跑步拍照图片缩略图路径
 
 	public int getId() {
 		return id;
@@ -262,20 +262,22 @@ public class SportBean {
 		this.sportty = sportty;
 	}
 
-	public int getSportpho() {
-		return sportpho;
+
+
+	public String getClientImagePaths() {
+		return clientImagePaths;
 	}
 
-	public void setSportpho(int sportpho) {
-		this.sportpho = sportpho;
+	public void setClientImagePaths(String clientImagePaths) {
+		this.clientImagePaths = clientImagePaths;
 	}
 
-	public String getSportPhoPath() {
-		return sport_pho_path;
+	public String getClientImagePathsSmall() {
+		return clientImagePathsSmall;
 	}
 
-	public void setSportPhoPath(String sport_pho_path) {
-		this.sport_pho_path = sport_pho_path;
+	public void setClientImagePathsSmall(String clientImagePathsSmall) {
+		this.clientImagePathsSmall = clientImagePathsSmall;
 	}
 
 	@Override

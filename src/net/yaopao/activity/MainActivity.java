@@ -264,7 +264,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	private void initLayout() {
-		DataBean data = YaoPao01App.db.queryData();
+//		DataBean data = YaoPao01App.db.queryData();
+		DataBean data = DataTool.getTotalData();
 		if (Variables.islogin == 1) {
 			JSONObject userInfo = Variables.userinfo;
 			if (userInfo != null) {

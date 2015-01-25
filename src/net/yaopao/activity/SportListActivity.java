@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.yaopao.assist.DataTool;
 import net.yaopao.assist.SportListAdapter;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
@@ -48,7 +49,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	private Handler mHandler;
 	private SportListAdapter mAdapter = null;
 	private int mPage = 1;
-	
+	private DataBean totalData = DataTool.getTotalData();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -202,9 +203,12 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			} else if (sport.getRunway() == 5) {
 				map.put("way", R.drawable.way5_h);
 			}
-			map.put("hasPho", sport.sportpho);
-			if (!"".equals(sport.sport_pho_path)&&sport.sport_pho_path!=null) {
-				map.put("phoName", sport.sport_pho_path);
+//			map.put("hasPho", sport.sportpho);
+			String a = sport.getClientImagePaths();
+			String b = sport.getClientImagePathsSmall();
+			if (sport.getClientImagePaths()!=null&&!"".equals(sport.getClientImagePaths())) {
+				map.put("phoName", sport.getClientImagePaths());
+				map.put("phoNameSmall", sport.getClientImagePathsSmall());
 			}
 				map.put("ismatch", sport.sportty+"");
 			map.put("id", sport.getId());
@@ -516,8 +520,9 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	}
 	
 	private void initMileage(ImageView[] views) {
-		DataBean data = YaoPao01App.db.queryData();
-		double distance = data.getDistance();
+		//DataBean data = YaoPao01App.db.queryData();
+		
+		double distance = totalData.getDistance();
 		// distance = 549254;
 		int d1 = (int) distance / 1000000;
 		int d2 = (int) (distance % 1000000) / 100000;
@@ -544,8 +549,8 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	}
 	
 	private void initCount(ImageView[] views){
-		DataBean data = YaoPao01App.db.queryData();
-		int count = data.getCount();
+//		DataBean data = YaoPao01App.db.queryData();
+		int count = totalData.getCount();
 		Log.v("wysport", " count="+count);
 		int c1 = count /100;
 		int c2 =  (count%100)/10;
@@ -569,8 +574,8 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	}
 	
 	private void initTime(ImageView[] views){
-		DataBean data = YaoPao01App.db.queryData();
-		long total = data.getTotalTime()/1000;
+//		DataBean data = YaoPao01App.db.queryData();
+		long total = totalData.getTotalTime()/1000;
 		int[] time = YaoPao01App.cal(total);
 		int t1 = time[0] / 1000;
 		int t2 =(time[0] % 1000)/100;

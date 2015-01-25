@@ -88,7 +88,7 @@
             android:name="net.yaopao.activity.SportCountdownActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="net.yaopao.activity.SportRecordActivity"
+            android:name="net.yaopao.activity.SportRunMainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="net.yaopao.activity.MapActivity"

@@ -2,6 +2,7 @@ package net.yaopao.assist;
 
 
 import net.yaopao.activity.YaoPao01App;
+import net.yaopao.bean.DataBean;
 import android.content.SharedPreferences;
 
 public class DataTool {
@@ -69,6 +70,36 @@ public class DataTool {
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
 		editor.putInt("isPhoneVerfied", isPhoneVerfied);
 		editor.commit();
+	}
+	
+	public static boolean saveTotalData(double totalDistance ,int recordCount,int totalScore){
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putString("totalData", totalDistance+"_"+recordCount+"_"+totalScore);
+		return  editor.commit();
+	}
+	
+	public static DataBean getTotalData(){
+		String total = YaoPao01App.sharedPreferences.getString("totalData", "");
+		double distance =0;
+		int count = 0;
+		int score = 0;
+		DataBean data = new DataBean();
+		if ("".equals(total)) {
+			data = YaoPao01App.db.queryData();
+			SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit(); 
+			editor.putString("totalData", distance+"_"+count+"_"+score);
+			editor.commit();
+		}else {
+			String[] totals = total.split("_");
+			distance =Double.parseDouble( totals[0]);
+			count =Integer.parseInt( totals[1]);
+			distance =Integer.parseInt( totals[2]);
+			
+			data.setDistance(distance);
+			data.setCount(count);
+			data.setPoints(score);
+		}
+		return data;
 	}
 	
 	

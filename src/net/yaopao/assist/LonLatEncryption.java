@@ -1,5 +1,7 @@
 package net.yaopao.assist;
 
+import net.yaopao.engine.manager.GpsPoint;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -107,7 +109,7 @@ public class LonLatEncryption {
 	public Point encrypt(Point wg) {
 		GpsPoint src = new GpsPoint(wg.getX(), wg.getY());
 		GpsPoint dst = encrypt(src);
-		Coordinate c = new Coordinate(dst.lon, dst.lat);
+		Coordinate c = new Coordinate(dst.getLon(), dst.getLat());
 		GeometryFactory gf = new GeometryFactory();
 		return gf.createPoint(c);
 	}
@@ -120,9 +122,9 @@ public class LonLatEncryption {
 		double x_l;
 		double y_l;
 
-		x_l = (int) Math.round(wg.lon * CHINA_LON_LAT_PRECISION_FLOAT);
+		x_l = (int) Math.round(wg.getLon() * CHINA_LON_LAT_PRECISION_FLOAT);
 		x_l = x_l / CHINA_LON_LAT_PRECISION_FLOAT;
-		y_l = (int) Math.round(wg.lat * CHINA_LON_LAT_PRECISION_FLOAT);
+		y_l = (int) Math.round(wg.getLat() * CHINA_LON_LAT_PRECISION_FLOAT);
 		y_l = y_l / CHINA_LON_LAT_PRECISION_FLOAT;
 
 		if (x_l < 72.004 || x_l > 137.8347 || y_l < 0.8293 || y_l > 55.8271) {
@@ -139,8 +141,8 @@ public class LonLatEncryption {
 			return china;
 		}
 
-		china.lon = x_l / CHINA_LON_LAT_PRECISION_FLOAT;
-		china.lat = y_l / CHINA_LON_LAT_PRECISION_FLOAT;
+		china.setLon(x_l / CHINA_LON_LAT_PRECISION_FLOAT); 
+		china.setLat(y_l / CHINA_LON_LAT_PRECISION_FLOAT);
 		return china;
 	}
 	
@@ -182,7 +184,7 @@ public class LonLatEncryption {
 
 	public static void main(String[] args) {
 
-		LonLatEncryption lle = new LonLatEncryption();
+		/*LonLatEncryption lle = new LonLatEncryption();
 		// GpsPoint wg = new GpsPoint(116.3776, 39.9104);
 		GpsPoint wg = new GpsPoint(116.8600010, 40.1914560);
 		GpsPoint china = lle.encrypt(wg);
@@ -205,7 +207,7 @@ public class LonLatEncryption {
 		x = 430814792 / 3686400.0;
 		y = 148165842 / 3686400.0;
 		System.out.println("x3 = " + x);
-		System.out.println("y3 = " + y);
+		System.out.println("y3 = " + y);*/
 
 		// x1 = 116.3776
 		// y1 = 39.9104

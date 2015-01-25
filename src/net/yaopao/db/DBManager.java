@@ -8,16 +8,17 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.activity.SportRecordActivity;
+import net.yaopao.activity.SportRunMainActivity;
 import net.yaopao.activity.YaoPao01App;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
-import net.yaopao.assist.GpsPoint;
+import net.yaopao.assist.GpsPoint_bak;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
 import net.yaopao.bean.SportParaBean;
+import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -50,53 +51,53 @@ public class DBManager {
 	public int saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
 		//YaoPao01App.lts.writeFileToSD("db 还算之前数组: " +SportRecordActivity.points, "uploadLocation");
-		GpsPoint befor =null;
-		for (int i = 0; i < SportRecordActivity.points.size(); i++) {
-			if (i==0) {
-				befor=SportRecordActivity.points.get(0);
-				continue;
-			}
-			GpsPoint temp = SportRecordActivity.points.get(i);
-			GpsPoint curr = new GpsPoint(temp.lon,temp.lat,temp.status,temp.time,temp.speed,temp.course,temp.altitude);
-			curr.setLat(curr.lat-befor.lat);
-			curr.setLon(curr.lon-befor.lon);
-			curr.setTime(curr.time-befor.time);
-			befor=SportRecordActivity.points.get(i);
-			SportRecordActivity.points.set(i, curr);
-			
-		}
+//		GpsPoint_bak befor =null;
+//		for (int i = 0; i < SportRunMainActivity.points.size(); i++) {
+//			if (i==0) {
+//				befor=SportRunMainActivity.points.get(0);
+//				continue;
+//			}
+//			GpsPoint_bak temp = SportRunMainActivity.points.get(i);
+//			GpsPoint_bak curr = new GpsPoint_bak(temp.lon,temp.lat,temp.status,temp.time,temp.speed,temp.course,temp.altitude);
+//			curr.setLat(curr.lat-befor.lat);
+//			curr.setLon(curr.lon-befor.lon);
+//			curr.setTime(curr.time-befor.time);
+//			befor=SportRunMainActivity.points.get(i);
+//			SportRunMainActivity.points.set(i, curr);
+//			
+//		}
 		//YaoPao01App.lts.writeFileToSD("db 还算之后数组: " +SportRecordActivity.points, "uploadLocation");
-		Log.d("wysport", "DBManager SportRecordActivity.points="+SportRecordActivity.points);
-		String oneSport = JSON.toJSONString(SportRecordActivity.points, true);
+//		Log.d("wysport", "DBManager SportRecordActivity.points="+SportRunMainActivity.points);
+		//String oneSport = JSON.toJSONString(SportRunMainActivity.points, true);
 		String statusIndex = "";
 	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
-//		Variables.hspeed =df.format((Variables.distance/Variables.utime)*3.6);
-		Variables.hspeed =df.format((Variables.distance/(Variables.utime/1000))*3.6);
+//		Variables.hspeed =df.format((Variables.distance/(Variables.utime/1000))*3.6);
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
 		try {
+			long nowTime =new Date().getTime();
 			db.execSQL(
 					"INSERT INTO "
 							+ DatabaseHelper.SPORTDATA_TABLE
-							+ " (aheart,distance,rid,heat,hspeed,image_count,"
-							+ "mheart,mind,pspeed,remarks,runtar,runty,runtra,runway,stamp,status_index,temp,utime,weather,points,"
-							+ "sportty,sportpho,sport_pho_path,"
-							+ "addtime)"
-							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-							+ ",?,?,?"
+							+ " (averageHeart,clientImagePathsSmall,clientImagePaths,clientBinaryFilePath,distance,gpsCount,"
+							+ "heat,isMatch,jsonParam,kmCount,maxHeart,mileCount,feeling,secondPerKm,remark,rid,targetType,gpsString,howToMove,runway,"
+							+ "serverImagePathsSmall,score,serverImagePaths,startTime,serverBinaryFilePath,temp,uid,updateTime,duration,dbVersion,weather,targetValue,"
+							+ "generateTime)"
+							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
 							+ ")",
-					new Object[] { Variables.aheart, Variables.distance,
-							Variables.getRid(), Variables.heat,
-							Variables.hspeed, Variables.imageCount,
-							Variables.mheart, Variables.mind, Variables.pspeed,
-							Variables.remarks, Variables.runtar,
-							Variables.runty, oneSport, Variables.runway,
-							Variables.stamp, statusIndex, Variables.temp,
-							Variables.utime, Variables.weather,Variables.points,
-							Variables.sportty,Variables.hassportpho,Variables.sport_pho,
-							new Date().getTime() });
+					new Object[] { Variables.averageHeart, Variables.clientImagePathsSmall,
+									Variables.clientImagePaths, Variables.clientBinaryFilePath,
+									YaoPao01App.runManager.distance, YaoPao01App.runManager.GPSList.size(),
+							Variables.heat,Variables.isMatch, Variables.jsonParam,
+							YaoPao01App.runManager.dataKm.size(), Variables.maxHeart,
+							YaoPao01App.runManager.dataMile.size(), YaoPao01App.runManager.getFeeling(), YaoPao01App.runManager.paceKm,
+							YaoPao01App.runManager.getRemark(), Variables.getRid(), YaoPao01App.runManager.getTargetType(),
+							Variables.gpsString, YaoPao01App.runManager.getHowToMove(),YaoPao01App.runManager.getWay(),
+							Variables.serverImagePathsSmall,YaoPao01App.runManager.score,Variables.serverImagePaths,YaoPao01App.runManager.GPSList.get(0).getTime(),
+							Variables.serverBinaryFilePath,Variables.temp,Variables.uid,nowTime,YaoPao01App.runManager.during(),2,Variables.weather,
+							YaoPao01App.runManager.getTargetValue(),nowTime});
 
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
@@ -190,8 +191,8 @@ public class DBManager {
 			db.execSQL("REPLACE INTO " + DatabaseHelper.SPORTPARAM_TABLE
 					+ " (uid,countDown,vioce,targetdis,targettime,typeIndex,targetIndex)"
 					+ " VALUES (?,?,?,?,?,?,?)", new Object[] { Variables.uid,
-					Variables.switchTime, Variables.switchVoice,Variables.runtarDis,Variables.runtarTime,
-					Variables.runty, Variables.runtar });
+					Variables.switchTime, Variables.switchVoice,Variables.runTargetDis,Variables.runTargetTime,
+					Variables.runType, Variables.runTargetType });
 
 			// 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
 			// 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
@@ -228,7 +229,7 @@ public class DBManager {
 	}
 
 	/**
-	 * 查询全部
+	 * 运动记录分页查寻
 	 * 
 	 * @return
 	 */
@@ -241,17 +242,18 @@ public class DBManager {
 			SportBean sport = new SportBean();
 			sport.setId(c.getInt(c.getColumnIndex("id")));
 			sport.setRid(c.getString(c.getColumnIndex("rid")));
-			sport.setRuntar(c.getInt(c.getColumnIndex("runtar")));
-			sport.setRunty(c.getInt(c.getColumnIndex("runty")));
-			sport.setMind(c.getInt(c.getColumnIndex("mind")));
+			sport.setRuntar(c.getInt(c.getColumnIndex("targetType")));
+			sport.setRunty(c.getInt(c.getColumnIndex("howToMove")));
+			sport.setMind(c.getInt(c.getColumnIndex("feeling")));
 			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
-			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
+			sport.setAddtime(c.getLong(c.getColumnIndex("generateTime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
-			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
-			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
-			sport.setSportty(c.getInt(c.getColumnIndex("sportty")));
-			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
-			sport.setSportPhoPath(c.getString(c.getColumnIndex("sport_pho_path")));
+			sport.setPspeed(c.getInt(c.getColumnIndex("secondPerKm")));
+			sport.setUtime(c.getInt(c.getColumnIndex("duration")));
+			sport.setSportty(c.getInt(c.getColumnIndex("isMatch")));
+//			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
+			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths")));
+			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall")));
 			sports.add(sport);
 //			YaoPao01App.lts.writeFileToSD(
 //					"db list : id=" + c.getColumnIndex("id") + " rid="
@@ -281,8 +283,8 @@ public class DBManager {
 		int points = 0;// 秒
 		while (c.moveToNext()) {
 			totalDistance += c.getDouble(c.getColumnIndex("distance"));
-			totalTime += c.getLong(c.getColumnIndex("utime"));
-			points += c.getInt(c.getColumnIndex("points"));
+			totalTime += c.getLong(c.getColumnIndex("duration"));
+			points += c.getInt(c.getColumnIndex("score"));
 		}
 		c.close();
 //		speed = (int) (totalTime/totalDistance);
@@ -294,6 +296,18 @@ public class DBManager {
 		data.setPoints(points);
 		return data;
 	}
+	
+//	/**
+//	 * 查询总体记录数
+//	 * 
+//	 * @return
+//	 */
+//	public int queryDataCountAndToalScore() {
+//		Cursor c = queryTheCursor();
+//		int count = c.getCount();
+//		c.close();
+//		return count;
+//	}
 
 	/**
 	 * 查询一条记录
@@ -309,24 +323,27 @@ public class DBManager {
 //		YaoPao01App.lts.writeFileToSD("db : " + c, "uploadLocation");
 		SportBean sport = new SportBean();
 		while (c.moveToNext()) {
-
 			sport.setId(c.getInt(c.getColumnIndex("id")));
 			sport.setRid(c.getString(c.getColumnIndex("rid")));
-			sport.setRuntar(c.getInt(c.getColumnIndex("runtar")));
-			sport.setRunty(c.getInt(c.getColumnIndex("runty")));
-			sport.setMind(c.getInt(c.getColumnIndex("mind")));
+			sport.setRuntar(c.getInt(c.getColumnIndex("targetType")));
+			sport.setRunty(c.getInt(c.getColumnIndex("howToMove")));
+			sport.setMind(c.getInt(c.getColumnIndex("feeling")));
 			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
-			sport.setAddtime(c.getLong(c.getColumnIndex("addtime")));
+			sport.setAddtime(c.getLong(c.getColumnIndex("generateTime")));
 			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
-			sport.setPspeed(c.getInt(c.getColumnIndex("pspeed")));
-			sport.setPoints(c.getInt(c.getColumnIndex("points")));
-			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
-			sport.setUtime(c.getInt(c.getColumnIndex("utime")));
-			sport.setRemarks(c.getString(c.getColumnIndex("remarks")));
-			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
-			sport.setSportty(c.getInt(c.getColumnIndex("sportty")));
-			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
-			sport.setSportPhoPath(c.getString(c.getColumnIndex("sport_pho_path")));
+			sport.setPspeed(c.getInt(c.getColumnIndex("secondPerKm")));
+			sport.setUtime(c.getInt(c.getColumnIndex("duration")));
+			sport.setRemarks(c.getString(c.getColumnIndex("remark")));
+			sport.setSportty(c.getInt(c.getColumnIndex("isMatch")));
+			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths")));
+			String a = c.getString(c.getColumnIndex("clientImagePathsSmall"));
+			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall")));
+			
+			sport.setPoints(c.getInt(c.getColumnIndex("score")));
+//			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
+//			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
+			
+			
 			sports.add(sport);
 		}
 		c.close();
@@ -367,6 +384,11 @@ public class DBManager {
 				+ DatabaseHelper.SPORTDATA_TABLE + " ORDER BY id DESC", null);
 		return c;
 	}
+	/**
+	 * 运动记录分页查询
+	 * @param page
+	 * @return
+	 */
 	public Cursor queryTheCursorForPage(int page) {
 		Cursor c = db.rawQuery("SELECT * FROM "
 				+ DatabaseHelper.SPORTDATA_TABLE + "  ORDER BY id DESC  limit "+Constants.offset+" offset "+Constants.offset*(page-1), null);

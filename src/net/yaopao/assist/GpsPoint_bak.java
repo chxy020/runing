@@ -1,6 +1,6 @@
 package net.yaopao.assist;
 
-public class GpsPoint {
+public class GpsPoint_bak {
 	public long time;
 	public double lon;
 	public double lat;
@@ -8,32 +8,33 @@ public class GpsPoint {
 	public float course;
 	public double altitude;
 	public int status;// 0-运动状态，1-暂停状态
+	
 
-	public GpsPoint() {
+	public GpsPoint_bak() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GpsPoint(double lon, double lat) {
+	public GpsPoint_bak(double lon, double lat) {
 		this.lon = lon;
 		this.lat = lat;
 	}
-	public GpsPoint(double lon, double lat,long time) {
+	public GpsPoint_bak(double lon, double lat,long time) {
 		this.lon = lon;
 		this.lat = lat;
 		this.time = time;
 	}
-	public GpsPoint(double lon, double lat, int status) {
+	public GpsPoint_bak(double lon, double lat, int status) {
 		this.lon = lon;
 		this.lat = lat;
 		this.status = status;
 	}
-	public GpsPoint(double lon, double lat, int status,long time) {
+	public GpsPoint_bak(double lon, double lat, int status,long time) {
 		this.lon = lon;
 		this.lat = lat;
 		this.status = status;
 		this.time = time;
 	}
-	public GpsPoint(double lon, double lat, int status,long time,double speed,float course,double altitude) {
+	public GpsPoint_bak(double lon, double lat, int status,long time,double speed,float course,double altitude) {
 		this.lon = lon;
 		this.lat = lat;
 		this.status = status;

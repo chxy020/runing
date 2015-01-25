@@ -67,8 +67,8 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 		timeV.setOnTouchListener(this);
 		
 		//通过数据获取已保存的运动距离数据,没有的话给默认值
-		distanceData = Variables.runtarDis;
-		distanceTime = Variables.runtarTime;
+		distanceData = Variables.runTargetDis/1000;
+		distanceTime = Variables.runTargetTime/60000;
 	}
 
 	@Override
@@ -94,7 +94,8 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 				break;
 			case MotionEvent.ACTION_UP:
 				freeV.setBackgroundResource(R.color.white);
-				Variables.runtar = 0;
+				Variables.runTargetType = 1;
+				YaoPao01App.runManager.setTargetType(1);
 				freeImgV.setBackgroundResource(R.drawable.check);
 				distanceImgV.setBackgroundResource(0);
 				timeImgV.setBackgroundResource(0);
@@ -108,7 +109,8 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 				break;
 			case MotionEvent.ACTION_UP:
 				distanceV.setBackgroundResource(R.color.white);
-				Variables.runtar = 1;
+				Variables.runTargetType = 2;
+				YaoPao01App.runManager.setTargetType(2);
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(R.drawable.check);
 				timeImgV.setBackgroundResource(0);
@@ -118,7 +120,8 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 						double runtarDis = Double.parseDouble(msg.getData()
 								.getString("distance"));
 						distanceData = (int) (runtarDis);
-						Variables.runtarDis = (int) (runtarDis);
+						Variables.runTargetDis = (int)runtarDis*1000;
+						YaoPao01App.runManager.setTargetValue(Variables.runTargetDis);
 					}
 				};
 				// 实例化SelectPicPopupWindow
@@ -139,15 +142,17 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 				break;
 			case MotionEvent.ACTION_UP:
 				timeV.setBackgroundResource(R.color.white);
-				Variables.runtar = 2;
+				Variables.runTargetType = 3;
+				YaoPao01App.runManager.setTargetType(3);
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(0);
 				timeImgV.setBackgroundResource(R.drawable.check);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
-						Variables.runtarTime =msg.getData().getInt("time");
+						Variables.runTargetTime =msg.getData().getInt("time")*60*1000;
+						YaoPao01App.runManager.setTargetValue(Variables.runTargetTime);
 						distanceTime = msg.getData().getInt("time");
-						Log.v("wysport", "set time = "+Variables.runtarTime);
+//						Log.v("wysport", "set time = "+Variables.runtarTime);
 						super.handleMessage(msg);
 					}
 				};
@@ -169,26 +174,26 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
 		// if (distance!=null) {
-		distanceTxtV.setText(Variables.runtarDis + "km");
+		distanceTxtV.setText(Variables.runTargetDis/1000 + "km");
 		// }
 		// Log.v("wydb", "time2 ="+time);
 		// if (time!=null) {
 		//timeTxtV.setText(Variables.runtarTime + "分钟");
-		timeTxtV.setText(getTimeOfSeconds(Variables.runtarTime * 60) + "");
+		timeTxtV.setText(getTimeOfSeconds(Variables.runTargetTime/1000) + "");
 		// }
 
-		switch (Variables.runtar) {
-		case 0:
+		switch (YaoPao01App.runManager.getTargetType()) {
+		case 1:
 			freeImgV.setBackgroundResource(R.drawable.check);
 			distanceImgV.setBackgroundResource(0);
 			timeImgV.setBackgroundResource(0);
 			break;
-		case 1:
+		case 2:
 			freeImgV.setBackgroundResource(0);
 			distanceImgV.setBackgroundResource(R.drawable.check);
 			timeImgV.setBackgroundResource(0);
 			break;
-		case 2:
+		case 3:
 			freeImgV.setBackgroundResource(0);
 			distanceImgV.setBackgroundResource(0);
 			timeImgV.setBackgroundResource(R.drawable.check);

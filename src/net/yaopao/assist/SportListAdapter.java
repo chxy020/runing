@@ -102,16 +102,12 @@ public class SportListAdapter extends BaseAdapter {
 				mindV.setImageBitmap(getBitmap());
 				mindV.setVisibility(View.VISIBLE);
 			}
-			
-			if (listItems.get(position).get("hasPho")!=null&&!"".equals(listItems.get(position).get("hasPho"))) {
-				Log.v("wypho", "position = "+position+" ,has="+listItems.get(position).get("hasPho")+"-- is="+(1==(Integer)listItems.get(position).get("hasPho")));
-				if (1==(Integer)listItems.get(position).get("hasPho")) {
-					String simgPath = Constants.sportPho_s +listItems.get(position).get("phoName");
+			String simgPath =(String) listItems.get(position).get("phoNameSmall");
+			if (simgPath!=null&&!"".equals(simgPath)) {
 					Log.v("wypho", "simgPath = "+simgPath);
 					Bitmap pho = getImg(simgPath);
 					phoV.setImageBitmap(pho);
 					phoV.setVisibility(View.VISIBLE);
-				}
 			}
 			dateyV.setText((String) listItems.get(position).get("date"));
 //			disyV.setText((String) listItems.get(position).get("dis"));

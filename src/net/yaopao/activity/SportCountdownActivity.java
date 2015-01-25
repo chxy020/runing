@@ -55,7 +55,7 @@ public class SportCountdownActivity extends BaseActivity implements OnTouchListe
 			case MotionEvent.ACTION_UP:
 				Intent myIntent = new Intent();
 				myIntent = new Intent(SportCountdownActivity.this,
-						SportRecordActivity.class);
+						SportRunMainActivity.class);
 				startActivity(myIntent);
 				SportCountdownActivity.this.finish();
 				break;
@@ -87,7 +87,7 @@ public class SportCountdownActivity extends BaseActivity implements OnTouchListe
 						update(0, time1);
 						update(0, time2);
 						Intent intent = new Intent(SportCountdownActivity.this,
-								SportRecordActivity.class);
+								SportRunMainActivity.class);
 						startActivity(intent);
 						SportCountdownActivity.this.finish();
 					}

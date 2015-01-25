@@ -23,6 +23,7 @@ public class Constants {
 	public static final String sportPho = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/";
 	public static final String sportPho_s = Environment.getExternalStorageDirectory().toString() + "/YaoPao/sportPho/small/";
 	
+	
 	//mob sms 
  //测试key
 //	public static final String SMS_KEY = "328a52117e94";
@@ -84,5 +85,8 @@ public class Constants {
 	public static final String MAPKEY = "edb052cf66b6d7f82477334887205ff7";// 高德地图key
 	
 	public static final int  offset =10;// 数据库查询分页条数
+	
+	
+	
 
 }
