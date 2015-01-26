@@ -3,9 +3,7 @@ package net.yaopao.activity;
 import com.umeng.analytics.MobclickAgent;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebSettings;

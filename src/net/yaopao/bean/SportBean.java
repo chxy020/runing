@@ -32,10 +32,19 @@ public class SportBean {
 	private double distance;// 距离
 	private int pspeed;// 配速
 	private String hspeed;// 时速
-	private int points;//积分
-	public  int sportty;//跑步类型0-日常，1-比赛
-	public  String clientImagePaths;//跑步拍照图片路径
-	public  String clientImagePathsSmall;//跑步拍照图片缩略图路径
+	private int points;// 积分
+	public int sportty;// 跑步类型0-日常，1-比赛
+	public String clientImagePaths;// 跑步拍照图片路径
+	public String clientImagePathsSmall;// 跑步拍照图片缩略图路径
+	public String clientBinaryFilePath;// 跑步记录数据二进制文件路径
+
+	public String getClientBinaryFilePath() {
+		return clientBinaryFilePath;
+	}
+
+	public void setClientBinaryFilePath(String clientBinaryFilePath) {
+		this.clientBinaryFilePath = clientBinaryFilePath;
+	}
 
 	public int getId() {
 		return id;
@@ -245,7 +254,6 @@ public class SportBean {
 		this.statusIndex = statusIndex;
 	}
 
-
 	public int getPoints() {
 		return points;
 	}
@@ -261,8 +269,6 @@ public class SportBean {
 	public void setSportty(int sportty) {
 		this.sportty = sportty;
 	}
-
-
 
 	public String getClientImagePaths() {
 		return clientImagePaths;

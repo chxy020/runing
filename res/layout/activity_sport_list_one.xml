@@ -327,15 +327,23 @@
             android:layout_margin="@dimen/margin1"
             android:background="@drawable/edit" 
             />
-          <TextView
+          <!-- <TextView
             android:id="@+id/one_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/one_mind"
             android:layout_toRightOf="@id/one_desc_icon"
             android:gravity="center_vertical"
-            />
-         
+            /> -->
+            
+            <EditText
+            android:id="@+id/one_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/one_mind"
+            android:layout_toRightOf="@id/one_desc_icon"
+            android:background="@null"
+            android:gravity="center_vertical" />
           
     </RelativeLayout>
 

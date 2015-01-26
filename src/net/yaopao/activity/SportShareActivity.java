@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.engine.manager.GpsPoint;
+import net.yaopao.engine.manager.RunManager;
+import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,7 +41,6 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 
-import com.alibaba.fastjson.JSONArray;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -52,6 +52,7 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint("SimpleDateFormat")
 public class SportShareActivity extends BaseActivity implements OnClickListener {
 	private TextView backV;
 	private TextView timeV;
@@ -93,7 +94,6 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
 	private SimpleDateFormat sdf4;
-	//private DecimalFormat df;
 	String title = "";
 	int recordId = 0;
 	
@@ -118,9 +118,6 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 		sdf2 = new SimpleDateFormat("dd");
 		sdf3 = new SimpleDateFormat("HH:mm");
 		sdf4 = new SimpleDateFormat("yyyy");
-//		df = (DecimalFormat) NumberFormat.getInstance();
-//		df.setMaximumFractionDigits(2);
-//		df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
 		
 		initView();
@@ -179,7 +176,6 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 		d3v = (ImageView) findViewById(R.id.list_sport_dec1);
 		d4v = (ImageView) findViewById(R.id.list_sport_dec2);
 		
-//		backV.setOnTouchListener(this);
 		backV.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -202,8 +198,9 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 				oneSport.getRemarks(), oneSport.getUtime(),
 				oneSport.getPspeed(), oneSport.getPoints(),
 				oneSport.getAddtime());
-//		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
-//				GpsPoint.class);
+		
+		RunManager runManager = BinaryIOManager.readBinary(oneSport.getClientBinaryFilePath());
+		List<GpsPoint> pointsArray = runManager.GPSList;
 		if (aMap == null) {
 			aMap = mapView.getMap();
 		}
@@ -222,37 +219,21 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 				startActivity(intent);
 			}
 		});
-//		if (pointsArray.size()==0) {
-//			return;
-//		}
-		//从增强还原成全量
-			/*	GpsPoint befor = null;
-				GpsPoint curr = null;
-//				YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
-				for (int i = 0; i < pointsArray.size(); i++) {
-					if (i==0) {
-						befor=pointsArray.get(0);
-						continue;
-					}
-					befor =pointsArray.get(i-1);
-					curr = pointsArray.get(i);
-					curr.setLat(curr.getLat()+befor.getLat());
-					curr.setLon(curr.getLon()+befor.getLon());
-					curr.setTime(curr.time+befor.time);
-					pointsArray.set(i, curr);
-				}*/
-//		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
-//		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
-//				.size() - 1));
-//		aMap.addMarker(new MarkerOptions()
-//				.position(new LatLng(end.getLat(), end.getLon()))
-//				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
-//				.anchor(0.5f, 0.5f));
-//		aMap.addMarker(new MarkerOptions()
-//				.position(new LatLng(start.getLat(), start.getLon()))
-//				.icon(BitmapDescriptorFactory
-//						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
-		//drawLine(pointsArray);
+		if (pointsArray.size()==0) {
+			return;
+		}
+		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
+		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
+				.size() - 1));
+		aMap.addMarker(new MarkerOptions()
+				.position(new LatLng(end.getLat(), end.getLon()))
+				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
+				.anchor(0.5f, 0.5f));
+		aMap.addMarker(new MarkerOptions()
+				.position(new LatLng(start.getLat(), start.getLon()))
+				.icon(BitmapDescriptorFactory
+						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
+		drawLine(pointsArray);
 		
 		
 
@@ -446,12 +427,12 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 	private void initType(int type) {
 		switch (type) {
 		case 1:
-			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
-			title = "的步行";
-			break;
-		case 2:
 			typeV.setBackgroundResource(R.drawable.runtype_run_big);
 			title = "的跑步";
+			break;
+		case 2:
+			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
+			title = "的步行";
 			break;
 		case 3:
 			typeV.setBackgroundResource(R.drawable.runtype_ride_big);

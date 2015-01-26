@@ -60,14 +60,11 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
 	private Bitmap mPhotoBackground;
-//	private String sportPho;
-//	private String tempPath;
 	private String title;
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
 	
 	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/YaoPao/temp.jpg";
-//	private static final String IMAGE_FILE_LOCATION = Constants.sportPho+Constants.tempImage;
 	
 	private Uri imageUri;//to store the big bitmap
 	private int lastId=-1;//获取保存数据的id,-1是无返回或插入错误
@@ -81,19 +78,14 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	}
 
 	private void initLayout() {
-//		Variables.mind = 0;
 		YaoPao01App.runManager.setFeeling(0);
-//		Variables.runway = 0;
-		YaoPao01App.runManager.setWay(0);
-//		sportPho = Constants.sportPho+ getPhotoFileName();
-	//	tempPath = Constants.sportPho+Constants.tempImage;
+		YaoPao01App.runManager.setRunway(0);
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
 		titleV = (TextView) this.findViewById(R.id.recording_save_title);
 		initType();
 		Date date = new Date();
 		
-//		titleV.setText(YaoPao01App.getWeekOfDate(date)+title);
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
@@ -223,12 +215,12 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				saveV.setBackgroundResource(R.color.red);
-				Variables.remarks=descV.getText().toString();
+				
 				
 				saveDataToVarAndManager();
 				
 				lastId =YaoPao01App.db.saveOneSport();
-				DataTool.saveTotalData(YaoPao01App.runManager.distance, YaoPao01App.db.queryData().getCount(), YaoPao01App.db.queryData().getPoints());
+				DataTool.saveTotalData(YaoPao01App.runManager.distance,YaoPao01App.runManager.during(),YaoPao01App.runManager.score);
 				Log.v("wysport", "lastId = "+lastId);
 //				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
@@ -335,7 +327,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 //				Variables.runway = 1;
-				YaoPao01App.runManager.setWay(1);
+				YaoPao01App.runManager.setRunway(1);
 				break;
 			}
 			break;
@@ -350,7 +342,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 //				Variables.runway = 2;
-				YaoPao01App.runManager.setWay(2);
+				YaoPao01App.runManager.setRunway(2);
 				break;
 			}
 			break;
@@ -365,7 +357,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 //				Variables.runway = 3;
-				YaoPao01App.runManager.setWay(3);
+				YaoPao01App.runManager.setRunway(3);
 				break;
 			}
 			break;
@@ -380,7 +372,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 //				Variables.runway = 4;
-				YaoPao01App.runManager.setWay(4);
+				YaoPao01App.runManager.setRunway(4);
 				break;
 			}
 			break;
@@ -395,7 +387,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 //				Variables.runway = 5;
-				YaoPao01App.runManager.setWay(5);
+				YaoPao01App.runManager.setRunway(5);
 				break;
 			}
 			break;
@@ -404,8 +396,9 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	}
 
 	private void saveDataToVarAndManager() {
+		YaoPao01App.runManager.setRemark(descV.getText().toString());
 		Variables.clientBinaryFilePath=Variables.getPhoDir()+Variables.getRid();
-		BinaryIOManager.writeBinary(Variables.getPhoDir(),Variables.getRid());
+		BinaryIOManager.writeBinary(Variables.getRid(),Variables.getPhoDir());
 	}
 
 	private String getPhotoFileName() {
@@ -416,12 +409,14 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	}
 	//还原运动参数
 	private void reset(){
-//		Variables.utime = 0;
-		Variables.pspeed = 0;
 		Variables.distance = 0;
-		Variables.points=0;
 		Variables.sport_pho = "";
-//		Variables.hassportpho=0;
+		Variables.clientImagePathsSmall="";// 客户端缩略图路径
+		Variables.clientImagePaths="";// 客户端图片路径
+		Variables.clientBinaryFilePath="";// 客户端二进制文件路径
+		Variables.serverImagePathsSmall="";// 服务端缩略图路径
+		Variables.serverImagePaths="";// 服务端图路径
+		Variables.serverBinaryFilePath="";// 服务端二进制文件路径
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

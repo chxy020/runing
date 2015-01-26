@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				if (Variables.isTest) {
 					// 测试代码
 					Intent mainIntent = new Intent(MainActivity.this,
-							SportSetActivity.class);
+							SportRunPrepareActivity.class);
 					startActivity(mainIntent);
 					// 测试代码
 				} else {
@@ -374,7 +374,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 						}
 					}else{
 						Intent mainIntent = new Intent(MainActivity.this,
-								SportSetActivity.class);
+								SportRunPrepareActivity.class);
 						startActivity(mainIntent);
 					}
 					

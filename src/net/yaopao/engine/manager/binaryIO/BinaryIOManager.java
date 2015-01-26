@@ -26,6 +26,10 @@ public class BinaryIOManager {
 		int version = 1;
 		int i = 0;
 		int pointCount = YaoPao01App.runManager.GPSList.size();
+		for (int j = 0; j <pointCount; j++) {
+			Log.v("speg","GPSList="+YaoPao01App.runManager.GPSList.get(j) );
+		}
+		
 		int kmCount = YaoPao01App.runManager.dataKm.size();
 		int mileCount = YaoPao01App.runManager.dataMile.size();
 		int minCount = YaoPao01App.runManager.dataMin.size();
@@ -160,6 +164,9 @@ public class BinaryIOManager {
 				int fiveMinuteCount = bitInput.readUnsignedInt(14);
 				bitInput.readUnsignedInt(6);//预留
 				for(i=0;i<pointCount;i++){
+					
+					//Log.v("speg","GPSList="+YaoPao01App.runManager.GPSList.get(i) );
+					
 					double lon = bitInput.readUnsignedInt(29)/1000000.0-180;
 					double lat = bitInput.readUnsignedInt(28)/1000000.0-90;
 					int status = bitInput.readUnsignedInt(4);

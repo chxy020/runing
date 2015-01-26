@@ -110,15 +110,10 @@ public class SportListAdapter extends BaseAdapter {
 					phoV.setVisibility(View.VISIBLE);
 			}
 			dateyV.setText((String) listItems.get(position).get("date"));
-//			disyV.setText((String) listItems.get(position).get("dis"));
 			spedV.setText((String) listItems.get(position).get("speed"));
 			indexV.setText(listItems.get(position).get("id") + "");
 			//修改所用时间
 			uTimeV.setText(listItems.get(position).get("utime") + "");	
-	//	} catch (Exception e) {
-//			e.printStackTrace();
-//			Log.v("wylist", "e="+e);
-//		}
 		
 		return convertView;
 	}

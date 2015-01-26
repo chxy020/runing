@@ -82,6 +82,7 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 				backV.setBackgroundResource(R.color.red_h);
 				break;
 			case MotionEvent.ACTION_UP:
+				YaoPao01App.db.saveSportParam();
 				backV.setBackgroundResource(R.color.red);
 				SportTargetActivity.this.finish();
 				break;
@@ -95,7 +96,7 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 			case MotionEvent.ACTION_UP:
 				freeV.setBackgroundResource(R.color.white);
 				Variables.runTargetType = 1;
-				YaoPao01App.runManager.setTargetType(1);
+//				YaoPao01App.runManager.setTargetType(1);
 				freeImgV.setBackgroundResource(R.drawable.check);
 				distanceImgV.setBackgroundResource(0);
 				timeImgV.setBackgroundResource(0);
@@ -110,7 +111,7 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 			case MotionEvent.ACTION_UP:
 				distanceV.setBackgroundResource(R.color.white);
 				Variables.runTargetType = 2;
-				YaoPao01App.runManager.setTargetType(2);
+//				YaoPao01App.runManager.setTargetType(2);
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(R.drawable.check);
 				timeImgV.setBackgroundResource(0);
@@ -121,7 +122,7 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 								.getString("distance"));
 						distanceData = (int) (runtarDis);
 						Variables.runTargetDis = (int)runtarDis*1000;
-						YaoPao01App.runManager.setTargetValue(Variables.runTargetDis);
+//						YaoPao01App.runManager.setTargetValue(Variables.runTargetDis);
 					}
 				};
 				// 实例化SelectPicPopupWindow
@@ -143,14 +144,14 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 			case MotionEvent.ACTION_UP:
 				timeV.setBackgroundResource(R.color.white);
 				Variables.runTargetType = 3;
-				YaoPao01App.runManager.setTargetType(3);
+//				YaoPao01App.runManager.setTargetType(3);
 				freeImgV.setBackgroundResource(0);
 				distanceImgV.setBackgroundResource(0);
 				timeImgV.setBackgroundResource(R.drawable.check);
 				final Handler handler = new Handler() {
 					public void handleMessage(Message msg) {
 						Variables.runTargetTime =msg.getData().getInt("time")*60*1000;
-						YaoPao01App.runManager.setTargetValue(Variables.runTargetTime);
+					//	YaoPao01App.runManager.setTargetValue(Variables.runTargetTime);
 						distanceTime = msg.getData().getInt("time");
 //						Log.v("wysport", "set time = "+Variables.runtarTime);
 						super.handleMessage(msg);
@@ -182,7 +183,7 @@ public class SportTargetActivity extends BaseActivity implements OnTouchListener
 		timeTxtV.setText(getTimeOfSeconds(Variables.runTargetTime/1000) + "");
 		// }
 
-		switch (YaoPao01App.runManager.getTargetType()) {
+		switch (Variables.runTargetType) {
 		case 1:
 			freeImgV.setBackgroundResource(R.drawable.check);
 			distanceImgV.setBackgroundResource(0);

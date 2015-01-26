@@ -72,33 +72,34 @@ public class DataTool {
 		editor.commit();
 	}
 	
-	public static boolean saveTotalData(double totalDistance ,int recordCount,int totalScore){
+	public static boolean saveTotalData(double distance ,long utime,int score){
+		double totalDistance = Double.parseDouble(YaoPao01App.sharedPreferences.getString("totalDistance", "0"))+distance;
+		int recordCount = YaoPao01App.sharedPreferences.getInt("recordCount", 0)+1;
+		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0)+score;
+		Long totalTime = YaoPao01App.sharedPreferences.getLong("totalTime", 0)+utime;
+		
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
-		editor.putString("totalData", totalDistance+"_"+recordCount+"_"+totalScore);
+		editor.putString("totalDistance", totalDistance+""); 
+		editor.putInt("recordCount", recordCount);
+		editor.putInt("totalScore", totalScore);
+		editor.putLong("totalTime", totalTime);
 		return  editor.commit();
 	}
 	
 	public static DataBean getTotalData(){
-		String total = YaoPao01App.sharedPreferences.getString("totalData", "");
-		double distance =0;
-		int count = 0;
-		int score = 0;
+		double totalDistance = Double.parseDouble(YaoPao01App.sharedPreferences
+				.getString("totalDistance", "0"));
+		int recordCount = YaoPao01App.sharedPreferences
+				.getInt("recordCount", 0);
+		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0);
+		long totalTime=YaoPao01App.sharedPreferences.getLong("totalTime", 0);
 		DataBean data = new DataBean();
-		if ("".equals(total)) {
-			data = YaoPao01App.db.queryData();
-			SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit(); 
-			editor.putString("totalData", distance+"_"+count+"_"+score);
-			editor.commit();
-		}else {
-			String[] totals = total.split("_");
-			distance =Double.parseDouble( totals[0]);
-			count =Integer.parseInt( totals[1]);
-			distance =Integer.parseInt( totals[2]);
-			
-			data.setDistance(distance);
-			data.setCount(count);
-			data.setPoints(score);
-		}
+
+		data.setDistance(totalDistance);
+		data.setCount(recordCount);
+		data.setPoints(totalScore);
+		data.setTotalTime(totalTime);
+		data.setPspeed((int) Math.round(totalTime/totalDistance));
 		return data;
 	}
 	

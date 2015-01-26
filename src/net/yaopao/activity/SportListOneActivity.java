@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.assist.Constants;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
 import net.yaopao.engine.manager.GpsPoint;
+import net.yaopao.engine.manager.RunManager;
+import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,11 +34,11 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnMapClickListener;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -55,7 +56,8 @@ public class SportListOneActivity extends BaseActivity {
 	private TextView pspeedV;
 	private TextView ponitV;
 	private TextView dateV;
-	private TextView desV;
+//	private TextView desV;
+	private EditText desV;
 	private TextView titleV;
 	private TextView shareV;
 	
@@ -87,12 +89,7 @@ public class SportListOneActivity extends BaseActivity {
 	private SportBean oneSport;
 	private LonLatEncryption lonLatEncryption;
 	public GpsPoint lastDrawPoint;
-
-//	private SimpleDateFormat sdf1;
-//	private SimpleDateFormat sdf2;
-//	private SimpleDateFormat sdf3;
-//	private SimpleDateFormat sdf4;
-	// private DecimalFormat df;
+//	public static RunManager runManager;
 	String title = "";
 	int recordId = 0;
 
@@ -108,14 +105,6 @@ public class SportListOneActivity extends BaseActivity {
 		initViewPager();
 		mapView = (MapView) mapLayout.findViewById(R.id.one_map);
 		mapView.onCreate(savedInstanceState);
-//		sdf1 = new SimpleDateFormat("MM");
-//		sdf2 = new SimpleDateFormat("dd");
-//		sdf3 = new SimpleDateFormat("HH:mm");
-//		sdf4 = new SimpleDateFormat("yyyy");
-
-		// df = (DecimalFormat) NumberFormat.getInstance();
-		// df.setMaximumFractionDigits(2);
-		// df.setRoundingMode(RoundingMode.DOWN);
 		initLayout();
 
 	}
@@ -157,7 +146,7 @@ public class SportListOneActivity extends BaseActivity {
 		date2V = (TextView) findViewById(R.id.one_date2);
 		date3V = (TextView) findViewById(R.id.one_date3);
 		date4V = (TextView) findViewById(R.id.one_date4);
-		desV = (TextView) findViewById(R.id.one_desc);
+		desV = (EditText) findViewById(R.id.one_desc);
 		// disV = (TextView) findViewById(R.id.one_dis);
 		typeV = (ImageView) findViewById(R.id.one_type);
 		mindV = (ImageView) findViewById(R.id.one_mind);
@@ -169,11 +158,11 @@ public class SportListOneActivity extends BaseActivity {
 		d3V = (ImageView) findViewById(R.id.list_sport_dec1);
 		d4V = (ImageView) findViewById(R.id.list_sport_dec2);
 		initinitSymbol();
-		// backV.setOnTouchListener(this);
 		backV.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+				YaoPao01App.db.updateRemark(recordId, desV.getText().toString());
 				SportListOneActivity.this.finish();
 
 			}
@@ -215,9 +204,9 @@ public class SportListOneActivity extends BaseActivity {
 		});
 
 		lonLatEncryption = new LonLatEncryption();
-		// Intent intent = getIntent();
-		// recordId = Integer.parseInt(intent.getStringExtra("id"));
-		// oneSport = YaoPao01App.db.queryForOne(recordId);
+		 Intent intent = getIntent();
+		 recordId = Integer.parseInt(intent.getStringExtra("id"));
+		 oneSport = YaoPao01App.db.queryForOne(recordId);
 		initSportData(oneSport.getDistance(), oneSport.getRunty(),
 				oneSport.getMind(), oneSport.getRunway(),
 				oneSport.getRemarks(), oneSport.getUtime(),
@@ -225,13 +214,15 @@ public class SportListOneActivity extends BaseActivity {
 				oneSport.getAddtime());
 		
 		if (oneSport.sportty == 1) {
-			Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
+			//画比赛的轨迹，本次不支持
+//			Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
+//			
 //			String[] str = ((String)oneSport.getRuntra()).split(",");
 //			drawRunTrack(str);
 
 		} else {
-			//List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(), GpsPoint.class);
-			//drawConmmenTrack(pointsArray);
+			RunManager runManager = BinaryIOManager.readBinary(oneSport.getClientBinaryFilePath());
+			drawConmmenTrack(runManager.GPSList);
 		}
 		
 
@@ -340,25 +331,6 @@ public class SportListOneActivity extends BaseActivity {
 		if (pointsArray.size() == 0) {
 			return;
 		}
-		// 从增量还原成全量
-		/*GpsPoint befor = null;
-		GpsPoint curr = null;
-		// YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray,
-		// "uploadLocation");
-		for (int i = 0; i < pointsArray.size(); i++) {
-			if (i == 0) {
-				befor = pointsArray.get(0);
-				continue;
-			}
-			befor = pointsArray.get(i - 1);
-			curr = pointsArray.get(i);
-			curr.setLat(curr.getLat() + befor.getLat());
-			curr.setLon(curr.getLon() + befor.getLon());
-			curr.setTime(curr.getTime() + befor.getTime());
-			pointsArray.set(i, curr);
-		}*/
-		// YaoPao01App.lts.writeFileToSD("track 全量数组: " +pointsArray,
-		// "uploadLocation");
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(6);
 		df.setRoundingMode(RoundingMode.DOWN);
@@ -566,12 +538,12 @@ public class SportListOneActivity extends BaseActivity {
 	private void initType(int type) {
 		switch (type) {
 		case 1:
-			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
-			title = "的步行";
-			break;
-		case 2:
 			typeV.setBackgroundResource(R.drawable.runtype_run_big);
 			title = "的跑步";
+			break;
+		case 2:
+			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
+			title = "的步行";
 			break;
 		case 3:
 			typeV.setBackgroundResource(R.drawable.runtype_ride_big);

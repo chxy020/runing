@@ -92,9 +92,9 @@ public class DBManager {
 									YaoPao01App.runManager.distance, YaoPao01App.runManager.GPSList.size(),
 							Variables.heat,Variables.isMatch, Variables.jsonParam,
 							YaoPao01App.runManager.dataKm.size(), Variables.maxHeart,
-							YaoPao01App.runManager.dataMile.size(), YaoPao01App.runManager.getFeeling(), YaoPao01App.runManager.paceKm,
+							YaoPao01App.runManager.dataMile.size(), YaoPao01App.runManager.getFeeling(), YaoPao01App.runManager.secondPerKm,
 							YaoPao01App.runManager.getRemark(), Variables.getRid(), YaoPao01App.runManager.getTargetType(),
-							Variables.gpsString, YaoPao01App.runManager.getHowToMove(),YaoPao01App.runManager.getWay(),
+							Variables.gpsString, YaoPao01App.runManager.getHowToMove(),YaoPao01App.runManager.getRunway(),
 							Variables.serverImagePathsSmall,YaoPao01App.runManager.score,Variables.serverImagePaths,YaoPao01App.runManager.GPSList.get(0).getTime(),
 							Variables.serverBinaryFilePath,Variables.temp,Variables.uid,nowTime,YaoPao01App.runManager.during(),2,Variables.weather,
 							YaoPao01App.runManager.getTargetValue(),nowTime});
@@ -209,23 +209,37 @@ public class DBManager {
 	 * 未实现
 	 * @param sport
 	 */
-	public void update(SportBean sport) {
+/*	public void update(SportBean sport) {
 		Log.d("wydb", "DBManager --> update");
 		ContentValues cv = new ContentValues();
 		cv.put("a", sport.getRemarks());
 		db.update(DatabaseHelper.SPORTDATA_TABLE, cv, "a = ?",
 				new String[] { sport.getRemarks() });
+	}*/
+	
+	/**
+	 * 更新心情
+	 * @param sport
+	 */
+	public void updateRemark(int id, String remark) {
+		ContentValues values = new ContentValues();  
+		values.put("remark", remark);  
+		values.put("updateTime", new Date().getTime());  
+		String whereClause = "id=?";  
+		String[] whereArgs = new String[] { id+"" };  
+		db.update(DatabaseHelper.SPORTDATA_TABLE, values, whereClause, whereArgs);  
 	}
 
 	/**
-	 * 删除
+	 * 删除一条记录
 	 * 
 	 * @param sport
 	 */
-	public void delete(SportBean sport) {
+	public void delete(int id) {
 		Log.d("wydb", "DBManager --> deleteOldPerson");
-		db.delete(DatabaseHelper.SPORTDATA_TABLE, "a >= ?",
-				new String[] { String.valueOf(sport.getRemarks()) });
+		String whereClause = "id=?"; 
+		String[] whereArgs = new String[] { id+"" };  
+		db.delete(DatabaseHelper.SPORTDATA_TABLE, whereClause,	whereArgs);
 	}
 
 	/**
@@ -336,9 +350,8 @@ public class DBManager {
 			sport.setRemarks(c.getString(c.getColumnIndex("remark")));
 			sport.setSportty(c.getInt(c.getColumnIndex("isMatch")));
 			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths")));
-			String a = c.getString(c.getColumnIndex("clientImagePathsSmall"));
 			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall")));
-			
+			sport.setClientBinaryFilePath(c.getString(c.getColumnIndex("clientBinaryFilePath")));
 			sport.setPoints(c.getInt(c.getColumnIndex("score")));
 //			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
 //			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));

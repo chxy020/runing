@@ -2,6 +2,7 @@ package net.yaopao.activity;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.voice.PlayVoice;
@@ -27,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.umeng.analytics.MobclickAgent;
 
 @SuppressLint("HandlerLeak")
@@ -133,10 +135,9 @@ public class SportRunMainActivity extends BaseActivity implements
 			progressHorizontal.setMax(Variables.runTargetDis);
 			target = Variables.runTargetDis;
 		} else if (Variables.runTargetType == 3) {
-			progressHorizontal.setMax(Variables.runTargetTime / 1000);
-			target = Variables.runTargetTime / 1000;
+			progressHorizontal.setMax(Variables.runTargetTime);
+			target = Variables.runTargetTime;
 		}
-
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
@@ -172,7 +173,7 @@ public class SportRunMainActivity extends BaseActivity implements
 			runOnUiThread(new Runnable() { // UI thread
 				@Override
 				public void run() {
-					updateUI(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.paceKm);
+					updateUI(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 				}
 			});
 		}
@@ -344,7 +345,7 @@ public class SportRunMainActivity extends BaseActivity implements
 		if (Variables.sportStatus == 0) {
 			startTimer();
 		}else {
-			updateUI(timeWhenPause,YaoPao01App.runManager.distance,YaoPao01App.runManager.paceKm);
+			updateUI(timeWhenPause,YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 		}
 
 	}
@@ -388,10 +389,10 @@ public class SportRunMainActivity extends BaseActivity implements
 			case MotionEvent.ACTION_UP:
 				doneV.setBackgroundResource(R.color.red);
 				// 停止引擎
-				YaoPao01App.runManager.FinishOneRun();
 				final Handler sliderHandler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
+							
 							Intent intent = new Intent(
 									SportRunMainActivity.this,
 									SportSaveActivity.class);
@@ -404,7 +405,6 @@ public class SportRunMainActivity extends BaseActivity implements
 									"您运动距离也太短了吧！这次就不给您记录了，下次一定要加油！",
 									Toast.LENGTH_LONG).show();
 							SportRunMainActivity.this.finish();
-							// YaoPao01App.runManager = null;
 						}
 						super.handleMessage(msg);
 					}
@@ -483,7 +483,7 @@ public class SportRunMainActivity extends BaseActivity implements
 							.getTargetValue()) {
 						if (!isAchieveGoal) {
 							// 播放达成目标语音方法里需要判断当前运动距离是否小于3公里，因为第一公里和第二公里的配速要特殊处理
-							YaoPao01App.playAchieveGoalVoice();
+							YaoPao01App.playAchieveGoalVoice(utime, distance, paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
@@ -494,7 +494,7 @@ public class SportRunMainActivity extends BaseActivity implements
 									isAchieveGoalPlayed = false;
 								} else if (isPerKm) {
 									isPerKm = false;
-									YaoPao01App.playOverGoalVoice();
+									YaoPao01App.playOverGoalVoice(utime, distance, paceKm);
 								}
 							}
 						}
@@ -505,7 +505,7 @@ public class SportRunMainActivity extends BaseActivity implements
 						// // 是否播放过超过一半的语音
 						if (!isAchieveHalfGoal) {
 							// 此处播放运动了一半
-							YaoPao01App.playHalfDisVoice();
+							YaoPao01App.playHalfDisVoice(utime, distance, paceKm);
 							isAchieveHalfGoal = true;
 							isAchieveHalfGoalPlayed = true;
 						} else if ((YaoPao01App.runManager.getTargetValue() - distance) <= 2000
@@ -513,7 +513,7 @@ public class SportRunMainActivity extends BaseActivity implements
 							// 此处播放距离目标小于2公里
 							if (isPerKm) {
 								isPerKm = false;
-								YaoPao01App.playLess2Voice();
+								YaoPao01App.playLess2Voice(utime, distance, paceKm);
 							}
 						} else {
 							if (isPerKm) {
@@ -534,7 +534,7 @@ public class SportRunMainActivity extends BaseActivity implements
 						// 此处播放距离目标小于2公里
 						if (isPerKm) {
 							isPerKm = false;
-							YaoPao01App.playLess2Voice();
+							YaoPao01App.playLess2Voice(utime, distance, paceKm);
 						}
 					} else {
 						if (isPerKm) {
@@ -550,7 +550,7 @@ public class SportRunMainActivity extends BaseActivity implements
 							.getTargetValue()) {
 						if (!isAchieveGoal) {
 							// 播放达成目标语音方法里需要判断当前运动距离是否小于3公里，因为第一公里和第二公里的配速要特殊处理
-							YaoPao01App.playAchieveGoalVoice();
+							YaoPao01App.playAchieveGoalVoice(utime, distance, paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
@@ -561,7 +561,7 @@ public class SportRunMainActivity extends BaseActivity implements
 									isAchieveGoalPlayed = false;
 								} else if (isPerKm) {
 									isPerKm = false;
-									YaoPao01App.playOverGoalVoice();
+									YaoPao01App.playOverGoalVoice(utime, distance, paceKm);
 								}
 							}
 
@@ -587,7 +587,7 @@ public class SportRunMainActivity extends BaseActivity implements
 							.getTargetValue()) {
 						// 目标达成
 						if (!isAchieveGoal) {
-							YaoPao01App.playAchieveTimeGoalVoice();
+							YaoPao01App.playAchieveTimeGoalVoice(distance,paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
@@ -598,7 +598,7 @@ public class SportRunMainActivity extends BaseActivity implements
 									isAchieveGoalPlayed = false;
 								} else if (isPer5m) {
 									isPer5m = false;
-									YaoPao01App.playOverTimeGoalVoice();
+									YaoPao01App.playOverTimeGoalVoice(distance, paceKm);
 								}
 							}
 						}
@@ -609,7 +609,7 @@ public class SportRunMainActivity extends BaseActivity implements
 						// // 是否播放过超过一半的语音
 						if (!isAchieveHalfGoal) {
 							// 此处播放运动了一半
-							YaoPao01App.playHalfTimeVoice();
+							YaoPao01App.playHalfTimeVoice(distance,paceKm);
 							isAchieveHalfGoal = true;
 							isAchieveHalfGoalPlayed = true;
 						} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager
@@ -619,7 +619,7 @@ public class SportRunMainActivity extends BaseActivity implements
 							// 此处播放距离目标小于10分钟
 							if (isPer5m) {
 								isPer5m = false;
-								YaoPao01App.playLess10minVoice();
+								YaoPao01App.playLess10minVoice(distance,paceKm);
 							}
 						} else {
 							if (isPer5m) {
@@ -628,10 +628,10 @@ public class SportRunMainActivity extends BaseActivity implements
 									isAchieveHalfGoalPlayed = false;
 									if ((YaoPao01App.runManager
 											.getTargetValue() / 60000) % 2 != 0) {
-										YaoPao01App.playPer5minVoice();
+										YaoPao01App.playPer5minVoice(distance,paceKm);
 									}
 								} else {
-									YaoPao01App.playPer5minVoice();
+									YaoPao01App.playPer5minVoice(distance,paceKm);
 								}
 							}
 						}
@@ -642,12 +642,12 @@ public class SportRunMainActivity extends BaseActivity implements
 						// 此处播放距离目标小于10分钟
 						if (isPer5m) {
 							isPer5m = false;
-							YaoPao01App.playLess10minVoice();
+							YaoPao01App.playLess10minVoice(distance,paceKm);
 						}
 					} else {
 						if (isPer5m) {
 							isPer5m = false;
-							YaoPao01App.playPer5minVoice();
+							YaoPao01App.playPer5minVoice(distance,paceKm);
 						}
 					}
 
@@ -657,18 +657,17 @@ public class SportRunMainActivity extends BaseActivity implements
 					if (utime >= YaoPao01App.runManager
 							.getTargetValue()) {
 						if (!isAchieveGoal) {
-							YaoPao01App.playAchieveTimeGoalVoice();
+							YaoPao01App.playAchieveTimeGoalVoice(distance,paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
 							// 超过目标
-							if (Variables.timePlayed > YaoPao01App.runManager
-									.getTargetValue() / 1000) {
+							if (Variables.timePlayed > YaoPao01App.runManager.getTargetValue() / 1000) {
 								if (isAchieveGoalPlayed) {
 									isAchieveGoalPlayed = false;
 								} else if (isPer5m) {
 									isPer5m = false;
-									YaoPao01App.playOverTimeGoalVoice();
+									YaoPao01App.playOverTimeGoalVoice(distance,paceKm);
 								}
 							}
 
@@ -676,7 +675,7 @@ public class SportRunMainActivity extends BaseActivity implements
 					} else {
 						if (isPer5m) {
 							isPer5m = false;
-							YaoPao01App.playPer5minVoice();
+							YaoPao01App.playPer5minVoice(distance,paceKm);
 						}
 					}
 				}

@@ -79,7 +79,7 @@
             android:name="net.yaopao.activity.UserInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="net.yaopao.activity.SportSetActivity"
+            android:name="net.yaopao.activity.SportRunPrepareActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="net.yaopao.activity.SportTargetActivity"

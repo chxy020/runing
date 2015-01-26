@@ -1,5 +1,6 @@
 package net.yaopao.engine.manager;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -10,8 +11,8 @@ import com.amap.api.maps2d.model.LatLng;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+
 import net.yaopao.activity.YaoPao01App;
-import net.yaopao.assist.GpsPoint_bak;
 import net.yaopao.assist.Variables;
 
 /**
@@ -37,12 +38,13 @@ public class RunManager {
 	private int targetType;// 设定的目标类型：1-自由；2-距离；3-时间
 	private int targetValue;// 设定的目标对应的值，毫秒或者米
 	private int runStatus;// 跑步状态：1：运动，2：暂停 3：赛道内，4：偏离赛道
-	private int way;// 跑道1，2，3，4，5
+	private int runway;// 跑道1，2，3，4，5
 	private int feeling;// 心情1，2，3，4，5
 	private String remark;// 说说
 	private Bitmap pictrue;// 图片
 	private int timeInterval;// 取点间隔
 	private int everyXMinute = 1;// 没x分钟入一次数组
+	private int pauseCount = 0;
 
 	private Timer timerUpdate;// 取一个gps，更新数据的timer
 	private TimerTask timerTask;
@@ -57,8 +59,8 @@ public class RunManager {
 
 	// 下面这些变量是在timer中每次根据新的gps刷新值,外部可以访问
 	public double distance;// 个人距离(米)
-	public int paceKm;// 每公里配速（秒）
-	public int paceMile;// 每英里配速
+	public int secondPerKm;// 每公里配速（秒）
+	public int secondPerMile;// 每英里配速
 	public int averSpeedKm;// 平均速度（km/h）
 	public int averSpeedMile;// 平均速度（mile/h)
 	public int score;// 积分
@@ -75,7 +77,6 @@ public class RunManager {
 	public List<OneMinuteInfo> dataMin;// 每5分钟的数据记录
 	// 这个对象应该包括，位置、跑过的公里数、配速、步数、消耗的卡路里⋯⋯
 	public List<GpsPoint> GPSList;// gps序列,每个点有状态，运动/暂停，赛道内/赛道外
-//	public List<GpsPoint_bak> GPSList;// gps序列,每个点有状态，运动/暂停，赛道内/赛道外
 
 	public double match_team_dis;// 队伍总成绩
 	public boolean match_is_in_track;// 是否在赛道内
@@ -136,8 +137,8 @@ public class RunManager {
 		this.altitudeAdd = 0;
 		this.altitudeReduce = 0;
 		this.distance = 0;
-		this.paceKm = 0;
-		this.paceMile = 0;
+		this.secondPerKm = 0;
+		this.secondPerMile = 0;
 		this.averSpeedKm = 0;
 		this.averSpeedMile = 0;
 		this.score = 0;
@@ -189,12 +190,12 @@ public class RunManager {
 		this.targetType = targetType;
 	}
 
-	public int getWay() {
-		return way;
+	public int getRunway() {
+		return runway;
 	}
 
-	public void setWay(int way) {
-		this.way = way;
+	public void setRunway(int runway) {
+		this.runway = runway;
 	}
 
 	public int getFeeling() {
@@ -233,7 +234,16 @@ public class RunManager {
 	 * 结束一次运动
 	 */
 	public void FinishOneRun() {
+		int count = this.GPSList.size();
+	    if(count > pauseCount){//去掉最后一小段从暂停到完成的距离
+	        for(int i=pauseCount;i<count;i++){
+	            this.GPSList.remove(pauseCount);
+	        }
+	    }
+	    //算上暂停时间
+	    pauseSecond += System.currentTimeMillis() - this.startPauseTimeStamp;
 		this.endTimeStamp = System.currentTimeMillis();
+		
 		stopTimer();
 		// 计算一下积分的零头
 		if (this.distance < 1000) {
@@ -282,6 +292,7 @@ public class RunManager {
 				this.pauseSecond += System.currentTimeMillis()
 						- this.startPauseTimeStamp;
 			} else if (this.runStatus == 1 && status == 2) {// 由运动变暂停
+				pauseCount = this.GPSList.size();
 				this.startPauseTimeStamp = System.currentTimeMillis();
 			}
 		}
@@ -337,16 +348,16 @@ public class RunManager {
 				if (gpsPoint.getStatus() == 1) {// 运动中，计算
 					// 计算一下平均配速：
 					if (this.distance < 1) {// 距离太短
-						this.paceKm = 0;
+						this.secondPerKm = 0;
 					} else {
-						this.paceKm = (int) (during() / distance);
+						this.secondPerKm = (int) (during() / distance);
 					}
 				}
 				lastPoint.setTime(gpsPoint.getTime());// 就不入数组了，而是更新时间
 			} else {// 两点状态不一样，要计算配速、进度条和距离
 				if (gpsPoint.getStatus() == 1) {// 运动中，计算
 					// 计算一下平均配速：
-					this.paceKm = (int) (during() / distance);
+					this.secondPerKm = (int) (during() / distance);
 					this.distance += meter;
 				}
 				GPSList.add(gpsPoint);
@@ -355,7 +366,7 @@ public class RunManager {
 			if (gpsPoint.getStatus() == 1) {
 				// 计算一下平均配速：
 				this.distance += meter;
-				this.paceKm = (int) (during() / distance);
+				this.secondPerKm = (int) (during() / distance);
 				// 计算一下高程增加量和高程减少量
 				double altitudeOffsize = gpsPoint.getAltitude()
 						- lastPoint.getAltitude();

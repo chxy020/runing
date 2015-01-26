@@ -102,37 +102,15 @@ public class DialogTool implements OnTouchListener {
 				case MotionEvent.ACTION_UP:
 					confirm.setBackgroundResource(R.color.gray_light);
 					dialog.dismiss();
-					//抛掉最后暂停的点
-//					if (SportRunMainActivity.points.size()>0) {
-					int size = YaoPao01App.runManager.GPSList.size();
-					if (YaoPao01App.runManager.GPSList.size()>0) {
-						Log.v("wysports", "SportRecordActivity.points.size() = "+YaoPao01App.runManager.GPSList.size());
-//						YaoPao01App.lts.writeFileToSD("没有抛点之前的运动记录点: " +SportRecordActivity.points+"size="+SportRecordActivity.points.size(), "uploadLocation");
-						int i = 0;
-						try{
-						for (i = (YaoPao01App.runManager.GPSList.size()-1); YaoPao01App.runManager.GPSList.get(i).getStatus()==1; i--) {
-							
-//							YaoPao01App.lts.writeFileToSD("运动完成抛点: " +i+" status="+SportRecordActivity.points.get(i).status, "uploadLocation");
-							if (i==0) {
-								break;
-							}
-							YaoPao01App.runManager.GPSList.remove(i);
-						}
-						}catch(Exception e){
-//							YaoPao01App.lts.writeFileToSD("最后抛点异常:i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0), "uploadLocation");
-							Log.v("wysports", "i = "+i+" SportRecordActivity.points.size() = "+YaoPao01App.runManager.GPSList.size()+" SportRecordActivity.points.size()>0=="+(YaoPao01App.runManager.GPSList.size()>0));
-						}
-					}
-					//计算距离积分
-//					YaoPao01App.calDisPoints(context,handler);
+					YaoPao01App.runManager.FinishOneRun(); 
 					if (YaoPao01App.runManager.distance<50) {
 						handler.obtainMessage(1).sendToTarget();
 					}else{
 						handler.obtainMessage(0).sendToTarget();
-						YaoPao01App.playCompletVoice();
+						YaoPao01App.playCompletVoice(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 					}
 					
-					Variables.gpsLevel=1;
+//					Variables.gpsLevel=1;
 					break;
 				default:
 					break;

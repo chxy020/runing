@@ -358,8 +358,6 @@ public class MapActivity extends BaseActivity implements LocationSource,
 						if (msg.what == 0) {
 							Intent intent = new Intent(MapActivity.this,
 									SportSaveActivity.class);
-//							SportRecordActivity.stopRecordGps();
-							//SportRunMainActivity.gpsListenerHandler.obtainMessage(4).sendToTarget();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
 							//发送广播关闭运动页面
@@ -369,13 +367,7 @@ public class MapActivity extends BaseActivity implements LocationSource,
 						}else if(msg.what == 1){
 							//运动距离小于50米
 							Toast.makeText(MapActivity.this, "您运动距离也太短了吧！这次就不给您记录了，下次一定要加油", Toast.LENGTH_LONG).show();
-//							Variables.utime = 0;
-							Variables.pspeed = 0;
 							Variables.distance = 0;
-							Variables.points=0;
-//							if (SportRunMainActivity.points!=null) {
-//								SportRunMainActivity.points=null;
-//							}
 							MapActivity.this.finish();
 							//发送广播关闭运动页面
 							Intent closeintent = new Intent(closeAction);
@@ -386,7 +378,6 @@ public class MapActivity extends BaseActivity implements LocationSource,
 					}
 				};
 				
-//				DialogTool.doneSport(MapActivity.this, sliderHandler);
 				DialogTool dialog = new DialogTool(MapActivity.this);
 				dialog.doneSport(sliderHandler);
 				break;

@@ -47,7 +47,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
@@ -161,6 +160,10 @@ public class YaoPao01App extends Application {
 			@Override
 			public void onLocationChanged(Location location) {
 				if (location != null) {
+					if (loc==null) {
+						loc=location;
+					}
+					Variables.gpsStatus = 1;
 					// lts.writeFileToSD(
 					// "Location changed : Lat: " + location.getLatitude()
 					// + " Lng: " + location.getLongitude(),
@@ -171,6 +174,7 @@ public class YaoPao01App extends Application {
 									.setBackgroundResource(R.drawable.gps_1);
 						}
 						rank = 1;
+						
 					} else if (location.getAccuracy() > 50) {
 						if (SportRunMainActivity.gpsV != null) {
 							SportRunMainActivity.gpsV
@@ -199,10 +203,10 @@ public class YaoPao01App extends Application {
 
 					if (rank >= 4) {
 						loc = location;
-						Variables.gpsStatus = 1;
-					} else {
-						Variables.gpsStatus = 0;
-					}
+					} 
+//					else {
+//						Variables.gpsStatus = 0;
+//					}
 					//发送gps状态广播
 					sendGpsState(rank);
 					
@@ -473,7 +477,7 @@ public class YaoPao01App extends Application {
 	 * 
 	 * @return
 	 */
-	public static void calDisPoints(Context context, Handler handler) {
+	/*public static void calDisPoints(Context context, Handler handler) {
 //		YaoPao01App.lts.writeFileToSD("完成时  计算前 累计积分 : " + Variables.points,
 //				"uploadLocation");
 		double dis = Variables.distance % 1000;
@@ -497,27 +501,27 @@ public class YaoPao01App extends Application {
 		if (Variables.switchVoice == 0) {
 		YaoPao01App.playCompletVoice();
 		}
-	}
+	}*/
 
 	/**
 	 * 计算比赛跑步距离零头积分
 	 * 
 	 * @return
 	 */
-	public static void calMatchDisPoints() {
-		double dis = Variables.distance % 1000;
-		if (Variables.distance / 1000 < 0) {
-			if (Variables.distance > 0) {
-				Variables.points += 2;
-			}
-		} else if (Variables.distance / 1000 > 0) {
-			if (dis >= 500) {
-				Variables.points += 4;
-			} else if (dis < 500 && dis > 0) {
-				Variables.points += 0;
-			}
-		}
-	}
+//	public static void calMatchDisPoints() {
+//		double dis = Variables.distance % 1000;
+//		if (Variables.distance / 1000 < 0) {
+//			if (Variables.distance > 0) {
+//				Variables.points += 2;
+//			}
+//		} else if (Variables.distance / 1000 > 0) {
+//			if (dis >= 500) {
+//				Variables.points += 4;
+//			} else if (dis < 500 && dis > 0) {
+//				Variables.points += 0;
+//			}
+//		}
+//	}
 
 	// ====================================获取剩余公里数据id,当目标是奇数的时候，要播放0.5公里的部分
 	public static String getLeftDisCode(boolean ishalf) {
@@ -555,11 +559,11 @@ public class YaoPao01App extends Application {
 	}
 	
 	// ====================================获取完成公里数据id，如果运动目标是时间，播放小数部分，如果目标是距离，只播放整数部分
-	public static String getDisCode() {
+	public static String getDisCode(double distance) {
 		// 获取公里语音代码
-		double leftDis =Double.parseDouble(df.format((double) (Variables.distance / 1000)));
+		double leftDis =Double.parseDouble(df.format((double) (distance / 1000)));
 				if (YaoPao01App.runManager.getTargetType()!=3) {
-					 leftDis =(int)(Variables.distance/1000);
+					 leftDis =(int)(distance/1000);
 				}
 //				List<Integer> dis = voice.voiceOfDouble(Double.parseDouble(df.format((double) (Variables.distance / 1000))));
 				List<Integer> dis = voice.voiceOfDouble(leftDis);
@@ -585,7 +589,7 @@ public class YaoPao01App extends Application {
 		// 获取公里语音代码
 //		List<Integer> dis = voice.voiceOfDouble((int)(Variables.distance / 1000));
 		List<Integer> dis = voice.voiceOfDouble(Variables.distancePlayed/1000);
-		Log.v("wyvoice", " distance=" + Variables.distance+"distance=" + Variables.distance+"米"+(int)(Variables.distance / 1000)+"km"); 
+	//	Log.v("wyvoice", " distance=" + Variables.distance+"distance=" + Variables.distance+"米"+(int)(Variables.distance / 1000)+"km"); 
 //		YaoPao01App.lts.writeFileToSD("wyvoice:distance=" + Variables.distance+"distance=" + Variables.distance+"米"+(int)(Variables.distance / 1000)+"km", "uploadLocation");
 		String disStr = "";
 		for (int i = 0; i < dis.size(); i++) {
@@ -595,10 +599,10 @@ public class YaoPao01App extends Application {
 	}
 
 	// 获取用时数据的id
-	public static String getTimeCode() {
+	public static String getTimeCode(int utime) {
 		// 获取用时语音代码
 //		int[] times = YaoPao01App.cal(Variables.utime/1000);
-		int[] times = YaoPao01App.cal(runManager.during()/1000);
+		int[] times = YaoPao01App.cal(utime/1000);
 		List<Integer> time = voice.voiceOfTime(times[0], times[1], times[2]);
 		String timeStr = "";
 		for (int i = 0; i < time.size(); i++) {
@@ -621,8 +625,8 @@ public class YaoPao01App extends Application {
 		}
 
 	// 获取配速数据的id
-	public static String getPspeedCode() {
-		int[] speeds = YaoPao01App.cal(Variables.pspeed);
+	public static String getPspeedCode(int paceKm) {
+		int[] speeds = YaoPao01App.cal(paceKm);
 		List<Integer> speed = voice
 				.voiceOfTime(speeds[0], speeds[1], speeds[2]);
 		String speedStr = "";
@@ -637,8 +641,8 @@ public class YaoPao01App extends Application {
 		StringBuffer ids = new StringBuffer();
 //		long utime =runManager.during();
 		String pspeedStr = "";
-		if(Variables.distance<3000){
-			if (Variables.distance<2000) {
+		if(distance<3000){
+			if (distance<2000) {
 				int[] speeds = YaoPao01App.cal(Math.round(utime/1000.0));
 				List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
 			
@@ -672,8 +676,8 @@ public class YaoPao01App extends Application {
 			}
 		}else {
 			ids.append("120221,").append(getPerKmCode()).append("110041,120212,")
-			.append(getTimeCode()).append("120213,")
-			.append(getPspeedCode());
+			.append(getTimeCode(utime)).append("120213,")
+			.append(getPspeedCode(paceKm));
 		}
 		
 		Log.v("wyvoice", "整公里上报ids =" + ids);
@@ -684,11 +688,11 @@ public class YaoPao01App extends Application {
 	/**
 	 * 完成时上报
 	 */
-	public static void playCompletVoice() {
+	public static void playCompletVoice(int utime,double distance,int paceKm) {
 
 		// 获取公里语音代码
 		List<Integer> dis = voice.voiceOfDouble(Double.parseDouble(df
-				.format((double) (Variables.distance / 1000))));
+				.format((double) (distance / 1000))));
 		String disStr = "";
 		for (int i = 0; i < dis.size(); i++) {
 			disStr += dis.get(i) + ",";
@@ -696,8 +700,8 @@ public class YaoPao01App extends Application {
 		// ids+="120204,120211,"+disStr+"110041,120212,"+timeStr+"120213,"+speedStr;
 		StringBuffer ids = new StringBuffer();
 		ids.append("120204,120211,").append(disStr).append("110041,120212,")
-				.append(getTimeCode()).append("120213,")
-				.append(getPspeedCode());
+				.append(getTimeCode(utime)).append("120213,")
+				.append(getPspeedCode(paceKm));
 		Log.v("wyvoice", "运动完成上报ids =" + ids);
 //		lts.writeFileToSD("运动完成上报ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -706,10 +710,10 @@ public class YaoPao01App extends Application {
 	/**
 	 * 距离运动目标,跑步至运动目标的一半时
 	 */
-	public static void playHalfDisVoice() {
+	public static void playHalfDisVoice(int utime,double distance,int paceKm) {
 		
 		StringBuffer ids = new StringBuffer();
-		ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
+		ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(getTimeCode(utime)).append("120213,").append(getPspeedCode(paceKm));
 		Log.v("wyvoice", " 距离运动目标,跑步至运动目标的一半时ids =" + ids);
 		lts.writeFileToSD("距离运动目标,跑步至运动目标的一半时ids =" + ids, "voice");
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -717,24 +721,24 @@ public class YaoPao01App extends Application {
 	/**
 	 * 运动类型是距离,距离目标小于2公里
 	 */
-	public static void playLess2Voice() {
+	public static void playLess2Voice(int utime,double distance,int paceKm) {
 		
 		
 		StringBuffer ids = new StringBuffer();
-		ids.append("120102,120224,120222,").append(getLeftDisCode(false)).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
+		ids.append("120102,120224,120222,").append(getLeftDisCode(false)).append("110041,120212,").append(getTimeCode(utime)).append("120213,").append(getPspeedCode(paceKm));
 		Log.v("wyvoice", "运动目标为距离，小于两公里上报ids =" + ids);
 		PlayVoice.StartPlayVoice(ids.toString(), instance);
 	}
 	/**
 	 * 运动类型是距离,达成目标
 	 */
-	public static void playAchieveGoalVoice() {
+	public static void playAchieveGoalVoice(int utime,double distance,int paceKm) {
 //		long utime = Variables.utime;
-		long utime =runManager.during();
+//		long utime =runManager.during();
 		String pspeedStr = "";
 		StringBuffer ids = new StringBuffer();
-			if(Variables.distance<3000){
-				if (Variables.distance<2000) {
+			if(distance<3000){
+				if (distance<2000) {
 					int[] speeds = YaoPao01App.cal(Math.round(utime/1000.0));
 //					YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里time=" + Variables.utime + "毫秒    utime/1000=" + Variables.timePlayed + "秒 pertime="+(Variables.utime- Variables.timePlayed*1000), "uploadLocation");
 					List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
@@ -764,7 +768,7 @@ public class YaoPao01App extends Application {
 					ids.append("120103,120226,").append(getTarDisCode()).append("110041,120227,120212,").append(timeStr).append("120213,").append(pspeedStr);
 				}
 			}else {
-				ids.append("120103,120226,").append(getTarDisCode()).append("110041,120227,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
+				ids.append("120103,120226,").append(getTarDisCode()).append("110041,120227,120212,").append(getTimeCode(utime)).append("120213,").append(getPspeedCode(paceKm));
 			}
 		
 		
@@ -779,9 +783,9 @@ public class YaoPao01App extends Application {
 	/**
 	 * 运动类型是距离,1，跑步至整公里数时；2，超过运动目标时；
 	 */
-	public static void playOverGoalVoice() {
+	public static void playOverGoalVoice(int utime,double distance,int paceKm) {
 //		long utime = Variables.utime;
-		long utime =runManager.during();
+//		long utime =runManager.during();
 		String pspeedStr = "";
 		StringBuffer ids = new StringBuffer();
 		List<Integer> disStrs = voice.voiceOfDouble(Variables.distancePlayed/1000);
@@ -789,8 +793,8 @@ public class YaoPao01App extends Application {
 		for (int i = 0; i < disStrs.size(); i++) {
 			disStr += disStrs.get(i) + ",";
 		}
-		if(Variables.distance<3000){
-			if (Variables.distance<2000) {
+		if(distance<3000){
+			if (distance<2000) {
 				int[] speeds = YaoPao01App.cal(Math.round(utime/1000.0));
 //				YaoPao01App.lts.writeFileToSD("wyvoice: 第一公里time=" + Variables.utime + "毫秒    utime/1000=" + Variables.timePlayed + "秒 pertime="+(Variables.utime- Variables.timePlayed*1000), "uploadLocation");
 				List<Integer> speed = voice.voiceOfTime(speeds[0], speeds[1], speeds[2]);
@@ -820,7 +824,7 @@ public class YaoPao01App extends Application {
 				ids.append("120221,").append(disStr).append("110041,").append("120225,").append(getOverDisCode()).append("110041,120212,").append(timeStr).append("120213,").append(pspeedStr);
 			}
 		}else {
-			ids.append("120221,").append(disStr).append("110041,").append("120225,").append(getOverDisCode()).append("110041,120212,").append(getTimeCode()).append("120213,").append(getPspeedCode());
+			ids.append("120221,").append(disStr).append("110041,").append("120225,").append(getOverDisCode()).append("110041,120212,").append(getTimeCode(utime)).append("120213,").append(getPspeedCode(paceKm));
 		}
 		
 //		StringBuffer ids = new StringBuffer();
@@ -911,10 +915,10 @@ public class YaoPao01App extends Application {
 		/**
 		 * 时间运动目标,跑步至运动目标的一半时
 		 */
-		public static void playHalfTimeVoice() {
+		public static void playHalfTimeVoice(double distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//真棒！你已完成目标的一半，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120101,120223,120222,").append(getLefTimeCode(true,(((YaoPao01App.runManager.getTargetValue()/60000)%2))!=0)).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120101,120223,120222,").append(getLefTimeCode(true,(((YaoPao01App.runManager.getTargetValue()/60000)%2))!=0)).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
 			Log.v("wyvoice", "时间运动目标,跑步至运动目标的一半时ids =" + ids);
 //			lts.writeFileToSD("时间运动目标,跑步至运动目标的一半时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -922,10 +926,10 @@ public class YaoPao01App extends Application {
 		/**
 		 * 时间运动目标,跑步至5分钟的整数倍时；2，距离目标小于等于10分钟时；
 		 */
-		public static void playLess10minVoice() {
+		public static void playLess10minVoice(double distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//加油！你就快达成目标了，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120102,120224,120222,").append(getLefTimeCode(false,false)).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120102,120224,120222,").append(getLefTimeCode(false,false)).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
 			Log.v("wyvoice", "时间运动目标，小于等于10分钟时上报ids =" + ids);
 //			lts.writeFileToSD("时间运动目标，小于等于10分钟时上报ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -933,10 +937,10 @@ public class YaoPao01App extends Application {
 		/**
 		 *  时间运动目标,达成目标
 		 */
-		public static void playAchieveTimeGoalVoice() {
+		public static void playAchieveTimeGoalVoice(double distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//恭喜你！你已达成了XX分钟的目标，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120103,120226,").append(getGoalTimeCode()).append("120227,120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120103,120226,").append(getGoalTimeCode()).append("120227,120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
 			Log.v("wyvoice", "时间运动目标,达成目标ids =" + ids);
 //			lts.writeFileToSD("时间运动目标,达成目标ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -944,11 +948,11 @@ public class YaoPao01App extends Application {
 		/**
 		 *  时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时
 		 */
-		public static void playOverTimeGoalVoice() {
+		public static void playOverTimeGoalVoice(double distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，超过你的目标XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-//			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
-			ids.append("120221,").append(getTimePer5Code()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+//			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode());
+			ids.append("120221,").append(getTimePer5Code()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
 			Log.v("wyvoice", "时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时ids =" + ids);
 //			lts.writeFileToSD("时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);
@@ -957,10 +961,10 @@ public class YaoPao01App extends Application {
 		/**
 		 * 跑步至5分钟的整数倍时；
 		 */
-		public static void playPer5minVoice() {
+		public static void playPer5minVoice(double distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
-			ids.append("120221,").append(getTimePer5Code()).append("120211,").append(getDisCode()).append("110041,120213,").append(getPspeedCode());
+			ids.append("120221,").append(getTimePer5Code()).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
 			Log.v("wyvoice", "跑步至5分钟的整数倍时ids =" + ids);
 //			lts.writeFileToSD("跑步至5分钟的整数倍时ids = " + ids, "voice");
 			PlayVoice.StartPlayVoice(ids.toString(), instance);

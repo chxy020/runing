@@ -3,15 +3,14 @@ package net.yaopao.assist;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.util.Log;
-
 import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author dell 供全局使用的一些变量
  */
+@SuppressLint("SimpleDateFormat")
 public class Variables {
 
 	public static String pid;
@@ -30,7 +29,7 @@ public class Variables {
 	//比赛信息
 	public static JSONObject matchinfo =null;
 	
-	public static int gpsLevel = 1;
+	//public static int gpsLevel = 1;
 
 	public static int network = 0;// 0-网络不可用，1-网络可用
 
@@ -47,7 +46,7 @@ public class Variables {
 	public static int switchVoice = 0; // 0-开，1-关
 
 	public static String tarinfo;// 运动目标详情
-	public static String remarks;// 个人备注
+//	public static String remarks;// 个人备注
 	public static String runtra;// 一条轨迹轨迹--点的集合格式：rentra=
 	// [{slon:"1100",slat:"1110"},{slon:"2100",slat:"2110"}]
 	// 一个点的 属性
@@ -80,22 +79,16 @@ public class Variables {
 	public static int maxHeart;// 最高心率
 	public static int weather;// 天气代码
 	public static int temp;// 温度
-//	public static long utime;// 所用时间 毫秒数
 	public static int heat;// 热量 卡路里
 	public static int imageCount;
 	public static int stamp;
 
 	public static double distance;// 距离 m
-	public static int pspeed;// 配速 s
-	public static String hspeed;// 时速 km/h
 
-	public static double stateIndex;//
-	public static int points;//积分
 	public static Bitmap avatar;//头像
 	public static Bitmap avatar_default;//默认头像
 	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
 	
-	public static int sportty=0;//跑步类型0-日常，1-比赛
 	
 	public static int isMatch=0;//比赛
 	
@@ -103,14 +96,12 @@ public class Variables {
 	
 	public static String gpsString="";//
 	
-//	public static int hassportpho=0;//跑步是否拍照0-无，1-有
 	
 	public static String sport_pho;//跑步拍照图片的名字
 	
 	public static int timePlayed=0;//已经播报的时间,单位秒，
-	public static double distancePlayed=0;//已经播报的距离,单位米，
+	public static double distancePlayed=0;//已经播报的距离,单位米，ssss
 	
-//	public static int intervalTime=60;//语音播报间隔时间，单位秒 ，1分
 	public static int intervalTime=300;//语音播报间隔时间，单位秒，5分
 	
 	

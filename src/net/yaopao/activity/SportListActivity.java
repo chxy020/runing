@@ -15,7 +15,9 @@ import net.yaopao.bean.DataBean;
 import net.yaopao.bean.SportBean;
 import net.yaopao.view.XListView;
 import net.yaopao.view.XListView.IXListViewListener;
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,16 +32,16 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint("SimpleDateFormat")
 public class SportListActivity extends BaseActivity implements OnClickListener,IXListViewListener {
 	public TextView backV;
 
-	private ListView listView;
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
@@ -78,7 +80,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		mListView.setPullRefreshEnable(false);
 		
 		//SportListAdapter adapter = new SportListAdapter(this, getData());
-		List<Map<String, Object>> data = getData(mPage);
+		final List<Map<String, Object>> data = getData(mPage);
 		//Log.e("","chxy____" + data.size());
 		if(data.size() >= 10){
 			//开启上拉刷新
@@ -106,10 +108,40 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		});
 		mListView.setXListViewListener(this);
 		
+		// 添加长按点击,得到点中的index，即参数arg2
+		mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+            	TextView idV = (TextView) view.findViewById(R.id.sport_index);
+				 ;
+            	showInfo(Integer.parseInt((String) idV.getText()));
+                return true;
+            }
+ 
+        });
 	}
+	
+	 // listview中点击按键弹出对话框  
+    public void showInfo(final int id) {  
+        new AlertDialog.Builder(this).setTitle("我的提示").setMessage("确定要删除吗？")                  
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {  
+                    @Override  
+                    public void onClick(DialogInterface dialog, int which) {  
+                    	// TODO 
+                    	//删除数据库记录，同时删除对应的二进制文件，图片，修改本地保存的总数据，
+                    	//刷新当前页面的数据值，总公里，总时间，次数等，主页数据也需要刷新，为了同步，还需要保存删除记录的各种信息到特定的数据结构中
+                    	
+                    	 YaoPao01App.db.delete(id);
+                    	mAdapter = new SportListAdapter(SportListActivity.this, getData(mPage));
+                    	mListView.setAdapter(mAdapter);
+                    }  
+                }).show();  
+    }  
+  
+	
 	@Override
 	public void onRefresh() {
-		// TODO Auto-generated method stub
 		//Log.e("","chxy____onRefresh");
 		
 	}
@@ -119,7 +151,6 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	 */
 	@Override
 	public void onLoadMore() {
-		// TODO Auto-generated method stub
 		//Log.e("","chxy____onLoadMore");
 		mHandler.postDelayed(new Runnable() {
 			@Override
@@ -165,10 +196,10 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 
 			if (sport.getRunty() == 1) {
 				//map.put("type", R.drawable.runtype_walk);
-				map.put("type", R.drawable.runtype_walk_big);
+				map.put("type", R.drawable.runtype_run_big);
 			} else if (sport.getRunty() == 2) {
 				//map.put("type", R.drawable.runtype_run);
-				map.put("type", R.drawable.runtype_run_big);
+				map.put("type",R.drawable.runtype_walk_big );
 			} else if (sport.getRunty() == 3) {
 				//map.put("type", R.drawable.runtype_ride);
 				map.put("type", R.drawable.runtype_ride_big);
@@ -204,8 +235,6 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 				map.put("way", R.drawable.way5_h);
 			}
 //			map.put("hasPho", sport.sportpho);
-			String a = sport.getClientImagePaths();
-			String b = sport.getClientImagePathsSmall();
 			if (sport.getClientImagePaths()!=null&&!"".equals(sport.getClientImagePaths())) {
 				map.put("phoName", sport.getClientImagePaths());
 				map.put("phoNameSmall", sport.getClientImagePathsSmall());
@@ -666,5 +695,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
+	
+	
 	
 }
