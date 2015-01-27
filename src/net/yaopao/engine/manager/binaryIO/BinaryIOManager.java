@@ -1,6 +1,5 @@
 package net.yaopao.engine.manager.binaryIO;
 
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -11,32 +10,29 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import net.yaopao.activity.YaoPao01App;
 import net.yaopao.engine.manager.GpsPoint;
 import net.yaopao.engine.manager.OneKMInfo;
 import net.yaopao.engine.manager.OneMileInfo;
 import net.yaopao.engine.manager.OneMinuteInfo;
 import net.yaopao.engine.manager.RunManager;
+import android.annotation.SuppressLint;
 import android.os.Environment;
 import android.util.Log;
 
+@SuppressLint({ "SimpleDateFormat", "DefaultLocale" })
 public class BinaryIOManager {
 	public static void writeBinary(String fileName,String dir) {
 		int version = 1;
 		int i = 0;
 		int pointCount = YaoPao01App.runManager.GPSList.size();
-		for (int j = 0; j <pointCount; j++) {
-			Log.v("speg","GPSList="+YaoPao01App.runManager.GPSList.get(j) );
-		}
-		
 		int kmCount = YaoPao01App.runManager.dataKm.size();
 		int mileCount = YaoPao01App.runManager.dataMile.size();
 		int minCount = YaoPao01App.runManager.dataMin.size();
 		String saveRootPath = Environment.getExternalStorageDirectory()
 				.getAbsolutePath();
 		try {
-			String filePath = saveRootPath + "/YaoPao/binary/"+dir+"/";
+			String filePath = saveRootPath + "/YaoPao/binary/"+dir + "/";
 			File file = new File(filePath);
 	        if (!file.exists())
 	        {
@@ -51,7 +47,7 @@ public class BinaryIOManager {
 			output.writeUnsignedInt(2, 1);// 指定坐标系（见二进制说明文档）
 			output.writeUnsignedLong(42, YaoPao01App.runManager.GPSList.get(0)
 					.getTime());// gps起始时间
-			output.writeUnsignedInt(20, (int)(YaoPao01App.runManager.distance+0.5));// 总距离
+			output.writeUnsignedInt(20, YaoPao01App.runManager.distance);// 总距离
 			output.writeUnsignedInt(29, YaoPao01App.runManager.during());// 总距离
 			output.writeUnsignedInt(20, 0);// 总步数
 			output.writeUnsignedInt(17, 0);// 总卡路里
@@ -164,9 +160,6 @@ public class BinaryIOManager {
 				int fiveMinuteCount = bitInput.readUnsignedInt(14);
 				bitInput.readUnsignedInt(6);//预留
 				for(i=0;i<pointCount;i++){
-					
-					//Log.v("speg","GPSList="+YaoPao01App.runManager.GPSList.get(i) );
-					
 					double lon = bitInput.readUnsignedInt(29)/1000000.0-180;
 					double lat = bitInput.readUnsignedInt(28)/1000000.0-90;
 					int status = bitInput.readUnsignedInt(4);

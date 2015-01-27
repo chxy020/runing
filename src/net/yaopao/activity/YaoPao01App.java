@@ -710,7 +710,7 @@ public class YaoPao01App extends Application {
 	/**
 	 * 距离运动目标,跑步至运动目标的一半时
 	 */
-	public static void playHalfDisVoice(int utime,double distance,int paceKm) {
+	public static void playHalfDisVoice(int utime,int distance,int paceKm) {
 		
 		StringBuffer ids = new StringBuffer();
 		ids.append("120101,120223,120222,").append(getLeftDisCode(true)).append("110041,120212,").append(getTimeCode(utime)).append("120213,").append(getPspeedCode(paceKm));
@@ -721,7 +721,7 @@ public class YaoPao01App extends Application {
 	/**
 	 * 运动类型是距离,距离目标小于2公里
 	 */
-	public static void playLess2Voice(int utime,double distance,int paceKm) {
+	public static void playLess2Voice(int utime,int distance,int paceKm) {
 		
 		
 		StringBuffer ids = new StringBuffer();
@@ -732,9 +732,10 @@ public class YaoPao01App extends Application {
 	/**
 	 * 运动类型是距离,达成目标
 	 */
-	public static void playAchieveGoalVoice(int utime,double distance,int paceKm) {
+	public static void playAchieveGoalVoice(int utime,int distance,int paceKm) {
 //		long utime = Variables.utime;
 //		long utime =runManager.during();
+		
 		String pspeedStr = "";
 		StringBuffer ids = new StringBuffer();
 			if(distance<3000){
@@ -783,7 +784,7 @@ public class YaoPao01App extends Application {
 	/**
 	 * 运动类型是距离,1，跑步至整公里数时；2，超过运动目标时；
 	 */
-	public static void playOverGoalVoice(int utime,double distance,int paceKm) {
+	public static void playOverGoalVoice(int utime,int distance,int paceKm) {
 //		long utime = Variables.utime;
 //		long utime =runManager.during();
 		String pspeedStr = "";
@@ -915,7 +916,7 @@ public class YaoPao01App extends Application {
 		/**
 		 * 时间运动目标,跑步至运动目标的一半时
 		 */
-		public static void playHalfTimeVoice(double distance,int paceKm) {
+		public static void playHalfTimeVoice(int distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//真棒！你已完成目标的一半，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120101,120223,120222,").append(getLefTimeCode(true,(((YaoPao01App.runManager.getTargetValue()/60000)%2))!=0)).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
@@ -926,7 +927,7 @@ public class YaoPao01App extends Application {
 		/**
 		 * 时间运动目标,跑步至5分钟的整数倍时；2，距离目标小于等于10分钟时；
 		 */
-		public static void playLess10minVoice(double distance,int paceKm) {
+		public static void playLess10minVoice(int distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//加油！你就快达成目标了，还剩XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120102,120224,120222,").append(getLefTimeCode(false,false)).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
@@ -937,7 +938,7 @@ public class YaoPao01App extends Application {
 		/**
 		 *  时间运动目标,达成目标
 		 */
-		public static void playAchieveTimeGoalVoice(double distance,int paceKm) {
+		public static void playAchieveTimeGoalVoice(int distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//恭喜你！你已达成了XX分钟的目标，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120103,120226,").append(getGoalTimeCode()).append("120227,120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
@@ -948,7 +949,7 @@ public class YaoPao01App extends Application {
 		/**
 		 *  时间运动目标,1，跑步至5分钟的整数倍时；2，超过运动目标时
 		 */
-		public static void playOverTimeGoalVoice(double distance,int paceKm) {
+		public static void playOverTimeGoalVoice(int distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，超过你的目标XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 //			ids.append("120221,").append(getTimeCode()).append("120225,").append(getOverTimeCode()).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode());
@@ -961,7 +962,7 @@ public class YaoPao01App extends Application {
 		/**
 		 * 跑步至5分钟的整数倍时；
 		 */
-		public static void playPer5minVoice(double distance,int paceKm) {
+		public static void playPer5minVoice(int distance,int paceKm) {
 			StringBuffer ids = new StringBuffer();
 			//你已完成XX分钟，运动距离XX.XX公里，平均速度每公里XX分XX秒。
 			ids.append("120221,").append(getTimePer5Code()).append("120211,").append(getDisCode(distance)).append("110041,120213,").append(getPspeedCode(paceKm));
@@ -974,7 +975,7 @@ public class YaoPao01App extends Application {
 		/**
 		 * 获取团队已完成公里数
 		 */
-		public static String getTeamCompletedMileage(double distance){
+		public static String getTeamCompletedMileage(int distance){
 			List<Integer> dis = voice.voiceOfDouble(distance);
 			String disStr = "";
 			for (int i = 0; i < dis.size(); i++) {
@@ -1037,7 +1038,7 @@ public class YaoPao01App extends Application {
 		 * 2，团队成绩至整公里数时；
 		 * 3，尚未到达交接区时；
 		 */
-		public static void matchOneKmAndNotInTakeOver(double dis,double toTakeOverDis) {
+		public static void matchOneKmAndNotInTakeOver(int dis,double toTakeOverDis) {
 			StringBuffer ids = new StringBuffer();
 			//你的团队已完成XX公里，距离下一交接区还有XX公里。
 			ids.append("131101,").append(getTeamCompletedMileage(dis)).append("110041,131102,").append(getDisToTakeOver(toTakeOverDis)).append("110041");
@@ -1049,7 +1050,7 @@ public class YaoPao01App extends Application {
 		 * 2，团队成绩至整公里数时；
 		 * 3，到达交接区时；
 		 */
-		public static void matchOneKmTeam(double dis) {
+		public static void matchOneKmTeam(int dis) {
 			StringBuffer ids = new StringBuffer();
 			//你的团队已完成XX公里。
 			ids.append("131101,").append(getTeamCompletedMileage(dis)).append("110041");

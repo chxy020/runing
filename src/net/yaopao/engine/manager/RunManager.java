@@ -1,6 +1,5 @@
 package net.yaopao.engine.manager;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -58,7 +57,7 @@ public class RunManager {
 	private int targetMinute;// 下一个要到达的分钟数，为了计算整分钟的数据
 
 	// 下面这些变量是在timer中每次根据新的gps刷新值,外部可以访问
-	public double distance;// 个人距离(米)
+	public int distance;// 个人距离(米)
 	public int secondPerKm;// 每公里配速（秒）
 	public int secondPerMile;// 每英里配速
 	public int averSpeedKm;// 平均速度（km/h）
@@ -249,7 +248,7 @@ public class RunManager {
 		if (this.distance < 1000) {
 			this.score = 1;
 		} else {
-			int meter = (int) this.distance % 1000;
+			int meter = this.distance % 1000;
 			if (meter > 500) {
 				this.score += 2;
 			}
@@ -350,14 +349,14 @@ public class RunManager {
 					if (this.distance < 1) {// 距离太短
 						this.secondPerKm = 0;
 					} else {
-						this.secondPerKm = (int) (during() / distance);
+						this.secondPerKm = during() / distance;
 					}
 				}
 				lastPoint.setTime(gpsPoint.getTime());// 就不入数组了，而是更新时间
 			} else {// 两点状态不一样，要计算配速、进度条和距离
 				if (gpsPoint.getStatus() == 1) {// 运动中，计算
 					// 计算一下平均配速：
-					this.secondPerKm = (int) (during() / distance);
+					this.secondPerKm = during() / distance;
 					this.distance += meter;
 				}
 				GPSList.add(gpsPoint);
@@ -366,7 +365,7 @@ public class RunManager {
 			if (gpsPoint.getStatus() == 1) {
 				// 计算一下平均配速：
 				this.distance += meter;
-				this.secondPerKm = (int) (during() / distance);
+				this.secondPerKm = during() / distance;
 				// 计算一下高程增加量和高程减少量
 				double altitudeOffsize = gpsPoint.getAltitude()
 						- lastPoint.getAltitude();
@@ -388,7 +387,7 @@ public class RunManager {
 		case 2:// 距离
 		{
 			if (this.distance <= this.targetValue) {
-				this.completePercent = (float) (this.distance / this.targetValue);
+				this.completePercent = (float) this.distance / (float)this.targetValue;
 			} else {
 				this.completePercent = 1;
 			}
@@ -397,7 +396,7 @@ public class RunManager {
 		case 3:// 时间
 		{
 			if (this.during() <= this.targetValue) {
-				this.completePercent = (float) (this.during() / this.targetValue);
+				this.completePercent = (float) this.during() / (float)this.targetValue;
 			} else {
 				this.completePercent = 1;
 			}
@@ -413,12 +412,12 @@ public class RunManager {
 			double thisKmAltitudeAdd = 0;
 			double thisKmAltitudeReduce = 0;
 			if (this.dataKm.isEmpty()) {
-				thisKmDistance = (int) (this.distance + 0.5);
+				thisKmDistance = this.distance;
 				thisKmDuring = during();
 				thisKmAltitudeAdd = this.altitudeAdd;
 				thisKmAltitudeReduce = this.altitudeReduce;
 			} else {
-				thisKmDistance = (int) (this.distance + 0.5)
+				thisKmDistance = this.distance
 						- dataKm.get(dataKm.size() - 1).getTotalDistance();
 				thisKmDuring = during()
 						- dataKm.get(dataKm.size() - 1).getTotalDuring();
@@ -430,7 +429,7 @@ public class RunManager {
 			}
 			this.score += score4speed(thisKmDuring / 60000);// 计算积分
 			dataKm.add(new OneKMInfo(targetKM, gpsPoint.getLon(), gpsPoint
-					.getLat(), (int) (this.distance + 0.5), thisKmDistance,
+					.getLat(), this.distance, thisKmDistance,
 					during(), thisKmDuring, this.altitudeAdd,
 					thisKmAltitudeAdd, this.altitudeReduce,
 					thisKmAltitudeReduce));
@@ -442,12 +441,12 @@ public class RunManager {
 			double thisMileAltitudeAdd = 0;
 			double thisMileAltitudeReduce = 0;
 			if (this.dataMile.isEmpty()) {
-				thisMileDistance = (int) (this.distance + 0.5);
+				thisMileDistance = this.distance;
 				thisMileDuring = during();
 				thisMileAltitudeAdd = this.altitudeAdd;
 				thisMileAltitudeReduce = this.altitudeReduce;
 			} else {
-				thisMileDistance = (int) (this.distance + 0.5)
+				thisMileDistance = this.distance
 						- dataMile.get(dataMile.size() - 1).getTotalDistance();
 				thisMileDuring = during()
 						- dataMile.get(dataMile.size() - 1).getTotalDuring();
@@ -458,7 +457,7 @@ public class RunManager {
 								.getTotalAltitudeReduce();
 			}
 			dataMile.add(new OneMileInfo(targetMile, gpsPoint.getLon(), gpsPoint
-					.getLat(), (int) (this.distance + 0.5), thisMileDistance,
+					.getLat(), this.distance, thisMileDistance,
 					during(), thisMileDuring, this.altitudeAdd,
 					thisMileAltitudeAdd, this.altitudeReduce,
 					thisMileAltitudeReduce));
@@ -470,12 +469,12 @@ public class RunManager {
 			double thisMinAltitudeAdd = 0;
 			double thisMinAltitudeReduce = 0;
 			if (this.dataMin.isEmpty()) {
-				thisMinDistance = (int) (this.distance + 0.5);
+				thisMinDistance = this.distance;
 				thisMinDuring = during();
 				thisMinAltitudeAdd = this.altitudeAdd;
 				thisMinAltitudeReduce = this.altitudeReduce;
 			} else {
-				thisMinDistance = (int) (this.distance + 0.5)
+				thisMinDistance = this.distance
 						- dataMin.get(dataMin.size() - 1).getTotalDistance();
 				thisMinDuring = during()
 						- dataMin.get(dataMin.size() - 1).getTotalDuring();
@@ -486,7 +485,7 @@ public class RunManager {
 								.getTotalAltitudeReduce();
 			}
 			dataMin.add(new OneMinuteInfo(targetMinute, gpsPoint.getLon(), gpsPoint
-					.getLat(), (int) (this.distance + 0.5), thisMinDistance,
+					.getLat(), this.distance, thisMinDistance,
 					during(), thisMinDuring, this.altitudeAdd,
 					thisMinAltitudeAdd, this.altitudeReduce,
 					thisMinAltitudeReduce));

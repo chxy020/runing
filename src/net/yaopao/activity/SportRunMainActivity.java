@@ -180,7 +180,7 @@ public class SportRunMainActivity extends BaseActivity implements
 
 	}
 
-	private void updateUI(int utime,double distance,int paceKm) {
+	private void updateUI(int utime,int distance,int paceKm) {
 
 		// 更新时间
 		int[] time = YaoPao01App.cal(utime/1000);
@@ -461,7 +461,7 @@ public class SportRunMainActivity extends BaseActivity implements
 		};
 	};
 
-	private void checkplayVoice(int utime,double distance,int paceKm) {
+	private void checkplayVoice(int utime,int distance,int paceKm) {
 		// 判断运动距离是否达到整公里条件
 		if (distance - Variables.distancePlayed >= 1000) {
 			Variables.distancePlayed += 1000;
@@ -484,6 +484,7 @@ public class SportRunMainActivity extends BaseActivity implements
 						if (!isAchieveGoal) {
 							// 播放达成目标语音方法里需要判断当前运动距离是否小于3公里，因为第一公里和第二公里的配速要特殊处理
 							YaoPao01App.playAchieveGoalVoice(utime, distance, paceKm);
+							
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {

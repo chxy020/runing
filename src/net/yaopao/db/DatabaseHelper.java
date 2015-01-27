@@ -104,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		sBuffer.append("  [clientImagePathsSmall] TEXT,  ");
 		sBuffer.append("  [clientImagePaths] TEXT,  ");
 		sBuffer.append("  [clientBinaryFilePath] TEXT,  ");
-		sBuffer.append("  [distance] FLOAT,  ");
+		sBuffer.append("  [distance] INTEGER,  ");
 		sBuffer.append("  [gpsCount] INTEGER,  ");
 		sBuffer.append("  [heat] INTEGER,  ");
 		sBuffer.append("  [isMatch] INTEGER,  ");

@@ -10,10 +10,10 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.SyncTimeLoadingDialog;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,11 +29,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint("HandlerLeak")
 public class MainActivity extends BaseActivity implements OnTouchListener,
 		OnClickListener {
 	private TextView state;
@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LinearLayout recording;
 	private LinearLayout matchL;
 	private Bitmap head;
-	private double distance;
+	private int distance;
 	public byte[] imageByte;
 	/** 设置 */
 	private TextView mMainSetting = null;
@@ -52,8 +52,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LinearLayout mMessageLayout = null;
 	// private LoadingDialog dialog;
 
-	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
-	private Uri imageUri;// to store the big bitmap
 	public String upImgJson = "";
 	
 	long endRequestTime;
@@ -94,7 +92,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			}
 		}
 
-		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
 		
 		loginHandler  = new Handler() {
 			public void handleMessage(Message msg) {
@@ -180,7 +177,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	// 初始化平均配速
 	private void initPspeed(DataBean data) {
-
+		int p = data.getPspeed();
 		int[] speed = YaoPao01App.cal((int) (data.getPspeed()));
 		// int[] speed = YaoPao01App.cal((int) (200));
 

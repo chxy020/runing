@@ -220,7 +220,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				saveDataToVarAndManager();
 				
 				lastId =YaoPao01App.db.saveOneSport();
-				DataTool.saveTotalData(YaoPao01App.runManager.distance,YaoPao01App.runManager.during(),YaoPao01App.runManager.score);
+				DataTool.saveTotalData(YaoPao01App.runManager.distance,YaoPao01App.runManager.during(),YaoPao01App.runManager.score,YaoPao01App.runManager.secondPerKm);
 				Log.v("wysport", "lastId = "+lastId);
 //				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值

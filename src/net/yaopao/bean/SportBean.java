@@ -26,10 +26,10 @@ public class SportBean {
 	private int mheart;// 最高心率
 	private int weather;// 天气代码
 	private int temp;// 温度
-	private int utime;// 所用时间 秒数
+	private int utime;// 所用时间  毫秒数
 	private int heat;// 热量 卡路里
 
-	private double distance;// 距离
+	private int distance;// 距离
 	private int pspeed;// 配速
 	private String hspeed;// 时速
 	private int points;// 积分
@@ -222,11 +222,11 @@ public class SportBean {
 		this.heat = heat;
 	}
 
-	public double getDistance() {
+	public int getDistance() {
 		return distance;
 	}
 
-	public void setDistance(double distance) {
+	public void setDistance(int distance) {
 		this.distance = distance;
 	}
 

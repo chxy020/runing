@@ -50,26 +50,6 @@ public class DBManager {
 	@SuppressLint("NewApi")
 	public int saveOneSport() {
 		Log.d("wydb", "DBManager --> add");
-		//YaoPao01App.lts.writeFileToSD("db 还算之前数组: " +SportRecordActivity.points, "uploadLocation");
-//		GpsPoint_bak befor =null;
-//		for (int i = 0; i < SportRunMainActivity.points.size(); i++) {
-//			if (i==0) {
-//				befor=SportRunMainActivity.points.get(0);
-//				continue;
-//			}
-//			GpsPoint_bak temp = SportRunMainActivity.points.get(i);
-//			GpsPoint_bak curr = new GpsPoint_bak(temp.lon,temp.lat,temp.status,temp.time,temp.speed,temp.course,temp.altitude);
-//			curr.setLat(curr.lat-befor.lat);
-//			curr.setLon(curr.lon-befor.lon);
-//			curr.setTime(curr.time-befor.time);
-//			befor=SportRunMainActivity.points.get(i);
-//			SportRunMainActivity.points.set(i, curr);
-//			
-//		}
-		//YaoPao01App.lts.writeFileToSD("db 还算之后数组: " +SportRecordActivity.points, "uploadLocation");
-//		Log.d("wysport", "DBManager SportRecordActivity.points="+SportRunMainActivity.points);
-		//String oneSport = JSON.toJSONString(SportRunMainActivity.points, true);
-		String statusIndex = "";
 	    DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
@@ -261,7 +241,7 @@ public class DBManager {
 			sport.setMind(c.getInt(c.getColumnIndex("feeling")));
 			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
 			sport.setAddtime(c.getLong(c.getColumnIndex("generateTime")));
-			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
+			sport.setDistance(c.getInt(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("secondPerKm")));
 			sport.setUtime(c.getInt(c.getColumnIndex("duration")));
 			sport.setSportty(c.getInt(c.getColumnIndex("isMatch")));
@@ -291,7 +271,7 @@ public class DBManager {
 		Cursor c = queryTheCursor();
 		int count = c.getCount();
 		Log.v("wysport", "db count="+count);
-		double totalDistance = 0;
+		int totalDistance = 0;
 		int speed = 0;// 平均配速 单位秒
 		long totalTime = 0;// 毫秒
 		int points = 0;// 秒
@@ -344,7 +324,7 @@ public class DBManager {
 			sport.setMind(c.getInt(c.getColumnIndex("feeling")));
 			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
 			sport.setAddtime(c.getLong(c.getColumnIndex("generateTime")));
-			sport.setDistance(c.getDouble(c.getColumnIndex("distance")));
+			sport.setDistance(c.getInt(c.getColumnIndex("distance")));
 			sport.setPspeed(c.getInt(c.getColumnIndex("secondPerKm")));
 			sport.setUtime(c.getInt(c.getColumnIndex("duration")));
 			sport.setRemarks(c.getString(c.getColumnIndex("remark")));

@@ -3,7 +3,7 @@ package net.yaopao.bean;
 public class DataBean {
 
 	private long totalTime; // 秒数
-	private double distance;// 距离 m
+	private int distance;// 距离 m
 	private int pspeed;// 平均配速 s
 	private int count;// 记录条数
 	private int points;// 积分
@@ -16,11 +16,11 @@ public class DataBean {
 		this.totalTime = totalTime;
 	}
 
-	public double getDistance() {
+	public int getDistance() {
 		return distance;
 	}
 
-	public void setDistance(double distance) {
+	public void setDistance(int distance) {
 		this.distance = distance;
 	}
 

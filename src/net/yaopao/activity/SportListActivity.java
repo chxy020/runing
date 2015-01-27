@@ -1,5 +1,7 @@
 package net.yaopao.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +22,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -52,6 +55,16 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	private SportListAdapter mAdapter = null;
 	private int mPage = 1;
 	private DataBean totalData = DataTool.getTotalData();
+//	private int oneRecordDistance;
+//	private int oneRecordTime;
+//	private int oneRecordScore;
+
+	private View totalDis;
+
+	private View totalCount;
+
+	private View totalTime;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -81,6 +94,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		
 		//SportListAdapter adapter = new SportListAdapter(this, getData());
 		final List<Map<String, Object>> data = getData(mPage);
+		
 		//Log.e("","chxy____" + data.size());
 		if(data.size() >= 10){
 			//开启上拉刷新
@@ -114,7 +128,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id) {
             	TextView idV = (TextView) view.findViewById(R.id.sport_index);
-				 ;
+            	
             	showInfo(Integer.parseInt((String) idV.getText()));
                 return true;
             }
@@ -132,13 +146,53 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
                     	//删除数据库记录，同时删除对应的二进制文件，图片，修改本地保存的总数据，
                     	//刷新当前页面的数据值，总公里，总时间，次数等，主页数据也需要刷新，为了同步，还需要保存删除记录的各种信息到特定的数据结构中
                     	
-                    	 YaoPao01App.db.delete(id);
+                    	deleteOneSportRecord(id);
+                    	
                     	mAdapter = new SportListAdapter(SportListActivity.this, getData(mPage));
                     	mListView.setAdapter(mAdapter);
                     }  
                 }).show();  
     }  
   
+    private void deleteOneSportRecord(int id ){
+		SportBean data = YaoPao01App.db.queryForOne(id);
+		// 删除数据库和本地参数的数据
+		totalData = DataTool.deleteOneSportRecord(data.getDistance(), data.getUtime(),
+				data.getPoints(),data.getPspeed());
+
+		if (data.getClientBinaryFilePath() != null
+				&& !"".equals(data.getClientBinaryFilePath())) {
+			File binaryFile = new File(Environment
+					.getExternalStorageDirectory().getAbsolutePath()
+					+ "/YaoPao/binary/"
+					+ data.getClientBinaryFilePath()
+					+ ".yaopao");
+			if (binaryFile.exists()) {
+				binaryFile.delete();
+			}
+		}
+		if (data.getClientImagePaths() != null
+				&& !"".equals(data.getClientImagePaths())) {
+			File sportPhoto = new File(data.getClientImagePaths());
+			if (sportPhoto.exists()) {
+				sportPhoto.delete();
+			}
+		}
+
+		if (data.getClientImagePathsSmall() != null
+				&& !"".equals(data.getClientImagePathsSmall())) {
+			File sportPhotoSmall = new File(data.getClientImagePathsSmall());
+			if (sportPhotoSmall.exists()) {
+				sportPhotoSmall.delete();
+			}
+		}
+
+		YaoPao01App.db.delete(id);
+		// TODO 删除二进制文件和图片
+		// 刷新ui
+		initPagerViews(new View[] { totalDis, totalCount, totalTime });
+		mMessageAdapter.notifyDataSetChanged();
+    }
 	
 	@Override
 	public void onRefresh() {
@@ -350,15 +404,15 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			this.mListViews = new ArrayList<View>();
 			this.mInflater = this.getLayoutInflater();
 			
-			View totalDis = mInflater.inflate(R.layout.sport_list_slider_lay1,null);
+			 totalDis = mInflater.inflate(R.layout.sport_list_slider_lay1,null);
 			ImageView disDot = (ImageView) totalDis.findViewById(R.id.main_milage_dot);
 			ImageView disKm = (ImageView) totalDis.findViewById(R.id.main_milage_km);
 			disDot.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_dot));
 			disKm.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_km));
 			
-			View totalCount = mInflater.inflate(R.layout.sport_list_slider_lay2, null);
+			 totalCount = mInflater.inflate(R.layout.sport_list_slider_lay2, null);
 			
-			View totalTime = mInflater.inflate(R.layout.sport_list_slider_lay3,null);
+			 totalTime = mInflater.inflate(R.layout.sport_list_slider_lay3,null);
 			ImageView colon1 = (ImageView) totalTime.findViewById(R.id.time_d1);
 			ImageView colon2 = (ImageView) totalTime.findViewById(R.id.time_d2);
 			colon1.setImageBitmap(YaoPao01App.graphicTool.numBitmap.get(R.drawable.r_colon));
@@ -637,53 +691,53 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			views[8].setVisibility(View.VISIBLE);
 			YaoPao01App.graphicTool.updateRedNum(t4,views[3]);
 		}
-		update(t5, views[4]);
-		update(t6, views[5]);
-		update(t7, views[6]);
-		update(t8, views[7]);
+//		update(t5, views[4]);
+//		update(t6, views[5]);
+//		update(t7, views[6]);
+//		update(t8, views[7]);
 		YaoPao01App.graphicTool.updateRedNum(new int[]{t5,t6,t7,t8},new ImageView[]{views[4],views[5],views[6],views[7]});
 	}
 	
-	protected void update(int i, ImageView view) {
-		if (i > 9) {
-			i = i % 10;
-		}
-		switch (i) {
-		case 0:
-			view.setBackgroundResource(R.drawable.r_0);
-			break;
-		case 1:
-			view.setBackgroundResource(R.drawable.r_1);
-			break;
-		case 2:
-			view.setBackgroundResource(R.drawable.r_2);
-			break;
-		case 3:
-			view.setBackgroundResource(R.drawable.r_3);
-			break;
-		case 4:
-			view.setBackgroundResource(R.drawable.r_4);
-			break;
-		case 5:
-			view.setBackgroundResource(R.drawable.r_5);
-			break;
-		case 6:
-			view.setBackgroundResource(R.drawable.r_6);
-			break;
-		case 7:
-			view.setBackgroundResource(R.drawable.r_7);
-			break;
-		case 8:
-			view.setBackgroundResource(R.drawable.r_8);
-			break;
-		case 9:
-			view.setBackgroundResource(R.drawable.r_9);
-			break;
-
-		default:
-			break;
-		}
-	}
+//	protected void update(int i, ImageView view) {
+//		if (i > 9) {
+//			i = i % 10;
+//		}
+//		switch (i) {
+//		case 0:
+//			view.setBackgroundResource(R.drawable.r_0);
+//			break;
+//		case 1:
+//			view.setBackgroundResource(R.drawable.r_1);
+//			break;
+//		case 2:
+//			view.setBackgroundResource(R.drawable.r_2);
+//			break;
+//		case 3:
+//			view.setBackgroundResource(R.drawable.r_3);
+//			break;
+//		case 4:
+//			view.setBackgroundResource(R.drawable.r_4);
+//			break;
+//		case 5:
+//			view.setBackgroundResource(R.drawable.r_5);
+//			break;
+//		case 6:
+//			view.setBackgroundResource(R.drawable.r_6);
+//			break;
+//		case 7:
+//			view.setBackgroundResource(R.drawable.r_7);
+//			break;
+//		case 8:
+//			view.setBackgroundResource(R.drawable.r_8);
+//			break;
+//		case 9:
+//			view.setBackgroundResource(R.drawable.r_9);
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onResume(this);
