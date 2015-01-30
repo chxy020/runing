@@ -1,51 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.yaopao.activity"
-    android:versionCode="7"
-    android:versionName="1.0.4" >
+    android:versionCode="8"
+    android:versionName="1.0.5" >
 
-   <!--  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="18" /> -->
+    <!-- <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="18" /> -->
 
     <application
+        android:name="net.yaopao.activity.YaoPao01App"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:name="net.yaopao.activity.YaoPao01App"
-        >
-        <meta-data             
-            android:name="com.amap.api.v2.apikey"             
-            android:value="edb052cf66b6d7f82477334887205ff7"/>
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="edb052cf66b6d7f82477334887205ff7" />
+
         <activity
-            
-            android:name="zc.manager.ManagerTest"
+            android:name="net.yaopao.activity.SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-			android:name="cn.sharesdk.framework.ShareSDKUIShell"
-			android:theme="@android:style/Theme.Translucent.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation|screenSize"
-			android:screenOrientation="portrait"
-			android:windowSoftInputMode="stateHidden|adjustResize" >
-			<intent-filter>
-				<data android:scheme="tencent100371282" />
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
-		<!--微信分享回调 -->
-		<activity
-			android:name=".wxapi.WXEntryActivity"
-			android:theme="@android:style/Theme.Translucent.NoTitleBar"
-			android:configChanges="keyboardHidden|orientation|screenSize"
-			android:exported="true"
-			android:screenOrientation="portrait" />
-		<activity
+            android:name="cn.sharesdk.framework.ShareSDKUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <intent-filter>
+                <data android:scheme="tencent100371282" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+>>>>>>> master
+        </activity>
+        <!-- 微信分享回调 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+         <!-- mob SMS -->
+        <activity
+            android:name="cn.smssdk.SMSSDKUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        
+        <activity
             android:name="net.yaopao.activity.ThirdWebActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -57,106 +67,109 @@
         <activity
             android:name="net.yaopao.activity.MainActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.RegisterActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.LoginActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.ResetPwdActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.UserInfoActivity"
             android:screenOrientation="portrait" />
-         <activity
-            android:name="net.yaopao.activity.SportSetActivity"
+        <activity
+            android:name="net.yaopao.activity.SportRunPrepareActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.SportTargetActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.SportCountdownActivity"
             android:screenOrientation="portrait" />
-         <activity
-            android:name="net.yaopao.activity.SportRecordActivity"
+        <activity
+            android:name="net.yaopao.activity.SportRunMainActivity"
             android:screenOrientation="portrait" />
-         <activity
-            android:name="net.yaopao.activity.SportRecordActivityURM"
-            android:screenOrientation="portrait" />
-         <activity
+
+        <activity
             android:name="net.yaopao.activity.MapActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.SportSaveActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.SportTypeActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.SportListActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.SportListOneActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchCountdownActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchMainActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchMainRecomeActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchMapActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchNotInTakeOverActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchNotRunTransmitRelayActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchNotInActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchGroupInfoActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchNoRunMapActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchGroupListActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchGiveRelayActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.MatchFinishActivity"
             android:screenOrientation="portrait" />
-       	 <activity
+        <activity
             android:name="net.yaopao.activity.MatchFinishTeamActivity"
-            android:screenOrientation="portrait" />	
-         <activity
+            android:screenOrientation="portrait" />
+        <activity
             android:name="net.yaopao.activity.SportTrackMap"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.HelperGpsActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.ServiceActivity"
             android:screenOrientation="portrait" />
-         <activity
+        <activity
             android:name="net.yaopao.activity.HelperNetworkActivity"
             android:screenOrientation="portrait" />
-          <receiver android:name="net.yaopao.listener.NetworkStateReceiver">  
-            <intent-filter>  
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
-            </intent-filter>  
+
+        <receiver android:name="net.yaopao.listener.NetworkStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
         </receiver>
+
         <activity
             android:name="net.yaopao.activity.MainSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="net.yaopao.activity.VerifyPhoneActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="net.yaopao.activity.ClauseActivity"
@@ -164,38 +177,50 @@
         <activity
             android:name="net.yaopao.activity.AboutActivity"
             android:screenOrientation="portrait" />
- 		<activity
+
+        <activity
             android:name="net.yaopao.activity.MatchWebActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="zc.manager.ManagerTestDisplay"
+         <activity
+            android:name="net.yaopao.sms.CountryActivity"
             android:screenOrientation="portrait" />
+
         <service
-    		android:name="com.umeng.update.net.DownloadingService"
-    		android:process=":DownloadingService" >
-</service>
-<activity 
-    android:name="com.umeng.update.UpdateDialogActivity"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-</activity>
-        <meta-data android:value="53fd6da1fd98c57b8a00a179" android:name="UMENG_APPKEY"></meta-data>
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="53fd6da1fd98c57b8a00a179" >
+        </meta-data>
     </application>
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
-	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-feature android:name="android.hardware.camera" />  
-    <uses-feature android:name="android.hardware.camera.autofocus" />  
-	<uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- Push service 运行需要的权限 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -204,11 +229,15 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-	<!-- share skd 分享需要的权限 -->
-	<uses-permission android:name="android.permission.GET_TASKS" />
-	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-     <uses-sdk android:minSdkVersion="8" >
-    </uses-sdk> 
-    
+    <!-- share skd 分享需要的权限 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- mob sms需要权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <uses-sdk android:minSdkVersion="8" >
+    </uses-sdk>
+
 </manifest>

@@ -3,12 +3,11 @@ package net.yaopao.activity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import zc.manager.RunManager;
-
 import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.voice.PlayVoice;
 import net.yaopao.widget.SliderRelativeLayout;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +31,8 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportRecordActivityURM extends BaseActivity implements
+@SuppressLint("HandlerLeak")
+public class SportRunMainActivity extends BaseActivity implements
 		OnTouchListener {
 
 	private TextView sliderTextV;
@@ -45,7 +45,7 @@ public class SportRecordActivityURM extends BaseActivity implements
 	private ImageView mapV;
 	private SliderRelativeLayout slider;
 	private ProgressBar progressHorizontal;
-	
+
 	private ImageView d1v;
 	private ImageView d2v;
 	private ImageView d3v;
@@ -63,19 +63,21 @@ public class SportRecordActivityURM extends BaseActivity implements
 	private ImageView s3V;
 	private ImageView s4V;
 
-
 	private ImageView sliderIconV;
 
 	private RelativeLayout leftTime;
 	private RelativeLayout leftDis;
 	private LinearLayout topTime;
 	private LinearLayout toptDis;
+
+	public int status = 0;
+	public int target = 0;
+
 	public int speedPerKm = 0;
 	public int timePerKm = 0;
 
 	private Timer timer = null;
 	private TimerTask task = null;
-
 
 	private boolean isAchieveHalfGoal = false;// 记录是否达成目标的一半，true-已经播放过，false-没有播放过，
 	private boolean isAchieveHalfGoalPlayed = false;// 本次是否播放过运动到一半距离true-是，false-否
@@ -85,15 +87,16 @@ public class SportRecordActivityURM extends BaseActivity implements
 
 	private boolean isPerKm = false;// 本次是否是整公里
 	private boolean isPer5m = false;// 本次是否是整5分钟
-	
-	private double currentDistance = 0;//最后一次在屏幕上显示的距离
-	private int currentPaceKm = 0;//最后一次在屏幕上显示的配速
 
+	// private double currentDistance = 0;//最后一次在屏幕上显示的距离
+	// private int currentPaceKm = 0;//最后一次在屏幕上显示的配速
 
+	public static Handler timerListenerHandler;
 	// 测试代码
-	 public static double testlon = 116.395823;
-	 public static double testlat = 39.839016;
-
+	public static double testlon = 116.395823;
+	public static double testlat = 39.839016;
+    
+	private int timeWhenPause;
 	// 以上测试代码
 
 	@Override
@@ -127,10 +130,14 @@ public class SportRecordActivityURM extends BaseActivity implements
 		s3V = (ImageView) findViewById(R.id.match_recoding_speed3);
 		s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
 		progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
-		
-		//开启引擎
-		YaoPao01App.runManager.startRun();
-		
+
+		if (Variables.runTargetType == 2) {
+			progressHorizontal.setMax(Variables.runTargetDis);
+			target = Variables.runTargetDis;
+		} else if (Variables.runTargetType == 3) {
+			progressHorizontal.setMax(Variables.runTargetTime);
+			target = Variables.runTargetTime;
+		}
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
 		doneV.setOnTouchListener(this);
@@ -139,49 +146,78 @@ public class SportRecordActivityURM extends BaseActivity implements
 		slider.setMainHandler(slipHandler);
 		IntentFilter filter = new IntentFilter(MapActivity.closeAction);
 		registerReceiver(broadcastReceiver, filter);
+
+		timerListenerHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				// 1-开始，2-停止
+				if (msg.what == 1) {
+					changeStatus(false);
+					startTimer();
+
+				} else if (msg.what == 2) {
+					changeStatus(true);
+					stopTimer();
+
+				}
+				super.handleMessage(msg);
+			}
+		};
+		// 开启引擎
+		YaoPao01App.runManager.startRun();
+		changeStatus(false);
 	}
-	class TimerTaskUpdate extends TimerTask{
+
+	class TimerTaskUpdate extends TimerTask {
 		@Override
 		public void run() {
 			runOnUiThread(new Runnable() { // UI thread
 				@Override
 				public void run() {
-					//更新时间
-					int[] time = YaoPao01App.cal(YaoPao01App.runManager.during() / 1000);
-					int t1 = time[0] / 10;
-					int t2 = time[0] % 10;
-					int t3 = time[1] / 10;
-					int t4 = time[1] % 10;
-					int t5 = time[2] / 10;
-					int t6 = time[2] % 10;
-					YaoPao01App.graphicTool.updateWhiteNum(new int[]{t1,t2,t3,t4,t5,t6},new ImageView[]{t1V,t2V,t3V,t4V,t5V,t6V});
-					
-					int d1 = (int) YaoPao01App.runManager.distance / 10000;
-					int d2 = (int) (YaoPao01App.runManager.distance % 10000) / 1000;
-					int d3 = (int) (YaoPao01App.runManager.distance % 1000) / 100;
-					int d4 = (int) (YaoPao01App.runManager.distance % 100) / 10;
-					if (d1 > 0) {
-						d1v.setVisibility(View.VISIBLE);
-					}
-					YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1v,d2v,d3v,d4v});
-
-					int[] speed = YaoPao01App.cal(YaoPao01App.runManager.secondPerKm);
-
-					int s1 = speed[1] / 10;
-					int s2 = speed[1] % 10;
-					int s3 = speed[2] / 10;
-					int s4 = speed[2] % 10;
-					YaoPao01App.graphicTool.updateWhiteNum(new int[]{s1,s2,s3,s4},new ImageView[]{s1V,s2V,s3V,s4V});
-					
-					//进度条
-					progressHorizontal.setProgress(YaoPao01App.runManager.completeValue());
+					updateUI(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 				}
 			});
 		}
+
 	}
-	
+
+	private void updateUI(int utime,int distance,int paceKm) {
+
+		// 更新时间
+		int[] time = YaoPao01App.cal(utime/1000);
+		int t1 = time[0] / 10;
+		int t2 = time[0] % 10;
+		int t3 = time[1] / 10;
+		int t4 = time[1] % 10;
+		int t5 = time[2] / 10;
+		int t6 = time[2] % 10;
+		YaoPao01App.graphicTool.updateWhiteNum(new int[] { t1, t2, t3, t4, t5,
+				t6 }, new ImageView[] { t1V, t2V, t3V, t4V, t5V, t6V });
+
+		int d1 = (int)  distance/ 10000;
+		int d2 = (int) (distance % 10000) / 1000;
+		int d3 = (int) (distance % 1000) / 100;
+		int d4 = (int) (distance % 100) / 10;
+		if (d1 > 0) {
+			d1v.setVisibility(View.VISIBLE);
+		}
+		YaoPao01App.graphicTool.updateWhiteNum(new int[] { d1, d2, d3, d4 },
+				new ImageView[] { d1v, d2v, d3v, d4v });
+
+		int[] speed = YaoPao01App.cal(paceKm);
+
+		int s1 = speed[1] / 10;
+		int s2 = speed[1] % 10;
+		int s3 = speed[2] / 10;
+		int s4 = speed[2] % 10;
+		YaoPao01App.graphicTool.updateWhiteNum(new int[] { s1, s2, s3, s4 },
+				new ImageView[] { s1V, s2V, s3V, s4V });
+		checkplayVoice( utime, distance, paceKm);
+		// 进度条
+		progressHorizontal.setProgress(YaoPao01App.runManager.completeValue());
+	}
+
 	private void initRunLayout() {
-		if (Variables.runtar == 0) {
+		if (YaoPao01App.runManager.getTargetType() == 1) {
 			progressHorizontal.setVisibility(View.GONE);
 			processTextV.setText("自由运动");
 			toptDis.setVisibility(View.VISIBLE);
@@ -202,7 +238,7 @@ public class SportRecordActivityURM extends BaseActivity implements
 			t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
 			t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
 		}
-		if (Variables.runtar == 1) {
+		if (YaoPao01App.runManager.getTargetType() == 2) {
 			toptDis.setVisibility(View.VISIBLE);
 			topTime.setVisibility(View.GONE);
 			leftTime.setVisibility(View.VISIBLE);
@@ -221,7 +257,7 @@ public class SportRecordActivityURM extends BaseActivity implements
 			t5V = (ImageView) findViewById(R.id.match_recoding_time_s1);
 			t6V = (ImageView) findViewById(R.id.match_recoding_time_s2);
 		}
-		if (Variables.runtar == 2) {
+		if (YaoPao01App.runManager.getTargetType() == 3) {
 			toptDis.setVisibility(View.GONE);
 			topTime.setVisibility(View.VISIBLE);
 			leftTime.setVisibility(View.GONE);
@@ -247,26 +283,46 @@ public class SportRecordActivityURM extends BaseActivity implements
 		super.onDestroy();
 		Variables.distancePlayed = 0;
 		Variables.timePlayed = 0;
-		//releaseBitmap();
-		YaoPao01App.graphicTool.unbindDrawables(new ImageView[]{d1v,d2v,d3v,d4v,t1V,t2V,t3V,t4V,t5V,t6V,s1V,s2V,s3V,s4V});
-//		unregisterReceiver(broadcastReceiver);
+		// releaseBitmap();
+		YaoPao01App.graphicTool.unbindDrawables(new ImageView[] { d1v, d2v,
+				d3v, d4v, t1V, t2V, t3V, t4V, t5V, t6V, s1V, s2V, s3V, s4V });
+		// unregisterReceiver(broadcastReceiver);
 	}
 
-	private void startTimer(){
+	private void startTimer() {
+		if (timer!=null) {
+			return;
+		}
+	
 		task = new TimerTaskUpdate();
 		timer = new Timer();
 		timer.schedule(task, 0, 1000);
 	}
-	private void stopTimer(){
-		if(timer!=null){
+
+	private void stopTimer() {
+		
+		if (timer != null) {
 			timer.cancel();
 			timer = null;
-			if(task!=null){
+			if (task != null) {
 				task.cancel();
 				task = null;
 			}
 		}
+
 	}
+
+	private void changeStatus(boolean off) {
+		if (off) {
+			YaoPao01App.runManager.changeRunStatus(2);
+			Variables.sportStatus = 1;
+			timeWhenPause=YaoPao01App.runManager.during();
+		} else {
+			YaoPao01App.runManager.changeRunStatus(1);
+			Variables.sportStatus = 0;
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		MobclickAgent.onResume(this);
@@ -284,9 +340,14 @@ public class SportRecordActivityURM extends BaseActivity implements
 		}
 
 		super.onResume();
-		super.activityOnFront=this.getClass().getSimpleName();
-		Variables.activityOnFront=this.getClass().getSimpleName();
-		startTimer();
+		super.activityOnFront = this.getClass().getSimpleName();
+		Variables.activityOnFront = this.getClass().getSimpleName();
+		if (Variables.sportStatus == 0) {
+			startTimer();
+		}else {
+			updateUI(timeWhenPause,YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
+		}
+
 	}
 
 	public void onPause() {
@@ -314,9 +375,9 @@ public class SportRecordActivityURM extends BaseActivity implements
 				break;
 			case MotionEvent.ACTION_UP:
 				mapV.setBackgroundResource(R.drawable.button_map);
-				Intent intent = new Intent(SportRecordActivityURM.this,
+				Intent intent = new Intent(SportRunMainActivity.this,
 						MapActivity.class);
-				SportRecordActivityURM.this.startActivity(intent);
+				SportRunMainActivity.this.startActivity(intent);
 				break;
 			}
 			break;
@@ -327,30 +388,30 @@ public class SportRecordActivityURM extends BaseActivity implements
 				break;
 			case MotionEvent.ACTION_UP:
 				doneV.setBackgroundResource(R.color.red);
-				//停止引擎
-				YaoPao01App.runManager.FinishOneRun();
+				// 停止引擎
 				final Handler sliderHandler = new Handler() {
 					public void handleMessage(Message msg) {
 						if (msg.what == 0) {
+							
 							Intent intent = new Intent(
-									SportRecordActivityURM.this,
+									SportRunMainActivity.this,
 									SportSaveActivity.class);
-							SportRecordActivityURM.this.finish();
-							SportRecordActivityURM.this.startActivity(intent);
+							SportRunMainActivity.this.finish();
+							SportRunMainActivity.this.startActivity(intent);
 
 						} else if (msg.what == 1) {
 							// 运动距离小于50米
-							Toast.makeText(SportRecordActivityURM.this,
+							Toast.makeText(SportRunMainActivity.this,
 									"您运动距离也太短了吧！这次就不给您记录了，下次一定要加油！",
 									Toast.LENGTH_LONG).show();
-							SportRecordActivityURM.this.finish();
-							YaoPao01App.runManager = null;
+							SportRunMainActivity.this.finish();
 						}
 						super.handleMessage(msg);
 					}
 				};
-				//DialogTool.doneSport(SportRecordActivity.this, sliderHandler);
-				DialogTool dialog = new DialogTool(SportRecordActivityURM.this);
+				// DialogTool.doneSport(SportRecordActivity.this,
+				// sliderHandler);
+				DialogTool dialog = new DialogTool(SportRunMainActivity.this);
 				dialog.doneSport(sliderHandler);
 				break;
 			}
@@ -368,9 +429,12 @@ public class SportRecordActivityURM extends BaseActivity implements
 				doneV.setVisibility(View.GONE);
 				resumeV.setVisibility(View.GONE);
 				if (Variables.switchVoice == 0) {
-					PlayVoice.ProceedSportsVoice(SportRecordActivityURM.this);
+					PlayVoice.ProceedSportsVoice(SportRunMainActivity.this);
 				}
-				YaoPao01App.runManager.changeRunStatus(1);
+
+				changeStatus(false);
+				startTimer();
+
 				break;
 			}
 			break;
@@ -387,110 +451,118 @@ public class SportRecordActivityURM extends BaseActivity implements
 				sliderIconV.setVisibility(View.GONE);
 				sliderTextV.setVisibility(View.GONE);
 				if (Variables.switchVoice == 0) {
-					PlayVoice.PauseSportsVoice(SportRecordActivityURM.this);
-				}	
-				YaoPao01App.runManager.changeRunStatus(2);
-				
+					PlayVoice.PauseSportsVoice(SportRunMainActivity.this);
+				}
+				changeStatus(true);
+				stopTimer();
+
 				Log.v("zc", "运动暂停");
 			}
 		};
 	};
 
-
-	private void checkplayVoice(){
+	private void checkplayVoice(int utime,int distance,int paceKm) {
 		// 判断运动距离是否达到整公里条件
-		if (YaoPao01App.runManager.distance - Variables.distancePlayed >= 1000) {
+		if (distance - Variables.distancePlayed >= 1000) {
 			Variables.distancePlayed += 1000;
 			isPerKm = true;
 		}
 		// 是否播放语音
 		if (Variables.switchVoice == 0) {
 			// 运动类型
-			if (YaoPao01App.runManager.getTargetType() == 1) {//自由
+			if (YaoPao01App.runManager.getTargetType() == 1) {// 自由
 				if (isPerKm) {
 					isPerKm = false;
-					YaoPao01App.playPerKmVoice();
+					YaoPao01App.playPerKmVoice(utime, distance, paceKm);
 				}
-			} else if(YaoPao01App.runManager.getTargetType() == 2) {//距离
+			} else if (YaoPao01App.runManager.getTargetType() == 2) {// 距离
 				if (YaoPao01App.runManager.getTargetValue() > 4000) {
 
 					// 运动距离大于目标
-					if (YaoPao01App.runManager.distance >= YaoPao01App.runManager.getTargetValue()) {
+					if (distance >= YaoPao01App.runManager
+							.getTargetValue()) {
 						if (!isAchieveGoal) {
 							// 播放达成目标语音方法里需要判断当前运动距离是否小于3公里，因为第一公里和第二公里的配速要特殊处理
-							YaoPao01App.playAchieveGoalVoice();
+							YaoPao01App.playAchieveGoalVoice(utime, distance, paceKm);
+							
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
 							// 超过目标
-							if (Variables.distancePlayed > YaoPao01App.runManager.getTargetValue()) {
+							if (Variables.distancePlayed > YaoPao01App.runManager
+									.getTargetValue()) {
 								if (isAchieveGoalPlayed) {
 									isAchieveGoalPlayed = false;
 								} else if (isPerKm) {
 									isPerKm = false;
-									YaoPao01App.playOverGoalVoice();
+									YaoPao01App.playOverGoalVoice(utime, distance, paceKm);
 								}
 							}
 						}
-					} else if (YaoPao01App.runManager.distance > YaoPao01App.runManager.getTargetValue()/2
-							&& YaoPao01App.runManager.distance < YaoPao01App.runManager.getTargetValue()) {
+					} else if (distance > YaoPao01App.runManager
+							.getTargetValue() / 2
+							&& distance < YaoPao01App.runManager
+									.getTargetValue()) {
 						// // 是否播放过超过一半的语音
 						if (!isAchieveHalfGoal) {
 							// 此处播放运动了一半
-							YaoPao01App.playHalfDisVoice();
+							YaoPao01App.playHalfDisVoice(utime, distance, paceKm);
 							isAchieveHalfGoal = true;
 							isAchieveHalfGoalPlayed = true;
-						} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.distance) <= 2000
-								&& (YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.distance) > 0) {
+						} else if ((YaoPao01App.runManager.getTargetValue() - distance) <= 2000
+								&& (YaoPao01App.runManager.getTargetValue() - distance) > 0) {
 							// 此处播放距离目标小于2公里
 							if (isPerKm) {
 								isPerKm = false;
-								YaoPao01App.playLess2Voice();
+								YaoPao01App.playLess2Voice(utime, distance, paceKm);
 							}
 						} else {
 							if (isPerKm) {
 								isPerKm = false;
 								if (isAchieveHalfGoalPlayed) {
 									isAchieveHalfGoalPlayed = false;
-									if ((YaoPao01App.runManager.getTargetValue()/1000) % 2 != 0) {
-										YaoPao01App.playPerKmVoice();
+									if ((YaoPao01App.runManager
+											.getTargetValue() / 1000) % 2 != 0) {
+										YaoPao01App.playPerKmVoice( utime, distance, paceKm);
 									}
 								} else {
-									YaoPao01App.playPerKmVoice();
+									YaoPao01App.playPerKmVoice(utime, distance, paceKm);
 								}
 							}
 						}
-					} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.distance) <= 2000
-							&& (YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.distance) > 0) {
+					} else if ((YaoPao01App.runManager.getTargetValue() - distance) <= 2000
+							&& (YaoPao01App.runManager.getTargetValue() - distance) > 0) {
 						// 此处播放距离目标小于2公里
 						if (isPerKm) {
 							isPerKm = false;
-							YaoPao01App.playLess2Voice();
+							YaoPao01App.playLess2Voice(utime, distance, paceKm);
 						}
 					} else {
 						if (isPerKm) {
 							isPerKm = false;
-							YaoPao01App.playPerKmVoice();
+							YaoPao01App.playPerKmVoice(utime, distance, paceKm);
 						}
 					}
 
 				} else {
 					// 小于4000米
 					// 运动距离大于目标
-					if (YaoPao01App.runManager.distance >= YaoPao01App.runManager.getTargetValue()) {
+					if (distance >= YaoPao01App.runManager
+							.getTargetValue()) {
 						if (!isAchieveGoal) {
 							// 播放达成目标语音方法里需要判断当前运动距离是否小于3公里，因为第一公里和第二公里的配速要特殊处理
-							YaoPao01App.playAchieveGoalVoice();
+							YaoPao01App.playAchieveGoalVoice(utime, distance, paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
 							// 超过目标
-							if (Variables.distancePlayed > YaoPao01App.runManager.getTargetValue()) {
+							if (Variables.distancePlayed > YaoPao01App.runManager
+									.getTargetValue()) {
 								if (isAchieveGoalPlayed) {
 									isAchieveGoalPlayed = false;
 								} else if (isPerKm) {
 									isPerKm = false;
-									YaoPao01App.playOverGoalVoice();
+									YaoPao01App.playOverGoalVoice(utime, distance, paceKm);
 								}
 							}
 
@@ -498,94 +570,105 @@ public class SportRecordActivityURM extends BaseActivity implements
 					} else {
 						if (isPerKm) {
 							isPerKm = false;
-							YaoPao01App.playPerKmVoice();
+							YaoPao01App.playPerKmVoice(utime, distance, paceKm);
 						}
 					}
 				}
 			} else if (YaoPao01App.runManager.getTargetType() == 3) {
-				if (YaoPao01App.runManager.during() - Variables.timePlayed * 1000 >= Variables.intervalTime * 1000) {
+				if (utime - Variables.timePlayed
+						* 1000 >= Variables.intervalTime * 1000) {
 					Variables.timePlayed += Variables.intervalTime;
 					isPer5m = true;
 				}
 
-				if (Variables.runtarTime > 20) {
+				if (YaoPao01App.runManager.getTargetValue() / 60000 > 20) {
 
 					// 运动时间大于目标
-					if (YaoPao01App.runManager.during() >= YaoPao01App.runManager.getTargetValue()) {
+					if (utime >= YaoPao01App.runManager
+							.getTargetValue()) {
 						// 目标达成
 						if (!isAchieveGoal) {
-							YaoPao01App.playAchieveTimeGoalVoice();
+							YaoPao01App.playAchieveTimeGoalVoice(distance,paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
 							// 超过目标
-							if (Variables.timePlayed > YaoPao01App.runManager.getTargetValue()/1000) {
+							if (Variables.timePlayed > YaoPao01App.runManager
+									.getTargetValue() / 1000) {
 								if (isAchieveGoalPlayed) {
 									isAchieveGoalPlayed = false;
 								} else if (isPer5m) {
 									isPer5m = false;
-									YaoPao01App.playOverTimeGoalVoice();
+									YaoPao01App.playOverTimeGoalVoice(distance, paceKm);
 								}
 							}
 						}
-					} else if (YaoPao01App.runManager.during() > (YaoPao01App.runManager.getTargetValue()/2)
-							&& YaoPao01App.runManager.during() < YaoPao01App.runManager.getTargetValue()) {
+					} else if (utime > (YaoPao01App.runManager
+							.getTargetValue() / 2)
+							&& utime < YaoPao01App.runManager
+									.getTargetValue()) {
 						// // 是否播放过超过一半的语音
 						if (!isAchieveHalfGoal) {
 							// 此处播放运动了一半
-							YaoPao01App.playHalfTimeVoice();
+							YaoPao01App.playHalfTimeVoice(distance,paceKm);
 							isAchieveHalfGoal = true;
 							isAchieveHalfGoalPlayed = true;
-						} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.during()) <= (10 * 60 * 1000)
-								&& (YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.during()) > 0) {
+						} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager
+								.during()) <= (10 * 60 * 1000)
+								&& (YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager
+										.during()) > 0) {
 							// 此处播放距离目标小于10分钟
 							if (isPer5m) {
 								isPer5m = false;
-								YaoPao01App.playLess10minVoice();
+								YaoPao01App.playLess10minVoice(distance,paceKm);
 							}
 						} else {
 							if (isPer5m) {
 								isPer5m = false;
 								if (isAchieveHalfGoalPlayed) {
 									isAchieveHalfGoalPlayed = false;
-									if (Variables.runtarTime % 2 != 0) {
-										YaoPao01App.playPer5minVoice();
+									if ((YaoPao01App.runManager
+											.getTargetValue() / 60000) % 2 != 0) {
+										YaoPao01App.playPer5minVoice(distance,paceKm);
 									}
 								} else {
-									YaoPao01App.playPer5minVoice();
+									YaoPao01App.playPer5minVoice(distance,paceKm);
 								}
 							}
 						}
-					} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.during()) <= (10 * 60 * 1000)
-							&& (YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager.during()) > 0) {
+					} else if ((YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager
+							.during()) <= (10 * 60 * 1000)
+							&& (YaoPao01App.runManager.getTargetValue() - YaoPao01App.runManager
+									.during()) > 0) {
 						// 此处播放距离目标小于10分钟
 						if (isPer5m) {
 							isPer5m = false;
-							YaoPao01App.playLess10minVoice();
+							YaoPao01App.playLess10minVoice(distance,paceKm);
 						}
 					} else {
 						if (isPer5m) {
 							isPer5m = false;
-							YaoPao01App.playPer5minVoice();
+							YaoPao01App.playPer5minVoice(distance,paceKm);
 						}
 					}
 
 				} else {
 					// 小于20分钟
 					// 运动时间大于目标
-					if (YaoPao01App.runManager.during() >= YaoPao01App.runManager.getTargetValue()) {
+					if (utime >= YaoPao01App.runManager
+							.getTargetValue()) {
 						if (!isAchieveGoal) {
-							YaoPao01App.playAchieveTimeGoalVoice();
+							YaoPao01App.playAchieveTimeGoalVoice(distance,paceKm);
 							isAchieveGoal = true;
 							isAchieveGoalPlayed = true;
 						} else {
 							// 超过目标
-							if (Variables.timePlayed > YaoPao01App.runManager.getTargetValue()/1000) {
+							if (Variables.timePlayed > YaoPao01App.runManager.getTargetValue() / 1000) {
 								if (isAchieveGoalPlayed) {
 									isAchieveGoalPlayed = false;
 								} else if (isPer5m) {
 									isPer5m = false;
-									YaoPao01App.playOverTimeGoalVoice();
+									YaoPao01App.playOverTimeGoalVoice(distance,paceKm);
 								}
 							}
 
@@ -593,7 +676,7 @@ public class SportRecordActivityURM extends BaseActivity implements
 					} else {
 						if (isPer5m) {
 							isPer5m = false;
-							YaoPao01App.playPer5minVoice();
+							YaoPao01App.playPer5minVoice(distance,paceKm);
 						}
 					}
 				}
@@ -601,14 +684,6 @@ public class SportRecordActivityURM extends BaseActivity implements
 			}
 		}
 	}
-
-
-
-
-
-
-
-
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -618,7 +693,6 @@ public class SportRecordActivityURM extends BaseActivity implements
 		return false;
 	}
 
-	
 	// 在地图页面关闭此页面
 	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
@@ -626,7 +700,7 @@ public class SportRecordActivityURM extends BaseActivity implements
 		public void onReceive(Context context, Intent intent) {
 			if ("close".equals(intent.getExtras().getString("data"))) {
 				unregisterReceiver(this);
-				SportRecordActivityURM.this.finish();
+				SportRunMainActivity.this.finish();
 			}
 		}
 	};

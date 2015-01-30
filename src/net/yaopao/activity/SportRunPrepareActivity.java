@@ -1,7 +1,9 @@
 package net.yaopao.activity;
 
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
+import net.yaopao.engine.manager.RunManager;
 import net.yaopao.widget.OnChangedListener;
 import net.yaopao.widget.SlipButton;
 import android.app.Activity;
@@ -17,7 +19,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class SportSetActivity extends BaseActivity implements OnClickListener,
+public class SportRunPrepareActivity extends BaseActivity implements OnClickListener,
 		OnChangedListener {
 	TextView backV;
 	TextView targetV;
@@ -36,6 +38,7 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sport_set);
+		
 		backV = (TextView) this.findViewById(R.id.sport_set_goback);
 		targetV = (TextView) this.findViewById(R.id.sport_set_target_select);
 		targetL = (LinearLayout) this.findViewById(R.id.sport_set_target);
@@ -47,8 +50,7 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 		typeIconV = (ImageView) this.findViewById(R.id.sport_set_type_icon);
 
 		timeSwitch = (SlipButton) this.findViewById(R.id.sport_set_time_switch);
-		voiceSwitch = (SlipButton) this
-				.findViewById(R.id.sport_set_voice_switch);
+		voiceSwitch = (SlipButton) this.findViewById(R.id.sport_set_voice_switch);
 
 		timeSwitch.SetOnChangedListener(new OnChangedListener() {
 
@@ -82,30 +84,23 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 		targetL.setOnClickListener(this);
 		typeL.setOnClickListener(this);
 		startV.setOnClickListener(this);
-//		initSportParam();
 	}
 
 
-//	private void initSportParam() {
-//		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
-//		if (param.getTargetdis()!=0) {
-//			Variables.runtarDis=param.getTargetdis();
-//		}
-//		if (param.getTargettime()!=0) {
-//			Variables.runtarTime=param.getTargettime();
-//		}
-//		if (param.getTypeIndex()!=0) {
-//			Variables.runty=param.getTypeIndex();
-//		}
-//		Variables.switchTime=param.getCountDown();
-//		Variables.switchVoice=param.getVioce();
-//		Variables.runtar =param.getTargetIndex();
-//		Log.v("wysport", " runtarDis ="+param.getTargetdis());
-//		Log.v("wysport", " runtarTime ="+param.getTargettime());
-//		Log.v("wysport", " runty ="+param.getTypeIndex());
-//		Log.v("wysport", " runtar ="+param.getTargetIndex());
-//		
-//	}
+
+
+	private void initRunManager() {
+		YaoPao01App.runManager = new RunManager(2);
+		YaoPao01App.runManager.setTargetType(Variables.runTargetType);
+		YaoPao01App.runManager.setHowToMove(Variables.runType);
+		if (Variables.runTargetType==2) {
+			YaoPao01App.runManager.setTargetValue(Variables.runTargetDis);
+		}else if(Variables.runTargetType==3){
+			YaoPao01App.runManager.setTargetValue(Variables.runTargetTime);
+		}
+	}
+
+
 
 
 	@Override
@@ -139,44 +134,46 @@ public class SportSetActivity extends BaseActivity implements OnClickListener,
 			break;
 		}
 		// 检测运动目标
-		switch (Variables.runtar) {
-		case 0:
+		switch (Variables.runTargetType) {
+		case 1:
 			targetV.setText("自由");
 			tarIconV.setBackgroundResource(R.drawable.target_free);
 			break;
-		case 1:
-			targetV.setText(Variables.runtarDis+"km");
+		case 2:
+			targetV.setText(Variables.runTargetDis/1000+"km");
 			tarIconV.setBackgroundResource(R.drawable.target_dis);
 			break;
-		case 2:
-			targetV.setText(getGoalTimeStr(Variables.runtarTime));
+		case 3:
+			targetV.setText(getGoalTimeStr(Variables.runTargetTime/60000));
 			tarIconV.setBackgroundResource(R.drawable.target_time);
 			break;
 
 		default:
 			targetV.setText("自由");
 			tarIconV.setBackgroundResource(R.drawable.target_free);
-			Variables.runtar = 0;
+			Variables.runTargetType=1;
+			
 			break;
 		}
 		// 检测运动类型
-		switch (Variables.runty) {
+		switch (Variables.runType) {
 		case 1:
-			typeV.setText("步行");
-			typeIconV.setBackgroundResource(R.drawable.runtype_walk);
-			break;
-		case 2:
 			typeV.setText("跑步");
 			typeIconV.setBackgroundResource(R.drawable.runtype_run);
+			break;
+			
+		case 2:
+			typeV.setText("步行");
+			typeIconV.setBackgroundResource(R.drawable.runtype_walk);
 			break;
 		case 3:
 			typeV.setText("自行车骑行");
 			typeIconV.setBackgroundResource(R.drawable.runtype_ride);
 			break;
 		default:
-			typeV.setText("步行");
-			Variables.runty = 1;
-			typeIconV.setBackgroundResource(R.drawable.runtype_walk);
+			typeV.setText("跑步");
+			Variables.runType=1;
+			typeIconV.setBackgroundResource(R.drawable.runtype_run);
 			break;
 		}
 	}
@@ -210,39 +207,57 @@ private String getGoalTimeStr(int time){
 		switch (view.getId()) {
 		case R.id.sport_set_goback:
 				YaoPao01App.db.saveSportParam();
-				SportSetActivity.this.finish();
+				//saveParamToEngine();
+				SportRunPrepareActivity.this.finish();
 			break;
 
 		case R.id.sport_set_target:
 				Intent targetIntent = new Intent();
-				targetIntent = new Intent(SportSetActivity.this,
+				targetIntent = new Intent(SportRunPrepareActivity.this,
 						SportTargetActivity.class);
 				startActivity(targetIntent);
 			break;
 		case R.id.sport_set_type:
 				Intent typeIntent = new Intent();
-				typeIntent = new Intent(SportSetActivity.this,
+				typeIntent = new Intent(SportRunPrepareActivity.this,
 						SportTypeActivity.class);
 				startActivity(typeIntent);
 			break;
 		case R.id.sport_set_start:
+			//保存运动参数
 				YaoPao01App.db.saveSportParam();
-				Intent startIntent = new Intent();
-				if (Variables.switchTime == 0) {
-					startIntent = new Intent(SportSetActivity.this,
-							SportCountdownActivity.class);
-					startActivityForResult(startIntent, 103);
-					SportSetActivity.this.finish();
-				} else {
-					startIntent = new Intent(SportSetActivity.this,
-							SportRecordActivityURM.class);
+				if (Variables.isTest) {
+					initRunManager();
+					Intent   startIntent = new Intent(SportRunPrepareActivity.this,
+							SportRunMainActivity.class);
 					startActivity(startIntent);
-					SportSetActivity.this.finish();
+					SportRunPrepareActivity.this.finish();
+				}else if (Variables.gpsStatus != 1) {
+					DialogTool dialogTool = new DialogTool(this);
+					dialogTool.alertGpsTip1();
+					if (Variables.switchVoice == 0) {
+						YaoPao01App.palyWeekGps();
+					}
+				}else {
+					initRunManager();
+					Intent startIntent = null;
+					 if(Variables.switchTime == 0) {
+						startIntent = new Intent(SportRunPrepareActivity.this,
+								SportCountdownActivity.class);
+						startActivityForResult(startIntent, 103);
+						SportRunPrepareActivity.this.finish();
+					} else {
+						startIntent = new Intent(SportRunPrepareActivity.this,
+								SportRunMainActivity.class);
+						startActivity(startIntent);
+						SportRunPrepareActivity.this.finish();
+					}
 				}
+				
+				
 			break;
 		default:
 			break;
 		}
 	}
-
 }

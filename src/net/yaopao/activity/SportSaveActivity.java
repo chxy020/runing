@@ -10,7 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.yaopao.assist.Constants;
+import net.yaopao.assist.DataTool;
 import net.yaopao.assist.Variables;
+import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -35,6 +38,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint({ "SdCardPath", "SimpleDateFormat" })
 public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	public TextView deleV;
 	public TextView saveV;
@@ -56,12 +60,12 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	public ImageView phoButton;
 	private Bitmap mPhotoBmp;
 	private Bitmap mPhotoBackground;
-//	private String sportPho;
-	private String tempPath;
 	private String title;
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
-	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
+	
+	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/YaoPao/temp.jpg";
+	
 	private Uri imageUri;//to store the big bitmap
 	private int lastId=-1;//获取保存数据的id,-1是无返回或插入错误
 	@Override
@@ -74,17 +78,14 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	}
 
 	private void initLayout() {
-		Variables.mind = 0;
-		Variables.runway = 0;
-//		sportPho = Constants.sportPho+ getPhotoFileName();
-		tempPath = Constants.sportPho+Constants.tempImage;
+		YaoPao01App.runManager.setFeeling(0);
+		YaoPao01App.runManager.setRunway(0);
 		deleV = (TextView) this.findViewById(R.id.recording_save_dele);
 		saveV = (TextView) this.findViewById(R.id.recording_save);
 		titleV = (TextView) this.findViewById(R.id.recording_save_title);
 		initType();
 		Date date = new Date();
 		
-//		titleV.setText(YaoPao01App.getWeekOfDate(date)+title);
 		sdf1 = new SimpleDateFormat("MM");
 		sdf2 = new SimpleDateFormat("dd");
 		titleV.setText(sdf1.format(date) + "月" + sdf2.format(date) + "日" + title);
@@ -149,12 +150,12 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 		
 	}
 	private void initType() {
-		switch (Variables.runty) {
+		switch (YaoPao01App.runManager.getHowToMove()) {
 		case 1:
-			title = "的步行";
+			title = "的跑步行";
 			break;
 		case 2:
-			title = "的跑步";
+			title = "的步行";
 			break;
 		case 3:
 			title = "的自行车骑行";
@@ -214,12 +215,17 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				saveV.setBackgroundResource(R.color.red);
-				Variables.remarks=descV.getText().toString();
+				
+				
+				saveDataToVarAndManager();
+				
 				lastId =YaoPao01App.db.saveOneSport();
+				DataTool.saveTotalData(YaoPao01App.runManager.distance,YaoPao01App.runManager.during(),YaoPao01App.runManager.score,YaoPao01App.runManager.secondPerKm);
 				Log.v("wysport", "lastId = "+lastId);
 //				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
 				reset();
+				
 				//改成跳转到分享页面 chenxy add
 //				myIntent = new Intent(SportSaveActivity.this,
 //						SportListActivity.class);
@@ -231,7 +237,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				startActivity(myIntent);
 				//end
 				SportSaveActivity.this.finish();
-				Log.v("wysport","save  Variables.utime="+Variables.utime);
+//				Log.v("wysport","save  Variables.utime="+Variables.utime);
 				break;
 			}
 			break;
@@ -245,7 +251,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind = 1;
+//				Variables.mind = 1;
+				YaoPao01App.runManager.setFeeling(1);
 				break;
 			}
 			break;
@@ -259,7 +266,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind = 2;
+//				Variables.mind = 2;
+				YaoPao01App.runManager.setFeeling(2);
 				break;
 			}
 			break;
@@ -273,7 +281,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind = 3;
+//				Variables.mind = 3;
+				YaoPao01App.runManager.setFeeling(3);
 				break;
 			}
 			break;
@@ -287,7 +296,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind = 4;
+//				Variables.mind = 4;
+				YaoPao01App.runManager.setFeeling(4);
 				break;
 			}
 			break;
@@ -301,7 +311,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				mind5V.setBackgroundResource(R.drawable.mood5_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.mind = 5;
+//				Variables.mind = 5;
+				YaoPao01App.runManager.setFeeling(5);
 				break;
 			}
 			break;
@@ -315,7 +326,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway = 1;
+//				Variables.runway = 1;
+				YaoPao01App.runManager.setRunway(1);
 				break;
 			}
 			break;
@@ -329,7 +341,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway = 2;
+//				Variables.runway = 2;
+				YaoPao01App.runManager.setRunway(2);
 				break;
 			}
 			break;
@@ -343,7 +356,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway = 3;
+//				Variables.runway = 3;
+				YaoPao01App.runManager.setRunway(3);
 				break;
 			}
 			break;
@@ -357,7 +371,8 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway = 4;
+//				Variables.runway = 4;
+				YaoPao01App.runManager.setRunway(4);
 				break;
 			}
 			break;
@@ -371,12 +386,19 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				way5V.setBackgroundResource(R.drawable.way5_h);
 				break;
 			case MotionEvent.ACTION_UP:
-				Variables.runway = 5;
+//				Variables.runway = 5;
+				YaoPao01App.runManager.setRunway(5);
 				break;
 			}
 			break;
 		}
 		return true;
+	}
+
+	private void saveDataToVarAndManager() {
+		YaoPao01App.runManager.setRemark(descV.getText().toString());
+		Variables.clientBinaryFilePath=Variables.getPhoDir()+Variables.getRid();
+		BinaryIOManager.writeBinary(Variables.getRid(),Variables.getPhoDir());
 	}
 
 	private String getPhotoFileName() {
@@ -387,19 +409,14 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	}
 	//还原运动参数
 	private void reset(){
-		SportRecordActivity.points.clear();
-//		SportRecordActivity.status = 0;
-//		SportRecordActivity.target = 0;
-//		SportRecordActivity.speedPerKm=0;
-//		SportRecordActivity.disPerKm=0;
-//		SportRecordActivity.timePerKm=0;
-//		SportRecordActivity.sprortTime=0;
-		Variables.utime = 0;
-		Variables.pspeed = 0;
 		Variables.distance = 0;
-		Variables.points=0;
 		Variables.sport_pho = "";
-		Variables.hassportpho=0;
+		Variables.clientImagePathsSmall="";// 客户端缩略图路径
+		Variables.clientImagePaths="";// 客户端图片路径
+		Variables.clientBinaryFilePath="";// 客户端二进制文件路径
+		Variables.serverImagePathsSmall="";// 服务端缩略图路径
+		Variables.serverImagePaths="";// 服务端图路径
+		Variables.serverBinaryFilePath="";// 服务端二进制文件路径
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -554,20 +571,27 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 		return bitmap;
 	}
 	public void saveFile(Bitmap bm) throws IOException {
-		File dirFile = new File(Constants.sportPho);
-		File smallFile = new File(Constants.sportPho_s);
+		String path = Constants.sportPho+Variables.getPhoDir();
+		String smallPath = Constants.sportPho_s+Variables.getPhoDir();
+		
+		File dirFile = new File(path);
+		File smallFile = new File(smallPath);
 		if (!dirFile.exists()) {
-			dirFile.mkdir();
+			dirFile.mkdirs();
 		}
 		if (!smallFile.exists()) {
-			smallFile.mkdir();
+			smallFile.mkdirs();
 		}
+		
 		Variables.sport_pho = getPhotoFileName();
-		Variables.hassportpho=1;
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Constants.sportPho+ Variables.sport_pho)));
+		Variables.clientImagePaths  = path+Variables.sport_pho;
+		Variables.clientImagePathsSmall = smallPath+Variables.sport_pho;
+		
+//		Variables.hassportpho=1;
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(Variables.clientImagePaths)));
 		bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 		bos.flush();
-		bos =new BufferedOutputStream(new FileOutputStream(new File(Constants.sportPho_s+ Variables.sport_pho)));
+		bos =new BufferedOutputStream(new FileOutputStream(new File(Variables.clientImagePathsSmall)));
 		resize(bm).compress(Bitmap.CompressFormat.JPEG, 100, bos);
 		bos.flush();
 		bos.close();

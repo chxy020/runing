@@ -15,44 +15,42 @@
  */
 
 
-package zc.manager.binaryIO;
+package net.yaopao.engine.manager.binaryIO;
 
 
+import java.io.EOFException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.InputStream;
 
 
 /**
- * A {@link ByteInput} implementation for {@link ByteBuffer}s.
+ * A {@link ByteInput} implementation for {@link InputStream}s.
  */
-public class BufferInput extends AbstractByteInput<ByteBuffer> {
+public class StreamInput extends AbstractByteInput<InputStream> {
 
 
     /**
-     * Creates a new instance built on top of the specified byte buffer.
+     * Creates a new instance built on top of the specified input stream.
      *
      * @param source {@inheritDoc}
      */
-    public BufferInput(final ByteBuffer source) {
+    public StreamInput(final InputStream source) {
 
         super(source);
     }
 
 
     /**
-     * {@inheritDoc} The {@code readUnsignedByte()} method of {@code ByteReader}
-     * class calls {@link ByteBuffer#get()} on {@link #source} and returns the
-     * result.
+     * {@inheritDoc} The {@code readUnsignedByte()} method of
+     * {@code StreamReader} class calls {@link InputStream#read()} on
+     * {@link #source} and returns the result. Override this method if
+     * {@link #source} is intended to be lazily initialized and set.
      *
-     * @return {@inheritDoc }
+     * @return {@inheritDoc}
      *
-     * @throws IllegalStateException {@inheritDoc}
+     * @throws IllegalStateException id {@link #source} is currently
+     * {@code null}.
      * @throws IOException {@inheritDoc}
-     *
-     * @see ByteBuffer#get()
-     * @see #source
-     * @see #getSource()
-     * @see #setSource(java.lang.Object)
      */
     @Override
     public int readUnsignedByte() throws IOException {
@@ -61,7 +59,12 @@ public class BufferInput extends AbstractByteInput<ByteBuffer> {
             throw new IllegalStateException("#source is currently null");
         }
 
-        return source.get() & 0xFF;
+        final int read = source.read();
+        if (read == -1) {
+            throw new EOFException("eof");
+        }
+
+        return read;
     }
 
 

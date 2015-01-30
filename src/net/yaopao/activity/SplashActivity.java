@@ -5,18 +5,15 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.update.UmengUpdateAgent;
-
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
+import net.yaopao.engine.manager.RunManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,7 +22,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
-import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 /**
  * 显示起始画面
@@ -58,28 +59,48 @@ public class SplashActivity extends Activity {
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
 		setContentView(R.layout.splash);
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				Intent mainIntent = new Intent(SplashActivity.this,
-						MainActivity.class);
-				SplashActivity.this.startActivity(mainIntent);
-				SplashActivity.this.finish();
-			}
-		}, Constants.SPLASH_DISPLAY_LENGHT);
+
 		// 利用开头动画这几秒时间可以初始化变量和自动登录
+		
 		Variables.uid = DataTool.getUid();
 		
 		if (NetworkHandler.isNetworkAvailable(this)) {
 			Variables.network = 1;
 			if (Variables.uid != 0) {
-				new AutoLogin().execute("");
+				if (DataTool.getIsPhoneVerfied()==1) {
+					new AutoLogin().execute("");
+					startForward(Constants.SPLASH_DISPLAY_LENGHT,this,MainActivity.class);
+				}else if (DataTool.getIsPhoneVerfied()==0) {
+					//跳转到手机验证页面，验证成功后自动登录
+					startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,VerifyPhoneActivity.class);
+				}
+			}else {
+				startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
 			}
-
-		} else {
-			//Toast.makeText(this, "请检查网络", Toast.LENGTH_LONG).show();
+		}else {
+			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
 		}
-		 Log.v("wynet", "Variables.network0000="+Variables.network);
+		
+		 Log.v("wynet", "Variables.network="+Variables.network);
+		 //初始化引擎 
 		initSportParam();
+		
+	
+//		if (Variables.uid != 0) {
+//			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,VerifyPhoneActivity.class);
+//		}else {
+//			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
+//		}
+	}
+	
+	void startForward(int length,Context thisActivity,final Class activity){
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+		Intent mainIntent = new Intent(SplashActivity.this,	activity);
+		SplashActivity.this.startActivity(mainIntent);
+		SplashActivity.this.finish();
+			}
+		},length);
 	}
 
 	@Override
@@ -211,22 +232,20 @@ public class SplashActivity extends Activity {
 	}
 	/**
 	 * 初始化运动参数
-	 * 
+	 * 这里的初始化数据是用户上一次运动设置的运动参数
 	 */
 	private void initSportParam() {
+		
 		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
-		if (param.getTargetdis()!=0) {
-			Variables.runtarDis=param.getTargetdis();
-		}
-		if (param.getTargettime()!=0) {
-			Variables.runtarTime=param.getTargettime();
-		}
-		if (param.getTypeIndex()!=0) {
-			Variables.runty=param.getTypeIndex();
-		}
+		
 		Variables.switchTime=param.getCountDown();
 		Variables.switchVoice=param.getVioce();
-		Variables.runtar =param.getTargetIndex();
+		Variables.runTargetType=param.getTargetIndex()==0?1:param.getTargetIndex();
+		Variables.runType=param.getTypeIndex()==0?1:param.getTypeIndex();
+		Variables.runTargetDis=param.getTargetdis()==0?5000:param.getTargetdis();
+		Variables.runTargetTime=param.getTargettime()==0?1800000:param.getTargettime();
+		
+		
 		
 	}
 }

@@ -3,12 +3,12 @@ package net.yaopao.bean;
 public class SportParaBean {
 	private int id;// 记录id
 	private int uid;// 一次运动的唯一标示
-	private int countDown;// 0 关，1开
-	private int vioce;// 0 关，1开
+	private int countDown;// 0开，2 关
+	private int vioce;// 0 开，2关
 	private int targetdis; //目标距离
 	private int targettime;// //目标时间
-	private int typeIndex;// 步行：1，跑步：2，自行车骑行：3
-	private int targetIndex;// 自由：0，距离：1，时间：2 
+	private int typeIndex;// 跑步：1，：步行2，自行车骑行：3
+	private int targetIndex;// 自由：1，距离：2，时间：3 
 	public int getId() {
 		return id;
 	}

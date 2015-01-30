@@ -1,4 +1,4 @@
-package zc.manager;
+package net.yaopao.engine.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class RunManager {
 	// 这个对象应该包括，每英里的位置、配速、步数、消耗的卡路里⋯⋯
 	public List<OneMinuteInfo> dataMin;// 每5分钟的数据记录
 	// 这个对象应该包括，位置、跑过的公里数、配速、步数、消耗的卡路里⋯⋯
-	public List<ZCGPSPoint> GPSList;// gps序列,每个点有状态，运动/暂停，赛道内/赛道外
+	public List<GpsPoint> GPSList;// gps序列,每个点有状态，运动/暂停，赛道内/赛道外
 
 	public double match_team_dis;// 队伍总成绩
 	public boolean match_is_in_track;// 是否在赛道内
@@ -95,7 +95,7 @@ public class RunManager {
 	 * 单单创建一个实例，需要使用manager的数据结构
 	 */
 	public RunManager() {
-		this.GPSList = new ArrayList<ZCGPSPoint>();
+		this.GPSList = new ArrayList<GpsPoint>();
 		this.dataKm = new ArrayList<OneKMInfo>();
 		this.dataMile = new ArrayList<OneMileInfo>();
 		this.dataMin = new ArrayList<OneMinuteInfo>();
@@ -129,7 +129,7 @@ public class RunManager {
 		// 初始化变量
 		this.runType = 1;
 		this.runStatus = 1;
-		this.GPSList = new ArrayList<ZCGPSPoint>();
+		this.GPSList = new ArrayList<GpsPoint>();
 		this.dataKm = new ArrayList<OneKMInfo>();
 		this.dataMile = new ArrayList<OneMileInfo>();
 		this.dataMin = new ArrayList<OneMinuteInfo>();
@@ -317,13 +317,13 @@ public class RunManager {
 
 	int testnum = 0;
 
-	private ZCGPSPoint getOnePoint() {
+	private GpsPoint getOnePoint() {
 		if (Variables.isTest) {
 			testnum++;
-			return new ZCGPSPoint(116.390053, 39.968191 + 0.001 * testnum,
+			return new GpsPoint(116.390053, 39.968191 + 0.001 * testnum,
 					this.runStatus, System.currentTimeMillis(), 0, 0, 0);
 		} else {
-			return new ZCGPSPoint(YaoPao01App.loc.getLongitude(),
+			return new GpsPoint(YaoPao01App.loc.getLongitude(),
 					YaoPao01App.loc.getLatitude(), this.runStatus,
 					System.currentTimeMillis(),
 					(int) YaoPao01App.loc.getBearing(),
@@ -333,13 +333,13 @@ public class RunManager {
 	}
 
 	private void updateDate() {
-		ZCGPSPoint gpsPoint = getOnePoint();
+		GpsPoint gpsPoint = getOnePoint();
 		if (this.GPSList.isEmpty()) {
 			this.GPSList.add(gpsPoint);
 			return;
 		}
 		// 不是第一个点
-		ZCGPSPoint lastPoint = GPSList.get(GPSList.size() - 1);
+		GpsPoint lastPoint = GPSList.get(GPSList.size() - 1);
 		double meter = getDistanceFrom2ponit(gpsPoint, lastPoint);
 		if (meter < 5) {// 离得特别近
 			if (gpsPoint.getStatus() == lastPoint.getStatus()) {// 两点状态一样
@@ -498,7 +498,7 @@ public class RunManager {
 		// Log.v("zc","completePercent:"+this.completePercent);
 	}
 
-	private double getDistanceFrom2ponit(ZCGPSPoint point1, ZCGPSPoint point2) {
+	private double getDistanceFrom2ponit(GpsPoint point1, GpsPoint point2) {
 		return AMapUtils.calculateLineDistance(new LatLng(point1.getLat(),
 				point1.getLon()), new LatLng(point2.getLat(), point2.getLon()));
 

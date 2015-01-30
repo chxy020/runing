@@ -1,4 +1,4 @@
-package zc.manager.binaryIO;
+package net.yaopao.engine.manager.binaryIO;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -10,17 +10,17 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import zc.manager.OneMinuteInfo;
-import zc.manager.OneKMInfo;
-import zc.manager.OneMileInfo;
-import zc.manager.RunManager;
-import zc.manager.ZCGPSPoint;
-
+import net.yaopao.activity.YaoPao01App;
+import net.yaopao.engine.manager.GpsPoint;
+import net.yaopao.engine.manager.OneKMInfo;
+import net.yaopao.engine.manager.OneMileInfo;
+import net.yaopao.engine.manager.OneMinuteInfo;
+import net.yaopao.engine.manager.RunManager;
+import android.annotation.SuppressLint;
 import android.os.Environment;
 import android.util.Log;
-import net.yaopao.activity.YaoPao01App;
 
+@SuppressLint({ "SimpleDateFormat", "DefaultLocale" })
 public class BinaryIOManager {
 	public static void writeBinary(String fileName,String dir) {
 		int version = 1;
@@ -58,7 +58,7 @@ public class BinaryIOManager {
 			output.writeUnsignedInt(14, minCount);// 分钟数
 			output.writeUnsignedInt(6, 0);// 预留
 			for (i = 0; i < pointCount; i++) {
-				ZCGPSPoint point = YaoPao01App.runManager.GPSList.get(i);
+				GpsPoint point = YaoPao01App.runManager.GPSList.get(i);
 				output.writeUnsignedInt(29,
 						(int) ((point.getLon() + 180) * 1000000));// 经度
 				output.writeUnsignedInt(28,
@@ -66,7 +66,7 @@ public class BinaryIOManager {
 				output.writeUnsignedInt(4, point.getStatus());// 点状态
 				int timeIncrement = 0;
 				if (i > 0) {
-					ZCGPSPoint lastPoint = YaoPao01App.runManager.GPSList
+					GpsPoint lastPoint = YaoPao01App.runManager.GPSList
 							.get(i - 1);
 					timeIncrement = (int) (point.getTime() - lastPoint
 							.getTime());
@@ -175,7 +175,7 @@ public class BinaryIOManager {
 					double alt = bitInput.readUnsignedInt(17)/10.0-1000;
 					int speed = bitInput.readUnsignedInt(8);
 					bitInput.readUnsignedInt(4);//预留
-					ZCGPSPoint point = new ZCGPSPoint(lon,lat,status,timeStamp,dir,alt,speed);
+					GpsPoint point = new GpsPoint(lon,lat,status,timeStamp,dir,alt,speed);
 					manager.GPSList.add(point);
 				}
 				
@@ -241,7 +241,7 @@ public class BinaryIOManager {
 				int pointCount = manager.GPSList.size();
 				content.append("点序列个数:"+pointCount+"\n");
 				for(i = 0;i<pointCount;i++){
-					ZCGPSPoint point = manager.GPSList.get(i);
+					GpsPoint point = manager.GPSList.get(i);
 					content.append(new SimpleDateFormat("HH:mm:ss----").format(new Date(point.getTime())));
 					content.append(String.format("%.6f", point.getLon())+" ");
 					content.append(String.format("%.6f", point.getLat())+" ");

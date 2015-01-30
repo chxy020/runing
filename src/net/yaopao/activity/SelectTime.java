@@ -1,14 +1,9 @@
 package net.yaopao.activity;
 
-import net.yaopao.assist.Variables;
 import net.yaopao.widget.ArrayWheelAdapter;
-import net.yaopao.widget.NumericWheelAdapter;
 import net.yaopao.widget.OnWheelChangedListener;
 import net.yaopao.widget.WheelView;
-import android.R.integer;
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,8 +25,6 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 	private ViewFlipper viewfipper;
 	private Button btn_submit, btn_cancel;
 	private int time;
-	private int curTime;
-	private TimeNumericAdapter timeAdapter;
 	private WheelView timeV;
 	private TextView timeTextV;
 	/** 运动计时数据 */
@@ -76,18 +69,6 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		
 		updateDistance(timeV,true);
 		timeV.addChangingListener(listener);
-		/*
-		if (time != null) {
-			String[] times = time.split(" ");
-			curTime = Integer.parseInt(times[0]);
-		}
-		timeAdapter = new TimeNumericAdapter(context, 5, 180, curTime);
-
-		timeV.setViewAdapter(timeAdapter);
-		timeV.setCurrentItem(curTime - 5);
-		timeV.addChangingListener(listener);
-		updateDistance(timeV);
-		*/
 		
 		viewfipper.addView(mMenuView);
 		viewfipper.setFlipInterval(6000000);
@@ -119,16 +100,6 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		String t = this.timeTxtArray[st];
 		this.time = this.timeArray[st];
 		timeTextV.setText(t);
-		/*
-		TimeNumericAdapter timeAd = new TimeNumericAdapter(mContext, 5, 180,
-				curTime);
-		view.setViewAdapter(timeAd);
-		String curT = view.getCurrentItem() + 5 + "";
-		view.setCurrentItem(view.getCurrentItem(), true);
-		time = curT;
-		
-		timeTextV.setText(curT + " 分钟");
-		*/
 	}
 	
 	/**
@@ -151,37 +122,6 @@ public class SelectTime extends PopupWindow implements OnClickListener {
 		return sub;
 	}
 	
-	/**
-	 * Adapter for numeric wheels. Highlights the current value.
-	 */
-	private class TimeNumericAdapter extends NumericWheelAdapter {
-		// Index of current item
-		int currentItem;
-		// Index of item to be highlighted
-		int currentValue;
-
-		/**
-		 * Constructor
-		 */
-		public TimeNumericAdapter(Context context, int minValue, int maxValue,
-				int current) {
-			super(context, minValue, maxValue);
-			this.currentValue = current;
-			setTextSize(30);
-		}
-
-		protected void configureTextView(TextView view) {
-			super.configureTextView(view);
-			view.setTypeface(Typeface.SANS_SERIF);
-		}
-
-		public CharSequence getItemText(int index) {
-			currentItem = index;
-			return super.getItemText(index);
-		}
-
-	}
-
 	public void onClick(View v) {
 		this.dismiss();
 	}

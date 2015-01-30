@@ -1,14 +1,16 @@
 package net.yaopao.assist;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.alibaba.fastjson.JSONObject;
-
+import java.util.Map;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author dell 供全局使用的一些变量
  */
+@SuppressLint("SimpleDateFormat")
 public class Variables {
 
 	public static String pid;
@@ -22,49 +24,13 @@ public class Variables {
 //	//头像URL,完整地址
 	public static String headUrl = "";
 	
-//	public static int userStatus;// 0-未登录，1-登录成功，2-正在登录
-	
-	//用户信息
-
-//
-//	public static int utype = 1;// 1-会员，0-未注册
-//	//用户名称
-//	public static String userName = "0004";
-//	//昵称
-//	public static String nikeName = "1234";
-//	//头像URL,完整地址
-//	public static String headUrl = "";
-//	//头像访问路径
-//	public static String headPath = "";
 	public static JSONObject userinfo=null;
 	
 	//比赛信息
-	
 	public static JSONObject matchinfo =null;
 	
-//	//是否有比赛
-//	public static boolean hasMatch=false;
-//	//是否报名
-//	public static boolean isSigned=false;
-//	
-//	//报名ID
-//	public static String bid = "1";
-//	//组队ID
-//	public static String gid = "1";
-//
-//	//组名
-//	public static String groupName = "要跑一队";
-//
-//	//是否领队,"1"/"0"
-//	public static String isLeader = "0";
-//	//是否第一棒,"1"/"0"
-//	public static String isBaton = "0";
-//	//比赛ID
-//	public static int mid = 1;
-//	//比赛状态1比赛开始 2未开始3 比赛结束
-//	public static String matchState = "1";
-		
-	
+	//public static int gpsLevel = 1;
+
 	public static int network = 0;// 0-网络不可用，1-网络可用
 
 	public static int gpsStatus = 0;// 0-gps不可用，1-gps可用，2-未开启
@@ -75,12 +41,12 @@ public class Variables {
 	
 	public static int sportStatus = 1; // 0-运动状态，1-暂停状态,2-未运动；处于比赛期间，此值一直为0
 
-	public static int switchTime = 0; // 0-开，1-关
+	public static int switchTime = 0; //是否显示倒计时  0-开，1-关
 	
 	public static int switchVoice = 0; // 0-开，1-关
 
 	public static String tarinfo;// 运动目标详情
-	public static String remarks;// 个人备注
+//	public static String remarks;// 个人备注
 	public static String runtra;// 一条轨迹轨迹--点的集合格式：rentra=
 	// [{slon:"1100",slat:"1110"},{slon:"2100",slat:"2110"}]
 	// 一个点的 属性
@@ -92,50 +58,72 @@ public class Variables {
 	public static int height; // gps高度，米，保留1位小数，乘以10取整
 	public static int state; // 运动中：0，暂停中：1
 
-	public static int runtar=0;// 自由：0，距离：1，时间：2
-	public static int runtarDis = 5;// 目标距离,千米
-	public static int runtarTime = 30;// 目标时间，分钟
+	//public static int runtar=0;// 自由：0，距离：1，时间：2
+    //public static int runty=1; // 步行：1，跑步：2，自行车骑行：3
+	
+	public static int runTargetType=1;// 自由：1，距离：2，时间：3
+	public static int runTargetDis = 5000;// 目标距离,米
+	public static int runTargetTime = 1800000;// 目标时间，毫秒
+	public static int runType=1;// 跑步：1，步行：2，自行车骑行：3， 默认跑步
 
-//	public static int runty=1;// 步行：1，跑步：2，自行车骑行：3
-	public static int runty=2;// 步行：1，跑步：2，自行车骑行：3， 默认跑步
-	public static int mind; // 心情
-	public static int runway;// 跑道
-	public static int aheart;// 平均心率
-	public static int mheart;// 最高心率
+
+//	public static int mind; // 心情
+//	public static int runway;// 跑道
+	public static int averageHeart;// 平均心率
+	public static String clientImagePathsSmall;// 客户端缩略图路径
+	public static String clientImagePaths;// 客户端图片路径
+	public static String clientBinaryFilePath;// 客户端二进制文件路径
+	public static String serverImagePathsSmall;// 服务端缩略图路径
+	public static String serverImagePaths;// 服务端图路径
+	public static String serverBinaryFilePath;// 服务端二进制文件路径
+	public static int maxHeart;// 最高心率
 	public static int weather;// 天气代码
 	public static int temp;// 温度
-	public static long utime;// 所用时间 毫秒数
 	public static int heat;// 热量 卡路里
 	public static int imageCount;
 	public static int stamp;
 
 	public static double distance;// 距离 m
-	public static int pspeed;// 配速 s
-	public static String hspeed;// 时速 km/h
 
-	public static double stateIndex;//
-	public static int points;//积分
 	public static Bitmap avatar;//头像
 	public static Bitmap avatar_default;//默认头像
 	public static int toUserInfo;//0-主页进入个人信息，1-设置进入个人信息
 	
-	public static int sportty=0;//跑步类型0-日常，1-比赛
 	
-	public static int hassportpho=0;//跑步是否拍照0-无，1-有
+	public static int isMatch=0;//比赛
+	
+	public static String jsonParam="";//预留字段
+	
+	public static String gpsString="";//
+	
+	
 	public static String sport_pho;//跑步拍照图片的名字
 	
 	public static int timePlayed=0;//已经播报的时间,单位秒，
-	public static double distancePlayed=0;//已经播报的距离,单位米，
+	public static double distancePlayed=0;//已经播报的距离,单位米，ssss
 	
-//	public static int intervalTime=60;//语音播报间隔时间，单位秒 ，1分
 	public static int intervalTime=300;//语音播报间隔时间，单位秒，5分
 	
 	
 	// 获取rid
 	public static String getRid() {
-		return uid + new Date().getTime() + "";
+		return uid +"_"+ new Date().getTime() + "";
 	}
 	public static String activityOnFront="";
-	public static boolean isTest=false;//是否是测试客户端
+	
+	public static Map<String,String> countryData;
+	
+	public static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy");
+	public static SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
+	//验证码获取倒计时
+	public static int verifyTime=60;
+	//获得年月目录
+		public static String  getPhoDir(){
+			Date date = new Date();
+			return sdf1.format(date)+"/"+sdf2.format(date)+"/";
+		}
+	
+	
+	public static boolean isTest=true;//是否是测试客户端
 
 }

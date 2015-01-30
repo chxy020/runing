@@ -1,6 +1,6 @@
-package zc.manager;
+package net.yaopao.engine.manager;
 
-public class ZCGPSPoint {
+public class GpsPoint {
 	
 	private double lon;
 	private double lat;
@@ -52,7 +52,15 @@ public class ZCGPSPoint {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public ZCGPSPoint(double lon, double lat, int status, long time,
+	
+	public GpsPoint() {
+		// TODO Auto-generated constructor stub
+	}
+	public GpsPoint(double lon, double lat) {
+		this.lon = lon;
+		this.lat = lat;
+	}
+	public GpsPoint(double lon, double lat, int status, long time,
 			int course, double altitude, int speed) {
 		super();
 		this.lon = lon;

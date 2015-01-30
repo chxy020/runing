@@ -2,6 +2,7 @@ package net.yaopao.assist;
 
 
 import net.yaopao.activity.YaoPao01App;
+import net.yaopao.bean.DataBean;
 import android.content.SharedPreferences;
 
 public class DataTool {
@@ -61,6 +62,90 @@ public class DataTool {
 		editor.commit();
 	}
 	
+	// 区分是否需要验证手机标志 0-未验证，1-已验证
+	public static int getIsPhoneVerfied() {
+		return YaoPao01App.sharedPreferences.getInt("isPhoneVerfied", 0);
+	}
+	public static void setIsPhoneVerfied(int isPhoneVerfied) {
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putInt("isPhoneVerfied", isPhoneVerfied);
+		editor.commit();
+	}
+	
+	public static boolean saveTotalData(int distance ,int utime,int score,int secondPerKm){
+		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences.getString("totalDistance", "0"))+distance;
+		int recordCount = YaoPao01App.sharedPreferences.getInt("recordCount", 0)+1;
+		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0)+score;
+		Long totalTime = YaoPao01App.sharedPreferences.getLong("totalTime", 0)+utime;
+		int totalSecondPerKm =0;
+		if (recordCount!=0) {
+			totalSecondPerKm = (YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0)+secondPerKm);
+		}
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putString("totalDistance", totalDistance+""); 
+		editor.putInt("recordCount", recordCount);
+		editor.putInt("totalScore", totalScore);
+		editor.putLong("totalTime", totalTime);
+		editor.putInt("totalSecondPerKm", totalSecondPerKm);
+		return  editor.commit();
+	}
+	
+	public static DataBean getTotalData(){
+		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences
+				.getString("totalDistance", "0"));
+		int recordCount = YaoPao01App.sharedPreferences
+				.getInt("recordCount", 0);
+		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0);
+		long totalTime=YaoPao01App.sharedPreferences.getLong("totalTime", 0);
+		int totalSecondPerKm =0;
+		if (recordCount!=0) {
+			totalSecondPerKm = YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0)/recordCount;
+		}
+		
+		DataBean data = new DataBean();
+
+		data.setDistance(totalDistance);
+		data.setCount(recordCount);
+		data.setPoints(totalScore);
+		data.setTotalTime(totalTime);
+	     data.setPspeed(totalSecondPerKm);
+		
+		return data;
+	}
+	
+	public static DataBean deleteOneSportRecord(int distance ,int utime,int score,int secondPerKm){
+		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences
+				.getString("totalDistance", "0")) - distance;
+		int recordCount = YaoPao01App.sharedPreferences
+				.getInt("recordCount", 0) - 1;
+		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0)
+				- score;
+		Long totalTime = YaoPao01App.sharedPreferences.getLong("totalTime", 0)
+				- utime;
+		int totalSecondPerKm =YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0) - secondPerKm;
+		
+		
+		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
+		editor.putString("totalDistance", totalDistance + "");
+		editor.putInt("recordCount", recordCount);
+		editor.putInt("totalScore", totalScore);
+		editor.putInt("totalSecondPerKm", totalSecondPerKm);
+		editor.putLong("totalTime", totalTime);
+
+		DataBean data = new DataBean();
+
+		data.setDistance(totalDistance);
+		data.setCount(recordCount);
+		data.setPoints(totalScore);
+		data.setTotalTime(totalTime);
+		
+		if (recordCount!=0) {
+			totalSecondPerKm = YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0)/recordCount;
+		}
+		data.setPspeed(totalSecondPerKm);
+		editor.commit();
+		return data;
+	}
 	
 //	public static void initUserInfo(JSONObject rt,String rtjson) {
 //		JSONObject userInfo= rt.getJSONObject("userinfo");

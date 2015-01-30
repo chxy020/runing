@@ -15,42 +15,44 @@
  */
 
 
-package zc.manager.binaryIO;
+package net.yaopao.engine.manager.binaryIO;
 
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 
 /**
- * A {@link ByteInput} implementation for {@link InputStream}s.
+ * A {@link ByteInput} implementation for {@link ByteBuffer}s.
  */
-public class StreamInput extends AbstractByteInput<InputStream> {
+public class BufferInput extends AbstractByteInput<ByteBuffer> {
 
 
     /**
-     * Creates a new instance built on top of the specified input stream.
+     * Creates a new instance built on top of the specified byte buffer.
      *
      * @param source {@inheritDoc}
      */
-    public StreamInput(final InputStream source) {
+    public BufferInput(final ByteBuffer source) {
 
         super(source);
     }
 
 
     /**
-     * {@inheritDoc} The {@code readUnsignedByte()} method of
-     * {@code StreamReader} class calls {@link InputStream#read()} on
-     * {@link #source} and returns the result. Override this method if
-     * {@link #source} is intended to be lazily initialized and set.
+     * {@inheritDoc} The {@code readUnsignedByte()} method of {@code ByteReader}
+     * class calls {@link ByteBuffer#get()} on {@link #source} and returns the
+     * result.
      *
-     * @return {@inheritDoc}
+     * @return {@inheritDoc }
      *
-     * @throws IllegalStateException id {@link #source} is currently
-     * {@code null}.
+     * @throws IllegalStateException {@inheritDoc}
      * @throws IOException {@inheritDoc}
+     *
+     * @see ByteBuffer#get()
+     * @see #source
+     * @see #getSource()
+     * @see #setSource(java.lang.Object)
      */
     @Override
     public int readUnsignedByte() throws IOException {
@@ -59,12 +61,7 @@ public class StreamInput extends AbstractByteInput<InputStream> {
             throw new IllegalStateException("#source is currently null");
         }
 
-        final int read = source.read();
-        if (read == -1) {
-            throw new EOFException("eof");
-        }
-
-        return read;
+        return source.get() & 0xFF;
     }
 
 

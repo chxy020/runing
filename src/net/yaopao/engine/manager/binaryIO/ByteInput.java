@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 <a href="mailto:onacit@gmail.com">Jin Kwon</a>.
+ * Copyright 2014 Jin Kwon.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,30 @@
  */
 
 
-package zc.manager.binaryIO;
+package net.yaopao.engine.manager.binaryIO;
 
 
 import java.io.IOException;
 
 
 /**
- * An interface for consuming bytes.
+ * An interface for suppling bytes.
  *
- * @author <a href="mailto:onacit@gmail.com">Jin Kwon</a>
+ * @author Jin Kwon
  */
 //@FunctionalInterface
-public interface ByteOutput {
+public interface ByteInput {
 
 
     /**
-     * Writes an unsigned 8-bit integer.
+     * Reads the next unsigned 8-bit byte.
      *
-     * @param value an unsigned 8-bit byte value between {@code 0} (inclusive)
-     * and {@code 256} (exclusive).
+     * @return the next unsigned 8-bit byte value between {@code 0} (inclusive)
+     * and {@code 256} (exclusive)
      *
      * @throws IOException if an I/O error occurs.
      */
-    void writeUnsignedByte(final int value) throws IOException;
+    int readUnsignedByte() throws IOException;
 
 
 }

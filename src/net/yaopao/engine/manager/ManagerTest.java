@@ -1,4 +1,4 @@
-package zc.manager;
+/*package net.yaopao.engine.manager;
 
 import net.yaopao.activity.MainActivity;
 import net.yaopao.activity.R;
@@ -126,11 +126,11 @@ public class ManagerTest extends Activity{
 				Intent intent = new Intent(ManagerTest.this,
 						ManagerTestDisplay.class);
 				startActivity(intent);
-				YaoPao01App.runManager = new RunManager(timeInterval);
-				YaoPao01App.runManager.setHowToMove(1);
-				YaoPao01App.runManager.setTargetType(targetType);
-				YaoPao01App.runManager.setTargetValue(targetValue);
-				YaoPao01App.runManager.startRun();
+//				YaoPao01App.runManager = new RunManager(timeInterval);
+//				YaoPao01App.runManager.setHowToMove(1);
+//				YaoPao01App.runManager.setTargetType(targetType);
+//				YaoPao01App.runManager.setTargetValue(targetValue);
+//				YaoPao01App.runManager.startRun();
 			}
 		});
 	}
@@ -156,3 +156,4 @@ public class ManagerTest extends Activity{
 		return false;
 	}
 }
+*/

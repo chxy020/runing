@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportBean;
+import net.yaopao.engine.manager.GpsPoint;
+import net.yaopao.engine.manager.OneKMInfo;
+import net.yaopao.engine.manager.RunManager;
+import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,9 +29,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.AMapUtils;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
@@ -38,8 +39,6 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 import com.umeng.analytics.MobclickAgent;
 
-/**
- */
 public class SportTrackMap extends BaseActivity{
 	private MapView mapView;
 	private AMap aMap;
@@ -49,10 +48,6 @@ public class SportTrackMap extends BaseActivity{
 	public GpsPoint curPopPoint;
 	public GpsPoint lastPopPoint;
 
-//	private SimpleDateFormat sdf1;
-//	private SimpleDateFormat sdf2;
-//	private SimpleDateFormat sdf3;
-//	private SimpleDateFormat sdf4;
 	private DecimalFormat df;
 	private String title = "";
 	private TextView timeV;
@@ -71,7 +66,7 @@ public class SportTrackMap extends BaseActivity{
 	long time_one_km = 0;
 	int targetDis = 1000;
 	GpsPoint lastSportPoint = null;
-
+	private RunManager runManager;
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,15 +125,14 @@ public class SportTrackMap extends BaseActivity{
 				oneSport.getAddtime());
 //		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 //				GpsPoint.class);
-		
+		runManager = BinaryIOManager.readBinary(oneSport.getClientBinaryFilePath());
 		if (oneSport.sportty == 1) {
-			Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
-			String[] str = ((String)oneSport.getRuntra()).split(",");
-			drawRunTrack(str);
+			//Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
+			//String[] str = ((String)oneSport.getRuntra()).split(",");
+		//	drawRunTrack(str);
 
 		} else {
-			List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(), GpsPoint.class);
-			drawConmmenTrack(pointsArray);
+			drawConmmenTrack(runManager.GPSList);
 		}
 		
 		
@@ -150,7 +144,7 @@ public class SportTrackMap extends BaseActivity{
 			return;
 		}
 		//从增强还原成全量
-		GpsPoint befor = null;
+		/*GpsPoint befor = null;
 		GpsPoint curr = null;
 //		YaoPao01App.lts.writeFileToSD("track 取出的数组: " +pointsArray, "uploadLocation");
 		for (int i = 0; i < pointsArray.size(); i++) {
@@ -160,33 +154,33 @@ public class SportTrackMap extends BaseActivity{
 			}
 			befor =pointsArray.get(i-1);
 			curr = pointsArray.get(i);
-			curr.setLat(curr.lat+befor.lat);
-			curr.setLon(curr.lon+befor.lon);
+			curr.setLat(curr.getLat()+befor.getLat());
+			curr.setLon(curr.getLon()+befor.getLon());
 			curr.setTime(curr.time+befor.time);
 			pointsArray.set(i, curr);
-		}
+		}*/
 //		YaoPao01App.lts.writeFileToSD("track 转换后的数组: " +pointsArray, "uploadLocation");
 		GpsPoint start = lonLatEncryption.encrypt(pointsArray.get(0));
 		GpsPoint end = lonLatEncryption.encrypt(pointsArray.get(pointsArray
 				.size() - 1));
 		aMap.addMarker(new MarkerOptions()
-				.position(new LatLng(end.lat, end.lon))
+				.position(new LatLng(end.getLat(), end.getLon()))
 				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(end())))
 				.anchor(0.5f, 0.5f));
 		aMap.addMarker(new MarkerOptions()
-				.position(new LatLng(start.lat, start.lon))
+				.position(new LatLng(start.getLat(), start.getLon()))
 				.icon(BitmapDescriptorFactory
 						.fromBitmap(getViewBitmap(start()))).anchor(0.5f, 0.5f));
 		drawLine(pointsArray);
-		
+		draw1KmMaker(runManager.dataKm);
 	}
 
 	private void drawLine(List<GpsPoint> pointsArray) {
 		GpsPoint firstPoint = lonLatEncryption.encrypt(pointsArray.get(0));
-		double min_lat = firstPoint.lat;
-		double max_lat = firstPoint.lat;
-		double min_lon = firstPoint.lon;
-		double max_lon = firstPoint.lon;
+		double min_lat = firstPoint.getLat();
+		double max_lat = firstPoint.getLat();
+		double min_lon = firstPoint.getLon();
+		double max_lon = firstPoint.getLon();
 		List<LatLng> runPoints =new ArrayList<LatLng>();
 		GpsPoint crrPoint =null;
 		// 先绘制黑色底线和灰色线
@@ -198,50 +192,27 @@ public class SportTrackMap extends BaseActivity{
 		for (int i = 0; i < pointsArray.size(); i++) {
 			crrPoint = pointsArray.get(i);
 			GpsPoint  encryptPoint = lonLatEncryption.encrypt(crrPoint);
-			if (encryptPoint.lon < min_lon) {
-				min_lon = encryptPoint.lon;
+			if (encryptPoint.getLon() < min_lon) {
+				min_lon = encryptPoint.getLon();
 			}
-			if (encryptPoint.lat < min_lat) {
-				min_lat = encryptPoint.lat;
+			if (encryptPoint.getLat() < min_lat) {
+				min_lat = encryptPoint.getLat();
 			}
-			if (encryptPoint.lon > max_lon) {
-				max_lon = encryptPoint.lon;
+			if (encryptPoint.getLon() > max_lon) {
+				max_lon = encryptPoint.getLon();
 			}
-			if (encryptPoint.lat > max_lat) {
-				max_lat = encryptPoint.lat;
+			if (encryptPoint.getLat() > max_lat) {
+				max_lat = encryptPoint.getLat();
 			}
-			if (crrPoint.status==0) {
-				LatLng latlon = new LatLng( lonLatEncryption.encrypt(crrPoint).lat, lonLatEncryption.encrypt(crrPoint).lon);
+			if (crrPoint.getStatus()==1) {
+				LatLng latlon = new LatLng( lonLatEncryption.encrypt(crrPoint).getLat(), lonLatEncryption.encrypt(crrPoint).getLon());
 				runPoints.add(latlon);
-				double meter = AMapUtils.calculateLineDistance(new LatLng(crrPoint.lat, crrPoint.lon), new LatLng(
-						lastSportPoint.lat, lastSportPoint.lon));
-
-						distance_add += meter;
-						long during_time = crrPoint.time - lastSportPoint.time;
-						time_one_km += during_time;
-						if (distance_add > targetDis) {
-							Log.v("wymap", "distance_add=" + distance_add);
-							Log.v("wymap", "targetDis=" + targetDis);
-							GpsPoint onekm = lonLatEncryption.encrypt(crrPoint);
-							aMap.addMarker(new MarkerOptions()
-									.position(new LatLng(onekm.lat, onekm.lon))
-									.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView("第"+ (int)Math.floor(distance_add/1000)+ "公里", time_one_km / 1000 / 60+ "'" + (time_one_km / 1000)
-													% 60 + "\""))))
-									.anchor(0.5f, 0.5f));
-							targetDis += 1000;
-							time_one_km = 0;
-						}
-			}else if(crrPoint.status==1){
+			}else if(crrPoint.getStatus()==2){
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(11f));
 				runPoints = new ArrayList<LatLng>();
 			}if (i==(pointsArray.size()-1)) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints).color(Color.GREEN).width(11f));
 			}
-//			// 移动到中心
-//			LatLng latlon1 = new LatLng(min_lat, min_lon);
-//			LatLng latlon2 = new LatLng(max_lat, max_lon);
-//			LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
-//			aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 			lastSportPoint= crrPoint;
 			}
 		// 移动到中心
@@ -250,7 +221,20 @@ public class SportTrackMap extends BaseActivity{
 		LatLngBounds bounds = new LatLngBounds(latlon1, latlon2);
 		aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
 	}
-
+	private void  draw1KmMaker(List<OneKMInfo> infos){
+		for (int i = 0; i < infos.size(); i++) {
+			OneKMInfo info = infos.get(i);
+			int a = info.getDuring();
+			GpsPoint onekm = lonLatEncryption.encrypt(new GpsPoint(info.getLon(),info.getLat()));
+			aMap.addMarker(new MarkerOptions()
+			.position(new LatLng(onekm.getLat(), onekm.getLon()))
+			.icon(BitmapDescriptorFactory.fromBitmap(
+					getViewBitmap(getView("第"+ info.getNumber()+ "公里", info.getDuring() / 1000 / 60+ "'" + (info.getDuring() / 1000)
+							% 60 + "\""))))
+			.anchor(0.5f, 0.5f));
+		}
+		
+	}
 	private void initSportData(double distance, int runty, int mind,
 			int runway, String remarks, int utime, int pspeed, int points,
 			long addtime) {
@@ -292,12 +276,12 @@ public class SportTrackMap extends BaseActivity{
 	private void initType(int type) {
 		switch (type) {
 		case 1:
-			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
-			title = "的步行";
-			break;
-		case 2:
 			typeV.setBackgroundResource(R.drawable.runtype_run_big);
 			title = "的跑步";
+			break;
+		case 2:
+			typeV.setBackgroundResource(R.drawable.runtype_walk_big);
+			title = "的步行";
 			break;
 		case 3:
 			typeV.setBackgroundResource(R.drawable.runtype_ride_big);
@@ -342,7 +326,7 @@ public class SportTrackMap extends BaseActivity{
 		LatLng ponit = null;
 		for (int i = 0; i < list.size(); i++) {
 			GpsPoint one = lonLatEncryption.encrypt(list.get(i));
-			ponit = new LatLng(one.lat, one.lon);
+			ponit = new LatLng(one.getLat(), one.getLon());
 			points.add(ponit);
 		}
 		return points;

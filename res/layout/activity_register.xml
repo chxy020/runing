@@ -11,15 +11,14 @@
 
         <TextView
             android:id="@+id/reg_title"
-             android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:text="手机号注册"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size2" 
-            />
+            android:textSize="@dimen/font_size2" />
 
         <TextView
             android:id="@+id/reg_goback"
@@ -35,9 +34,54 @@
         android:id="@+id/reg_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/reg_margin_top"
         android:layout_below="@id/reg_top_bar"
+        android:layout_marginTop="@dimen/reg_margin_top"
         android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_height"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="请确认你的国家或地区并输入手机号"
+            android:textSize="@dimen/font_size3" />
+
+        <RelativeLayout
+            android:id="@+id/country_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_height"
+            android:layout_marginBottom="@dimen/margin1"
+            
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/margin1"
+                android:text="国家或地区"
+                android:textSize="@dimen/font_size3" />
+
+           
+              <ImageView
+                    android:id="@+id/country_arrow"
+                    android:layout_width="@dimen/small_height"
+                    android:layout_height="@dimen/small_height"
+                    android:background="@drawable/ic_slider" 
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"/>
+              
+               <TextView
+                android:id="@+id/reg_country"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:layout_toLeftOf="@id/country_arrow"
+                android:gravity="center"
+                android:text="中国"
+                android:textSize="@dimen/font_size3" />
+        </RelativeLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -53,16 +97,32 @@
             <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
-                android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
                 android:background="@drawable/acount" />
+
+            <TextView
+                android:id="@+id/reg_country_num"
+                android:layout_width="@dimen/reg_conutry_width"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="+86"
+                android:textSize="@dimen/font_size3" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:background="#000000" >
+            </View>
 
             <EditText
                 android:id="@+id/reg_phoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height"
                 android:background="@null"
-                android:hint="手机号，11位数字" >
+                android:hint="请填写手机号码" 
+                android:layout_marginLeft="@dimen/margin1"
+                >
+				
                 <requestFocus />
             </EditText>
         </LinearLayout>
@@ -81,7 +141,6 @@
             <ImageView
                 android:layout_width="@dimen/edit_img_size"
                 android:layout_height="@dimen/edit_img_size"
-                android:layout_alignParentLeft="true"
                 android:layout_margin="@dimen/edit_img_margin"
                 android:background="@drawable/pwd" />
 
@@ -109,7 +168,6 @@
                 android:id="@+id/reg_get_code"
                 android:layout_width="@dimen/reg_code_width"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
                 android:background="@color/blue_dark"
                 android:gravity="center"
                 android:text="获取验证码"
@@ -148,28 +206,28 @@
             android:textColor="@color/white" />
 
         <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/reg_go"
-      >
-        <TextView
-            android:id="@+id/term_of_service"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/common_height"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="我已同意要跑服务协议"
-            android:textColor="@color/text" />
-        <ImageView
-            android:id="@+id/term_of_service_select"
-            android:layout_marginRight="@dimen/margin5"
-            android:padding="@dimen/margin5"
-            android:layout_width="@dimen/small_height"
-            android:layout_height="@dimen/small_height"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/term_of_service"
-            android:background="@drawable/service_checked"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reg_go" >
+
+            <TextView
+                android:id="@+id/term_of_service"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_height"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="我已同意要跑服务协议"
+                android:textColor="@color/text" />
+
+            <ImageView
+                android:id="@+id/term_of_service_select"
+                android:layout_width="@dimen/small_height"
+                android:layout_height="@dimen/small_height"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin5"
+                android:layout_toLeftOf="@id/term_of_service"
+                android:background="@drawable/service_checked"
+                android:padding="@dimen/margin5" />
         </RelativeLayout>
     </LinearLayout>
 

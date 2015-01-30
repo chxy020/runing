@@ -4,7 +4,7 @@ import net.yaopao.activity.HelperGpsActivity;
 import net.yaopao.activity.HelperNetworkActivity;
 import net.yaopao.activity.MainActivity;
 import net.yaopao.activity.R;
-import net.yaopao.activity.SportRecordActivity;
+import net.yaopao.activity.SportRunMainActivity;
 import net.yaopao.activity.YaoPao01App;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -102,27 +102,15 @@ public class DialogTool implements OnTouchListener {
 				case MotionEvent.ACTION_UP:
 					confirm.setBackgroundResource(R.color.gray_light);
 					dialog.dismiss();
-					//抛掉最后暂停的点
-					if (SportRecordActivity.points.size()>0) {
-						Log.v("wysports", "SportRecordActivity.points.size() = "+SportRecordActivity.points.size());
-//						YaoPao01App.lts.writeFileToSD("没有抛点之前的运动记录点: " +SportRecordActivity.points+"size="+SportRecordActivity.points.size(), "uploadLocation");
-						int i = 0;
-						try{
-						for (i = (SportRecordActivity.points.size()-1); SportRecordActivity.points.get(i).status==1; i--) {
-							
-//							YaoPao01App.lts.writeFileToSD("运动完成抛点: " +i+" status="+SportRecordActivity.points.get(i).status, "uploadLocation");
-							if (i==0) {
-								break;
-							}
-							SportRecordActivity.points.remove(i);
-						}
-						}catch(Exception e){
-//							YaoPao01App.lts.writeFileToSD("最后抛点异常:i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0), "uploadLocation");
-							Log.v("wysports", "i = "+i+" SportRecordActivity.points.size() = "+SportRecordActivity.points.size()+" SportRecordActivity.points.size()>0=="+(SportRecordActivity.points.size()>0));
-						}
+					YaoPao01App.runManager.FinishOneRun(); 
+					if (YaoPao01App.runManager.distance<50) {
+						handler.obtainMessage(1).sendToTarget();
+					}else{
+						handler.obtainMessage(0).sendToTarget();
+						YaoPao01App.playCompletVoice(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 					}
-					//计算距离积分
-					YaoPao01App.calDisPoints(context,handler);
+					
+//					Variables.gpsLevel=1;
 					break;
 				default:
 					break;

@@ -1,4 +1,4 @@
-package zc.manager;
+package net.yaopao.engine.manager;
 
 public class OneMileInfo {
 	

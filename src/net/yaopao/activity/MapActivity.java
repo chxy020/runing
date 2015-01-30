@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.yaopao.assist.DialogTool;
-import net.yaopao.assist.GpsPoint;
 import net.yaopao.assist.LonLatEncryption;
 import net.yaopao.assist.Variables;
+import net.yaopao.engine.manager.GpsPoint;
 import net.yaopao.voice.PlayVoice;
 import net.yaopao.widget.SliderRelativeLayout;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -109,30 +108,31 @@ public class MapActivity extends BaseActivity implements LocationSource,
 		aMap.setLocationSource(this);// 设置定位监听
 		aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-		drawLine(SportRecordActivity.points);
+//		drawLine(SportRunMainActivity.points);
+		drawLine(YaoPao01App.runManager.GPSList);
 	}
 
-	private void drawLine(List<GpsPoint> pointsArray) {
+	private void drawLine(List<GpsPoint> gPSList) {
 		List<LatLng> runPoints = new ArrayList<LatLng>();
 		GpsPoint crrPoint = null;
 		// 先绘制灰色线
 		aMap.addPolyline((new PolylineOptions())
-				.addAll(initPoints(pointsArray)).color(Color.GRAY).width(13f));
-		for (int i = 0; i < pointsArray.size(); i++) {
-			crrPoint = pointsArray.get(i);
-			if (crrPoint.status == 0) {
+				.addAll(initPoints(gPSList)).color(Color.GRAY).width(13f));
+		for (int i = 0; i < gPSList.size(); i++) {
+			crrPoint = gPSList.get(i);
+			if (crrPoint.getStatus() == 1) {
 				LatLng latlon = new LatLng(
-						lonLatEncryption.encrypt(crrPoint).lat,
-						lonLatEncryption.encrypt(crrPoint).lon);
+						lonLatEncryption.encrypt(crrPoint).getLat(),
+						lonLatEncryption.encrypt(crrPoint).getLon());
 				runPoints.add(latlon);
-			} else if (crrPoint.status == 1) {
+			} else if (crrPoint.getStatus() == 2) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
 						.color(Color.GREEN).width(13f));
 				runPoints = new ArrayList<LatLng>();
 				lastDrawPoint =crrPoint;
 				aMap.invalidate();
 			}
-			if (i == (pointsArray.size() - 1)) {
+			if (i == (gPSList.size() - 1)) {
 				aMap.addPolyline((new PolylineOptions()).addAll(runPoints)
 						.color(Color.GREEN).width(13f));
 				lastDrawPoint =crrPoint;
@@ -143,22 +143,19 @@ public class MapActivity extends BaseActivity implements LocationSource,
 
 	private void drawNewLine() {
 
-		if (SportRecordActivity.points.size() < 2) {
+		if (YaoPao01App.runManager.GPSList.size() < 2) {
 			return;
 		}
 
-		GpsPoint newPoint = SportRecordActivity.points
-				.get(SportRecordActivity.points.size() - 1);
-		Log.v("wy", "SportRecordActivity.points=" + SportRecordActivity.points);
-		if (newPoint.lon != lastDrawPoint.lon
-				|| newPoint.lat != lastDrawPoint.lat) {// 5秒后点的位置有移动
+		GpsPoint newPoint = YaoPao01App.runManager.GPSList.get(YaoPao01App.runManager.GPSList.size() - 1);
+		Log.v("wy", "SportRecordActivity.points=" + YaoPao01App.runManager.GPSList);
+		if (newPoint.getLon() != lastDrawPoint.getLon()|| newPoint.getLat() != lastDrawPoint.getLat()) {// 5秒后点的位置有移动
 			int count = 2;
 			List<LatLng> newLine = new ArrayList<LatLng>();
-			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).lat,
-					lonLatEncryption.encrypt(newPoint).lon));
-			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).lat,
-					lonLatEncryption.encrypt(lastDrawPoint).lon));
-			if (newPoint.status == 0) {
+			newLine.add(new LatLng(lonLatEncryption.encrypt(newPoint).getLat(),					lonLatEncryption.encrypt(newPoint).getLon()));
+			newLine.add(new LatLng(lonLatEncryption.encrypt(lastDrawPoint).getLat(),
+					lonLatEncryption.encrypt(lastDrawPoint).getLon()));
+			if (newPoint.getStatus() == 1) {
 				aMap.addPolyline((new PolylineOptions()).addAll(newLine).color(
 						Color.GREEN).width(13f));
 				aMap.invalidate();
@@ -174,8 +171,7 @@ public class MapActivity extends BaseActivity implements LocationSource,
 	Handler slipHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
-//				SportRecordActivity.stopTimer();
-				SportRecordActivity.timerListenerHandler.obtainMessage(2).sendToTarget();
+				SportRunMainActivity.timerListenerHandler.obtainMessage(2).sendToTarget();
 				doneV.setVisibility(View.VISIBLE);
 				resumeV.setVisibility(View.VISIBLE);
 				sliderIconV.setVisibility(View.GONE);
@@ -254,7 +250,7 @@ public class MapActivity extends BaseActivity implements LocationSource,
 		LatLng ponit = null;
 		for (int i = 0; i < list.size(); i++) {
 			GpsPoint one = lonLatEncryption.encrypt(list.get(i));
-			ponit = new LatLng(one.lat, one.lon);
+			ponit = new LatLng(one.getLat(), one.getLon());
 			points.add(ponit);
 		}
 		return points;
@@ -360,8 +356,6 @@ public class MapActivity extends BaseActivity implements LocationSource,
 						if (msg.what == 0) {
 							Intent intent = new Intent(MapActivity.this,
 									SportSaveActivity.class);
-//							SportRecordActivity.stopRecordGps();
-							SportRecordActivity.gpsListenerHandler.obtainMessage(4).sendToTarget();
 							MapActivity.this.startActivity(intent);
 							MapActivity.this.finish();
 							//发送广播关闭运动页面
@@ -371,13 +365,7 @@ public class MapActivity extends BaseActivity implements LocationSource,
 						}else if(msg.what == 1){
 							//运动距离小于50米
 							Toast.makeText(MapActivity.this, "您运动距离也太短了吧！这次就不给您记录了，下次一定要加油", Toast.LENGTH_LONG).show();
-							Variables.utime = 0;
-							Variables.pspeed = 0;
 							Variables.distance = 0;
-							Variables.points=0;
-							if (SportRecordActivity.points!=null) {
-								SportRecordActivity.points=null;
-							}
 							MapActivity.this.finish();
 							//发送广播关闭运动页面
 							Intent closeintent = new Intent(closeAction);
@@ -388,7 +376,6 @@ public class MapActivity extends BaseActivity implements LocationSource,
 					}
 				};
 				
-//				DialogTool.doneSport(MapActivity.this, sliderHandler);
 				DialogTool dialog = new DialogTool(MapActivity.this);
 				dialog.doneSport(sliderHandler);
 				break;
@@ -401,8 +388,7 @@ public class MapActivity extends BaseActivity implements LocationSource,
 				break;
 			case MotionEvent.ACTION_UP:
 				resumeV.setBackgroundResource(R.color.blue_dark);
-//				SportRecordActivity.startTimer();
-				SportRecordActivity.timerListenerHandler.obtainMessage(1).sendToTarget();
+				SportRunMainActivity.timerListenerHandler.obtainMessage(1).sendToTarget();
 				sliderIconV.setVisibility(View.VISIBLE);
 				sliderTextV.setVisibility(View.VISIBLE);
 				sliderTextV.setText("滑动暂停");
@@ -411,6 +397,7 @@ public class MapActivity extends BaseActivity implements LocationSource,
 				if (Variables.switchVoice == 0) {
 				PlayVoice.ProceedSportsVoice(MapActivity.this);
 				}
+				
 				break;
 			}
 			break;

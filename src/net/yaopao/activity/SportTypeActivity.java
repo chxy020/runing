@@ -1,7 +1,6 @@
 package net.yaopao.activity;
 
 import net.yaopao.assist.Variables;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,22 +48,27 @@ public class SportTypeActivity extends BaseActivity implements OnClickListener {
 
 		case R.id.type_goback:
 			case MotionEvent.ACTION_UP:
+				YaoPao01App.db.saveSportParam();
 				SportTypeActivity.this.finish();
 				break;
-		case R.id.type_walk:
-				Variables.runty = 1;
-				walkImgV.setBackgroundResource(R.drawable.check);
-				runImgV.setBackgroundResource(0);
-				rideImgV.setBackgroundResource(0);
-				break;
 		case R.id.type_run:
-				Variables.runty = 2;
+				Variables.runType = 1;
+//				YaoPao01App.runManager.setHowToMove(1);
 				walkImgV.setBackgroundResource(0);
 				runImgV.setBackgroundResource(R.drawable.check);
 				rideImgV.setBackgroundResource(0);
+				break;
+		case R.id.type_walk:
+			
+				Variables.runType = 2;
+//			YaoPao01App.runManager.setHowToMove(2);/
+				walkImgV.setBackgroundResource(R.drawable.check);
+				runImgV.setBackgroundResource(0);
+				rideImgV.setBackgroundResource(0);
 			break;
 		case R.id.type_ride:
-				Variables.runty = 3;
+				Variables.runType = 3;
+//			    YaoPao01App.runManager.setHowToMove(3);
 				walkImgV.setBackgroundResource(0);
 				runImgV.setBackgroundResource(0);
 				rideImgV.setBackgroundResource(R.drawable.check);
@@ -76,15 +80,15 @@ public class SportTypeActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		MobclickAgent.onResume(this);
-		switch (Variables.runty) {
+		switch (Variables.runType) {
 		case 1:
-			walkImgV.setBackgroundResource(R.drawable.check);
-			runImgV.setBackgroundResource(0);
+			walkImgV.setBackgroundResource(0);
+			runImgV.setBackgroundResource(R.drawable.check);
 			rideImgV.setBackgroundResource(0);
 			break;
 		case 2:
-			walkImgV.setBackgroundResource(0);
-			runImgV.setBackgroundResource(R.drawable.check);
+			walkImgV.setBackgroundResource(R.drawable.check);
+			runImgV.setBackgroundResource(0);
 			rideImgV.setBackgroundResource(0);
 			break;
 		case 3:

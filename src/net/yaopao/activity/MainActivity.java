@@ -1,7 +1,6 @@
 package net.yaopao.activity;
 
 
-import zc.manager.RunManager;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
@@ -11,10 +10,10 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.SyncTimeLoadingDialog;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,11 +29,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
+@SuppressLint("HandlerLeak")
 public class MainActivity extends BaseActivity implements OnTouchListener,
 		OnClickListener {
 	private TextView state;
@@ -45,7 +44,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LinearLayout recording;
 	private LinearLayout matchL;
 	private Bitmap head;
-	private double distance;
+	private int distance;
 	public byte[] imageByte;
 	/** 设置 */
 	private TextView mMainSetting = null;
@@ -53,8 +52,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LinearLayout mMessageLayout = null;
 	// private LoadingDialog dialog;
 
-	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
-	private Uri imageUri;// to store the big bitmap
 	public String upImgJson = "";
 	
 	long endRequestTime;
@@ -95,7 +92,6 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			}
 		}
 
-		imageUri = Uri.parse(IMAGE_FILE_LOCATION);
 		
 		loginHandler  = new Handler() {
 			public void handleMessage(Message msg) {
@@ -179,7 +175,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 
 	// 初始化平均配速
 	private void initPspeed(DataBean data) {
-
+		int p = data.getPspeed();
 		int[] speed = YaoPao01App.cal((int) (data.getPspeed()));
 		// int[] speed = YaoPao01App.cal((int) (200));
 
@@ -263,7 +259,8 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	}
 
 	private void initLayout() {
-		DataBean data = YaoPao01App.db.queryData();
+//		DataBean data = YaoPao01App.db.queryData();
+		DataBean data = DataTool.getTotalData();
 		if (Variables.islogin == 1) {
 			JSONObject userInfo = Variables.userinfo;
 			if (userInfo != null) {
@@ -360,7 +357,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				if (Variables.isTest) {
 					// 测试代码
 					Intent mainIntent = new Intent(MainActivity.this,
-							SportSetActivity.class);
+							SportRunPrepareActivity.class);
 					startActivity(mainIntent);
 					// 测试代码
 				} else {
@@ -370,18 +367,24 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 						if (Variables.switchVoice == 0) {
 							YaoPao01App.palyOpenGps();
 						}
-					} else if (Variables.gpsStatus == 0) {
-//						DialogTool dialog = new DialogTool(MainActivity.this);
-						dialogTool.alertGpsTip1();
-						if (Variables.switchVoice == 0) {
-							YaoPao01App.palyWeekGps();
-						}
-
-					} else if (Variables.gpsStatus == 1) {
+					}else{
 						Intent mainIntent = new Intent(MainActivity.this,
-								SportSetActivity.class);
+								SportRunPrepareActivity.class);
 						startActivity(mainIntent);
 					}
+					
+//					else if (Variables.gpsStatus == 0) {
+////						DialogTool dialog = new DialogTool(MainActivity.this);
+//						dialogTool.alertGpsTip1();
+//						if (Variables.switchVoice == 0) {
+//							YaoPao01App.palyWeekGps();
+//						}
+//
+//					} else if (Variables.gpsStatus == 1) {
+//						Intent mainIntent = new Intent(MainActivity.this,
+//								SportSetActivity.class);
+//						startActivity(mainIntent);
+//					}
 				}
 				break;
 			}

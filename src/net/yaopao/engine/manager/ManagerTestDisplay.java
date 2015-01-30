@@ -1,4 +1,4 @@
-package zc.manager;
+/*package net.yaopao.engine.manager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -150,7 +150,7 @@ public class ManagerTestDisplay extends Activity{
 				// TODO Auto-generated method stub
 				stopTimer();
 				String filename = new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis()));
-				BinaryIOManager.writeBinary(filename,"");
+				BinaryIOManager.writeBinary(filename);
 				BinaryIOManager.readBinary(filename);
 				Log.v("zc","filename is "+filename);
 				finish();
@@ -167,9 +167,9 @@ public class ManagerTestDisplay extends Activity{
 				@Override
 				public void run() {
 					tv_base_dis.setText(String.format("%.2f", YaoPao01App.runManager.distance/1000.0));
-					tv_base_pace_km.setText(BinaryIOManager.getTimeString(YaoPao01App.runManager.secondPerKm));
+					tv_base_pace_km.setText(BinaryIOManager.getTimeString(YaoPao01App.runManager.paceKm));
 					tv_base_time.setText(BinaryIOManager.getTimeString(YaoPao01App.runManager.during()/1000));
-					tv_base_pace_mile.setText(BinaryIOManager.getTimeString((int)(YaoPao01App.runManager.secondPerKm*1.6)));
+					tv_base_pace_mile.setText(BinaryIOManager.getTimeString((int)(YaoPao01App.runManager.paceKm*1.6)));
 					tv_base_score.setText(""+YaoPao01App.runManager.score);
 					tv_base_percent.setText(String.format("%d", (int)(YaoPao01App.runManager.completePercent*100))+"%");
 					tv_base_alt_add.setText(String.format("%.1f", YaoPao01App.runManager.altitudeAdd));
@@ -178,7 +178,7 @@ public class ManagerTestDisplay extends Activity{
 					int gpscount = YaoPao01App.runManager.GPSList.size();
 					if(gpscount>0){
 						tv_gpslist_count.setText(""+gpscount);
-						ZCGPSPoint point = YaoPao01App.runManager.GPSList.get(gpscount-1);
+						GpsPoint point = YaoPao01App.runManager.GPSList.get(gpscount-1);
 						tv_gpslist_lon.setText(String.format("%.6f", point.getLon()));
 						tv_gpslist_lat.setText(String.format("%.6f", point.getLat()));
 						tv_gpslist_time.setText(new SimpleDateFormat("HH:mm:ss").format(new Date(point.getTime())));
@@ -263,3 +263,4 @@ public class ManagerTestDisplay extends Activity{
 		return false;
 	}
 }
+*/
