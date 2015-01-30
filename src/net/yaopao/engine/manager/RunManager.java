@@ -463,7 +463,7 @@ public class RunManager {
 					thisMileAltitudeReduce));
 			this.targetMile++;
 		}
-		if (this.during() > this.targetMinute * everyXMinute * 60 * 1000) {// 刚到达整分钟
+		if (this.during() > this.targetMinute * everyXMinute * 60 * 1000 && this.runStatus == 1) {// 刚到达整分钟
 			int thisMinDistance = 0;
 			int thisMinDuring = 0;
 			double thisMinAltitudeAdd = 0;

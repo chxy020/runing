@@ -1,12 +1,19 @@
 package net.yaopao.assist;
 
 
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -66,6 +73,60 @@ public class NetworkHandler extends Activity {
 		} catch (Exception e) {
 			Log.e("wy", "network error", e);
 		}
+		return rtStr;
+	}
+	public static String zcHttpPost(String url, HashMap<String,String> param, byte[] file) {
+		if (Variables.network == 0) {
+			return null;
+		}
+		String rtStr = "";
+		HttpPost httpRequest = new HttpPost(url);
+		try {
+			if(file == null){
+				StringBuilder sb = new StringBuilder();
+				Iterator<String> iterator = param.keySet().iterator();
+				while (iterator.hasNext()){
+					String key = iterator.next();
+					String value = param.get(key);
+					sb.append(key);
+					sb.append("=");
+					sb.append(value);
+					if(iterator.hasNext()){
+						sb.append("&");
+					}
+				}
+				Log.v("zc","参数是"+sb.toString());
+				httpRequest.setEntity(new StringEntity(sb.toString(), "utf-8"));
+			}else{
+				MultipartEntity mpEntity = new MultipartEntity();
+				Iterator<String> iterator = param.keySet().iterator();
+				while (iterator.hasNext()){
+					String key = iterator.next();
+					String value = param.get(key);
+					mpEntity.addPart(key,new StringBody(value, Charset.forName("UTF-8")));
+				}
+				mpEntity.addPart("avatar", new ByteArrayBody(file, ""));
+			}
+			
+			
+			httpRequest.addHeader("Content-Type",
+					"application/x-www-form-urlencoded;charset=UTF-8");
+			httpRequest.addHeader("Accept", "text/json");
+			httpRequest.addHeader("X-PID", Variables.pid);
+			httpRequest.addHeader("ua", Variables.ua);
+			Log.v("wyuser","url="+url+ " X-PID="+Variables.pid+" User-Agent="+Variables.ua);
+			HttpClient httpclient = getHttpClient();
+			HttpResponse httpResponse = httpclient.execute(httpRequest);
+			Log.v("wyuser", "status:"+ httpResponse.getStatusLine().getStatusCode());
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				rtStr = EntityUtils.toString(httpResponse.getEntity());
+			} else {
+				return "";
+			}
+		} catch (Exception e) {
+			Log.e("wy", "network error", e);
+		}
+		
 		return rtStr;
 	}
 
