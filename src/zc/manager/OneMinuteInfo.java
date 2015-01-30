@@ -1,20 +1,20 @@
 package zc.manager;
 
-public class OneMileInfo {
+public class OneMinuteInfo {
 	
-	private int number;//第几英里
+	private int number;//第几分钟
 	private double lon;
 	private double lat;
-	private int totalDistance;//跑完这一英里一共的距离（加上之前的，是从运动开始算起）
+	private int totalDistance;//跑完这一分钟一共的距离（加上之前的，是从运动开始算起）
 	private int distance;//多少米，例如1005米
-	private int totalDuring;//跑完这个英里一共用的时间（加上之前的，是从运动开始算起）
-	private int during;//该英里用时
-	private double totalAltitudeAdd;//跑完这一英里一共的高程增加值
-	private double altitudeAdd;//每英里高程增加值
-	private double totalAltitudeReduce;//跑完这一英里一共的高程降低值
-	private double altitudeReduce;//每英里总高程降低值
-//	private int step;//每英里步数
-//	private int calorie;//每英里卡路里
+	private int totalDuring;//跑完这个分钟一共用的时间（加上之前的，是从运动开始算起）
+	private int during;//该分钟用时
+	private double totalAltitudeAdd;//跑完这一分钟一共的高程增加值
+	private double altitudeAdd;//每分钟高程增加值
+	private double totalAltitudeReduce;//跑完这一分钟一共的高程降低值
+	private double altitudeReduce;//每分钟总高程降低值
+//	private int step;//每分钟步数
+//	private int calorie;//每分钟卡路里
 	public int getNumber() {
 		return number;
 	}
@@ -81,7 +81,7 @@ public class OneMileInfo {
 	public void setAltitudeReduce(double altitudeReduce) {
 		this.altitudeReduce = altitudeReduce;
 	}
-	public OneMileInfo(int number, double lon, double lat, int totalDistance,
+	public OneMinuteInfo(int number, double lon, double lat, int totalDistance,
 			int distance, int totalDuring, int during, double totalAltitudeAdd,
 			double altitudeAdd, double totalAltitudeReduce,
 			double altitudeReduce) {
@@ -98,7 +98,7 @@ public class OneMileInfo {
 		this.totalAltitudeReduce = totalAltitudeReduce;
 		this.altitudeReduce = altitudeReduce;
 	}
-	public OneMileInfo(int number, double lon, double lat, int distance,
+	public OneMinuteInfo(int number, double lon, double lat, int distance,
 			int during, double altitudeAdd, double altitudeReduce) {
 		super();
 		this.number = number;
@@ -111,5 +111,6 @@ public class OneMileInfo {
 	}
 	
 	
-
+	
+	
 }

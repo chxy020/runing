@@ -7,7 +7,7 @@ public class ZCGPSPoint {
 	private int status;
 	private long time;
 	private int course;
-	private int altitude;
+	private double altitude;
 	private int speed;
 	public double getLon() {
 		return lon;
@@ -40,10 +40,10 @@ public class ZCGPSPoint {
 	public void setCourse(int course) {
 		this.course = course;
 	}
-	public int getAltitude() {
+	public double getAltitude() {
 		return altitude;
 	}
-	public void setAltitude(int altitude) {
+	public void setAltitude(double altitude) {
 		this.altitude = altitude;
 	}
 	public int getSpeed() {
@@ -53,7 +53,7 @@ public class ZCGPSPoint {
 		this.speed = speed;
 	}
 	public ZCGPSPoint(double lon, double lat, int status, long time,
-			int course, int altitude, int speed) {
+			int course, double altitude, int speed) {
 		super();
 		this.lon = lon;
 		this.lat = lat;

@@ -18,7 +18,7 @@
             android:value="edb052cf66b6d7f82477334887205ff7"/>
         <activity
             
-            android:name="net.yaopao.activity.SplashActivity"
+            android:name="zc.manager.ManagerTest"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -164,8 +164,11 @@
         <activity
             android:name="net.yaopao.activity.AboutActivity"
             android:screenOrientation="portrait" />
- 		 <activity
+ 		<activity
             android:name="net.yaopao.activity.MatchWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="zc.manager.ManagerTestDisplay"
             android:screenOrientation="portrait" />
         <service
     		android:name="com.umeng.update.net.DownloadingService"

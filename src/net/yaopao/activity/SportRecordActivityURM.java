@@ -128,9 +128,8 @@ public class SportRecordActivityURM extends BaseActivity implements
 		s4V = (ImageView) findViewById(R.id.match_recoding_speed4);
 		progressHorizontal = (ProgressBar) findViewById(R.id.recoding_process);
 		
-		//初始化引擎
-		YaoPao01App.runManager = new RunManager(2,1,1,5000);
-		progressHorizontal.setMax(YaoPao01App.runManager.getTargetValue());
+		//开启引擎
+		YaoPao01App.runManager.startRun();
 		
 		mapV.setOnTouchListener(this);
 		resumeV.setOnTouchListener(this);
@@ -166,7 +165,7 @@ public class SportRecordActivityURM extends BaseActivity implements
 					}
 					YaoPao01App.graphicTool.updateWhiteNum(new int[]{d1,d2,d3,d4},new ImageView[]{d1v,d2v,d3v,d4v});
 
-					int[] speed = YaoPao01App.cal(YaoPao01App.runManager.paceKm);
+					int[] speed = YaoPao01App.cal(YaoPao01App.runManager.secondPerKm);
 
 					int s1 = speed[1] / 10;
 					int s2 = speed[1] % 10;
@@ -254,7 +253,19 @@ public class SportRecordActivityURM extends BaseActivity implements
 	}
 
 	private void startTimer(){
-		
+		task = new TimerTaskUpdate();
+		timer = new Timer();
+		timer.schedule(task, 0, 1000);
+	}
+	private void stopTimer(){
+		if(timer!=null){
+			timer.cancel();
+			timer = null;
+			if(task!=null){
+				task.cancel();
+				task = null;
+			}
+		}
 	}
 	@Override
 	protected void onResume() {
@@ -275,23 +286,13 @@ public class SportRecordActivityURM extends BaseActivity implements
 		super.onResume();
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
-		
-		task = new TimerTaskUpdate();
-		timer = new Timer();
-		timer.schedule(task, 0, 1000);
+		startTimer();
 	}
 
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-		if(timer!=null){
-			timer.cancel();
-			timer = null;
-			if(task!=null){
-				task.cancel();
-				task = null;
-			}
-		}
+		stopTimer();
 	}
 
 	@Override
