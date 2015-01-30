@@ -529,10 +529,7 @@ public class RunManager {
 		if (minute < 12) {
 			return 4;
 		}
-		if (minute < 13) {
-			return 3;
-		}
-		return 0;
+		return 3;
 	}
 
 	/**
