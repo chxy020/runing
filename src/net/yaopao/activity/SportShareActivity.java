@@ -193,11 +193,11 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 //		Intent intent = getIntent();
 //		recordId = Integer.parseInt(intent.getStringExtra("id"));
 //		oneSport = YaoPao01App.db.queryForOne(recordId);
-		initSportData(oneSport.getDistance(), oneSport.getRunty(),
-				oneSport.getMind(), oneSport.getRunway(),
-				oneSport.getRemarks(), oneSport.getUtime(),
-				oneSport.getPspeed(), oneSport.getPoints(),
-				oneSport.getAddtime());
+		initSportData(oneSport.getDistance(), oneSport.getHowToMove(),
+				oneSport.getFeeling(), oneSport.getRunway(),
+				oneSport.getRemark(), oneSport.getDuration(),
+				oneSport.getSecondPerKm(), oneSport.getScore(),
+				oneSport.getGenerateTime());
 		
 		RunManager runManager = BinaryIOManager.readBinary(oneSport.getClientBinaryFilePath());
 		List<GpsPoint> pointsArray = runManager.GPSList;

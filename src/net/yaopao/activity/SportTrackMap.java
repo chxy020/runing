@@ -118,15 +118,15 @@ public class SportTrackMap extends BaseActivity{
 		Intent intent = getIntent();
 		int id = Integer.parseInt(intent.getStringExtra("id"));
 		oneSport = YaoPao01App.db.queryForOne(id);
-		initSportData(oneSport.getDistance(), oneSport.getRunty(),
-				oneSport.getMind(), oneSport.getRunway(),
-				oneSport.getRemarks(), oneSport.getUtime(),
-				oneSport.getPspeed(), oneSport.getPoints(),
-				oneSport.getAddtime());
+		initSportData(oneSport.getDistance(), oneSport.getHowToMove(),
+				oneSport.getFeeling(), oneSport.getRunway(),
+				oneSport.getRemark(), oneSport.getDuration(),
+				oneSport.getSecondPerKm(), oneSport.getScore(),
+				oneSport.getGenerateTime());
 //		List<GpsPoint> pointsArray = JSONArray.parseArray(oneSport.getRuntra(),
 //				GpsPoint.class);
 		runManager = BinaryIOManager.readBinary(oneSport.getClientBinaryFilePath());
-		if (oneSport.sportty == 1) {
+		if (oneSport.getIsMatch() == 1) {
 			//Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
 			//String[] str = ((String)oneSport.getRuntra()).split(",");
 		//	drawRunTrack(str);
