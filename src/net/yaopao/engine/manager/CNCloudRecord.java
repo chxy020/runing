@@ -93,7 +93,7 @@ public class CNCloudRecord {
 				cloud_step12();
 			}else{
 				this.forCloud = 1;
-//				synTimeWithServer();
+				synTimeWithServer();
 				this.stepDes = "正在和服务器同步时间";
 			}
 		}else{
@@ -180,50 +180,81 @@ public class CNCloudRecord {
 					Log.v("zc","删除成功");
 					cloud_step3();
 				}
-			}else{
+			} else {
 				cloudFailed("删除记录失败");
 			}
 		}
 	}
+
 	public void cloud_step3(){
 		 if(this.userCancel){
 		        cloudFailed("用户取消");
 		        return;
-		    }
+		 }
 		    Log.v("zc","------------------第三步：上传文件");
 		    //首先过滤哪些才是新纪录（时间大于generateTime，或者时间为0，离线下跑步生成时间为0）
 		    long synTime = YaoPao01App.cloudDiary.getLong("synTime", 0);
 		    //查询generateTime>synTime||generateTime==0的所有记录needwy，将查询出来的数组赋值给addRecordArray
-//		    if (this.addRecordArray == nil||this.addRecordArray.size() == 0) {
-//		        Log.v("zc","没有新增记录，跳过第三步上传文件步骤");
-//		        cloud_step4();
-//		    }else{
-//		        this.stepDes = "正在查找要上传的文件";
-//		        Log.v("zc","新增记录个数："+this.addRecordArray.size());
-//		        for(int i = 0;i<this.addRecordArray.size();i++){
-//		        	SportBean runclass = this.addRecordArray.get(i);
-//		            if(runclass.serverBinaryFilePath @""] && ![runclass.clientBinaryFilePath isEqualToString:@""]){//未上传服务器，并且二进制客户端路径有值
-//		                [self.fileArray addObject:[NSString stringWithFormat:@"%i,%@,3,%@",i,runclass.clientBinaryFilePath,runclass.rid]];//记录index_二进制文件路径_文件类型_rid
-//		            }
-//		            if([runclass.serverImagePaths isEqualToString:@""] && ![runclass.clientImagePaths isEqualToString:@""]){
-//		                [self.fileArray addObject:[NSString stringWithFormat:@"%i,%@,2,%@",i,runclass.clientImagePaths,runclass.rid]];//记录index_二进制文件路径_文件类型
-//		            }
-//		            if([runclass.generateTime intValue] == 0){//当时离线保存
-//		                runclass.generateTime = [NSNumber numberWithLongLong:([CNUtil getNowTime1000]+kApp.cloudManager.deltaMiliSecond)];
-//		                if([runclass.updateTime intValue] == 0){//当时离线保存
-//		                    runclass.updateTime = [NSNumber numberWithLongLong:([CNUtil getNowTime1000]+kApp.cloudManager.deltaMiliSecond)];
-//		                }
-//		            }
-//		        }
-//		        self.fileCount = [self.fileArray count];
-//		        NSLog(@"需上传文件个数：%i",[self.fileArray count]);
-//		        if([self.fileArray count]>0){
-//		            [self uploadOneFile];
-//		        }else{
-//		            NSLog(@"有新增文件，但是相关文件都已上传，到第四步");
-//		            [self cloud_step4];
-//		        }
-//		    }
+		    if (this.addRecordArray == nil||this.addRecordArray.size() == 0) {
+		        Log.v("zc","没有新增记录，跳过第三步上传文件步骤");
+		        cloud_step4();
+		    }else{
+		        this.stepDes = "正在查找要上传的文件";
+		        Log.v("zc","新增记录个数："+this.addRecordArray.size());
+		        for(int i = 0;i<this.addRecordArray.size();i++){
+		        	SportBean runclass = this.addRecordArray.get(i);
+		            if(runclass.serverBinaryFilePath] && ![runclass.clientBinaryFilePath isEqualToString:@""]){//未上传服务器，并且二进制客户端路径有值
+		                this.fileArray.add(String.format("%i,%s,3,%s", i,runclass.clientBinaryFilePath,runclass.getRid()));//记录index_二进制文件路径_文件类型_rid
+		            }
+		            if([runclass.serverImagePaths isEqualToString:@""] && ![runclass.clientImagePaths isEqualToString:@""]){
+		            	this.fileArray.add(String.format("%i,%s,2,%s", i,i,runclass.clientImagePaths,runclass.getRid()));//记录index_二进制文件路径_文件类型
+		            }
+		            if(runclass.generateTime == 0){//当时离线保存
+		                runclass.generateTime = System.currentTimeMillis()+kApp.cloudManager.deltaMiliSecond;
+		                if(runclass.updateTime == 0){//当时离线保存
+		                    runclass.updateTime = System.currentTimeMillis()+kApp.cloudManager.deltaMiliSecond;
+		                }
+		            }
+		        }
+		        this.fileCount = this.fileArray.size();
+		        Log.v("zc","需上传文件个数："+this.fileCount);
+		        if(this.fileArray.size()>0){
+		            uploadOneFile();
+		        }else{
+		            Log.v("zc","有新增文件，但是相关文件都已上传，到第四步");
+		            cloud_step4();
+		        }
+		    }
+		
+	}
+	public void uploadOneFile(){
+	    if(this.userCancel){
+	        cloudFailed("用户取消");
+	        return;
+	    }
+	    Log.v("zc","上传一个文件");
+	    String fileString = this.fileArray.get(this.fileArray.size()-1);
+	    String[] tempArray = fileString.split(",");
+	    String uid = ""+Variables.uid;
+	    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+	    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[tempArray objectAtIndex:1]];
+	    BOOL blHave=[[NSFileManager defaultManager] fileExistsAtPath:filePath];
+	    NSData* binaryData;
+	    if(blHave){
+	        binaryData = [NSData dataWithContentsOfFile:filePath];
+	    }else{
+	        binaryData = nil;
+	    }
+	    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+	    [params setObject:uid forKey:@"uid"];
+	    [params setObject:[tempArray objectAtIndex:2] forKey:@"type"];
+	    [params setObject:[NSString stringWithFormat:@"%@_%@",uid,[tempArray objectAtIndex:3]] forKey:@"rid"];
+	    [params setObject:binaryData forKey:@"avatar"];
+	    kApp.networkHandler.delegate_cloudData = self;
+	    [kApp.networkHandler doRequest_cloudData:params];
+	    self.stepDes = [NSString stringWithFormat:@"正在上传记录相关文件%i/%i",(self.fileCount-[self.fileArray count]+1),self.fileCount];
+	}
+	public void cloud_step4(){
 		
 	}
 	public void cloudSuccess(){
