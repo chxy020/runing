@@ -51,6 +51,7 @@ import android.util.Log;
 
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
+	public static SharedPreferences cloudDiary;
 	//public static NetworkStateReceiver mReceiver;
 	public static YaoPao01App instance;
 	public static LocationManager locationManager;
@@ -345,7 +346,8 @@ public class YaoPao01App extends Application {
 
 	public void getPreference() {
 		sharedPreferences = this.getSharedPreferences("yaopao", 0);
-	}
+		cloudDiary = this.getSharedPreferences("cloudDiary", 0);
+	} 
 
 	public static YaoPao01App getAppContext() {
 		return instance;
