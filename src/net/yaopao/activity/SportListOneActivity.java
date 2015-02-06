@@ -207,13 +207,13 @@ public class SportListOneActivity extends BaseActivity {
 		 Intent intent = getIntent();
 		 recordId = Integer.parseInt(intent.getStringExtra("id"));
 		 oneSport = YaoPao01App.db.queryForOne(recordId);
-		initSportData(oneSport.getDistance(), oneSport.getRunty(),
-				oneSport.getMind(), oneSport.getRunway(),
-				oneSport.getRemarks(), oneSport.getUtime(),
-				oneSport.getPspeed(), oneSport.getPoints(),
-				oneSport.getAddtime());
+		initSportData(oneSport.getDistance(), oneSport.getHowToMove(),
+				oneSport.getFeeling(), oneSport.getRunway(),
+				oneSport.getRemark(), oneSport.getDuration(),
+				oneSport.getSecondPerKm(), oneSport.getScore(),
+				oneSport.getGenerateTime());
 		
-		if (oneSport.sportty == 1) {
+		if (oneSport.getIsMatch() == 1) {
 			//画比赛的轨迹，本次不支持
 //			Log.v("wysport", "oneSport.getRuntra() =" + oneSport.getRuntra());
 //			

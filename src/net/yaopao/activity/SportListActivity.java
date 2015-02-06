@@ -157,8 +157,8 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
     private void deleteOneSportRecord(int id ){
 		SportBean data = YaoPao01App.db.queryForOne(id);
 		// 删除数据库和本地参数的数据
-		totalData = DataTool.deleteOneSportRecord(data.getDistance(), data.getUtime(),
-				data.getPoints(),data.getPspeed());
+		totalData = DataTool.deleteOneSportRecord(data.getDistance(), data.getDuration(),
+				data.getScore(),data.getSecondPerKm());
 
 		if (data.getClientBinaryFilePath() != null
 				&& !"".equals(data.getClientBinaryFilePath())) {
@@ -248,32 +248,32 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			map = new HashMap<String, Object>();
 			sport = list.get(i);
 
-			if (sport.getRunty() == 1) {
+			if (sport.getHowToMove() == 1) {
 				//map.put("type", R.drawable.runtype_walk);
 				map.put("type", R.drawable.runtype_run_big);
-			} else if (sport.getRunty() == 2) {
+			} else if (sport.getHowToMove() == 2) {
 				//map.put("type", R.drawable.runtype_run);
 				map.put("type",R.drawable.runtype_walk_big );
-			} else if (sport.getRunty() == 3) {
+			} else if (sport.getHowToMove() == 3) {
 				//map.put("type", R.drawable.runtype_ride);
 				map.put("type", R.drawable.runtype_ride_big);
 			}
 
-			Date date = new Date(sport.getAddtime());
+			Date date = new Date(sport.getGenerateTime());
 
 			map.put("date", sdf1.format(date) + "月" + sdf2.format(date) + "日 "
 					+ YaoPao01App.getWeekOfDate(date) + " " + sdf3.format(date));
 
 			map.put("dis",sport.getDistance());
-			if (sport.getMind() == 1) {
+			if (sport.getFeeling() == 1) {
 				map.put("mind", R.drawable.mood1_h);
-			} else if (sport.getMind() == 2) {
+			} else if (sport.getFeeling() == 2) {
 				map.put("mind", R.drawable.mood2_h);
-			} else if (sport.getMind() == 3) {
+			} else if (sport.getFeeling() == 3) {
 				map.put("mind", R.drawable.mood3_h);
-			} else if (sport.getMind() == 4) {
+			} else if (sport.getFeeling() == 4) {
 				map.put("mind", R.drawable.mood4_h);
-			} else if (sport.getMind() == 5) {
+			} else if (sport.getFeeling() == 5) {
 				map.put("mind", R.drawable.mood5_h);
 			}
 
@@ -293,10 +293,10 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 				map.put("phoName", sport.getClientImagePaths());
 				map.put("phoNameSmall", sport.getClientImagePathsSmall());
 			}
-				map.put("ismatch", sport.sportty+"");
+				map.put("ismatch", sport.getIsMatch()+"");
 			map.put("id", sport.getId());
 			Log.v("db", "db id =" + sport.getId());
-			int[] speed = YaoPao01App.cal(sport.getPspeed());
+			int[] speed = YaoPao01App.cal(sport.getSecondPerKm());
 			int s1 = speed[1] / 10;
 			int s2 = speed[1] % 10;
 			int s3 = speed[2] / 10;
@@ -305,7 +305,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			map.put("speed", s1 + "" + s2 + "'" + s3 + "" + s4 + "\"" );
 			
 			//获取运动总时长chenxy add
-			int uTime = sport.getUtime()/1000;
+			int uTime = sport.getDuration()/1000;
 			//数据都是空的,先放个测试数据
 			//uTime = 21230;
 			//Log.e("","chxy_____utime" + uTime);
