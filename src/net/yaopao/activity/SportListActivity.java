@@ -19,6 +19,7 @@ import net.yaopao.view.XListView;
 import net.yaopao.view.XListView.IXListViewListener;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -129,14 +130,40 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
                     int position, long id) {
             	TextView idV = (TextView) view.findViewById(R.id.sport_index);
             	
-            	showInfo(Integer.parseInt((String) idV.getText()));
+            	deleteDialog(Integer.parseInt((String) idV.getText()));
                 return true;
             }
  
         });
 	}
 	
-	 // listview中点击按键弹出对话框  
+	public  void deleteDialog(final int id) {
+		new AlertDialog.Builder(this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s).setMessage("确认删除这条记录？").
+		setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO 
+                    	//删除数据库记录，同时删除对应的二进制文件，图片，修改本地保存的总数据，
+                    	//刷新当前页面的数据值，总公里，总时间，次数等，主页数据也需要刷新，为了同步，还需要保存删除记录的各种信息到特定的数据结构中
+                    	
+                    	deleteOneSportRecord(id);
+                    	mAdapter = new SportListAdapter(SportListActivity.this, getData(mPage));
+                    	mListView.setAdapter(mAdapter);
+						dialog.cancel();
+					}
+				})
+				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.cancel();
+					}
+				}).show();
+
+	}
+	
+	
+	/* // listview中点击按键弹出对话框  
     public void showInfo(final int id) {  
         new AlertDialog.Builder(this).setTitle("我的提示").setMessage("确定要删除吗？")                  
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {  
@@ -152,7 +179,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
                     	mListView.setAdapter(mAdapter);
                     }  
                 }).show();  
-    }  
+    }  */
   
     private void deleteOneSportRecord(int id ){
 		SportBean data = YaoPao01App.db.queryForOne(id);

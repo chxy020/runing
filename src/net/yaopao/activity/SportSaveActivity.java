@@ -152,7 +152,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	private void initType() {
 		switch (YaoPao01App.runManager.getHowToMove()) {
 		case 1:
-			title = "的跑步行";
+			title = "的跑步";
 			break;
 		case 2:
 			title = "的步行";

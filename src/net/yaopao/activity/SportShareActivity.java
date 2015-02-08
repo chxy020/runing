@@ -341,7 +341,7 @@ public class SportShareActivity extends BaseActivity implements OnClickListener 
 		//保留两位小数
 		km = (double)(Math.floor(km*100)/100.0);
 		
-		String[] typeText = {"","步行了","跑步了","骑行了"};
+		String[] typeText = {"","跑步了","步行了","骑行了"};
 		String text = "我刚刚" + typeText[type] + km + "公里";
 		mSportText.setText(text);
 	}

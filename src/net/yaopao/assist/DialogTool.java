@@ -107,6 +107,7 @@ public class DialogTool implements OnTouchListener {
 						handler.obtainMessage(1).sendToTarget();
 					}else{
 						handler.obtainMessage(0).sendToTarget();
+						SportRunMainActivity.stopCkeckvoiceTimer();
 						YaoPao01App.playCompletVoice(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 					}
 					
