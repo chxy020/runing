@@ -10,12 +10,11 @@ public class SportBean {
 	private String clientBinaryFilePath;// 跑步记录数据二进制文件路径
 	private int distance;// 距离
 	private int heat;// 热量 卡路里
-	
 	private int isMatch;// 跑步类型 日常，比赛
 	private String jsonParam;// 预留
 	private int kmCount;// 
-	
-	
+	private int gpsCount;
+	private int minCount;
 	private int mileCount;// 
 	private int feeling; // 心情
 	private int secondPerKm;// 配速
@@ -100,6 +99,19 @@ public class SportBean {
 	}
 	public int getKmCount() {
 		return kmCount;
+	}
+	
+	public int getGpsCount() {
+		return gpsCount;
+	}
+	public void setGpsCount(int gpsCount) {
+		this.gpsCount = gpsCount;
+	}
+	public int getMinCount() {
+		return minCount;
+	}
+	public void setMinCount(int minCount) {
+		this.minCount = minCount;
 	}
 	public void setKmCount(int kmCount) {
 		this.kmCount = kmCount;
