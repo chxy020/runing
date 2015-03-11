@@ -531,7 +531,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 		        }
 			    lon = infoDic.getDoubleValue("slon");
 			    lat = infoDic.getDoubleValue("slat");
-			    //needwy 将地图中心点移动到lon，lat，level=16 
 			    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 16));
 			    
 			    JSONObject runnerDic = resultDic.getJSONObject("runner");
@@ -742,7 +741,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT; //当控件的高强制设成365象素
 			mapContainer.setLayoutParams(layoutParams);
 			bottombar.setVisibility(View.VISIBLE);
-			//needwy设置地图是否可缩放，点击等
 			setBigMap();
 		}else if(type.equals("small")){
 			titleBar.setVisibility(View.VISIBLE);
@@ -752,7 +750,6 @@ public class MatchGroupInfoActivity extends BaseActivity implements OnTouchListe
 			layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT; //当控件的高强制设成365象素
 			mapContainer.setLayoutParams(layoutParams);
 			bottombar.setVisibility(View.GONE);
-			//needwy设置地图是否可缩放，点击等
 			setUpMap();
 		}
 	}

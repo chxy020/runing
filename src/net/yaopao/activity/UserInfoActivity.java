@@ -13,6 +13,7 @@ import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -436,6 +437,7 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 							Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
 							Variables.islogin=3;
 							DataTool.setUid(0);
+							Variables.uid=0;
 							Variables.headUrl="";
 							if (Variables.avatar!=null) {
 								Variables.avatar=null;
@@ -495,6 +497,7 @@ public class UserInfoActivity extends BaseActivity implements OnTouchListener {
 						Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
 						Variables.islogin=3;
 						DataTool.setUid(0);
+						Variables.uid=0;
 						Variables.headUrl="";
 						if (Variables.avatar!=null) {
 							Variables.avatar.recycle();

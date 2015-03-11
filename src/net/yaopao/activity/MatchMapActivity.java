@@ -92,11 +92,6 @@ public class MatchMapActivity extends BaseActivity implements LocationSource,
 	    }
 		init();
 		registerReceiver(gpsStateReceiver, new IntentFilter(YaoPao01App.gpsState));
-//		nameV.setText(Variables.userinfo.getString("nickname"));
-//		teamNameV.setText(CNAppDelegate.matchDic.getString("groupname"));
-//	    if(Variables.avatar != null){
-//	    	avatarV.setImageBitmap(Variables.avatar);
-//	    }needwy
 		drawTrack();//画赛道
 	    drawStratZone();//画出发区
 	    drawTakeOverZone();//画接力区

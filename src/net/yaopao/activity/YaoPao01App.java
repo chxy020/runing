@@ -17,6 +17,7 @@ import java.util.TimerTask;
 import cn.smssdk.SMSSDK;
 
 
+
 import com.alibaba.fastjson.JSON;
 
 import net.yaopao.assist.CNAppDelegate;
@@ -27,6 +28,7 @@ import net.yaopao.assist.LogtoSD;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.db.DBManager;
+import net.yaopao.engine.manager.CNCloudRecord;
 import net.yaopao.engine.manager.RunManager;
 import net.yaopao.match.track.TrackData;
 import net.yaopao.voice.PlayVoice;
@@ -52,6 +54,7 @@ import android.util.Log;
 public class YaoPao01App extends Application {
 	public static SharedPreferences sharedPreferences;
 	public static SharedPreferences cloudDiary;
+	public static SharedPreferences isInstall;//保存isInstall,是否是安装后第一次启动，0-是,1-否
 	//public static NetworkStateReceiver mReceiver;
 	public static YaoPao01App instance;
 	public static LocationManager locationManager;
@@ -79,6 +82,7 @@ public class YaoPao01App extends Application {
 	public static final String verifyCode = "verifyCode";// verifyCode再次放松剩余时间的广播
 	private Timer vcodeTimer;
 	public static RunManager runManager;
+	public static CNCloudRecord cloudManager;
 	  //测试代码
 //	Timer jumptimTimer = new Timer();
 //	int jumpTime = 15;
@@ -119,6 +123,8 @@ public class YaoPao01App extends Application {
         registerReceiver(gpsReceiver, new IntentFilter(BaseActivity.registerAction));
         //  startJumpTimer();
         SMSSDK.initSDK(this, Constants.SMS_KEY,Constants.SMS_SECRET);
+        //初始化同步管理引擎
+        cloudManager = new CNCloudRecord();
 	};
 
 	private void initDefultAvtar() {
@@ -237,7 +243,7 @@ public class YaoPao01App extends Application {
 	    //以下必须等待与服务器同步完时间再做
 		if(CNAppDelegate.canStartButNotInStartZone){
 	        if(CNAppDelegate.isInStartZone()){//进入了出发区
-	            //needwy 关闭不在出发区无法出发的窗口，可能关不关都行
+	            //关闭不在出发区无法出发的窗口，可能关不关都行
 	            CNAppDelegate.canStartButNotInStartZone = false;
 	            CNAppDelegate.ForceGoMatchPage("matchRun_normal");
 	        }
@@ -347,6 +353,8 @@ public class YaoPao01App extends Application {
 	public void getPreference() {
 		sharedPreferences = this.getSharedPreferences("yaopao", 0);
 		cloudDiary = this.getSharedPreferences("cloudDiary", 0);
+		isInstall = this.getSharedPreferences("isInstall", Context.MODE_PRIVATE);
+		
 	} 
 
 	public static YaoPao01App getAppContext() {

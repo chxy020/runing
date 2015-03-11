@@ -1,19 +1,24 @@
 package net.yaopao.activity;
 
 
+import net.yaopao.assist.Action;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.DialogTool;
+import net.yaopao.assist.GraphicTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
+import net.yaopao.assist.SportListAdapter;
 import net.yaopao.assist.SyncTimeLoadingDialog;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
+import net.yaopao.engine.manager.CNCloudRecord;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
@@ -44,6 +50,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LinearLayout recording;
 	private LinearLayout matchL;
 	private Bitmap head;
+	public TextView syncV;
 	private int distance;
 	public byte[] imageByte;
 	/** 设置 */
@@ -61,7 +68,9 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	private LoadingDialog loadingDialog;
 	private SyncTimeLoadingDialog syncTimeloadingDialog;
 	private DialogTool dialogTool ;
-	
+	//更新记录结束后控制ui刷新
+	//msg 0 刷新页面，1 启动同步
+	public static Handler synHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		matchL = (LinearLayout) this.findViewById(R.id.main_fun_macth);
 		start = (ImageView) this.findViewById(R.id.main_start);
 		headv = (ImageView) this.findViewById(R.id.main_head);
+		syncV = (TextView) this.findViewById(R.id.main_sync);
 		// 初始化数字符号
 		initSymbol();
 		dialogTool = new DialogTool(this);
@@ -82,6 +92,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		stateL.setOnClickListener(this);
 		recording.setOnClickListener(this);
 		matchL.setOnClickListener(this);
+		syncV.setOnClickListener(this);
 		start.setOnTouchListener(this);
 		headv.setOnTouchListener(this);
 		if (Variables.gpsStatus == 2) {
@@ -103,9 +114,25 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 					}
 				} 
 				super.handleMessage(msg);
+				//自动登录成功，同步记录
+//				Variables.updateUI=1;
+//				Variables.activity=MainActivity.this;
+//				CNCloudRecord cloudRecord = new CNCloudRecord();
+//				cloudRecord.startCloud();
+				startSyn(Action.MAIN11);
+			}
+			
+		};
+		synHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				if (msg.what==1) {
+				//同步数据
+					startSyn(Action.MAIN11);
+				}
+				updateUI();
+				super.handleMessage(msg);
 			}
 		};
-		
 		checkLogin();
 		this.initView();
 	}
@@ -250,6 +277,11 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		super.activityOnFront=this.getClass().getSimpleName();
 		Variables.activityOnFront=this.getClass().getSimpleName();
 		
+		//如果
+		if (Variables.isAutoLogin) {
+			Variables.isAutoLogin=false;
+			startSyn(Action.MAIN11);
+		}
 	}
 
 	public void onPause() {
@@ -283,9 +315,10 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			}
 
 		} else {
-			if (head != null) {
-				headv.setImageBitmap(null);
-			}
+//			if (head != null) {
+//				headv.setImageBitmap(null);
+//			}
+			headv.setImageBitmap(Variables.avatar_default);
 			state.setText("未登录");
 		}
 		initMileage(data);
@@ -293,9 +326,19 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 		initPspeed(data);
 		initPoints(data);
 	}
+	/**
+	 * 更新页面数据显示
+	 */
+	private void updateUI(){
+		DataBean data = DataTool.getTotalData();
+		initMileage(data);
+		initCountView(data);
+		initPspeed(data);
+		initPoints(data);
+	}
 
 	private void initMileage(DataBean data) {
-		distance = data.getDistance()+5;
+		distance = data.getDistance();
 		// distance = 549254;
 		ImageView d1V = (ImageView) this.findViewById(R.id.main_milage_num1);
 		ImageView d2V = (ImageView) this.findViewById(R.id.main_milage_num2);
@@ -389,6 +432,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 				break;
 			}
 			break;
+			
 		case R.id.main_head:
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
@@ -467,6 +511,7 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	    Intent intent = new Intent(this,LoginActivity.class);
 		Variables.islogin=3;
 		DataTool.setUid(0);
+		Variables.uid=0;
 		Variables.headUrl="";
 		if (Variables.avatar!=null) {
 			Variables.avatar=null;
@@ -593,6 +638,15 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 			}
 			startActivity(messageIntent);
 			break;
+			
+		case R.id.main_sync:
+//			Variables.updateUI=1;
+//			Variables.activity=MainActivity.this;
+//			CNCloudRecord cloudRecord = new CNCloudRecord();
+//			cloudRecord.startCloud();
+			startSyn(Action.MAIN1);
+			break;
+			
 		default:
 			break;
 		}
@@ -680,5 +734,10 @@ public class MainActivity extends BaseActivity implements OnTouchListener,
 	//不在出发区弹框
 	private void alertNotInTakeOver(){
 		dialogTool.alertNotIntakeOver();
+	}
+	
+	private void startSyn(int code){
+		 Action action = new Action();
+		 action.synAction(code,MainActivity.this);
 	}
 }

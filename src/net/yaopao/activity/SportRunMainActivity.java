@@ -169,7 +169,7 @@ public class SportRunMainActivity extends BaseActivity implements
 		// 开启引擎
 		YaoPao01App.runManager.startRun();
 		changeStatus(false);
-		startCkeckvoice();
+//		startCkeckvoice();
 	}
 
 	class TimerTaskUpdate extends TimerTask {
@@ -334,28 +334,28 @@ public class SportRunMainActivity extends BaseActivity implements
 
 	}
 
-	private void startCkeckvoice() {
-		if (playVoicetimer != null) {
-			return;
-		}
-
-		playVoiceTask = new ckeckVoiceTast();
-		playVoicetimer = new Timer();
-		playVoicetimer.schedule(playVoiceTask, 0, 1000);
-	}
-
-	public static void stopCkeckvoiceTimer() {
-
-		if (playVoicetimer != null) {
-			playVoicetimer.cancel();
-			playVoicetimer = null;
-			if (playVoiceTask != null) {
-				playVoiceTask.cancel();
-				playVoiceTask = null;
-			}
-		}
-
-	}
+//	private void startCkeckvoice() {
+//		if (playVoicetimer != null) {
+//			return;
+//		}
+//
+//		playVoiceTask = new ckeckVoiceTast();
+//		playVoicetimer = new Timer();
+//		playVoicetimer.schedule(playVoiceTask, 0, 1000);
+//	}
+//
+//	public static void stopCkeckvoiceTimer() {
+//
+//		if (playVoicetimer != null) {
+//			playVoicetimer.cancel();
+//			playVoicetimer = null;
+//			if (playVoiceTask != null) {
+//				playVoiceTask.cancel();
+//				playVoiceTask = null;
+//			}
+//		}
+//
+//	}
 
 	private void changeStatus(boolean off) {
 		if (off) {

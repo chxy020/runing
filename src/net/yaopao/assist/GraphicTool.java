@@ -37,6 +37,8 @@ public class GraphicTool  {
 	public GraphicTool(Resources resources) {
 		this.resources=resources;
 		initMap();
+		//读取默认头像
+		
 	}
 
 	/*
@@ -69,7 +71,15 @@ public class GraphicTool  {
 		return options;
 
 	}
-
+	/**
+	 * 获取默认头像
+	 * @return
+	 */
+    public Bitmap getDefaultAvatar(){
+    	
+		return  BitmapFactory.decodeResource(resources, R.drawable.avatar_default, getBtmOptions());
+    	
+    }
 	/**
 	 * 释放bitmap资源
 	 */

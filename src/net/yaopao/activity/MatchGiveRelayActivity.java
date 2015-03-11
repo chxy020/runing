@@ -489,7 +489,7 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 //			    NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
 //			    [voice_params setObject:[NSString stringWithFormat:@"%f",kApp.match_totaldis] forKey:@"distance"];
 //			    [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_historySecond] forKey:@"second"];
-//			    [kApp.voiceHandler voiceOfapp:@"match_running_transmit_relay" :voice_params];//needwy
+//			    [kApp.voiceHandler voiceOfapp:@"match_running_transmit_relay" :voice_params];
 				
 				int speed_second = (int) (1000*(CNAppDelegate.match_historySecond/CNAppDelegate.match_totaldis));
 				YaoPao01App.matchRunningTransmitRelay(CNAppDelegate.match_totaldis,CNAppDelegate.match_historySecond,speed_second);
@@ -504,7 +504,6 @@ public class MatchGiveRelayActivity extends BaseActivity implements
 
 	}
 	void startAnimation(){
-		//needwy
 	}
 	private class CancelTransmitTask extends AsyncTask<String, Void, Boolean> {
 		private String responseJson;

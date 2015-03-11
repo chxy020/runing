@@ -12,6 +12,7 @@ import java.util.Date;
 import net.yaopao.assist.Constants;
 import net.yaopao.assist.DataTool;
 import net.yaopao.assist.Variables;
+import net.yaopao.engine.manager.CNCloudRecord;
 import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,6 +25,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -215,12 +217,9 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 				break;
 			case MotionEvent.ACTION_UP:
 				saveV.setBackgroundResource(R.color.red);
-				
-				
 				saveDataToVarAndManager();
-				
 				lastId =YaoPao01App.db.saveOneSport();
-				DataTool.saveTotalData(YaoPao01App.runManager.distance,YaoPao01App.runManager.during(),YaoPao01App.runManager.score,YaoPao01App.runManager.secondPerKm);
+				DataTool.saveTotalData(YaoPao01App.runManager.distance,YaoPao01App.runManager.during(),YaoPao01App.runManager.score,YaoPao01App.runManager.secondPerKm,1);
 				Log.v("wysport", "lastId = "+lastId);
 //				Intent myIntent = new Intent();
 				// 这里要做的是将所有与运动有关的参数还原成默认值
@@ -231,6 +230,15 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 //						SportListActivity.class);
 //				startActivity(myIntent);
 //				SportSaveActivity.this.finish();
+				
+				//保存完成，如果uid!=0 ,同步记录
+				if (Variables.uid!=0) {
+					Variables.updateUI=3;
+					Variables.activity = SportSaveActivity.this;
+					CNCloudRecord cloud = new CNCloudRecord();
+					cloud.startCloud();
+				}
+				
 				//分享页面
 				Intent myIntent = new Intent(SportSaveActivity.this,SportShareActivity.class);
 				myIntent.putExtra("id", lastId + "");
@@ -397,8 +405,11 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 
 	private void saveDataToVarAndManager() {
 		YaoPao01App.runManager.setRemark(descV.getText().toString());
-		Variables.clientBinaryFilePath=Variables.getPhoDir()+Variables.getRid();
-		BinaryIOManager.writeBinary(Variables.getRid(),Variables.getPhoDir());
+		String rid =Variables.getRid();
+		String dir =Variables.getPhoDir();
+//		Variables.clientBinaryFilePath=Environment.getExternalStorageDirectory().getAbsolutePath()+"/YaoPao/binary/"+dir+rid+".yaopao";
+		Variables.clientBinaryFilePath="/"+dir+rid;
+		BinaryIOManager.writeBinary(rid,Variables.getPhoDir());
 	}
 
 	private String getPhotoFileName() {
@@ -572,7 +583,7 @@ public class SportSaveActivity extends BaseActivity implements OnTouchListener {
 	}
 	public void saveFile(Bitmap bm) throws IOException {
 		String path = Constants.sportPho+Variables.getPhoDir();
-		String smallPath = Constants.sportPho_s+Variables.getPhoDir();
+		String smallPath = Constants.sportPho_s+Variables.getPhoDir()+"/small/";
 		
 		File dirFile = new File(path);
 		File smallFile = new File(smallPath);

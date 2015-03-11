@@ -4,29 +4,29 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import net.yaopao.activity.SportRunMainActivity;
+import com.alibaba.fastjson.JSONObject;
+
 import net.yaopao.activity.YaoPao01App;
 import net.yaopao.assist.CNAppDelegate;
 import net.yaopao.assist.CNGPSPoint4Match;
 import net.yaopao.assist.Constants;
-import net.yaopao.assist.GpsPoint_bak;
 import net.yaopao.assist.Variables;
-import net.yaopao.bean.SportBean;
 import net.yaopao.bean.DataBean;
+import net.yaopao.bean.SportBean;
 import net.yaopao.bean.SportParaBean;
-import net.yaopao.engine.manager.binaryIO.BinaryIOManager;
+import net.yaopao.engine.manager.CNCloudRecord;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-
-import com.alibaba.fastjson.JSON;
 
 public class DBManager {
 	private DatabaseHelper helper;
@@ -54,10 +54,15 @@ public class DBManager {
 		df.setMaximumFractionDigits(2);
 		df.setRoundingMode(RoundingMode.DOWN);
 //		Variables.hspeed =df.format((Variables.distance/(Variables.utime/1000))*3.6);
+		
 		// 采用事务处理，确保数据完整性
 		db.beginTransaction(); // 开始事务
 		try {
-			long nowTime =new Date().getTime();
+			long nowTime =0;
+			//判断如果同步过时间，要加上与服务器的时间差值，如果未同步过时间
+			if (YaoPao01App.cloudManager.isSynServerTime) {
+				nowTime =new Date().getTime() +YaoPao01App.cloudManager.deltaMiliSecond;
+			}
 			db.execSQL(
 					"INSERT INTO "
 							+ DatabaseHelper.SPORTDATA_TABLE
@@ -76,7 +81,7 @@ public class DBManager {
 							YaoPao01App.runManager.getRemark(), Variables.getRid(), YaoPao01App.runManager.getTargetType(),
 							Variables.gpsString, YaoPao01App.runManager.getHowToMove(),YaoPao01App.runManager.getRunway(),
 							Variables.serverImagePathsSmall,YaoPao01App.runManager.score,Variables.serverImagePaths,YaoPao01App.runManager.GPSList.get(0).getTime(),
-							Variables.serverBinaryFilePath,Variables.temp,Variables.uid,nowTime,YaoPao01App.runManager.during(),2,Variables.weather,
+							Variables.serverBinaryFilePath,Variables.temp,Variables.uid,nowTime,YaoPao01App.runManager.during(),DatabaseHelper.DATABASE_VERSION,Variables.weather,
 							YaoPao01App.runManager.getTargetValue(),nowTime});
 
 
@@ -94,6 +99,76 @@ public class DBManager {
 		} finally {
 			db.endTransaction(); // 结束事务
 		}
+	}
+	@SuppressLint("NewApi")
+	/**
+	 * 更新下载的记录
+	 * 
+	 * @param records
+	 */
+	public void updateDownoadRecords(List<SportBean> addRecords,List<SportBean> updateRecords){
+		
+		String sql ="INSERT INTO "
+				+ DatabaseHelper.SPORTDATA_TABLE
+				+ " (averageHeart,clientImagePathsSmall,clientImagePaths,clientBinaryFilePath,distance,gpsCount,"
+				+ "heat,isMatch,jsonParam,kmCount,maxHeart,mileCount,feeling,secondPerKm,remark,rid,targetType,gpsString,howToMove,runway,"
+				+ "serverImagePathsSmall,score,serverImagePaths,startTime,serverBinaryFilePath,temp,uid,updateTime,duration,dbVersion,weather,targetValue,"
+				+ "generateTime)"
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+				+ ")";
+		String uSql ="UPDATE "+DatabaseHelper.SPORTDATA_TABLE+" SET  remark =?,updateTime=? WHERE rid=?";
+		SQLiteStatement stat = db.compileStatement(sql);
+		db.beginTransaction();
+		for (int i = 0; i < addRecords.size(); i++) {
+			SportBean data = addRecords.get(i);
+			stat.bindLong(1, data.getAverageHeart());
+			stat.bindString(2, data.getClientImagePathsSmall());
+			stat.bindString(3, data.getClientImagePaths());
+			stat.bindString(4, data.getClientBinaryFilePath());
+			stat.bindLong(5, data.getDistance());
+			stat.bindLong(6, data.getGpsCount());
+			stat.bindLong(7, data.getHeat());
+			stat.bindLong(8, data.getIsMatch());
+			stat.bindString(9, data.getJsonParam());
+			stat.bindLong(10, data.getKmCount());
+			stat.bindLong(11, data.getMaxHeart());
+			stat.bindLong(12, data.getMileCount());
+			stat.bindLong(13, data.getFeeling());
+			stat.bindLong(14, data.getSecondPerKm());
+			stat.bindString(15, data.getRemark());
+			stat.bindString(16, data.getRid());
+			stat.bindLong(17, data.getTargetType());
+			stat.bindString(18, data.getGpsString());
+			stat.bindLong(19, data.getHowToMove());
+			stat.bindLong(20, data.getRunway());
+			stat.bindString(21, data.getServerImagePathsSmall());
+			stat.bindLong(22, data.getScore());
+			stat.bindString(23, data.getServerImagePaths());
+			stat.bindLong(24, data.getStartTime());
+			stat.bindString(25, data.getServerBinaryFilePath());
+			stat.bindLong(26, data.getTemp());
+			stat.bindLong(27, data.getUid());
+			stat.bindLong(28, data.getUpdateTime());
+			stat.bindLong(29, data.getDuration());
+			stat.bindLong(30, DatabaseHelper.DATABASE_VERSION);
+			stat.bindLong(31, data.getWeather());
+			stat.bindLong(32, data.getTargetValue());
+			stat.bindLong(33, data.getGenerateTime());
+			stat.executeInsert();
+		}
+		
+		 stat = db.compileStatement(uSql);
+		for (int i = 0; i < updateRecords.size(); i++) {
+			SportBean udata = updateRecords.get(i);
+			stat.bindString(1, udata.getRemark());
+			stat.bindLong(2, udata.getUpdateTime());
+			stat.bindString(3, udata.getRid());
+			int update = stat.executeUpdateDelete();
+			Log.v("zc", "update ="+update);
+		}
+		
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 	@SuppressLint("NewApi")
 	public int saveOneSportMatch() {
@@ -202,9 +277,15 @@ public class DBManager {
 	 * @param sport
 	 */
 	public void updateRemark(int id, String remark) {
+		//如果同步过时间，要加上时间差值，否则时间保存0
+		long nowTime = 0;
+		if (YaoPao01App.cloudManager.isSynServerTime) {
+			nowTime =new Date().getTime() +YaoPao01App.cloudManager.deltaMiliSecond;
+		}
+				
 		ContentValues values = new ContentValues();  
 		values.put("remark", remark);  
-		values.put("updateTime", new Date().getTime());  
+		values.put("updateTime", nowTime);  
 		String whereClause = "id=?";  
 		String[] whereArgs = new String[] { id+"" };  
 		db.update(DatabaseHelper.SPORTDATA_TABLE, values, whereClause, whereArgs);  
@@ -215,11 +296,22 @@ public class DBManager {
 	 * 
 	 * @param sport
 	 */
-	public void delete(int id) {
+	public boolean delete(int id) {
 		Log.d("wydb", "DBManager --> deleteOldPerson");
 		String whereClause = "id=?"; 
 		String[] whereArgs = new String[] { id+"" };  
-		db.delete(DatabaseHelper.SPORTDATA_TABLE, whereClause,	whereArgs);
+		return db.delete(DatabaseHelper.SPORTDATA_TABLE, whereClause,	whereArgs)>0;
+	}
+	/**
+	 * 删除一条记录
+	 * 
+	 * @param sport
+	 */
+	public boolean deleteByRid(String rid) {
+		Log.d("wydb", "DBManager --> deleteOldPerson");
+		String whereClause = "rid=?"; 
+		String[] whereArgs = new String[] { rid+"" };  
+		return db.delete(DatabaseHelper.SPORTDATA_TABLE, whereClause,	whereArgs)>0;
 	}
 
 	/**
@@ -245,17 +337,65 @@ public class DBManager {
 			sport.setSecondPerKm(c.getInt(c.getColumnIndex("secondPerKm")));
 			sport.setDuration(c.getInt(c.getColumnIndex("duration")));
 			sport.setIsMatch(c.getInt(c.getColumnIndex("isMatch")));
-//			sport.setSportpho(c.getInt(c.getColumnIndex("sportpho")));
-			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths")));
-			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall")));
+			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths"))==null?"":c.getString(c.getColumnIndex("clientImagePaths")));
+			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall"))==null?"":c.getString(c.getColumnIndex("clientImagePathsSmall")));
+			sport.setClientBinaryFilePath(c.getString(c.getColumnIndex("clientBinaryFilePath"))==null?"":c.getString(c.getColumnIndex("clientBinaryFilePath")));
 			sports.add(sport);
-//			YaoPao01App.lts.writeFileToSD(
-//					"db list : id=" + c.getColumnIndex("id") + " rid="
-//							+ c.getColumnIndex("rid")
-//
-//							+ " runtar=" + c.getColumnIndex("runtar")
-//							+ " runty=" + c.getColumnIndex("runty"),
-//					"uploadLocation");
+		}
+		c.close();
+		return sports;
+	}
+	/**
+	 * 查询需要更新的记录
+	 * @param synTime
+//	 * @param action 1-查询本地更新到服务器 ，2-查询本地需要从服务器更新的
+	 * @param action 1-新增记录 ，2-更新记录
+	 * @return
+	 */
+	 
+	 
+	public List<SportBean> queryForPullOrPush(Long synTime,int action ) {
+		Log.d("wydb", "DBManager --> query");
+		ArrayList<SportBean> sports = new ArrayList<SportBean>();
+		Cursor c = queryTheCursorForUpdate(synTime,action);
+		while (c.moveToNext()) {
+			SportBean sport = new SportBean();
+			sport.setId(c.getInt(c.getColumnIndex("id")));
+			sport.setUid(c.getInt(c.getColumnIndex("uid")));
+			sport.setRid(c.getString(c.getColumnIndex("rid")));
+			sport.setTargetType(c.getInt(c.getColumnIndex("targetType")));
+			sport.setHowToMove(c.getInt(c.getColumnIndex("howToMove")));
+			sport.setFeeling(c.getInt(c.getColumnIndex("feeling")));
+			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
+			sport.setGenerateTime(c.getLong(c.getColumnIndex("generateTime")));
+			sport.setUpdateTime(c.getLong(c.getColumnIndex("updateTime")));
+			sport.setStartTime(c.getLong(c.getColumnIndex("startTime")));
+			sport.setDistance(c.getInt(c.getColumnIndex("distance")));
+			sport.setSecondPerKm(c.getInt(c.getColumnIndex("secondPerKm")));
+			sport.setDuration(c.getInt(c.getColumnIndex("duration")));
+			sport.setIsMatch(c.getInt(c.getColumnIndex("isMatch")));
+			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths"))==null?"":c.getString(c.getColumnIndex("clientImagePaths")));
+			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall"))==null?"":c.getString(c.getColumnIndex("clientImagePathsSmall")));
+			sport.setClientBinaryFilePath(c.getString(c.getColumnIndex("clientBinaryFilePath"))==null?"":c.getString(c.getColumnIndex("clientBinaryFilePath")));
+			sport.setServerImagePathsSmall(c.getString(c.getColumnIndex("serverImagePathsSmall"))==null?"":c.getString(c.getColumnIndex("serverImagePathsSmall")));
+			sport.setServerImagePaths(c.getString(c.getColumnIndex("serverImagePaths"))==null?"":c.getString(c.getColumnIndex("serverImagePaths")));
+			sport.setServerBinaryFilePath(c.getString(c.getColumnIndex("serverBinaryFilePath"))==null?"":c.getString(c.getColumnIndex("serverBinaryFilePath")));
+			sport.setJsonParam(c.getString(c.getColumnIndex("jsonParam")));
+			sport.setRemark(c.getString(c.getColumnIndex("remark")));
+			sport.setGpsString(c.getString(c.getColumnIndex("gpsString")));
+			sport.setAverageHeart(c.getInt(c.getColumnIndex("averageHeart")));
+			sport.setMaxHeart(c.getInt(c.getColumnIndex("maxHeart")));
+			sport.setHeat(c.getInt(c.getColumnIndex("heat")));
+			sport.setKmCount(c.getInt(c.getColumnIndex("kmCount")));
+			sport.setGpsCount(c.getInt(c.getColumnIndex("gpsCount")));
+			sport.setMinCount(c.getInt(c.getColumnIndex("minCount")));
+			sport.setMileCount(c.getInt(c.getColumnIndex("mileCount")));
+			sport.setScore(c.getInt(c.getColumnIndex("score")));
+			sport.setTemp(c.getInt(c.getColumnIndex("temp")));
+			sport.setDbVersion(c.getInt(c.getColumnIndex("dbVersion")));
+			sport.setWeather(c.getInt(c.getColumnIndex("weather")));
+			sport.setTargetValue(c.getInt(c.getColumnIndex("targetValue")));
+			sports.add(sport);
 		}
 		c.close();
 		return sports;
@@ -311,7 +451,6 @@ public class DBManager {
 	 */
 	public SportBean queryForOne(int id) {
 		Log.d("wydb", "DBManager --> query");
-		ArrayList<SportBean> sports = new ArrayList<SportBean>();
 		Cursor c = db.rawQuery("SELECT * FROM "
 				+ DatabaseHelper.SPORTDATA_TABLE + " WHERE id =" + id, null);
 //		YaoPao01App.lts.writeFileToSD("db : " + c, "uploadLocation");
@@ -329,15 +468,44 @@ public class DBManager {
 			sport.setDuration(c.getInt(c.getColumnIndex("duration")));
 			sport.setRemark(c.getString(c.getColumnIndex("remark")));
 			sport.setIsMatch(c.getInt(c.getColumnIndex("isMatch")));
-			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths")));
-			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall")));
-			sport.setClientBinaryFilePath(c.getString(c.getColumnIndex("clientBinaryFilePath")));
+			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths"))==null?"":c.getString(c.getColumnIndex("clientImagePaths")));
+			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall"))==null?"":c.getString(c.getColumnIndex("clientImagePathsSmall")));
+			sport.setClientBinaryFilePath(c.getString(c.getColumnIndex("clientBinaryFilePath"))==null?"":c.getString(c.getColumnIndex("clientBinaryFilePath")));
 			sport.setScore(c.getInt(c.getColumnIndex("score")));
-//			sport.setRuntra(c.getString(c.getColumnIndex("runtra")));
-//			sport.setStatusIndex(c.getString(c.getColumnIndex("status_index")));
-			
-			
-			sports.add(sport);
+		}
+		c.close();
+		return sport;
+	}
+	
+	/**
+	 * 查询一条记录
+	 * 
+	 * @param rid
+	 * @return
+	 */
+	public SportBean queryForOne(String rid) {
+		Log.d("wydb", "DBManager --> query");
+		Cursor c = db.rawQuery("SELECT * FROM "
+				+ DatabaseHelper.SPORTDATA_TABLE + " WHERE rid ='" + rid+"'", null);
+//		YaoPao01App.lts.writeFileToSD("db : " + c, "uploadLocation");
+		SportBean sport = new SportBean();
+		while (c.moveToNext()) {
+			sport.setId(c.getInt(c.getColumnIndex("id")));
+			sport.setRid(c.getString(c.getColumnIndex("rid")));
+			sport.setTargetType(c.getInt(c.getColumnIndex("targetType")));
+			sport.setHowToMove(c.getInt(c.getColumnIndex("howToMove")));
+			sport.setFeeling(c.getInt(c.getColumnIndex("feeling")));
+			sport.setRunway(c.getInt(c.getColumnIndex("runway")));
+			sport.setGenerateTime(c.getLong(c.getColumnIndex("generateTime")));
+			sport.setDistance(c.getInt(c.getColumnIndex("distance")));
+			sport.setSecondPerKm(c.getInt(c.getColumnIndex("secondPerKm")));
+			sport.setDuration(c.getInt(c.getColumnIndex("duration")));
+			sport.setRemark(c.getString(c.getColumnIndex("remark")));
+			sport.setIsMatch(c.getInt(c.getColumnIndex("isMatch")));
+			sport.setClientImagePaths(c.getString(c.getColumnIndex("clientImagePaths"))==null?"":c.getString(c.getColumnIndex("clientImagePaths")));
+			sport.setClientImagePathsSmall(c.getString(c.getColumnIndex("clientImagePathsSmall"))==null?"":c.getString(c.getColumnIndex("clientImagePathsSmall")));
+			sport.setClientBinaryFilePath(c.getString(c.getColumnIndex("clientBinaryFilePath"))==null?"":c.getString(c.getColumnIndex("clientBinaryFilePath")));
+			sport.setScore(c.getInt(c.getColumnIndex("score")));
 		}
 		c.close();
 		return sport;
@@ -365,7 +533,103 @@ public class DBManager {
 		c.close();
 		return sport;
 	}
-
+	/**
+	 * 保存已同步至服务器的记录
+	 */
+	@SuppressLint("NewApi")
+	public void updatePushedData(List<SportBean> dataList){
+		String sql ="UPDATE "+ DatabaseHelper.SPORTDATA_TABLE+" "
+				+ "SET updateTime =?,serverImagePaths=?,serverImagePathsSmall=?,serverBinaryFilePath=? where rid=?";
+		SQLiteStatement stat = db.compileStatement(sql);
+		db.beginTransaction();
+		for (int i = 0; i < dataList.size(); i++) {
+			SportBean sport = dataList.get(i);
+			stat.bindLong(1, sport.getUpdateTime());
+			stat.bindString(2, sport.getServerImagePaths()==null?"":sport.getServerImagePaths());
+			stat.bindString(3, sport.getServerImagePathsSmall()==null?"":sport.getServerImagePathsSmall());
+			stat.bindString(4, sport.getServerBinaryFilePath()==null?"":sport.getServerBinaryFilePath());
+			stat.bindString(5, sport.getRid());
+			stat.executeUpdateDelete();
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+	}
+/**
+ * 更新数据库中现有记录，如果是未登录用户的数据，修改为此用户数据，如果是其他用户数据，删除，最后统计出修改完到数据库中的总体记录
+ * @param uid
+ */
+	@SuppressLint("NewApi")
+	public int[] updateReccordToCurrentUser(int uid){
+		//第一步，查询出要删除的数据，统计总数，用作更新统计数据
+		String ssql = "select distance,secondPerKm,duration,score from "+ DatabaseHelper.SPORTDATA_TABLE +" WHERE  uid <> 0 AND uid <> "+uid; 
+		Cursor sc = db.rawQuery(ssql, null);
+		int distance =0;
+		int duration=0;
+		int secondPerKm=0;
+		int score =0;
+		int count =0;
+		
+		while (sc.moveToNext()) {
+			distance+=sc.getInt(sc.getColumnIndex("distance"));
+			duration+=sc.getInt(sc.getColumnIndex("duration"));
+			secondPerKm+=sc.getInt(sc.getColumnIndex("secondPerKm"));
+			score+=sc.getInt(sc.getColumnIndex("score"));
+			count+=1;
+		}
+		
+		int[] resData = new int[]{distance,duration,score,secondPerKm,count};
+		sc.close();
+		
+		
+		//第二步，删除uid!=0&&uidDB!=uid的记录
+		db.beginTransaction();
+				String dsql = "DELETE FROM "+ DatabaseHelper.SPORTDATA_TABLE +" WHERE  uid <> 0 AND uid <> "+uid;
+				SQLiteStatement dstat = db.compileStatement(dsql);
+				dstat.executeUpdateDelete();
+				Log.v("zc","本地记录的其他用户记录删除完毕 " );
+				
+				
+		// 第三步，更新数据库中uid=0的记录
+		Cursor c = db.rawQuery("select id,rid from "+DatabaseHelper.SPORTDATA_TABLE+" WHERE uid=0", null);
+		String sql ="UPDATE "+ DatabaseHelper.SPORTDATA_TABLE+" SET uid=?,rid=?,updateTime=?,"
+				+ "generateTime=? where id =?";
+		SQLiteStatement stat = db.compileStatement(sql);
+		Log.v("zc","开始更新 uid=0的记录 " );
+		while (c.moveToNext()) {
+			int  id = c.getInt(c.getColumnIndex("id"));
+			String ridDB = c.getString(c.getColumnIndex("rid"));
+			String ridUser = uid+"_"+ridDB.split("_")[1];
+			Log.v("zc","ridDB ="+ridDB +", ridUser="+ridUser );
+			stat.bindLong(1, uid);
+			stat.bindString(2, ridUser);
+			Long time = new Date().getTime();
+			stat.bindLong(3, time);
+			stat.bindLong(4, time);
+			stat.bindLong(5,id);	
+			stat.executeUpdateDelete();
+		}
+		Log.v("zc","记录过滤完毕 " );
+		
+		
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		return resData;
+	}
+	
+	/**
+	 * 查询本地数据库中所有的rid
+	 * @return
+	 */
+	public Map<String,Object>  queryRids() {
+		Cursor c = db.rawQuery("SELECT rid FROM "+ DatabaseHelper.SPORTDATA_TABLE , null);
+		Map<String,Object> resMap = new HashMap<String, Object>();
+		while (c.moveToNext()) {
+			resMap.put(c.getString(c.getColumnIndex("rid")),null);
+		}
+		c.close();
+		return resMap;
+	}
+	
 	/**
 	 * query all , return cursor
 	 * 
@@ -384,9 +648,29 @@ public class DBManager {
 	 */
 	public Cursor queryTheCursorForPage(int page) {
 		Cursor c = db.rawQuery("SELECT * FROM "
-				+ DatabaseHelper.SPORTDATA_TABLE + "  ORDER BY id DESC  limit "+Constants.offset+" offset "+Constants.offset*(page-1), null);
+//				+ DatabaseHelper.SPORTDATA_TABLE + "  ORDER BY id DESC  limit "+Constants.offset+" offset "+Constants.offset*(page-1), null);
+				+ DatabaseHelper.SPORTDATA_TABLE + "  ORDER BY generateTime DESC  limit "+Constants.offset+" offset "+Constants.offset*(page-1), null);
 		return c;
 	}
+	
+	/**
+	 * 查询需要更新的记录
+	 * @param page
+	 * @return
+	 */
+	public Cursor queryTheCursorForUpdate(Long synTime,int action ) {
+		StringBuffer sql = new StringBuffer("SELECT * FROM "	+ DatabaseHelper.SPORTDATA_TABLE + " WHERE generateTime ");
+		if (action==1) {
+			sql.append(" > "+synTime +" OR generateTime =0 ");
+		}else {
+			sql.append(" < "+synTime +" AND (updateTime >" + synTime+" OR updateTime=0) ");
+		}
+		sql.append("  ORDER BY id DESC");
+//		Cursor c = db.rawQuery("SELECT * FROM "	+ DatabaseHelper.SPORTDATA_TABLE + " WHERE generateTime> "+synTime+"  ORDER BY id DESC ", null);
+		Cursor c = db.rawQuery(sql.toString(), null);
+		return c;
+	}
+
 
 	/**
 	 * close database

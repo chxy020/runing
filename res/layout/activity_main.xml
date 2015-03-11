@@ -31,6 +31,16 @@
             android:textColor="@color/white" 
             android:background="@drawable/btn_click_red"
             />
+        
+        <TextView
+            android:id="@+id/main_sync"
+            android:layout_width="@dimen/common_height"
+            android:layout_height="@dimen/common_height"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="同步"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_click_red" />
     </RelativeLayout>
 
     <LinearLayout

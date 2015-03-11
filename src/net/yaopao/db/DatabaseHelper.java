@@ -1,8 +1,7 @@
 package net.yaopao.db;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -10,11 +9,11 @@ import android.util.Log;
 
 //参考：http://blog.csdn.net/liuhe688/article/details/6715983
 
-public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
+public class DatabaseHelper extends SQLiteOpenHelper// 继承OrmLiteSqliteOpenHelper类
 {
 
 	// 数据库版本号
-	private static final int DATABASE_VERSION = 2;
+	public static final int DATABASE_VERSION = 2;
 	// 数据库名
 	private static final String DATABASE_NAME = "YaoPao.db";
 
@@ -25,13 +24,13 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 	// public static final String USERINFO_TABLE = "UserInfoTable";
 
 	// 构造函数，调用父类SQLiteOpenHelper的构造函数
-	@SuppressLint("NewApi")
+/*	@SuppressLint("NewApi")
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
 			int version, DatabaseErrorHandler errorHandler) {
 		super(context, name, factory, version, errorHandler);
 
 	}
-
+*/
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
@@ -87,7 +86,6 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		// 一般在实际项目中是不能这么做的，正确的做法是在更新数据表结构时，还要考虑用户存放于数据库中的数据不丢失
 
 	}
-
 	@Override
 	public void onOpen(SQLiteDatabase db) {
 		super.onOpen(db);
@@ -151,4 +149,16 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
 		Log.v("wydb", sBuffer.toString());
 		return sBuffer.toString();
 	}
+
+//	@Override
+//	public void onCreate(SQLiteDatabase db,ConnectionSource connectionSource) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void onUpgrade(SQLiteDatabase db,ConnectionSource connectionSource, int oldVersion, int newVersion) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 }

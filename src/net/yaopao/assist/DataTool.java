@@ -6,75 +6,57 @@ import net.yaopao.bean.DataBean;
 import android.content.SharedPreferences;
 
 public class DataTool {
-	// 用户信息
-//	public static JSONObject getUserInfo() {
-//		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
-//				.getString("userInfo", null));
-//		JSONObject userInfo = rt.getJSONObject("userinfo");
-//		if (userInfo == null) {
-//			return rt;
-//		}
-//		return userInfo;
-//	}
 
-//	public static void setUserInfo(String data) {
-//		Log.v("wyuser", "要存储的=" + data);
-//		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
-//		editor.putString("userInfo", data);
-//		editor.putInt("uid", Variables.uid);
-//		editor.commit();
-//
-//	}
 
-//	// 头像
-//	public static String getHeadUrl() {
-//		JSONObject rt = JSON.parseObject(YaoPao01App.sharedPreferences
-//				.getString("head", null));
-//		return Constants.endpoints + rt.getString("path120");
-//	}
-
-//
-//	public static void setHead(String data) {
-//		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
-//		editor.putString("head", data);
-//		editor.commit();
-//
-//	}
-//
-//	// 电话号码
-//	public static String getPhone() {
-//		return YaoPao01App.sharedPreferences.getString("phone", "");
-//	}
-//
-//	public static void setPhone(String phone) {
-//		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
-//		editor.putString("phone", phone);
-//		editor.commit();
-//	}
-
-	// uid
+	/**
+	 * 获取uid
+	 * @return int
+	 */
 	public static int getUid() {
 		return YaoPao01App.sharedPreferences.getInt("uid", 0);
 	}
+	/**
+	 * 保存uid
+	 * @param uid
+	 */
 	public static void setUid(int uid) {
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
 		editor.putInt("uid", uid);
 		editor.commit();
 	}
 	
-	// 区分是否需要验证手机标志 0-未验证，1-已验证
+	/**
+	 * 是否需要验证手机标志 0-未验证，1-已验证
+	 * @return
+	 */
 	public static int getIsPhoneVerfied() {
 		return YaoPao01App.sharedPreferences.getInt("isPhoneVerfied", 0);
 	}
+	/**
+	 * 修改是否需要验证手机标志
+	 * @param isPhoneVerfied   0-未验证，1-已验证
+	 */
 	public static void setIsPhoneVerfied(int isPhoneVerfied) {
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
 		editor.putInt("isPhoneVerfied", isPhoneVerfied);
 		editor.commit();
 	}
-	
-	public static boolean saveTotalData(int distance ,int utime,int score,int secondPerKm){
+	/**
+	 * 更新运动统计数据
+	 * @param distance
+	 * @param utime
+	 * @param score
+	 * @param secondPerKm
+	 * @param count
+	 * @return boolean
+	 */
+	public static boolean saveTotalData(int distance ,int utime,int score,int secondPerKm,int count){
 		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences.getString("totalDistance", "0"))+distance;
-		int recordCount = YaoPao01App.sharedPreferences.getInt("recordCount", 0)+1;
+		int scount = YaoPao01App.sharedPreferences.getInt("recordCount", 0);
+		if (scount<0) {
+			scount=0;
+		}
+		int recordCount =scount+count;
 		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0)+score;
 		Long totalTime = YaoPao01App.sharedPreferences.getLong("totalTime", 0)+utime;
 		int totalSecondPerKm =0;
@@ -89,7 +71,10 @@ public class DataTool {
 		editor.putInt("totalSecondPerKm", totalSecondPerKm);
 		return  editor.commit();
 	}
-	
+	/**
+	 * 获取运动统计数据 ，总距离，时间，平均配速，积分
+	 * @return DataBean
+	 */
 	public static DataBean getTotalData(){
 		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences
 				.getString("totalDistance", "0"));
@@ -98,8 +83,11 @@ public class DataTool {
 		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0);
 		long totalTime=YaoPao01App.sharedPreferences.getLong("totalTime", 0);
 		int totalSecondPerKm =0;
-		if (recordCount!=0) {
-			totalSecondPerKm = YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0)/recordCount;
+//		if (recordCount!=0) {
+//			totalSecondPerKm = YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0)/recordCount;
+//		}
+		if (totalDistance!=0) {
+			totalSecondPerKm = (int) (totalTime/totalDistance);
 		}
 		
 		DataBean data = new DataBean();
@@ -112,18 +100,30 @@ public class DataTool {
 		
 		return data;
 	}
-	
-	public static DataBean deleteOneSportRecord(int distance ,int utime,int score,int secondPerKm){
-		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences
-				.getString("totalDistance", "0")) - distance;
+	/**
+	 * 删除指定条数记录
+	 * @param distance 删除的距离
+	 * @param utime 删除的用时
+	 * @param score 删除的积分
+	 * @param secondPerKm 删除的配速
+	 * @param count 删除条数
+	 * @return DataBean
+	 */
+	public static DataBean deleteOneSportRecord(int distance ,int utime,int score,int secondPerKm,int count){
+		int totalDistance = Integer.parseInt(YaoPao01App.sharedPreferences.getString("totalDistance", "0")) - distance;
 		int recordCount = YaoPao01App.sharedPreferences
-				.getInt("recordCount", 0) - 1;
+				.getInt("recordCount", 0) - count;
 		int totalScore = YaoPao01App.sharedPreferences.getInt("totalScore", 0)
 				- score;
 		Long totalTime = YaoPao01App.sharedPreferences.getLong("totalTime", 0)
 				- utime;
 		int totalSecondPerKm =YaoPao01App.sharedPreferences.getInt("totalSecondPerKm", 0) - secondPerKm;
 		
+		totalDistance = totalDistance<0?0:totalDistance;
+		recordCount = recordCount<0?0:recordCount;
+		totalScore = totalDistance<0?0:totalScore;
+		totalTime = totalTime<0?0:totalTime;
+		totalSecondPerKm = totalSecondPerKm<0?0:totalSecondPerKm;
 		
 		SharedPreferences.Editor editor = YaoPao01App.sharedPreferences.edit();
 		editor.putString("totalDistance", totalDistance + "");
@@ -146,117 +146,32 @@ public class DataTool {
 		editor.commit();
 		return data;
 	}
-	
-//	public static void initUserInfo(JSONObject rt,String rtjson) {
-//		JSONObject userInfo= rt.getJSONObject("userinfo");
-//		JSONObject match= rt.getJSONObject("match");
-//		Variables.islogin = 1;
-//		Variables.uid =userInfo.getInteger("uid");
-//		Variables.utype = userInfo.getInteger("utype");
-//		Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
-//		Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nickname"):"";
-//		Variables.headPath=userInfo.getString("imgpath");
-//		
-//		if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
-//			// 下载头像
-//			Variables.headUrl = Constants.endpoints_img +Variables.headPath;
-//			Log.v("wyuser", "头像======="+Variables.headUrl);
-//			try {
-//					Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-//			} catch (Exception e) {
-//				Log.v("wyuser", "下载头像异常="+e.toString());
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		//DataTool.setUserInfo(rtjson);
-//		Log.v("wyuser", "rtjson = " + rtjson);
-//		//是否有比赛
-//		if ("1".equals(match.getString("ismatch"))) {
-//			Variables.mid=match.getInteger("mid");
-//		}
-//		//是否报名
-//		if ("1".equals(match.getString("issign"))) {
-//			Variables.isSigned=true;
-//			Variables.bid="1";
-//		}
-//		//是否组队
-//		if ("1".equals(match.getString("isgroup"))) {
-//			Variables.gid=match.getString("gid");
-//		}
-//		//是否队长
-//		Variables.isLeader=match.getString("isleader");
-//		//是否是头棒
-//		if ("4".equals(match.getString("isgroup"))) {
-//			Variables.isBaton="1";
-//		}
-//		
-//		
-//	}
-//	public static void initMatchInfo(JSONObject rt,String rtjson) {
-//		JSONObject userInfo= rt.getJSONObject("userinfo");
-//		JSONObject match= rt.getJSONObject("match");
-//		Variables.islogin = 1;
-//		Variables.uid =userInfo.getInteger("uid");
-//		Variables.utype = userInfo.getInteger("utype");
-//		Variables.userName = userInfo.getString("uname")!=null?userInfo.getString("uname"):"";
-//		Variables.nikeName = userInfo.getString("nickname")!=null?userInfo.getString("nickname"):"";
-//		Variables.headPath=userInfo.getString("imgpath");
-//		
-//		if (Variables.headPath != null	&& !"".equals(Variables.headPath)) {
-//			// 下载头像
-//			Variables.headUrl = Constants.endpoints_img +Variables.headPath;
-//			Log.v("wyuser", "头像======="+Variables.headUrl);
-//			try {
-//				Variables.avatar = BitmapFactory.decodeStream(getImageStream(Variables.headUrl));
-//			} catch (Exception e) {
-//				Log.v("wyuser", "下载头像异常="+e.toString());
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		//DataTool.setUserInfo(rtjson);
-//		Log.v("wyuser", "rtjson = " + rtjson);
-//		//是否有比赛
-//		if ("1".equals(match.getString("ismatch"))) {
-//			Variables.mid=match.getInteger("mid");
-//		}
-//		//是否报名
-//		if ("1".equals(match.getString("issign"))) {
-//			Variables.isSigned=true;
-//			Variables.bid="1";
-//		}
-//		//是否组队
-//		if ("1".equals(match.getString("isgroup"))) {
-//			Variables.gid=match.getString("gid");
-//		}
-//		//是否队长
-//		Variables.isLeader=match.getString("isleader");
-//		//是否是头棒
-//		if ("4".equals(match.getString("isgroup"))) {
-//			Variables.isBaton="1";
-//		}
-//		
-//		
-//	}
-	
 	/**
-	 * Get image from newwork
-	 * 
-	 * @param path
-	 *            The path of image
-	 * @return InputStream
-	 * @throws Exception
+	 * 将本地删除记录的uid更新到SharedPreferences
+	 * @param rid
 	 */
-//	public static InputStream getImageStream(String path) throws Exception {
-//		URL url = new URL(path);
-//		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//		conn.setConnectTimeout(5 * 1000);
-//		conn.setRequestMethod("GET");
-//		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//			return conn.getInputStream();
-//		}
-//		return null;
-//	}
+	public static void updateDleteArray(String rid){
+		SharedPreferences.Editor editor = YaoPao01App.cloudDiary.edit();
+		String deleteArray = YaoPao01App.cloudDiary.getString("deleteArray", "");
+		if ("".equals(deleteArray)) {
+			editor.putString("deleteArray",rid);
+		}else{
+			editor.putString("deleteArray",deleteArray+","+rid);
+		}
+		editor.commit();
+	}
+	/**
+	 * 初始化sharedPreferences
+	 */
+	public static void initSharedPreferences(){
+		SharedPreferences.Editor editor1 = YaoPao01App.sharedPreferences.edit();
+		editor1.clear();
+		editor1.commit();
+		
+		SharedPreferences.Editor editor2 =YaoPao01App.isInstall.edit();
+		editor2.putInt("isInstall", 1);
+		editor1.commit();
+		
+	}
 
 }

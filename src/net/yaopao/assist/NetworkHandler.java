@@ -4,8 +4,6 @@ package net.yaopao.assist;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -85,18 +83,21 @@ public class NetworkHandler extends Activity {
 			if(file == null){
 				StringBuilder sb = new StringBuilder();
 				Iterator<String> iterator = param.keySet().iterator();
+				MultipartEntity mpEntity = new MultipartEntity();
 				while (iterator.hasNext()){
 					String key = iterator.next();
 					String value = param.get(key);
-					sb.append(key);
-					sb.append("=");
-					sb.append(value);
-					if(iterator.hasNext()){
-						sb.append("&");
-					}
+					mpEntity.addPart(key,new StringBody(value, Charset.forName("UTF-8")));
+//					sb.append(key);
+//					sb.append("=");
+//					sb.append(value);
+//					if(iterator.hasNext()){
+//						sb.append("&");
+//					}
 				}
-				Log.v("zc","参数是"+sb.toString());
-				httpRequest.setEntity(new StringEntity(sb.toString(), "utf-8"));
+//				Log.v("zc","参数是"+sb.toString());
+//				httpRequest.setEntity(new StringEntity(sb.toString(), "utf-8"));
+				httpRequest.setEntity(mpEntity);
 			}else{
 				MultipartEntity mpEntity = new MultipartEntity();
 				Iterator<String> iterator = param.keySet().iterator();
@@ -106,18 +107,18 @@ public class NetworkHandler extends Activity {
 					mpEntity.addPart(key,new StringBody(value, Charset.forName("UTF-8")));
 				}
 				mpEntity.addPart("avatar", new ByteArrayBody(file, ""));
+				httpRequest.setEntity(mpEntity);
 			}
 			
 			
-			httpRequest.addHeader("Content-Type",
-					"application/x-www-form-urlencoded;charset=UTF-8");
-			httpRequest.addHeader("Accept", "text/json");
+//			httpRequest.addHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+//			httpRequest.addHeader("Accept", "text/json");
 			httpRequest.addHeader("X-PID", Variables.pid);
 			httpRequest.addHeader("ua", Variables.ua);
-			Log.v("wyuser","url="+url+ " X-PID="+Variables.pid+" User-Agent="+Variables.ua);
+			Log.v("zc","url="+url+ " X-PID="+Variables.pid+" User-Agent="+Variables.ua);
 			HttpClient httpclient = getHttpClient();
 			HttpResponse httpResponse = httpclient.execute(httpRequest);
-			Log.v("wyuser", "status:"+ httpResponse.getStatusLine().getStatusCode());
+			Log.v("zc", "status:"+ httpResponse.getStatusLine().getStatusCode());
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				rtStr = EntityUtils.toString(httpResponse.getEntity());
 			} else {
@@ -128,6 +129,7 @@ public class NetworkHandler extends Activity {
 		}
 		
 		return rtStr;
+		
 	}
 
 	// 通用上传图片的方法

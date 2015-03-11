@@ -6,6 +6,7 @@ import net.yaopao.activity.MainActivity;
 import net.yaopao.activity.R;
 import net.yaopao.activity.SportRunMainActivity;
 import net.yaopao.activity.YaoPao01App;
+import net.yaopao.engine.manager.CNCloudRecord;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,7 +15,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.opengl.Visibility;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
@@ -24,6 +28,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +43,11 @@ public class DialogTool implements OnTouchListener {
 	Window dialogWindow;
 	WindowManager.LayoutParams p ;
 	LayoutInflater inflater ;
+	//同步记录描述
+	public TextView synText ;
+	public ProgressBar progressHorizontal ;
+	//更新记录结束后控制ui刷新
+	public static Handler synTextHandler;
 	public DialogTool(Context context) {
 		this.context = context;
 		inflater= LayoutInflater.from(context);
@@ -107,7 +117,7 @@ public class DialogTool implements OnTouchListener {
 						handler.obtainMessage(1).sendToTarget();
 					}else{
 						handler.obtainMessage(0).sendToTarget();
-						SportRunMainActivity.stopCkeckvoiceTimer();
+//						SportRunMainActivity.stopCkeckvoiceTimer();
 						YaoPao01App.playCompletVoice(YaoPao01App.runManager.during(),YaoPao01App.runManager.distance,YaoPao01App.runManager.secondPerKm);
 					}
 					
@@ -253,6 +263,73 @@ public class DialogTool implements OnTouchListener {
 			}
 		});
 	}
+	
+	/**
+	 * 同步记录提示
+	 */
+		public void alertSynProcess() {
+			final View dialogView = inflater.inflate(R.layout.tip_dialog_syn_data, null);
+			final TextView cancel = (TextView) dialogView.findViewById(R.id.tip_cancle);
+//			final TextView text = (TextView) dialogView.findViewById(R.id.text1);
+//			final ProgressBar progressHorizontal = (ProgressBar) dialogView.findViewById(R.id.syn_process);
+			
+			synText =  (TextView) dialogView.findViewById(R.id.text1);
+			progressHorizontal = (ProgressBar) dialogView.findViewById(R.id.syn_process);
+			
+
+			synTextHandler = new Handler() {
+				public void handleMessage(Message msg) {
+					// 1-关闭弹窗，2-更新进度,3 关闭
+					if (msg.what == 1) {
+						Bundle b = msg.getData();
+						String desc = b.getString("desc");
+//						progressHorizontal.setVisibility(View.GONE);
+						synText.setText(desc);
+					} else if (msg.what == 2) {
+						Bundle b = msg.getData();
+						String desc = b.getString("desc");
+						int total =  b.getInt("total");
+						int current =  b.getInt("current");
+//						progressHorizontal.setVisibility(View.VISIBLE);
+						progressHorizontal.setMax(total);
+						progressHorizontal.setProgress(current);
+						synText.setText(desc);
+					}else if (msg.what == 3) {
+						if (dialog!=null) {
+							dialog.dismiss();
+						}
+				}
+					super.handleMessage(msg);
+				}
+			};
+			dialog.setContentView(dialogView);
+			p.height = (int) (d.getHeight() * 0.9); //
+			p.width = (int) (d.getWidth() * 0.7); //
+			dialogWindow.setAttributes(p);
+			dialog.show();
+			cancel.setOnTouchListener(new OnTouchListener() {
+				@Override
+				public boolean onTouch(View view, MotionEvent event) {
+					int action = event.getAction();
+					switch (action) {
+					case MotionEvent.ACTION_DOWN:
+						cancel.setBackgroundResource(R.color.blue_h);
+						break;
+					case MotionEvent.ACTION_UP:
+						cancel.setBackgroundResource(R.color.blue_dark);
+						CNCloudRecord.userCancel=true;
+						dialog.dismiss();
+						break;
+					default:
+						break;
+					}
+					return true;
+				}
+			});
+		}
+		
+		
+	
 	public void alertNotIntakeOver() {
 		View dialogView = inflater.inflate(R.layout.tip_dialog_not_in, null);
 		dialog.setContentView(dialogView);

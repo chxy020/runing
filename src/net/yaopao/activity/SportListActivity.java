@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.yaopao.assist.DataTool;
+import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.SportListAdapter;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.DataBean;
 import net.yaopao.bean.SportBean;
+import net.yaopao.engine.manager.CNCloudRecord;
 import net.yaopao.view.XListView;
 import net.yaopao.view.XListView.IXListViewListener;
 import android.annotation.SuppressLint;
@@ -25,6 +27,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -38,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
@@ -45,11 +49,11 @@ import com.umeng.analytics.MobclickAgent;
 @SuppressLint("SimpleDateFormat")
 public class SportListActivity extends BaseActivity implements OnClickListener,IXListViewListener {
 	public TextView backV;
+	public TextView syncV;
 
 	private SimpleDateFormat sdf1;
 	private SimpleDateFormat sdf2;
 	private SimpleDateFormat sdf3;
-	//private DecimalFormat df;
 	/** 数据列表 */
 	private XListView mListView;
 	private Handler mHandler;
@@ -65,7 +69,8 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 	private View totalCount;
 
 	private View totalTime;
-	
+	//更新记录结束后控制ui刷新
+	public static Handler synHandler;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -87,7 +92,9 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 //		df.setMaximumFractionDigits(2);
 //		df.setRoundingMode(RoundingMode.DOWN);
 		backV = (TextView) this.findViewById(R.id.recording_list_back);
+		syncV = (TextView) this.findViewById(R.id.recording_list_sync);
 		backV.setOnClickListener(this);
+		syncV.setOnClickListener(this);
 		
 		mListView = (XListView) this.findViewById(R.id.recording_list_data);
 		//关闭下拉刷新
@@ -129,15 +136,15 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                     int position, long id) {
             	TextView idV = (TextView) view.findViewById(R.id.sport_index);
-            	
-            	deleteDialog(Integer.parseInt((String) idV.getText()));
+            	TextView ridV = (TextView) view.findViewById(R.id.sport_rid);
+            	deleteDialog(Integer.parseInt((String) idV.getText()),(String)ridV.getText());
                 return true;
             }
  
         });
 	}
 	
-	public  void deleteDialog(final int id) {
+	public  void deleteDialog(final int id,final String rid) {
 		new AlertDialog.Builder(this).setTitle(R.string.app_name).setIcon(R.drawable.icon_s).setMessage("确认删除这条记录？").
 		setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
@@ -145,8 +152,8 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 						// TODO 
                     	//删除数据库记录，同时删除对应的二进制文件，图片，修改本地保存的总数据，
                     	//刷新当前页面的数据值，总公里，总时间，次数等，主页数据也需要刷新，为了同步，还需要保存删除记录的各种信息到特定的数据结构中
-                    	
                     	deleteOneSportRecord(id);
+                    	DataTool.updateDleteArray(rid);
                     	mAdapter = new SportListAdapter(SportListActivity.this, getData(mPage));
                     	mListView.setAdapter(mAdapter);
 						dialog.cancel();
@@ -184,9 +191,9 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
     private void deleteOneSportRecord(int id ){
 		SportBean data = YaoPao01App.db.queryForOne(id);
 		// 删除数据库和本地参数的数据
-		totalData = DataTool.deleteOneSportRecord(data.getDistance(), data.getDuration(),
-				data.getScore(),data.getSecondPerKm());
-
+		totalData = DataTool.deleteOneSportRecord(data.getDistance(), data.getDuration(),data.getScore(),data.getSecondPerKm(),1);
+		
+		// 删除二进制文件和图片
 		if (data.getClientBinaryFilePath() != null
 				&& !"".equals(data.getClientBinaryFilePath())) {
 			File binaryFile = new File(Environment
@@ -215,7 +222,6 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		}
 
 		YaoPao01App.db.delete(id);
-		// TODO 删除二进制文件和图片
 		// 刷新ui
 		initPagerViews(new View[] { totalDis, totalCount, totalTime });
 		mMessageAdapter.notifyDataSetChanged();
@@ -261,7 +267,26 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 		case R.id.recording_list_back:
 				SportListActivity.this.finish();
 				break;
+		case R.id.recording_list_sync:
+			Variables.updateUI=2;
+			Variables.activity=SportListActivity.this;
+			CNCloudRecord cloudRecord = new CNCloudRecord();
+			cloudRecord.startCloud();
+			
+				synHandler = new Handler() {
+					public void handleMessage(Message msg) {
+						mAdapter = new SportListAdapter(SportListActivity.this, getData(mPage));
+	                	mListView.setAdapter(mAdapter);
+	                	totalData = DataTool.getTotalData();
+						initPagerViews(new View[] { totalDis, totalCount, totalTime });
+						mMessageAdapter.notifyDataSetChanged();
+						super.handleMessage(msg);
+					}
+				};
+			
+			break;
 		}
+		
 	}
 
 	private List<Map<String, Object>> getData(int page) {
@@ -322,6 +347,7 @@ public class SportListActivity extends BaseActivity implements OnClickListener,I
 			}
 				map.put("ismatch", sport.getIsMatch()+"");
 			map.put("id", sport.getId());
+			map.put("rid", sport.getRid());
 			Log.v("db", "db id =" + sport.getId());
 			int[] speed = YaoPao01App.cal(sport.getSecondPerKm());
 			int s1 = speed[1] / 10;

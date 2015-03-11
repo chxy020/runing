@@ -13,7 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import net.yaopao.activity.LoginActivity;
 import net.yaopao.activity.YaoPao01App;
 import net.yaopao.match.track.TrackData;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -175,7 +174,6 @@ public class CNAppDelegate {
 	    }else if(matchstage.equals("isMatching")){//正式比赛时间
 	        if(CNAppDelegate.isbaton == 1){//正在跑
 	            //通过plist文件判断是否是崩溃重进
-	            //needwy
 	        	String fileexist = CNAppDelegate.match_readHistoryPlist();
 	            if("".equals(fileexist)){//没有这个文件，则说明上次不是比赛中闪退的
 	                if(CNAppDelegate.isbaton == 1 && CNAppDelegate.match_totalDisTeam < 1){//如果是第一棒有个特殊条件才能启动，就是必须在出发区
@@ -248,6 +246,7 @@ public class CNAppDelegate {
 	    	Intent intent = new Intent(context,LoginActivity.class);
 			Variables.islogin=3;
 			DataTool.setUid(0);
+			Variables.uid=0;
 			Variables.headUrl="";
 			if (Variables.avatar!=null) {
 				Variables.avatar=null;

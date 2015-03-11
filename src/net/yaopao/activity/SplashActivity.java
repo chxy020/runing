@@ -11,6 +11,7 @@ import net.yaopao.assist.DataTool;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
 import net.yaopao.bean.SportParaBean;
+import net.yaopao.engine.manager.CNCloudRecord;
 import net.yaopao.engine.manager.RunManager;
 import android.app.Activity;
 import android.content.Context;
@@ -40,28 +41,29 @@ public class SplashActivity extends Activity {
 		MobclickAgent.updateOnlineConfig(this);
 	
 			//测试代码
-//			Constants.endpoints=Constants.endpoints1;
-//			Constants.endpoints_img=Constants.endpoints2;
+			Constants.endpoints=Constants.endpoints1;
+			Constants.endpoints_img=Constants.endpoints2;
 			//测试代码
 			
-			Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
-			Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
-			Log.v("wyuser", "在线参数1="+Constants.endpoints);
-			Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
-			if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
-				Constants.endpoints=Constants.endpoints1;
-				Constants.endpoints_img=Constants.endpoints2;
-			}else{
-				Constants.endpoints+="chSports";
-			}
+//			Constants.endpoints = MobclickAgent.getConfigParams( this, "mainurl" );
+//			Constants.endpoints_img = MobclickAgent.getConfigParams( this, "imgurl" );
+//			Log.v("wyuser", "在线参数1="+Constants.endpoints);
+//			Log.v("wyuser", "在线参数2="+Constants.endpoints_img);
+//			if ("".equals(Constants.endpoints)||Constants.endpoints==null) {
+//				Constants.endpoints=Constants.endpoints1;
+//				Constants.endpoints_img=Constants.endpoints2;
+//			}else{
+//				Constants.endpoints+="chSports";
+//			}
 
 		
 		Log.v("wyuser", "Constants.endpoints="+Constants.endpoints);
 		Log.v("wyuser", "Constants.endpoints_img="+Constants.endpoints_img);
 		setContentView(R.layout.splash);
-
-		// 利用开头动画这几秒时间可以初始化变量和自动登录
+		//初始化缓存文件
+		DataTool.initSharedPreferences();
 		
+		// 利用开头动画这几秒时间可以初始化变量和自动登录
 		Variables.uid = DataTool.getUid();
 		
 		if (NetworkHandler.isNetworkAvailable(this)) {
@@ -74,7 +76,13 @@ public class SplashActivity extends Activity {
 					//跳转到手机验证页面，验证成功后自动登录
 					startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,VerifyPhoneActivity.class);
 				}
+				//测试代码
+//				new AutoLogin().execute("");
+//				startForward(Constants.SPLASH_DISPLAY_LENGHT,this,MainActivity.class);
+				//测试代码
 			}else {
+				// 同步时间
+				YaoPao01App.cloudManager.synTimeWithServer();
 				startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,MainActivity.class);
 			}
 		}else {
@@ -85,7 +93,6 @@ public class SplashActivity extends Activity {
 		 //初始化引擎 
 		initSportParam();
 		
-	
 //		if (Variables.uid != 0) {
 //			startForward(Constants.SPLASH_DISPLAY_LENGHT_SHORT,this,VerifyPhoneActivity.class);
 //		}else {
@@ -139,7 +146,7 @@ public class SplashActivity extends Activity {
 				Log.v("wypho", "rtCode=" + rtCode);
 				switch (rtCode) {
 				case 0:
-					//登录成功，通知主界面取消等待动画
+					//登录成功，通知主界面取消等待动画,开始同步记录
 					if (MainActivity.loginHandler!=null) {
 						MainActivity.loginHandler.obtainMessage(1).sendToTarget();
 					}
@@ -147,6 +154,8 @@ public class SplashActivity extends Activity {
 					// 登录成功，初始化用户信息,比赛信息
 					
 					Variables.islogin = 1;
+					//设置状态为自动登录，这样在主界面就会之后进行同步，之后将属性修改为false
+					Variables.isAutoLogin=true;
 					CNAppDelegate.match_isLogin = 1;
 					Variables.userinfo =  rt.getJSONObject("userinfo");
 					Variables.matchinfo =  rt.getJSONObject("match");
@@ -179,6 +188,7 @@ public class SplashActivity extends Activity {
 				case -7:
 					//设备已在其他设备登陆
 					Variables.islogin = 3;
+					Variables.uid=0;
 					DataTool.setUid(0);
 					break;
 				default:
@@ -191,6 +201,8 @@ public class SplashActivity extends Activity {
 				// Toast.makeText(YaoPao01App.getAppContext(), "网络异常，请稍后重试",
 				// Toast.LENGTH_LONG).show();
 			}
+			//自动登录不论成功还是失败，都需要同步时间
+			YaoPao01App.cloudManager.synTimeWithServer();
 		}
 
 		/**
@@ -237,15 +249,11 @@ public class SplashActivity extends Activity {
 	private void initSportParam() {
 		
 		SportParaBean param = YaoPao01App.db.querySportParam(Variables.uid);
-		
 		Variables.switchTime=param.getCountDown();
 		Variables.switchVoice=param.getVioce();
 		Variables.runTargetType=param.getTargetIndex()==0?1:param.getTargetIndex();
 		Variables.runType=param.getTypeIndex()==0?1:param.getTypeIndex();
 		Variables.runTargetDis=param.getTargetdis()==0?5000:param.getTargetdis();
 		Variables.runTargetTime=param.getTargettime()==0?1800000:param.getTargettime();
-		
-		
-		
 	}
 }

@@ -210,6 +210,7 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 					}
 
 				}
+				//测试代码
 //				new resetAsyncTask().execute("");
 				break;
 			}
@@ -348,7 +349,8 @@ public class ResetPwdActivity extends BaseActivity implements OnTouchListener {
 					DataTool.setUid(Variables.uid);
 					Variables.islogin = 1;
 					CNAppDelegate.match_isLogin = 1;
-
+					//重置密码当成是自动登录成功，到主界面要进行同步
+					Variables.isAutoLogin=true;
 					Variables.userinfo = rt.getJSONObject("userinfo");
 					Variables.matchinfo = rt.getJSONObject("match");
 

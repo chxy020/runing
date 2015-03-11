@@ -3,8 +3,11 @@ package net.yaopao.assist;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Bitmap;
+
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -18,6 +21,8 @@ public class Variables {
 	public static String ua;
 
 	public static int islogin;// 0-未登录，1-登录成功，2-正在登录,3-用户在其他设别上登录
+	
+	public static boolean isAutoLogin =false;
 	
 	public static int uid = 0;
 	
@@ -113,6 +118,10 @@ public class Variables {
 	
 	public static Map<String,String> countryData;
 	
+	public static int updateUI =0; //同步记录后更新UI 1-首页 ，11-首页并且完成同步后需要关闭提示框，2-记录列表,3-保存页面，4-登录页面
+//	public static boolean isUpdateTotalData =false; //同步完成后是否需要重置sharedpreference里面的统计数据  ,每次手动登录，同步数据结束后需要重置
+	public static Activity activity =null; //同步记录的activity
+	
 	public static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy");
 	public static SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
 	//验证码获取倒计时
@@ -122,8 +131,10 @@ public class Variables {
 			Date date = new Date();
 			return sdf1.format(date)+"/"+sdf2.format(date)+"/";
 		}
-	
-	
-	public static boolean isTest=true ;//是否是测试客户端
 
+		
+	public static boolean isTest=false ;//是否是测试客户端
+
+	
+	
 }

@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class SportListAdapter extends BaseAdapter {
 	private Context context; // 运行上下文
-	private List<Map<String, Object>> listItems; // 商品信息集合
+	private List<Map<String, Object>> listItems; // 信息集合
 	private LayoutInflater listContainer; // 视图容器
 
 	public SportListAdapter(Context context, List<Map<String, Object>> listItems) {
@@ -83,6 +83,7 @@ public class SportListAdapter extends BaseAdapter {
 			TextView spedV = (TextView) convertView
 					.findViewById(R.id.list_sport_speed);
 			TextView indexV = (TextView) convertView.findViewById(R.id.sport_index);
+			TextView ridV = (TextView) convertView.findViewById(R.id.sport_rid);
 			//所用时间 chenxy
 			TextView uTimeV = (TextView)convertView.findViewById(R.id.sport_list_time);
 			
@@ -112,6 +113,7 @@ public class SportListAdapter extends BaseAdapter {
 			dateyV.setText((String) listItems.get(position).get("date"));
 			spedV.setText((String) listItems.get(position).get("speed"));
 			indexV.setText(listItems.get(position).get("id") + "");
+			ridV.setText(listItems.get(position).get("rid") + "");
 			//修改所用时间
 			uTimeV.setText(listItems.get(position).get("utime") + "");	
 		

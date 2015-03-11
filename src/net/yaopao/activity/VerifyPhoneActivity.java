@@ -403,6 +403,7 @@ public class VerifyPhoneActivity extends BaseActivity implements
 					// 登录成功，初始化用户信息,比赛信息
 
 					Variables.islogin = 1;
+					Variables.isAutoLogin=true;
 					CNAppDelegate.match_isLogin = 1;
 					Variables.userinfo = rt.getJSONObject("userinfo");
 					Variables.matchinfo = rt.getJSONObject("match");
@@ -437,6 +438,7 @@ public class VerifyPhoneActivity extends BaseActivity implements
 					// 设备已在其他设备登陆
 					Variables.islogin = 3;
 					DataTool.setUid(0);
+					Variables.uid=0;
 					break;
 				default:
 					Variables.islogin = 0;
@@ -448,7 +450,10 @@ public class VerifyPhoneActivity extends BaseActivity implements
 				Toast.makeText(YaoPao01App.getAppContext(), "验证失败，请稍后重试",
 						Toast.LENGTH_LONG).show();
 			}
+			//自动登录不论成功还是失败，都需要同步时间
+			YaoPao01App.cloudManager.synTimeWithServer();
 		}
+		
 	}
 
 	// 接收verifyCode再次发送剩余时间的

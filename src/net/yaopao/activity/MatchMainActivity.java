@@ -389,20 +389,10 @@ public class MatchMainActivity extends BaseActivity implements OnTouchListener {
 	    CNGPSPoint4Match gpspoint = CNAppDelegate.match_pointList.get(CNAppDelegate.match_pointList.size()-1);
 	    int isInTakeOverZone = CNAppDelegate.geosHandler.isInTheTakeOverZones(gpspoint.getLon(),gpspoint.getLat());
 	    if(isInTakeOverZone != -1){//在交接区
-//	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
-//	        [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_targetkm] forKey:@"km"];
-//	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
 	    	//用哪个数据
 	    	YaoPao01App.matchOneKmTeam(CNAppDelegate.match_targetkm);
 //	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_totalDisTeam,(nextDis+5)/1000.0);
 	    }else{//不在交接区
-//	        NSMutableDictionary* voice_params = [[NSMutableDictionary alloc]init];
-//	        [voice_params setObject:[NSString stringWithFormat:@"%f",self.nextDis] forKey:@"distanceFromTakeOver"];
-//	        [voice_params setObject:[NSString stringWithFormat:@"%i",kApp.match_targetkm] forKey:@"km"];
-//	        NSLog(@"self.nextDis is %f",self.nextDis);
-//	        NSLog(@"kApp.match_targetkm is %i",kApp.match_targetkm);
-//	        [kApp.voiceHandler voiceOfapp:@"match_one_km_and_not_in_take_over" :voice_params];needwy
-	    	////用哪个数据
 	    	YaoPao01App.matchOneKmAndNotInTakeOver(CNAppDelegate.match_targetkm,(nextDis+5)/1000.0);
 	    }
 	}

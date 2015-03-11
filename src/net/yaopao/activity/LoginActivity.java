@@ -14,6 +14,7 @@ import net.yaopao.assist.DialogTool;
 import net.yaopao.assist.LoadingDialog;
 import net.yaopao.assist.NetworkHandler;
 import net.yaopao.assist.Variables;
+import net.yaopao.engine.manager.CNCloudRecord;
 import net.yaopao.sms.CountryActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -241,7 +242,7 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 				login.setBackgroundResource(R.color.blue_dark);
 				if (service) {
 					if (verifyParam()) {
-
+						//new loginAsyncTask().execute("");
 						if (isVerified) {
 							if (dialog != null && !dialog.isShowing()) {
 								dialog.show();
@@ -260,7 +261,9 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 							}
 						}
 					}
+					//测试代码
 //					new loginAsyncTask().execute("");
+					//测试代码
 				} else {
 					Toast.makeText(LoginActivity.this, "您需要同意要跑服务协议才能进行后续操作",
 							Toast.LENGTH_LONG).show();
@@ -407,6 +410,17 @@ public class LoginActivity extends BaseActivity implements OnTouchListener {
 					// 登录成功，初始化用户信息,比赛信息
 					Variables.userinfo =  rt.getJSONObject("userinfo");
 					Variables.matchinfo =  rt.getJSONObject("match");
+					//手动登陆成功，清理本地记录
+					Log.v("zc", "手动登录成功，过滤本地保存的记录");
+					CNCloudRecord.ClearRecordAfterUserLogin();
+					Log.v("zc","记录过滤完毕，开始同步记录 " );
+					//通知主页面同步记录
+					MainActivity.synHandler.obtainMessage(1).sendToTarget();
+//					Variables.updateUI=4;
+//					Variables.activity=LoginActivity.this;
+//					CNCloudRecord cloudRecord = new CNCloudRecord();
+//					cloudRecord.startCloud();
+					
 					// 下载头像
 					try {
 						if (Variables.userinfo.getString("imgpath")!=null) {

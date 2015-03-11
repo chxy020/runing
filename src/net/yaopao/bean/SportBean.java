@@ -5,28 +5,28 @@ public class SportBean {
 	private int id;// 记录id
 	private int averageHeart;// 平均心率
 	private int maxHeart;// 最高心率
-	private String clientImagePaths;// 跑步拍照图片路径
-	private String clientImagePathsSmall;// 跑步拍照图片缩略图路径
-	private String clientBinaryFilePath;// 跑步记录数据二进制文件路径
+	private String clientImagePaths="";// 跑步拍照图片路径
+	private String clientImagePathsSmall="";// 跑步拍照图片缩略图路径
+	private String clientBinaryFilePath="";// 跑步记录数据二进制文件路径
 	private int distance;// 距离
 	private int heat;// 热量 卡路里
 	private int isMatch;// 跑步类型 日常，比赛
-	private String jsonParam;// 预留
+	private String jsonParam="";// 预留
 	private int kmCount;// 
 	private int gpsCount;
 	private int minCount;
 	private int mileCount;// 
 	private int feeling; // 心情
 	private int secondPerKm;// 配速
-	private String remark;// 运动记录备注
-	private String rid;// 一次运动的唯一标示
-	private String gpsString;// 预留
+	private String remark="";// 运动记录备注
+	private String rid="";// 一次运动的唯一标示
+	private String gpsString="";// 预留
 	private int targetType;// 自由：1，距离：2，时间：3
 	private int howToMove;// 跑步：1，步行：2，自行车骑行：3
 	private int runway;// 跑道
-	private String serverImagePathsSmall;// 跑步拍照图片服务器缩略图路径
-	private String serverImagePaths;// 跑步拍照图片服务器路径
-	private String serverBinaryFilePath;// 跑步二进制文件服务器路径
+	private String serverImagePathsSmall="";// 跑步拍照图片服务器缩略图路径
+	private String serverImagePaths="";// 跑步拍照图片服务器路径
+	private String serverBinaryFilePath="";// 跑步二进制文件服务器路径
 	private int score;// 积分
 	private long startTime;// 跑步开始时间
 	private int temp;// 温度
